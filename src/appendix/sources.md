@@ -15,8 +15,8 @@
 
 | 层级 | 信息源 | 类别 | 说明 | 质量评价 | 抓取 | 付费 |
 | --- | --- | --- | --- | --- | --- | --- |
-| A | [OpenAI News](https://openai.com/news/rss.xml) | 官方博客 | 模型、产品与合作发布，商务稿要过滤 | 高 / 信噪比中 | RSS | |
-| A | [Anthropic News](https://www.anthropic.com/news) + [Engineering](https://www.anthropic.com/engineering) | 官方博客 | Engineering 栏是 Harness 与 Agent 工程的一手经验 | 高 / 信噪比高 | 仅网页 | |
+| A | [OpenAI News](https://openai.com/news/rss.xml) | 官方博客 | 模型、产品与合作发布；一周约 20 条，过半是客户案例，只留金融、医疗案例和产品发布 | 高 / 信噪比中 | RSS | |
+| A | [Anthropic News](https://www.anthropic.com/news) + [Engineering](https://www.anthropic.com/engineering) + [Research](https://www.anthropic.com/research) | 官方博客 | Engineering 栏是 Harness 与 Agent 工程的一手经验；研究长文发在 Research 栏 | 高 / 信噪比高 | 仅网页 | |
 | A | [Google DeepMind Blog](https://deepmind.google/blog/rss.xml) | 官方博客 | 科学与医疗方向的研究多 | 高 / 信噪比高 | RSS | |
 | A | [Hugging Face Blog](https://huggingface.co/blog/feed.xml) | 开源生态 | 开源模型与训练实践 | 高 / 信噪比中 | RSS | |
 | A | [HF Daily Papers](https://huggingface.co/api/daily_papers) | 论文 | 社区投票筛过的 arXiv，按票数取前 10 | 高 / 信噪比高 | API | |
@@ -90,4 +90,5 @@ arXiv 过滤关键词：
 
 | 日期 | 变更 |
 | --- | --- |
+| 2026-10-23 | 首次维护：Anthropic 增加 Research 栏目（形式化验证一文只发在这里）；OpenAI News 写明过滤规则 |
 | 2026-10-23 | 首版：29 个源，A 层 12、B 层 11、C 层 6；新增 AI 产品方向，收录 Lenny's Newsletter |
