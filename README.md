@@ -19,7 +19,7 @@ nook/
 ├── drafts/              草稿池（临时，定期清理）
 │   ├── inbox/           新进来的想法、问题、讨论片段
 │   ├── _template.md     草稿模板
-│   └── _template-study.md  讨论草稿模板（招熟、懂劲、神明）
+│   └── _template-study.html  讨论草稿模板（HTML，招熟、懂劲、神明）
 ├── radar/               外部动态雷达存档（长期保留）
 │   ├── 2026/            按年份归档，每周三、周六各一期
 │   └── _template.md     雷达模板
