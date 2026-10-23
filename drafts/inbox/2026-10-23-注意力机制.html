@@ -226,6 +226,28 @@ flowchart LR
     </tbody>
   </table></div>
 
+  <h3>相邻概念：和向量检索比</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th></th><th>向量检索（如 RAG 里的相似度搜索）</th><th>注意力</th></tr></thead>
+    <tbody>
+      <tr><td>比什么</td><td>两个原始 embedding 直接比</td><td>先乘 W_Q、W_K，换成“提问视角”和“被找视角”再比</td></tr>
+      <tr><td>怎么算</td><td>常用余弦相似度，做了长度归一化</td><td>点积再除以 √dₖ，不做长度归一化</td></tr>
+      <tr><td>对称吗</td><td>对称：A 和 B 的相似度等于 B 和 A</td><td>不对称：“它”看“动物”的分数不等于“动物”看“它”</td></tr>
+      <tr><td>比较规则</td><td>固定</td><td>训练学出来</td></tr>
+      <tr><td>输出</td><td>排好序的 top-k 结果</td><td>按权重混合所有 Value，得到这个词的新向量</td></tr>
+      <tr><td>做几次</td><td>一次查询</td><td>每一层都做一遍，大模型有几十层，越往上混进的上下文越多</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>相邻概念：自注意力和交叉注意力</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th></th><th>Query 来自</th><th>Key / Value 来自</th><th>例子</th></tr></thead>
+    <tbody>
+      <tr><td>自注意力（Self-Attention）</td><td>这句话</td><td>同一句话</td><td>“它”在本句里找“动物”</td></tr>
+      <tr><td>交叉注意力（Cross-Attention）</td><td>正在生成的句子</td><td>另一句话</td><td>翻译时，正在写的中文去查英文原句</td></tr>
+    </tbody>
+  </table></div>
+
   <h3>权衡与缺陷</h3>
   <div class="table-wrap"><table>
     <thead><tr><th>代价</th><th>原因</th><th>后果</th></tr></thead>
@@ -242,7 +264,15 @@ flowchart LR
 
 <section>
   <h2>我的看法</h2>
-  <div class="opinion">（待 Yue 补充）</div>
+  <div class="opinion">
+    <p>简单理解：注意力机制就是把一句话里的每个词元（Token）两两算相似度、打分，找出哪些词和它相关，背后是并行的矩阵计算。它和我平时说的向量相似度是一类东西，只是自己和自己比（自注意力）。</p>
+    <p>讨论后补准的三点：</p>
+    <ol>
+      <li><strong>不只找相关，还要混合</strong>：打完分会按权重把所有词的 Value 加起来，改写出这个词的新向量，输出不是一份排名。</li>
+      <li><strong>比的是投影后的向量</strong>：先乘训练出来的 W_Q、W_K 再比，所以比较规则是学出来的，而且不对称。</li>
+      <li><strong>逐层反复做</strong>：每一层都改写一遍，越往上，每个词带的上下文越多。</li>
+    </ol>
+  </div>
 </section>
 
 <section>
