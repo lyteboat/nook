@@ -1,0 +1,18 @@
+[book]
+title = "Nook：我的 AI 指南针"
+authors = ["Yue"]
+language = "zh-CN"
+src = "src"
+
+[build]
+build-dir = "book"
+create-missing = false
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "navy"
+git-repository-url = "https://github.com/lyteboat/nook"
+edit-url-template = "https://github.com/lyteboat/nook/edit/main/{path}"
+
+[output.html.search]
+enable = true
