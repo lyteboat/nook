@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="nook:created" content="2026-10-23">
+<meta name="nook:source" content="讨论">
+<meta name="nook:target" content="第 1 章 大模型是如何工作的">
+<meta name="nook:status" content="讨论中">
+<meta name="nook:stage" content="招熟">
+<title>注意力机制</title>
+<style>
+  :root {
+    --bg: #fbfaf7; --fg: #1f1f1f; --muted: #6b6b6b; --line: #e3e0d8;
+    --card: #ffffff; --accent: #8a3b12; --zhao: #2f6f4f; --jin: #2c5282; --shen: #6b3fa0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17171a; --fg: #e8e6e1; --muted: #a09d96; --line: #34333a;
+      --card: #1f1f24; --accent: #e08a5a; --zhao: #6fbf95; --jin: #7fa8e0; --shen: #b894e6;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #17171a; --fg: #e8e6e1; --muted: #a09d96; --line: #34333a;
+    --card: #1f1f24; --accent: #e08a5a; --zhao: #6fbf95; --jin: #7fa8e0; --shen: #b894e6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font: 16px/1.75 -apple-system, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  }
+  main { max-width: 920px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font-size: 1.9rem; margin: 0 0 4px; }
+  h2 { margin: 48px 0 12px; padding-left: 12px; border-left: 4px solid var(--accent); }
+  h3 { margin: 28px 0 8px; }
+  .meta { color: var(--muted); font-size: .9rem; }
+  .one-line { font-size: 1.15rem; padding: 16px; background: var(--card); border: 1px solid var(--line); border-radius: 8px; }
+  section.zhao h2 { border-color: var(--zhao); }
+  section.jin h2 { border-color: var(--jin); }
+  section.shen h2 { border-color: var(--shen); }
+  .tag { display: inline-block; font-size: .8rem; padding: 0 8px; border-radius: 99px; color: var(--bg); vertical-align: middle; }
+  .zhao .tag { background: var(--zhao); } .jin .tag { background: var(--jin); } .shen .tag { background: var(--shen); }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; margin: 8px 0; background: var(--card); }
+  th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: color-mix(in srgb, var(--line) 50%, var(--card)); white-space: nowrap; }
+  figure { margin: 12px 0; padding: 12px; background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow-x: auto; }
+  figcaption { color: var(--muted); font-size: .85rem; margin-top: 6px; }
+  pre.mermaid { margin: 0; text-align: center; background: transparent; }
+  pre:not(.mermaid) { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 12px; overflow-x: auto; }
+  code { font-family: "JetBrains Mono", Menlo, Consolas, monospace; font-size: .9em; }
+  blockquote { margin: 12px 0; padding: 8px 16px; border-left: 4px solid var(--shen); color: var(--muted); }
+  .opinion { padding: 12px 16px; border: 1px dashed var(--accent); border-radius: 8px; }
+  ul.todo { list-style: none; padding-left: 0; } ul.todo li::before { content: "☐ "; }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <h1>注意力机制：机器怎么“一目十行”</h1>
+  <p class="meta">2026-10-23 · 讨论 · 目标章节：第 1 章 大模型是如何工作的 · 状态：讨论中 · 阶段：招熟</p>
+</header>
+
+<section>
+  <h2>开题</h2>
+  <div class="table-wrap"><table>
+    <tr><th>问题</th><td>《Attention Is All You Need》说机器能有“注意力”，能自动找到哪些词最相关。这到底是怎么做到的？</td></tr>
+    <tr><th>场景</th><td>弄懂原理，能把计算过程讲清楚、能手推。</td></tr>
+    <tr><th>目标阶段</th><td>招熟</td></tr>
+  </table></div>
+  <p class="one-line"><strong>一句话：</strong>注意力（Attention）本质上是一次<strong>模糊的字典查询</strong>（soft key-value lookup）：每个词拿自己的 Query 去和句子里所有词的 Key 比相似度，按相似度把所有词的 Value 加权混合，得到自己的新表示。它不是精确匹配，也不是去查整个世界的词，只在当前输入里查。</p>
+</section>
+
+<section>
+  <h2>全景图</h2>
+  <figure>
+    <pre class="mermaid">
+flowchart TB
+  T["输入文字"] --> E["词变向量<br/>Embedding"]
+  subgraph L["Transformer 层（重复 N 次）"]
+    A["注意力<br/>词与词互相取信息"] --> F["前馈网络 FFN<br/>逐词加工"]
+  end
+  E --> A
+  F --> O["预测下一个词"]
+  P[("参数<br/>词表、W_Q / W_K / W_V、FFN 权重")] -.训练学到.-> L
+    </pre>
+    <figcaption>图 1：注意力在大模型里的位置。它负责“词与词之间互相取信息”；对世界的知识主要存在参数里。</figcaption>
+  </figure>
+</section>
+
+<section class="zhao">
+  <h2>招熟：会用 <span class="tag">如何做</span></h2>
+
+  <h3>心法：一个公式，四步计算</h3>
+  <p><code>Attention(Q, K, V) = softmax(QKᵀ / √dₖ) · V</code></p>
+  <figure>
+    <pre class="mermaid">
+flowchart TB
+  X["词向量 X"] --> Q["Q = X·W_Q<br/>我要找什么"]
+  X --> K["K = X·W_K<br/>我能被什么找到"]
+  X --> V["V = X·W_V<br/>我能提供什么"]
+  Q --> S["① 打分<br/>Q·Kᵀ"]
+  K --> S
+  S --> D["② 缩放<br/>÷ √dₖ"]
+  D --> M["③ softmax<br/>变成权重"]
+  M --> W["④ 加权求和<br/>权重 × V"]
+  V --> W
+  W --> Y["每个词的新表示"]
+    </pre>
+    <figcaption>图 2：注意力的计算流程。W_Q、W_K、W_V 是训练学出来的，四步计算本身是固定的。</figcaption>
+  </figure>
+
+  <h3>Q、K、V 为什么这么叫</h3>
+  <p>名字来自信息检索（Information Retrieval）。每个词同时扮演三个角色。</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th></th><th>搜索引擎</th><th>Java <code>HashMap</code></th><th>注意力</th></tr></thead>
+    <tbody>
+      <tr><th>Query</th><td>搜索框里敲的话</td><td><code>get(key)</code> 的参数</td><td>我要找什么</td></tr>
+      <tr><th>Key</th><td>网页的标题和标签</td><td>存进去的 key</td><td>我能被什么找到</td></tr>
+      <tr><th>Value</th><td>网页正文</td><td>key 对应的 value</td><td>找到后我提供什么</td></tr>
+      <tr><th>匹配方式</th><td>按相关度排序</td><td>完全相等才命中，只返回一个</td><td>和所有 Key 比相似度，按权重混合所有 Value</td></tr>
+    </tbody>
+  </table></div>
+  <p>Key 和 Value 要分开，因为“凭什么被找到”和“找到后给什么”是两回事，就像书的目录标题和正文。分开后模型可以用一套特征匹配、另一套特征传递信息。</p>
+  <p>注意：真实的 Q、K、V 只是一串数字，没有人能读懂的含义。“它在找一个会累的名词”这类说法只是帮助理解的比喻。</p>
+
+  <h3>招式（按重要性排序）</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>#</th><th>招式</th><th>做什么</th><th>工程类比</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>词变向量</td><td>每个词先变成一个向量（Embedding）</td><td>查一张固定的 <code>Map&lt;词, float[]&gt;</code></td></tr>
+      <tr><td>2</td><td>一分为三</td><td>向量乘三个矩阵，得到 Q、K、V</td><td>同一个对象实现三个接口</td></tr>
+      <tr><td>3</td><td>打分</td><td>Q 和每个 K 做点积，越像分越高</td><td>计算相关度分数</td></tr>
+      <tr><td>4</td><td>缩放</td><td>分数除以 √dₖ，防止数值太大</td><td>归一化，避免溢出式的极端值</td></tr>
+      <tr><td>5</td><td>归一</td><td>softmax 把分数变成加起来为 1 的权重</td><td>把分数换算成百分比</td></tr>
+      <tr><td>6</td><td>加权求和</td><td>用权重把所有 V 加起来</td><td>按占比合并多个结果</td></tr>
+      <tr><td>7</td><td>多头（Multi-Head）</td><td>同时用多组 Q/K/V，各自关注不同的关系；原论文用 8 组</td><td>同一份数据建多个索引</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>“同时查所有词”的两层意思</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>层次</th><th>含义</th></tr></thead>
+    <tbody>
+      <tr><td><strong>查所有词</strong></td><td>每个词都和<strong>这次输入</strong>里的每个词比一遍，包括它自己，不管距离多远。结果是一张 n × n 的分数表。</td></tr>
+      <tr><td><strong>同时</strong></td><td>所有词的 Q 叠成矩阵，K 也叠成矩阵，一次 <code>Q × Kᵀ</code> 算出整张表。可以并行，GPU 擅长。</td></tr>
+    </tbody>
+  </table></div>
+  <p>例：“动物没有过马路，因为它太累了”中，“它”这一行的权重（数字为示意）：</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th></th><th>动物</th><th>没有</th><th>过</th><th>马路</th><th>它</th><th>累</th></tr></thead>
+    <tbody><tr><th>它</th><td><strong>0.55</strong></td><td>0.03</td><td>0.02</td><td>0.10</td><td>0.15</td><td>0.15</td></tr></tbody>
+  </table></div>
+
+  <h3>例子：手算一遍</h3>
+  <p>句子只有 3 个词：猫、坐、它。假设 Q、K、V 已算好，都是 2 维（dₖ = 2）。只算“它”这一行，“它”的 Query = (2, 0)。</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>词</th><th>Key</th><th>Value</th><th>① Q·K</th><th>② ÷ √2</th><th>③ softmax</th></tr></thead>
+    <tbody>
+      <tr><td>猫</td><td>(1, 0)</td><td>(1, 0)</td><td>2</td><td>1.41</td><td><strong>0.58</strong></td></tr>
+      <tr><td>坐</td><td>(0, 1)</td><td>(0, 1)</td><td>0</td><td>0</td><td>0.14</td></tr>
+      <tr><td>它</td><td>(0.5, 0.5)</td><td>(0.5, 0.5)</td><td>1</td><td>0.71</td><td>0.28</td></tr>
+    </tbody>
+  </table></div>
+  <p>④ 加权求和：0.58 × (1, 0) + 0.14 × (0, 1) + 0.28 × (0.5, 0.5) ≈ <strong>(0.72, 0.28)</strong>。“它”的新向量明显偏向“猫”的 (1, 0)，模型由此“知道”它指的是猫。</p>
+</section>
+
+<section class="jin">
+  <h2>懂劲：知道为什么 <span class="tag">为何如此</span></h2>
+  <p>这次以招熟为主，下面是讨论中顺带讲到的几点。</p>
+
+  <h3>心法：“查什么”是学出来的</h3>
+  <p>没人规定“它”的 Query 要和“动物”的 Key 对上。W_Q、W_K、W_V 一开始是随机的，模型预测下一个词出错时，反向传播（Backpropagation）会调整它们。注意力只规定了“怎么查”，“查什么”是训练出来的。</p>
+
+  <h3>心法：上下文和参数，两种“记忆”</h3>
+  <figure>
+    <pre class="mermaid">
+flowchart LR
+  subgraph W["参数：脑子里记住的"]
+    W1["词表与词向量<br/>几万到二十几万个词"]
+    W2["W_Q / W_K / W_V、FFN 权重<br/>知识大多存在这里"]
+  end
+  subgraph C["上下文窗口：手边这几页纸"]
+    C1["你的输入"] --> C2["模型已经写出的部分"]
+  end
+  W -->|决定怎么查| ATT["注意力"]
+  C -->|只在这里面查| ATT
+    </pre>
+    <figcaption>图 3：开卷考试的类比。注意力只翻手边的纸（上下文），世界知识在脑子里（参数）。</figcaption>
+  </figure>
+  <p>生成时，每个词只能看<strong>已经出现</strong>的词，看不到后面还没写的，这叫因果掩码（Causal Mask）。</p>
+
+  <h3>为什么要除以 √dₖ</h3>
+  <p>真实模型里每个 Key 有 64 维甚至更多（原论文 dₖ = 64），点积是几十项相加，数值会很大，softmax 就会“赢家通吃”。</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>分数</th><th>softmax 后的权重</th><th>结果</th></tr></thead>
+    <tbody>
+      <tr><td>1.41, 0, 0.71（缩放后）</td><td>0.58, 0.14, 0.28</td><td>有主有次，其他词也能分到信息</td></tr>
+      <tr><td>16, 0, 8（放大 8 倍）</td><td>0.9997, 0.0000, 0.0003</td><td>几乎全押一个词，训练时梯度传不过去</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>相邻概念：和 RNN 比</h3>
+  <figure>
+    <pre class="mermaid">
+flowchart LR
+  subgraph R["RNN：逐词读"]
+    r1["词1"] --> r2["词2"] --> r3["词3"] --> r4["词4"]
+  end
+  subgraph A["注意力：直接看所有词"]
+    a1["词1"] --> a4["词4"]
+    a2["词2"] --> a4
+    a3["词3"] --> a4
+  end
+    </pre>
+    <figcaption>图 4：RNN 里词 4 要等信息一路传过来；注意力里词 4 直接从每个词取信息（每个词都这样），距离不再是问题。</figcaption>
+  </figure>
+  <div class="table-wrap"><table>
+    <thead><tr><th></th><th>RNN</th><th>注意力</th></tr></thead>
+    <tbody>
+      <tr><td>怎么读</td><td>一个词一个词，第 i 步等第 i−1 步</td><td>所有词同时算</td></tr>
+      <tr><td>远距离信息</td><td>越传越淡</td><td>第 1 个词和第 100 个词一样近</td></tr>
+      <tr><td>并行</td><td>难</td><td>一次矩阵乘法，GPU 友好</td></tr>
+      <tr><td>工程类比</td><td>有依赖的 <code>for</code> 循环</td><td><code>parallelStream()</code></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>权衡与缺陷</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>代价</th><th>原因</th><th>后果</th></tr></thead>
+    <tbody>
+      <tr><td>计算量 O(n²)</td><td>每个词都要和每个词比，表的大小是 n × n</td><td>文字长度翻倍，计算量翻四倍；上下文窗口因此有上限</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="shen">
+  <h2>神明：点到为止 <span class="tag">本质</span></h2>
+  <blockquote>注意力把“信息该从哪里来”这件事本身，变成了可以学习的东西。</blockquote>
+</section>
+
+<section>
+  <h2>我的看法</h2>
+  <div class="opinion">（待 Yue 补充）</div>
+</section>
+
+<section>
+  <h2>待解决</h2>
+  <ul class="todo">
+    <li>多头注意力：8 组头各自学到了什么关系，最后怎么合并</li>
+    <li>位置编码（Positional Encoding）：注意力本身不看顺序，词序信息从哪来</li>
+    <li>O(n²) 的应对：长上下文模型怎么降低计算量</li>
+    <li>注意力之后的前馈网络（FFN）做了什么，知识具体怎么存在参数里</li>
+    <li>用十几行 PyTorch 代码复现上面的手算</li>
+  </ul>
+</section>
+
+<section>
+  <h2>参考</h2>
+  <ul><li><a href="https://arxiv.org/abs/1706.03762">Vaswani et al., Attention Is All You Need</a>，2017-06-12</li></ul>
+</section>
+
+</main>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
+<script>
+  const dark = document.documentElement.dataset.theme === "dark" ||
+    (document.documentElement.dataset.theme !== "light" && matchMedia("(prefers-color-scheme: dark)").matches);
+  mermaid.initialize({ startOnLoad: true, theme: dark ? "dark" : "neutral", securityLevel: "strict" });
+</script>
+</body>
+</html>
