@@ -4,6 +4,7 @@
 
 - 正式书稿在 `src/`，目录在 `src/SUMMARY.md`。新增或移动章节必须同步更新 `SUMMARY.md`，并在 `src/appendix/changelog.md` 记录。
 - 未成形的内容放 `drafts/inbox/`，用 `drafts/_template.md`，文件名 `YYYY-MM-DD-主题.md`。不要把草稿直接写进 `src/`。
+- 以后要深入研究的话题和暂时没空展开的零碎想法，记进 `meta/backlog.md`（待研究清单，类似待办清单）：原话照录，不展开讨论，新条目追加在“待研究”末尾。它不属于草稿池，不参加草稿盘点。我说“记一下”“以后再看”之类的话时，默认记到这里。
 - 外部动态雷达放 `radar/YYYY/YYYY-MM-DD.md`，用 `radar/_template.md`，每周三、周六各一期。
 - 草稿清理与归档规则见 `meta/workflow.md`，写作规范见 `meta/style-guide.md`，动笔前先读。
 - 讲解和写作前先读 `meta/learner.md`：我是熟悉 Java、C#、Python 的传统工程师，做过少量后训练。按“招熟、懂劲、神明”三阶段回答，先招熟再懂劲，神明点到为止；每阶段分心法和招式，招式 5 到 9 项；二八原则，简洁、举例，关键术语附英文。
