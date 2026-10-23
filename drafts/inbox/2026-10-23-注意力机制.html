@@ -287,6 +287,22 @@ flowchart LR
 </section>
 
 <section>
+  <h2>过招中的好问题</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>#</th><th>问题</th><th>简答</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>谁规定“它”的 Query 要和“动物”的 Key 对上？</td><td>没人规定，W_Q、W_K、W_V 靠训练学出来。详见“懂劲：‘查什么’是学出来的”。</td></tr>
+      <tr><td>2</td><td>Key 和 Value 为什么要分开？</td><td>“凭什么被找到”和“找到后给什么”是两回事，像书的目录标题和正文。</td></tr>
+      <tr><td>3</td><td>“同时查所有词”，查的是这次输入的词，还是世界上所有的词？</td><td>只查这次输入。世界知识存在参数里。详见“上下文和参数，两种‘记忆’”。</td></tr>
+      <tr><td>4</td><td>为什么要除以 √dₖ？</td><td>维度大时点积很大，softmax 会赢家通吃，梯度传不过去。</td></tr>
+      <tr><td>5</td><td>每个词都看所有词，长文章怎么办？</td><td>计算量是 O(n²)，这是上下文窗口有上限的原因。</td></tr>
+      <tr><td>6</td><td>注意力和平时说的向量相似度是一回事吗？</td><td>是一类，但注意力比的是投影后的向量、不对称，并且会混合 Value。详见“和向量检索比”。</td></tr>
+      <tr><td>7</td><td>这种“改写”只做一次吗？</td><td>每一层都做一遍，大模型有几十层。</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
   <h2>参考</h2>
   <ul><li><a href="https://arxiv.org/abs/1706.03762">Vaswani et al., Attention Is All You Need</a>，2017-06-12</li></ul>
 </section>
