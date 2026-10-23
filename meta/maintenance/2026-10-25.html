@@ -1,0 +1,246 @@
+<title>Nook 维护 2026-10-25</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* 版式：一列简报，宽 880px；先给结论和“必懂”，再由宏观到微观展开。三阶段用固定的三种颜色贯穿全页。 */
+:root{
+  --bg:#f6f7f5; --surface:#ffffff; --ink:#1b2321; --muted:#5d6966; --line:#dde2df; --wash:#eef1ef;
+  --accent:#1f5f58;
+  --zs:#2f7d5b; --zs-bg:#e3f1ea;      /* 招熟 */
+  --dj:#3d55a3; --dj-bg:#e6eaf7;      /* 懂劲 */
+  --sm:#a1701c; --sm-bg:#f6ecd8;      /* 神明 */
+  --warn:#b4462f; --ok:#2f7d5b;
+  --f-display:"Noto Serif SC","Songti SC","SimSun",serif;
+  --f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121715; --surface:#1a201e; --ink:#e3e9e6; --muted:#9aa6a2; --line:#2c3532; --wash:#202825;
+  --accent:#6fc1b5; --zs:#6cc59a; --zs-bg:#1c3328; --dj:#9aaef0; --dj-bg:#232b45; --sm:#e0b45e; --sm-bg:#3a2f1a;
+  --warn:#ef8a73; --ok:#6cc59a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121715; --surface:#1a201e; --ink:#e3e9e6; --muted:#9aa6a2; --line:#2c3532; --wash:#202825;
+  --accent:#6fc1b5; --zs:#6cc59a; --zs-bg:#1c3328; --dj:#9aaef0; --dj-bg:#232b45; --sm:#e0b45e; --sm-bg:#3a2f1a;
+  --warn:#ef8a73; --ok:#6cc59a; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:880px;margin:0 auto;padding-block:40px 64px;display:grid;gap:44px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.35}
+h1{font-size:34px;font-weight:900;letter-spacing:.01em}
+h2{font-size:23px;font-weight:900;display:flex;gap:12px;align-items:baseline}
+h2 .no{font-family:var(--f-data);font-size:13px;color:var(--muted);font-weight:600;letter-spacing:.08em}
+h3{font-size:18px;font-weight:600}
+p{margin:0}
+a{color:var(--accent);text-underline-offset:3px}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+section{display:grid;gap:18px;min-width:0}
+.eyebrow{font-family:var(--f-data);font-size:12px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.num{font-family:var(--f-data);font-variant-numeric:tabular-nums}
+
+/* 刊头 */
+header{display:grid;gap:14px;border-bottom:2px solid var(--ink);padding-bottom:22px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:13px;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.stats div{background:var(--surface);padding:12px 14px;display:grid;gap:2px}
+.stats b{font-family:var(--f-data);font-size:24px;font-weight:600;font-variant-numeric:tabular-nums}
+.stats span{font-size:12px;color:var(--muted)}
+.note{font-size:13px;color:var(--muted);background:var(--wash);padding:8px 12px;border-radius:4px}
+
+/* 结论 */
+.thesis{font-family:var(--f-display);font-size:21px;font-weight:600;line-height:1.6;padding-left:18px;border-left:4px solid var(--accent)}
+
+/* 阶段标签 */
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;padding:1px 9px;border-radius:999px;white-space:nowrap;letter-spacing:.04em;vertical-align:2px}
+.zs{color:var(--zs);background:var(--zs-bg)} .dj{color:var(--dj);background:var(--dj-bg)} .sm{color:var(--sm);background:var(--sm-bg)}
+.pay{font-size:12px;color:var(--sm);white-space:nowrap}
+
+/* 阶段图例与分布 */
+.legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.legend div{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px;display:grid;gap:4px;font-size:13px}
+.dist{display:grid;gap:10px}
+.bar{display:flex;height:30px;border-radius:5px;overflow:hidden;font-size:12px;font-weight:700}
+.bar div{display:flex;align-items:center;justify-content:center;color:var(--surface);min-width:0}
+.bar .zsb{background:var(--zs)} .bar .djb{background:var(--dj)} .bar .smb{background:var(--sm)}
+.matrix{width:100%;border-collapse:collapse;font-size:13px}
+.matrix th,.matrix td{padding:8px 10px;text-align:center;border-bottom:1px solid var(--line)}
+.matrix th:first-child,.matrix td:first-child{text-align:left}
+.cell{display:inline-block;min-width:34px;padding:2px 0;border-radius:4px;font-family:var(--f-data);font-weight:600}
+.c0{color:var(--muted)}
+
+/* 必懂卡片 */
+.musts{display:grid;gap:16px}
+.must{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:20px 22px;display:grid;gap:12px;min-width:0}
+.must-head{display:flex;gap:14px;align-items:flex-start}
+.must-no{font-family:var(--f-data);font-size:28px;font-weight:600;color:var(--muted);line-height:1}
+.must-head h3{flex:1;min-width:0}
+.kv{display:grid;grid-template-columns:52px minmax(0,1fr);gap:8px 14px;font-size:14px}
+.kv dt{font-weight:700;color:var(--muted);font-size:13px;padding-top:1px}
+.kv dd{margin:0;min-width:0}
+
+/* 表格 */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th{font-weight:700;text-align:left;color:var(--muted);font-size:12px;letter-spacing:.04em;background:var(--wash)}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.nowrap{white-space:nowrap}
+
+/* 依据列表 */
+.facts{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.facts li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:start}
+.view{background:var(--wash);border-radius:6px;padding:12px 16px;font-size:14px}
+.view b{color:var(--accent)}
+.src{font-size:12.5px;color:var(--muted)}
+
+/* 图 */
+figure{margin:0;display:grid;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px 20px;min-width:0}
+figcaption{font-size:12.5px;color:var(--muted)}
+.fig-title{font-weight:700;font-size:14px}
+svg text{fill:var(--ink);font-family:var(--f-body)}
+svg .t-muted{fill:var(--muted)}
+.hbar{display:grid;gap:12px}
+.hrow{display:grid;grid-template-columns:150px minmax(0,1fr);gap:12px;align-items:center;font-size:13px}
+.track{display:flex;height:24px;border-radius:4px;overflow:hidden;background:var(--wash)}
+.track div{display:flex;align-items:center;padding:0 8px;font-family:var(--f-data);font-size:12px;font-weight:600;white-space:nowrap;color:var(--surface)}
+.seg-ok{background:var(--ok)} .seg-miss{background:var(--warn)}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.subhead{display:grid;gap:6px}
+
+/* 招式 */
+.moves{counter-reset:m;display:grid;gap:10px;list-style:none;margin:0;padding:0}
+.moves li{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:12px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px}
+.moves li::before{counter-increment:m;content:counter(m);font-family:var(--f-data);font-weight:600;color:var(--muted)}
+.tag{font-size:12px;color:var(--muted);white-space:nowrap}
+
+.shenming{background:var(--sm-bg);border-radius:8px;padding:20px 22px;font-family:var(--f-display);font-size:17px;line-height:1.8;color:var(--ink)}
+.shenming .chip{font-family:var(--f-body)}
+details{background:var(--surface);border:1px solid var(--line);border-radius:6px}
+details summary{cursor:pointer;padding:12px 16px;font-weight:700;font-size:14px}
+details summary:focus-visible{outline:2px solid var(--accent)}
+details > div{padding:0 0 4px}
+details .tbl{border:0;border-top:1px solid var(--line);border-radius:0}
+.ratio{display:inline-block;height:8px;background:var(--accent);border-radius:4px;vertical-align:middle}
+footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
+
+@media (max-width:640px){
+  h1{font-size:27px} .thesis{font-size:18px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .legend,.two{grid-template-columns:minmax(0,1fr)}
+  .hrow{grid-template-columns:minmax(0,1fr)}
+  .moves li{grid-template-columns:24px minmax(0,1fr)} .moves li .tag{grid-column:2}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.health{display:flex;height:34px;border-radius:5px;overflow:hidden;font-size:12.5px;font-weight:700}
+.health div{display:flex;align-items:center;justify-content:center;color:var(--surface)}
+.g{background:var(--ok)} .y{background:var(--sm)} .rd{background:var(--warn)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;vertical-align:0}
+.decide{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--sm);border-radius:6px;padding:16px 18px;display:grid;gap:8px}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Nook · 每周维护 · 首次</div>
+  <h1>清单整体可用，5 个源需要观察，1 件事等你决定</h1>
+  <div class="meta">
+    <span>2026-10-25（周日）</span>
+    <span>依据：首期雷达（10-16 至 10-23）</span>
+    <span>检查于 2026-10-23</span>
+  </div>
+  <div class="stats">
+    <div><b>20</b><span>检查的信息源</span></div>
+    <div><b>2</b><span>清单变更</span></div>
+    <div><b>0</b><span>仓库内清理</span></div>
+    <div><b>1</b><span>待你确认删除</span></div>
+  </div>
+  <p class="note">首次样稿。10-25 的定时维护会在这一份上更新。</p>
+</header>
+
+<section aria-labelledby="s-decide">
+  <h2 id="s-decide"><span class="no">01</span>需要你决定的事</h2>
+  <div class="decide">
+    <p><b>首次调研文档《Nook 外部信息源精选清单》是否删除？</b></p>
+    <p>它已经被仓库里的 src/appendix/sources.md 取代。<b>建议</b>：PR #2 合并后删除，避免两份清单并存。不处理的话，以后打开旧文档会看到过时的清单。</p>
+    <p class="small muted">artifact 删除后无法恢复，所以等你在线程里确认后再删。</p>
+  </div>
+</section>
+
+<section aria-labelledby="s-health">
+  <h2 id="s-health"><span class="no">02</span>信息源健康度</h2>
+  <figure>
+    <div class="fig-title">20 个信息源的状态</div>
+    <div class="health" role="img" aria-label="正常 15 个，关注 5 个，失效 0 个">
+      <div class="g" style="width:75%">正常 15</div>
+      <div class="y" style="width:25%">关注 5</div>
+    </div>
+    <figcaption><span class="dot g"></span> 正常　<span class="dot y"></span> 关注　<span class="dot rd"></span> 失效（本次 0 个）。下表只列需要关注的源。</figcaption>
+  </figure>
+  <div class="tbl"><table>
+    <thead><tr><th>信息源</th><th>层级</th><th>首期被引用</th><th>问题</th><th>动作</th></tr></thead>
+    <tbody>
+      <tr><td><span class="dot y"></span> 量子位</td><td>B</td><td class="num">1</td><td>feed 只保留约两天的条目（实测只有 10-21 至 10-22），两次扫描间隔三到四天，会漏掉中间的内容</td><td>下周试抓网站列表页补齐</td></tr>
+      <tr><td><span class="dot y"></span> npj Digital Medicine</td><td>B</td><td class="num">0</td><td>feed 最新条目停在 2026-08-31，可能是 feed 滞后</td><td>下周再测，仍滞后就改抓期刊网页</td></tr>
+      <tr><td><span class="dot y"></span> Fintech Business Weekly</td><td>B</td><td class="num">0</td><td>feed 最近更新是 10-14，最近两期没有 AI 内容</td><td>观察两周，仍无 AI 内容就降到 C 层</td></tr>
+      <tr><td><span class="dot y"></span> Ground Truths</td><td>B</td><td class="num">0</td><td>近一个月的文章集中在衰老和免疫，没有 AI 内容</td><td>观察两周，仍无 AI 内容就降到 C 层</td></tr>
+      <tr><td><span class="dot y"></span> OpenAI News</td><td>A</td><td class="num">5</td><td>一周 20 条，过半是客户案例，信噪比偏低</td><td>已写明过滤规则（见下节）</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small muted">另有两个抓取问题不影响使用：Finextra 和 HF Daily Papers 的详情页被挡，但 RSS 和 API 正常，摘要够用。</p>
+</section>
+
+<section aria-labelledby="s-change">
+  <h2 id="s-change"><span class="no">03</span>清单变更</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>变更</th><th>信息源</th><th>理由</th><th>依据</th></tr></thead>
+    <tbody>
+      <tr><td><span class="chip zs">扩充</span></td><td>Anthropic：增加 Research 栏目</td><td>形式化验证一文（10-22）只发在 Research 栏，News 和 Engineering 都没有</td><td>首期雷达附录 C</td></tr>
+      <tr><td><span class="chip dj">修订</span></td><td>OpenAI News：写明过滤规则</td><td>一周 20 条，过半是客户案例；只留金融、医疗案例和产品发布</td><td>首期雷达附录 C</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small muted">首期之后才满一期，没有源达到“连续两周无引用”的降级标准，所以本次没有降级或移除。变更已写进 src/appendix/sources.md 的变更记录。</p>
+</section>
+
+<section aria-labelledby="s-pay">
+  <h2 id="s-pay"><span class="no">04</span>付费内容</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>信息源</th><th>本周被挡的内容</th><th>建议</th></tr></thead>
+    <tbody>
+      <tr><td><span class="pay">💰</span> STAT+</td><td>AI 专题 5 篇中 3 篇只能看导语，包括州级医疗 AI 监管工作组一文</td><td><b>值得考虑订阅</b>：医疗监管是重点方向</td></tr>
+      <tr><td><span class="pay">💰</span> Net Interest</td><td>正文免费，作者的 Agent 指令和产出只发给付费订阅者</td><td>对金融 Agent 设计有参考价值，可以考虑</td></tr>
+      <tr><td><span class="pay">💰</span> Lenny's Newsletter</td><td>Community Wisdom（PRDs for agents）正文、Anthropic 研究员访谈的要点总结</td><td>继续只读免费部分；播客免费</td></tr>
+      <tr><td><span class="pay">💰</span> SemiAnalysis</td><td>华为与 DeepSeek 一文免费，其余深度报告多为付费</td><td>继续只读免费部分</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section aria-labelledby="s-clean">
+  <h2 id="s-clean"><span class="no">05</span>清理</h2>
+  <div class="two">
+    <figure>
+      <div class="fig-title">已清理（仓库内，可恢复）</div>
+      <p>无。drafts/inbox/ 目前没有草稿，仓库里没有过期的临时文件。</p>
+    </figure>
+    <figure>
+      <div class="fig-title">待你确认（删除后无法恢复）</div>
+      <p><a href="https://claude.ai/artifact/FQSposhrdKiwTNKTtxUrvT">Nook 外部信息源精选清单</a>（artifact）：内容已迁入仓库。建议 PR #2 合并后删除。</p>
+    </figure>
+  </div>
+  <p class="small muted">清理范围只限本项目。账号下其他项目的 artifact 不在范围内；本项目的雷达各期 artifact 长期保留。</p>
+</section>
+
+<section aria-labelledby="s-next">
+  <h2 id="s-next"><span class="no">06</span>下周关注</h2>
+  <ul class="facts">
+    <li><span class="dot y"></span><span>量子位：抓网站列表页能否补齐漏掉的条目。</span></li>
+    <li><span class="dot y"></span><span>npj Digital Medicine：feed 是否恢复更新。</span></li>
+    <li><span class="dot y"></span><span>Fintech Business Weekly、Ground Truths：是否连续两周没有 AI 内容。</span></li>
+  </ul>
+</section>
+
+<footer>Nook · 每周维护 · 每周日一份 · 规则见仓库 meta/workflow.md</footer>
+</div>

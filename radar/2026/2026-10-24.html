@@ -1,0 +1,518 @@
+<title>Nook 雷达 2026-10-24</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* 版式：一列简报，宽 880px；先给结论和“必懂”，再由宏观到微观展开。三阶段用固定的三种颜色贯穿全页。 */
+:root{
+  --bg:#f6f7f5; --surface:#ffffff; --ink:#1b2321; --muted:#5d6966; --line:#dde2df; --wash:#eef1ef;
+  --accent:#1f5f58;
+  --zs:#2f7d5b; --zs-bg:#e3f1ea;      /* 招熟 */
+  --dj:#3d55a3; --dj-bg:#e6eaf7;      /* 懂劲 */
+  --sm:#a1701c; --sm-bg:#f6ecd8;      /* 神明 */
+  --warn:#b4462f; --ok:#2f7d5b;
+  --f-display:"Noto Serif SC","Songti SC","SimSun",serif;
+  --f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121715; --surface:#1a201e; --ink:#e3e9e6; --muted:#9aa6a2; --line:#2c3532; --wash:#202825;
+  --accent:#6fc1b5; --zs:#6cc59a; --zs-bg:#1c3328; --dj:#9aaef0; --dj-bg:#232b45; --sm:#e0b45e; --sm-bg:#3a2f1a;
+  --warn:#ef8a73; --ok:#6cc59a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121715; --surface:#1a201e; --ink:#e3e9e6; --muted:#9aa6a2; --line:#2c3532; --wash:#202825;
+  --accent:#6fc1b5; --zs:#6cc59a; --zs-bg:#1c3328; --dj:#9aaef0; --dj-bg:#232b45; --sm:#e0b45e; --sm-bg:#3a2f1a;
+  --warn:#ef8a73; --ok:#6cc59a; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:880px;margin:0 auto;padding-block:40px 64px;display:grid;gap:44px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.35}
+h1{font-size:34px;font-weight:900;letter-spacing:.01em}
+h2{font-size:23px;font-weight:900;display:flex;gap:12px;align-items:baseline}
+h2 .no{font-family:var(--f-data);font-size:13px;color:var(--muted);font-weight:600;letter-spacing:.08em}
+h3{font-size:18px;font-weight:600}
+p{margin:0}
+a{color:var(--accent);text-underline-offset:3px}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+section{display:grid;gap:18px;min-width:0}
+.eyebrow{font-family:var(--f-data);font-size:12px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.num{font-family:var(--f-data);font-variant-numeric:tabular-nums}
+
+/* 刊头 */
+header{display:grid;gap:14px;border-bottom:2px solid var(--ink);padding-bottom:22px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:13px;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.stats div{background:var(--surface);padding:12px 14px;display:grid;gap:2px}
+.stats b{font-family:var(--f-data);font-size:24px;font-weight:600;font-variant-numeric:tabular-nums}
+.stats span{font-size:12px;color:var(--muted)}
+.note{font-size:13px;color:var(--muted);background:var(--wash);padding:8px 12px;border-radius:4px}
+
+/* 结论 */
+.thesis{font-family:var(--f-display);font-size:21px;font-weight:600;line-height:1.6;padding-left:18px;border-left:4px solid var(--accent)}
+
+/* 阶段标签 */
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;padding:1px 9px;border-radius:999px;white-space:nowrap;letter-spacing:.04em;vertical-align:2px}
+.zs{color:var(--zs);background:var(--zs-bg)} .dj{color:var(--dj);background:var(--dj-bg)} .sm{color:var(--sm);background:var(--sm-bg)}
+.pay{font-size:12px;color:var(--sm);white-space:nowrap}
+
+/* 阶段图例与分布 */
+.legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.legend div{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px;display:grid;gap:4px;font-size:13px}
+.dist{display:grid;gap:10px}
+.bar{display:flex;height:30px;border-radius:5px;overflow:hidden;font-size:12px;font-weight:700}
+.bar div{display:flex;align-items:center;justify-content:center;color:var(--surface);min-width:0}
+.bar .zsb{background:var(--zs)} .bar .djb{background:var(--dj)} .bar .smb{background:var(--sm)}
+.matrix{width:100%;border-collapse:collapse;font-size:13px}
+.matrix th,.matrix td{padding:8px 10px;text-align:center;border-bottom:1px solid var(--line)}
+.matrix th:first-child,.matrix td:first-child{text-align:left}
+.cell{display:inline-block;min-width:34px;padding:2px 0;border-radius:4px;font-family:var(--f-data);font-weight:600}
+.c0{color:var(--muted)}
+
+/* 必懂卡片 */
+.musts{display:grid;gap:16px}
+.must{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:20px 22px;display:grid;gap:12px;min-width:0}
+.must-head{display:flex;gap:14px;align-items:flex-start}
+.must-no{font-family:var(--f-data);font-size:28px;font-weight:600;color:var(--muted);line-height:1}
+.must-head h3{flex:1;min-width:0}
+.kv{display:grid;grid-template-columns:52px minmax(0,1fr);gap:8px 14px;font-size:14px}
+.kv dt{font-weight:700;color:var(--muted);font-size:13px;padding-top:1px}
+.kv dd{margin:0;min-width:0}
+
+/* 表格 */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th{font-weight:700;text-align:left;color:var(--muted);font-size:12px;letter-spacing:.04em;background:var(--wash)}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.nowrap{white-space:nowrap}
+
+/* 依据列表 */
+.facts{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.facts li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:start}
+.view{background:var(--wash);border-radius:6px;padding:12px 16px;font-size:14px}
+.view b{color:var(--accent)}
+.src{font-size:12.5px;color:var(--muted)}
+
+/* 图 */
+figure{margin:0;display:grid;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px 20px;min-width:0}
+figcaption{font-size:12.5px;color:var(--muted)}
+.fig-title{font-weight:700;font-size:14px}
+svg text{fill:var(--ink);font-family:var(--f-body)}
+svg .t-muted{fill:var(--muted)}
+.hbar{display:grid;gap:12px}
+.hrow{display:grid;grid-template-columns:150px minmax(0,1fr);gap:12px;align-items:center;font-size:13px}
+.track{display:flex;height:24px;border-radius:4px;overflow:hidden;background:var(--wash)}
+.track div{display:flex;align-items:center;padding:0 8px;font-family:var(--f-data);font-size:12px;font-weight:600;white-space:nowrap;color:var(--surface)}
+.seg-ok{background:var(--ok)} .seg-miss{background:var(--warn)}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.subhead{display:grid;gap:6px}
+
+/* 招式 */
+.moves{counter-reset:m;display:grid;gap:10px;list-style:none;margin:0;padding:0}
+.moves li{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:12px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px}
+.moves li::before{counter-increment:m;content:counter(m);font-family:var(--f-data);font-weight:600;color:var(--muted)}
+.tag{font-size:12px;color:var(--muted);white-space:nowrap}
+
+.shenming{background:var(--sm-bg);border-radius:8px;padding:20px 22px;font-family:var(--f-display);font-size:17px;line-height:1.8;color:var(--ink)}
+.shenming .chip{font-family:var(--f-body)}
+details{background:var(--surface);border:1px solid var(--line);border-radius:6px}
+details summary{cursor:pointer;padding:12px 16px;font-weight:700;font-size:14px}
+details summary:focus-visible{outline:2px solid var(--accent)}
+details > div{padding:0 0 4px}
+details .tbl{border:0;border-top:1px solid var(--line);border-radius:0}
+.ratio{display:inline-block;height:8px;background:var(--accent);border-radius:4px;vertical-align:middle}
+footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
+
+@media (max-width:640px){
+  h1{font-size:27px} .thesis{font-size:18px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .legend,.two{grid-template-columns:minmax(0,1fr)}
+  .hrow{grid-template-columns:minmax(0,1fr)}
+  .moves li{grid-template-columns:24px minmax(0,1fr)} .moves li .tag{grid-column:2}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Nook · AI 雷达 · 首期</div>
+  <h1>Agent 从“能不能做”走向“出了错谁来管”</h1>
+  <div class="meta">
+    <span>2026-10-24（周六）</span>
+    <span>时间窗 2026-10-16 至 10-23</span>
+    <span>读者：Yue（工程背景，做金融、医疗 AI 产品）</span>
+  </div>
+  <div class="stats">
+    <div><b>20</b><span>扫描信息源</span></div>
+    <div><b>~110</b><span>读过的条目</span></div>
+    <div><b>15</b><span>入选条目</span></div>
+    <div><b>3 分钟</b><span>只读“本期必懂”</span></div>
+  </div>
+  <p class="note">首期样稿，覆盖完整一周。10-24 的定时扫描会在这一期上补充 10-23 之后的新条目。</p>
+</header>
+
+<section aria-labelledby="s-thesis">
+  <div class="eyebrow" id="s-thesis">一句话结论</div>
+  <p class="thesis">Agent 的标准和运行时在向中立机构收拢，金融监管给出了 12 条采用 AI 的良好实践，医疗领域的随机试验则表明，人工审核拦不住所有错误。</p>
+</section>
+
+<section aria-labelledby="s-stage">
+  <h2 id="s-stage"><span class="no">00</span>怎么读这一期</h2>
+  <div class="legend">
+    <div><span><span class="chip zs">招熟</span></span><span>能马上用的工具和做法，回答“怎么做”。</span></div>
+    <div><span><span class="chip dj">懂劲</span></span><span>要想明白的原理和权衡，回答“为什么”。</span></div>
+    <div><span><span class="chip sm">神明</span></span><span>长期方向和根本问题，点到为止。</span></div>
+  </div>
+  <figure>
+    <div class="fig-title">本期 15 条入选内容的阶段分布</div>
+    <div class="dist">
+      <div class="bar" role="img" aria-label="招熟 8 条，懂劲 6 条，神明 1 条">
+        <div class="zsb" style="width:53.3%">招熟 8</div>
+        <div class="djb" style="width:40%">懂劲 6</div>
+        <div class="smb" style="width:6.7%">1</div>
+      </div>
+      <div class="tbl" style="border:0">
+        <table class="matrix">
+          <thead><tr><th>方向</th><th>招熟</th><th>懂劲</th><th>神明</th><th>合计</th></tr></thead>
+          <tbody>
+            <tr><td>通用</td><td><span class="cell zs">2</span></td><td><span class="cell dj">2</span></td><td><span class="cell sm">1</span></td><td class="num">5</td></tr>
+            <tr><td>金融</td><td><span class="cell zs">4</span></td><td><span class="cell dj">2</span></td><td><span class="cell c0">0</span></td><td class="num">6</td></tr>
+            <tr><td>医疗</td><td><span class="cell zs">1</span></td><td><span class="cell dj">2</span></td><td><span class="cell c0">0</span></td><td class="num">3</td></tr>
+            <tr><td>AI 产品</td><td><span class="cell zs">1</span></td><td><span class="cell c0">0</span></td><td><span class="cell c0">0</span></td><td class="num">1</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <figcaption>金融本周以落地动作为主，医疗以研究证据为主。</figcaption>
+  </figure>
+</section>
+
+<section aria-labelledby="s-must">
+  <h2 id="s-must"><span class="no">01</span>本期必懂（20%）</h2>
+  <p class="muted">只读这一节，也能抓住本期八成的价值。</p>
+  <div class="musts">
+
+    <article class="must">
+      <div class="must-head"><span class="must-no">1</span><h3>Agent 的能力要建在开放标准上，模型可以换，能力不能丢 <span class="chip zs">招熟</span></h3></div>
+      <dl class="kv">
+        <dt>心法</dt><dd>Agent 正在分成三层公共基础设施：技能包（Agent Skills）管“会做什么”，模型上下文协议（Model Context Protocol，MCP）管“能连什么”，沙箱运行时（Sandbox Runtime）管“能碰什么”。这和 Java 里面向接口编程是一个道理：标准是接口，模型是实现，实现可以替换。</dd>
+        <dt>招式</dt><dd>把金融或医疗产品里一个固定流程（比如一类单据的审核）写成一个 SKILL.md；试一下 NVIDIA 的 OpenShell，看能否作为 Agent 的沙箱。</dd>
+        <dt>依据</dt><dd>Agent Skills 捐给 Linux 基金会下的 AAIF，已有 70 多个平台接入，累计发布 100 万个 skill（<a href="https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation">Anthropic</a>，10-22）；<a href="https://github.com/NVIDIA/OpenShell">OpenShell</a> 开源，约 1 万星（10-22）。</dd>
+      </dl>
+    </article>
+
+    <article class="must">
+      <div class="must-head"><span class="must-no">2</span><h3>人工审核不是兜底，它本身也要被测试 <span class="chip dj">懂劲</span></h3></div>
+      <dl class="kv">
+        <dt>心法</dt><dd>代码评审（Code Review）代替不了测试，同理，“医生看过了”也不等于没错。审核者会漏，漏多少要靠记录来度量。</dd>
+        <dt>招式</dt><dd>产品里保存“AI 生成了什么、人改了什么、哪些内容没有依据”三份记录；按 Agent 的自主程度分级配置审批，自主程度越高，复核越严。</dd>
+        <dt>依据</dt><dd>儿科出院文书随机对照试验（RCT）中，医生漏掉了 22 处无依据添加里的 4 处（<a href="https://www.medrxiv.org/content/10.64898/2026.10.20.26365977v1">medRxiv</a>，10-22，预印本，见第四节的图）；FSB 第 10 条要求人工监督按自主程度配置（<a href="https://www.fsb.org/2026/10/sound-practices-for-responsible-adoption-of-artificial-intelligence-ai-final-report/">FSB</a>，10-15）。</dd>
+      </dl>
+    </article>
+
+    <article class="must">
+      <div class="must-head"><span class="must-no">3</span><h3>金融 Agent 先做流程和审阅，别指望它跑赢市场 <span class="chip zs">招熟</span></h3></div>
+      <dl class="kv">
+        <dt>心法</dt><dd>LLM 擅长对照标准做判断，不擅长预测。有明确规则和标准答案的环节，就是 Agent 最先落地的地方。</dd>
+        <dt>招式</dt><dd>金融产品选题从调查、对账、审阅、客服切入；给 Agent 的产出定一套评分标准（Rubric），用它做自动评审。</dd>
+        <dt>依据</dt><dd>Starling 的金融犯罪调查 Agent 17 秒完成一次调查（<a href="https://www.finextra.com/newsarticle/48623/starling-build-agentic-fincrime-investigator-that-takes-17-seconds">Finextra</a>，10-21）；Terminal X 的评审 Agent 按 54 项标准审阅，与资深审阅者一致率 88.6%（<a href="https://openai.com/index/terminal-x">OpenAI</a>，10-20，厂商自报）；Quant-Arena 中没有一个 LLM 跑赢 A 股等权组合（arXiv 2610.30113，10-21）。</dd>
+      </dl>
+    </article>
+
+  </div>
+</section>
+
+<section aria-labelledby="s-judge">
+  <h2 id="s-judge"><span class="no">02</span>本期三个判断</h2>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>#</th><th>判断</th><th>阶段</th><th>关键依据</th><th>对我们意味着什么</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1</td><td>Agent 的基础设施正在变成公共标准，竞争重心从模型转向生态和分发</td><td><span class="chip zs">招熟</span></td><td>Agent Skills 捐给 AAIF；OpenShell 开源；OpenAI 模型进入 Google Cloud</td><td>Agent 能力建在 Skills、MCP 上，换模型不丢能力</td></tr>
+        <tr><td class="num">2</td><td>金融 AI 进入 Agent 落地和监管定框同步推进的阶段</td><td><span class="chip zs">招熟</span></td><td>FSB 定稿 12 条良好实践；Starling、Visa、Mastercard 密集上线 Agent</td><td>优先做合规、审阅、调查类 Agent，按自主程度设计人工监督</td></tr>
+        <tr><td class="num">3</td><td>医疗 AI 的瓶颈从模型能力转到人类监督能否被度量</td><td><span class="chip dj">懂劲</span></td><td>出院文书 RCT 中医生漏掉部分错误；美国州医学委员会联合会成立 22 人监管工作组</td><td>让“人工审核看了什么、改了什么”可以被审计</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section aria-labelledby="s-macro">
+  <h2 id="s-macro"><span class="no">03</span>宏观：格局与监管</h2>
+
+  <div class="subhead">
+    <h3>前沿实验室开始公开谈“加速已经开始”，同时呼吁放慢</h3>
+    <p>Jack Clark 在 IMF 曼谷会议上用两项基准说明 AI 正在加速科研，同时主张在生物等领域保持严格的人类监督（<a href="https://importai.substack.com/feed">Import AI 477</a>，10-19）。</p>
+  </div>
+  <figure>
+    <div class="fig-title">两项高难度基准的最好成绩（%）</div>
+    <svg viewBox="0 0 760 200" width="100%" role="img" aria-label="Humanity's Last Exam 从约 8% 升到 67.7%，FrontierMath 从约 2% 升到 94%">
+      <line x1="120" y1="20" x2="120" y2="170" stroke="var(--line)"/>
+      <line x1="500" y1="20" x2="500" y2="170" stroke="var(--line)"/>
+      <text x="120" y="192" text-anchor="middle" class="t-muted" font-size="12">2025-01</text>
+      <text x="500" y="192" text-anchor="middle" class="t-muted" font-size="12">2026-10</text>
+      <line x1="120" y1="158" x2="500" y2="68" stroke="var(--dj)" stroke-width="3"/>
+      <circle cx="120" cy="158" r="5" fill="var(--dj)"/><circle cx="500" cy="68" r="6" fill="var(--dj)"/>
+      <text x="110" y="162" text-anchor="end" font-size="12">约 8</text>
+      <text x="512" y="72" font-size="13" font-weight="700">67.7 Humanity's Last Exam</text>
+      <line x1="120" y1="167" x2="500" y2="29" stroke="var(--accent)" stroke-width="3"/>
+      <circle cx="120" cy="167" r="5" fill="var(--accent)"/><circle cx="500" cy="29" r="6" fill="var(--accent)"/>
+      <text x="110" y="178" text-anchor="end" font-size="12">约 2</text>
+      <text x="512" y="33" font-size="13" font-weight="700">94 FrontierMath</text>
+    </svg>
+    <figcaption>数据来自 Jack Clark 的演讲稿，10-23 对照公开榜单核对：FrontierMath 的 2% 是 2024-11 首版成绩，94% 对应的是 2026-06 修订后的 v2 题集（Tiers 1–3，开启工具，GPT-6 Astra 与 GPT-6.1 Sol 并列 93.7%），修订版成绩普遍高约 12 个百分点，两端不完全可比。HLE 的 67.7% 是 Clark 所说的 Claude Opus 5.5 成绩，llm-stats 榜单目前最高为 65.0%，可能是测试版本不同。Clark 是 Anthropic 联合创始人。纵轴 0 到 100 线性。</figcaption>
+  </figure>
+  <p class="view"><b>我的看法</b>：这是前沿实验室联合创始人对宏观政策听众的发言，立场鲜明，数字可以引用，判断要和其他来源对照着看。</p>
+
+  <div class="subhead">
+    <h3>开源模型成了地缘政治议题</h3>
+  </div>
+  <ul class="facts">
+    <li><span class="chip zs">招熟</span><span>中国商务部提出前沿模型发布前审批的征求意见稿，美国国土安全部限制 DeepSeek 成为联邦采购供应商。<span class="src">（<a href="https://www.interconnects.ai/p/latest-open-artifacts-25-deepseek">Interconnects</a>，10-20）</span></span></li>
+    <li><span class="chip zs">招熟</span><span>Nathan Lambert 认为 Meta 的 Muse Spark Open 是目前最强的美国开源权重（Open Weights）模型，但它的定制许可证限制较多。<span class="src">（<a href="https://www.interconnects.ai/p/meta-shakes-up-the-frontiers-open">Interconnects</a>，10-17）</span></span></li>
+    <li><span class="chip dj">懂劲</span><span>SemiAnalysis 实测华为昇腾 950PR 在 BF16 矩阵乘上的中位利用率为 41.5%，H100 为 46.8%，绝对性能介于 A100 和 MI300X 之间。<span class="src">（<a href="https://newsletter.semianalysis.com/p/huawei-deepseek">SemiAnalysis</a>，10-21，<span class="pay">💰 部分付费</span>）</span></span></li>
+  </ul>
+  <p class="view"><b>我的看法</b>：在金融、医疗这类受监管行业选开源模型，许可证和合规风险要和性能一起评估（对应第 3 章“模型选型”）。</p>
+</section>
+
+<section aria-labelledby="s-meso">
+  <h2 id="s-meso"><span class="no">04</span>中观：平台、模型与工具</h2>
+  <div class="subhead">
+    <h3>Agent 的三层基础设施都在走向开放标准</h3>
+    <p>三层各管一件事，本周每一层都有动作。对受监管行业，最下面的沙箱层最关键，它决定 Agent 能否通过安全审查。</p>
+  </div>
+  <figure>
+    <div class="fig-title">Agent 基础设施的三层，以及本周各层的动作</div>
+    <div style="overflow-x:auto">
+    <svg viewBox="0 0 640 250" width="100%" style="min-width:520px" role="img" aria-label="三层：Agent Skills 管会做什么，MCP 管能连什么，沙箱运行时管能碰什么">
+      <rect x="0" y="0" width="640" height="70" rx="6" fill="var(--zs-bg)"/>
+      <text x="20" y="30" font-size="15" font-weight="700">技能包 Agent Skills</text>
+      <text x="20" y="54" font-size="12.5" class="t-muted">管“会做什么”：一个带 SKILL.md 的文件夹</text>
+      <text x="620" y="30" font-size="12.5" text-anchor="end" font-weight="700">10-22 捐给 AAIF</text>
+      <text x="620" y="54" font-size="12.5" text-anchor="end" class="t-muted">70+ 平台接入 · 安装近 2.8 亿次</text>
+      <rect x="0" y="90" width="640" height="70" rx="6" fill="var(--dj-bg)"/>
+      <text x="20" y="120" font-size="15" font-weight="700">模型上下文协议 MCP</text>
+      <text x="20" y="144" font-size="12.5" class="t-muted">管“能连什么”：工具、数据源、系统</text>
+      <text x="620" y="120" font-size="12.5" text-anchor="end" font-weight="700">此前已捐给 AAIF</text>
+      <text x="620" y="144" font-size="12.5" text-anchor="end" class="t-muted">本周无新动作</text>
+      <rect x="0" y="180" width="640" height="70" rx="6" fill="var(--sm-bg)"/>
+      <text x="20" y="210" font-size="15" font-weight="700">沙箱运行时 Sandbox Runtime</text>
+      <text x="20" y="234" font-size="12.5" class="t-muted">管“能碰什么”：文件、网络、凭证</text>
+      <text x="620" y="210" font-size="12.5" text-anchor="end" font-weight="700">10-22 NVIDIA 开源 OpenShell</text>
+      <text x="620" y="234" font-size="12.5" text-anchor="end" class="t-muted">约 1 万星 · Apache 2.0</text>
+    </svg>
+    </div>
+    <figcaption>来源：<a href="https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation">Anthropic</a>、<a href="https://github.com/NVIDIA/OpenShell">GitHub</a>。对应第 7 章“工具与 MCP”、第 9 章“Harness”。</figcaption>
+  </figure>
+  <ul class="facts">
+    <li><span class="chip zs">招熟</span><span>OpenShell 让每个 Agent 跑在隔离沙箱里，网络请求逐一过策略检查，Agent 拿不到真实凭证，凭证只在请求发往许可的地址时才注入。Hacker News 381 分。<span class="src">（<a href="https://github.com/NVIDIA/OpenShell">GitHub</a>，10-22）</span></span></li>
+    <li><span class="chip zs">招熟</span><span>OpenAI 的前沿模型和 Codex 工作流进入 Google Cloud 的 Model Garden 和 Marketplace。<span class="src">（<a href="https://openai.com/index/openai-models-google-cloud">OpenAI</a>，10-21）</span></span></li>
+    <li><span class="chip dj">懂劲</span><span>Claude 在 123 个开源库的 239 个模糊测试（Fuzzing）入口上，于 RISC-V 汇编层面完成了“不崩溃”性质的形式化验证（Formal Verification），证明约 1.8 亿行 Rocq，顺带修复了数百个模糊测试多年没发现的 bug；文章提醒，形式化验证不等于没有 bug。<span class="src">（<a href="https://www.anthropic.com/research/formal-verification">Anthropic</a>，10-22）</span></span></li>
+  </ul>
+</section>
+
+<section aria-labelledby="s-fin">
+  <h2 id="s-fin"><span class="no">05</span>行业：金融 AI</h2>
+  <div class="subhead">
+    <h3>监管给出了框架，机构在流程环节密集上线 Agent</h3>
+    <p>一周之内，从监管框架到卡组织、银行、投研机构都有动作，但一项基准提醒我们，Agent 的价值在流程，不在预测。</p>
+  </div>
+  <figure>
+    <div class="fig-title">本周金融 AI 时间线</div>
+    <div style="overflow-x:auto">
+    <svg viewBox="0 0 700 230" width="100%" style="min-width:600px" role="img" aria-label="10-15 FSB 定稿，10-16 Itaú，10-20 Visa、Terminal X、NAB，10-21 Starling、BBVA、Quant-Arena">
+      <line x1="30" y1="110" x2="680" y2="110" stroke="var(--line)" stroke-width="2"/>
+      <g font-size="12" class="t-muted">
+        <text x="40" y="132" text-anchor="middle" class="t-muted">10-15</text>
+        <text x="130" y="132" text-anchor="middle" class="t-muted">10-16</text>
+        <text x="490" y="132" text-anchor="middle" class="t-muted">10-20</text>
+        <text x="580" y="132" text-anchor="middle" class="t-muted">10-21</text>
+      </g>
+      <circle cx="40" cy="110" r="7" fill="var(--dj)"/>
+      <line x1="40" y1="103" x2="40" y2="62" stroke="var(--dj)"/>
+      <text x="40" y="38" text-anchor="middle" font-size="12.5" font-weight="700">FSB 定稿</text>
+      <text x="40" y="55" text-anchor="middle" font-size="12" class="t-muted">12 条良好实践</text>
+      <circle cx="130" cy="110" r="7" fill="var(--zs)"/>
+      <line x1="130" y1="117" x2="130" y2="152" stroke="var(--zs)"/>
+      <text x="130" y="172" text-anchor="middle" font-size="12.5" font-weight="700">Itaú</text>
+      <text x="130" y="189" text-anchor="middle" font-size="12" class="t-muted">全客群对话银行</text>
+      <circle cx="490" cy="110" r="7" fill="var(--zs)"/>
+      <line x1="490" y1="103" x2="490" y2="62" stroke="var(--zs)"/>
+      <text x="470" y="20" text-anchor="middle" font-size="12.5" font-weight="700">Visa · Mastercard</text>
+      <text x="470" y="37" text-anchor="middle" font-size="12" class="t-muted">Agent 支付试点</text>
+      <text x="470" y="54" text-anchor="middle" font-size="12" class="t-muted">Terminal X 88.6%</text>
+      <line x1="490" y1="117" x2="490" y2="152" stroke="var(--zs)"/>
+      <text x="470" y="172" text-anchor="middle" font-size="12.5" font-weight="700">NAB 裁员 2,500</text>
+      <text x="470" y="189" text-anchor="middle" font-size="12" class="t-muted">理由：技术变革</text>
+      <circle cx="580" cy="110" r="7" fill="var(--zs)"/>
+      <line x1="580" y1="103" x2="620" y2="62" stroke="var(--zs)"/>
+      <text x="630" y="20" text-anchor="middle" font-size="12.5" font-weight="700">Starling 17 秒</text>
+      <text x="630" y="37" text-anchor="middle" font-size="12" class="t-muted">金融犯罪调查 Agent</text>
+      <text x="630" y="54" text-anchor="middle" font-size="12" class="t-muted">BBVA × NVIDIA 安全</text>
+      <line x1="580" y1="117" x2="620" y2="152" stroke="var(--dj)"/>
+      <text x="630" y="172" text-anchor="middle" font-size="12.5" font-weight="700">Quant-Arena</text>
+      <text x="630" y="189" text-anchor="middle" font-size="12" class="t-muted">无模型跑赢等权</text>
+    </svg>
+    </div>
+    <figcaption>绿色为落地动作（招熟），蓝色为框架和证据（懂劲）。</figcaption>
+  </figure>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>阶段</th><th>信号</th><th>说明</th><th>来源</th></tr></thead>
+      <tbody>
+        <tr><td><span class="chip dj">懂劲</span></td><td>FSB 定稿 12 条良好实践</td><td>分为全机构 AI 治理和全生命周期风险管理两组；第 10 条按自主程度配置人工监督，第 12 条点名供应链和集中度风险</td><td class="nowrap"><a href="https://www.fsb.org/2026/10/sound-practices-for-responsible-adoption-of-artificial-intelligence-ai-final-report/">FSB</a>，10-15</td></tr>
+        <tr><td><span class="chip zs">招熟</span></td><td>Starling 金融犯罪调查 Agent</td><td>端到端完成一次调查用时 17 秒</td><td class="nowrap"><a href="https://www.finextra.com/newsarticle/48623/starling-build-agentic-fincrime-investigator-that-takes-17-seconds">Finextra</a>，10-21</td></tr>
+        <tr><td><span class="chip zs">招熟</span></td><td>卡组织试点 Agent 支付</td><td>Visa 与 Bill、Billtrust 试点 Agent 端到端支付发票；Mastercard 演示 Agent Pay for Machines</td><td class="nowrap"><a href="https://www.finextra.com/newsarticle/48610/visa-pilots-ai-agent-payments-between-buyer-and-supplier-platforms">Finextra</a>，10-20</td></tr>
+        <tr><td><span class="chip zs">招熟</span></td><td>Itaú 全客群对话式银行</td><td>首期覆盖约 30 万客户，目标 2026 年底覆盖全部客户；治理平台 IARA 统一管理多模型的调用、成本和合规（厂商自报）</td><td class="nowrap"><a href="https://openai.com/index/itau-generative-ai">OpenAI</a>，10-16</td></tr>
+        <tr><td><span class="chip zs">招熟</span></td><td>Terminal X 评审 Agent</td><td>按 54 项评分标准审阅投研产出，500 次判断中与资深审阅者一致率 88.6%（厂商自报）</td><td class="nowrap"><a href="https://openai.com/index/terminal-x">OpenAI</a>，10-20</td></tr>
+        <tr><td><span class="chip dj">懂劲</span></td><td>Quant-Arena 基准</td><td>没有一个 LLM 量化研究 Agent 在封存的 2024 测试年跑赢 A 股等权组合</td><td class="nowrap">arXiv 2610.30113，10-21</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="view"><b>对金融产品的启示</b>：Itaú 的 IARA 和 Terminal X 的评审 Agent 说明，治理层和评审层本身就是产品，值得单独设计；人工监督按自主程度分级，可以直接引用 FSB 第 10 条作为设计依据。</p>
+  <p class="small muted"><b>待验证</b>：FSB 对 Agent 没有专门条款，各国监管会不会在此基础上出更细的 Agent 指引。</p>
+</section>
+
+<section aria-labelledby="s-med">
+  <h2 id="s-med"><span class="no">06</span>行业：医疗 AI</h2>
+  <div class="subhead">
+    <h3>人工审核拦不住所有错误，监督需要被记录和度量</h3>
+    <p>儿科急诊出院文书的随机对照试验里，117 名儿童入组分析，LLM 起草与模板组装两组家属理解度没有差异，但医生审核时漏掉了一部分 AI 引入的问题。</p>
+  </div>
+  <figure>
+    <div class="fig-title">医生审核 LLM 起草的出院文书：拦下了多少问题</div>
+    <div class="hbar">
+      <div class="hrow"><span>无依据的添加（22 处）</span>
+        <div class="track" role="img" aria-label="22 处中删掉 18 处，漏掉 4 处"><div class="seg-ok" style="width:81.8%">删掉 18</div><div class="seg-miss" style="width:18.2%">漏 4</div></div></div>
+      <div class="hrow"><span>错误的缩写展开（22 处）</span>
+        <div class="track" role="img" aria-label="22 处中纠正 6 处，漏掉 16 处"><div class="seg-ok" style="width:27.3%">纠正 6</div><div class="seg-miss" style="width:72.7%">漏 16</div></div></div>
+    </div>
+    <figcaption>来源：<a href="https://www.medrxiv.org/content/10.64898/2026.10.20.26365977v1">medRxiv</a>，10-22，预印本，探索性分析。“漏 4”由 22 减 18 得出，论文只报告了删掉的数量。送出的文书中没有判定为严重差错的问题（0/117）。</figcaption>
+  </figure>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>阶段</th><th>信号</th><th>说明</th><th>来源</th></tr></thead>
+      <tbody>
+        <tr><td><span class="chip zs">招熟</span></td><td>州级医疗 AI 监管工作组</td><td>美国州医学委员会联合会召集 22 人工作组，成员来自 AMA、AHA、Anthropic、Elevance Health，讨论自主临床 AI 的监管指引</td><td class="nowrap"><a href="https://www.statnews.com/2026/10/14/lobbyists-trade-groups-ama-push-autonomous-clinical-ai-regulations/">STAT</a>，10-14 <span class="pay">💰</span></td></tr>
+        <tr><td><span class="chip dj">懂劲</span></td><td>AI 病历与人工病历对比</td><td>模拟配对研究中，AI 起草的病历质量略高、错误更少，以遗漏为主；严重错误的证据尚不充分（预印本）</td><td class="nowrap"><a href="https://www.medrxiv.org/content/10.64898/2026.10.16.26365719v1">medRxiv</a>，10-19</td></tr>
+        <tr><td><span class="chip zs">招熟</span></td><td>OpenAI 收购 Orchestra Bio</td><td>药物研发协作平台，并入生命科学产品线 Rosalind</td><td class="nowrap"><a href="https://openai.com/index/openai-to-acquire-orchestra-bio">OpenAI</a>，10-20</td></tr>
+        <tr><td><span class="chip dj">懂劲</span></td><td>数千个 Agent 分析脑细胞数据</td><td>与 Scripps 等机构合作，分析数百万个小鼠脑细胞的 CRISPR 数据，32 分钟生成假说图谱；盲评中专家 75% 的情况偏好多 Agent 报告；结论仍待实验验证</td><td class="nowrap"><a href="https://openai.com/index/scaling-ai-research-for-complex-biological-data">OpenAI</a>，10-21</td></tr>
+        <tr><td><span class="chip zs">招熟</span></td><td>Anthropic 生命科学访问学者</td><td>合作 8 至 12 周，成果开源，申请期约 14 天</td><td class="nowrap"><a href="https://www.anthropic.com/news/open-call-guest-investigators-life-sciences">Anthropic</a>，10-22</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="view"><b>对医疗产品的启示</b>：编辑次数和满意度评分说明不了审核者漏掉了什么，产品要记录 AI 写了什么、人改了什么；监管从州一级起步，合规设计要预留按地区调整的空间。</p>
+  <p class="small muted"><b>待验证</b>：量子位报道清华 AIR 孵化的多智能体方案让“医生 AI 分身坐诊医院”（<a href="https://www.qbitai.com/2026/10/504734.html">量子位</a>，10-21），标题偏夸张，需要找到一手资料再判断。</p>
+</section>
+
+<section aria-labelledby="s-prod">
+  <h2 id="s-prod"><span class="no">07</span>AI 产品</h2>
+  <div class="subhead"><h3>好产品不等于被用起来，模型选型要看任务类型</h3></div>
+  <ul class="facts">
+    <li><span class="chip zs">招熟</span><span>Lenny Rachitsky 评价 Claude Duet 是他见过最精致的个人 Agent 发布，但自己还是忘了用：一个主动型 Agent 从不主动提醒，又缺少桌面端和多人协作，留存就成问题。<span class="src">（<a href="https://www.lennysnewsletter.com/p/claude-duet-is-beautiful-i-still">Lenny's Newsletter</a>，10-21，<span class="pay">💰 部分付费</span>）</span></span></li>
+    <li><span class="chip zs">招熟</span><span>同一作者测评 Meta 的 Muse Wonder：Agent 类任务排第一，设计和视觉工作明显偏弱。<span class="src">（<a href="https://www.lennysnewsletter.com/p/metas-new-muse-wonder-model-good">Lenny's Newsletter</a>，10-14）</span></span></li>
+  </ul>
+  <p class="view"><b>可借鉴的做法</b>：Agent 产品要设计“什么时候主动出现”，这比功能完整更影响留存；模型按任务类型分开选（对应第 13 章“产品设计”）。</p>
+</section>
+
+<section aria-labelledby="s-read">
+  <h2 id="s-read"><span class="no">08</span>微观：值得一读</h2>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>材料</th><th>阶段</th><th>为什么值得读</th><th>建议归入</th><th>深度</th></tr></thead>
+      <tbody>
+        <tr><td><a href="https://www.medrxiv.org/content/10.64898/2026.10.20.26365977v1">儿科出院文书 RCT</a></td><td><span class="chip dj">懂劲</span></td><td>少有的临床 RCT，直接回答“人工审核够不够”</td><td class="nowrap">第 19、21 章</td><td>精读</td></tr>
+        <tr><td><a href="https://www.fsb.org/2026/10/sound-practices-for-responsible-adoption-of-artificial-intelligence-ai-final-report/">FSB 12 条良好实践</a></td><td><span class="chip dj">懂劲</span></td><td>金融 AI 合规设计的上位依据</td><td class="nowrap">第 16 章</td><td>精读</td></tr>
+        <tr><td><a href="https://www.netinterest.co/p/me-and-my-agents">Me and My Agents</a></td><td><span class="chip zs">招熟</span></td><td>前对冲基金经理用 4 个 Agent 跑完银行财报季，分工可以照搬</td><td class="nowrap">第 15 章</td><td>精读</td></tr>
+        <tr><td>Quant-Arena（arXiv 2610.30113）</td><td><span class="chip dj">懂劲</span></td><td>校准对“AI 炒股”的预期</td><td class="nowrap">第 15 章</td><td>浏览</td></tr>
+        <tr><td>RAG Compositionality（arXiv 2610.29722）</td><td><span class="chip dj">懂劲</span></td><td>450 种检索增强生成（RAG）配置中，单独有效的技巧组合后常常失效</td><td class="nowrap">第 5 章</td><td>浏览</td></tr>
+        <tr><td>VerifierBench（arXiv 2610.28679）</td><td><span class="chip dj">懂劲</span></td><td>Agent 生成的验证器常常误拒正确答案，是评测里容易忽视的偏差</td><td class="nowrap">第 11 章</td><td>浏览</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section aria-labelledby="s-moves">
+  <h2 id="s-moves"><span class="no">09</span>本期招式</h2>
+  <ol class="moves">
+    <li><span>把一个金融或医疗的固定流程写成 SKILL.md，试跑一遍</span><span class="tag"><span class="chip zs">招熟</span> 试用</span></li>
+    <li><span>试用 NVIDIA OpenShell，评估能否作为 Agent 沙箱</span><span class="tag"><span class="chip zs">招熟</span> 试用</span></li>
+    <li><span>精读 Net Interest《Me and My Agents》，对照自己产品里的 Agent 分工</span><span class="tag"><span class="chip zs">招熟</span> 精读</span></li>
+    <li><span>精读儿科出院文书 RCT，写进第 21 章作为“可度量的人工监督”的例证</span><span class="tag"><span class="chip dj">懂劲</span> 入书</span></li>
+    <li><span>把 FSB 12 条良好实践写进第 16 章，作为金融监管框架</span><span class="tag"><span class="chip dj">懂劲</span> 入书</span></li>
+    <li><span>观察各国监管是否在 FSB 框架之上出台专门的 Agent 指引</span><span class="tag"><span class="chip dj">懂劲</span> 观察</span></li>
+  </ol>
+</section>
+
+<section aria-labelledby="s-sm">
+  <h2 id="s-sm"><span class="no">10</span>神明：点到为止</h2>
+  <p class="shenming"><span class="chip sm">神明</span> 如果“AI 研究 AI”成真，工程师最后留下的价值是写代码、定标准，还是判断什么值得做？Jeremy Scheff 的文章《My obituary for programming》给了一个程序员视角的答案：编码 Agent 拿走的，正是很多程序员最享受的解题部分。Simon Willison 转引时补了一句，对只想把系统做出来的人这是收获，对享受解题本身的人这是真实的失去（<a href="https://simonwillison.net/2026/Oct/19/my-obituary-for-programming/">Simon Willison</a>，10-19）。</p>
+</section>
+
+<section aria-labelledby="s-appx">
+  <h2 id="s-appx"><span class="no">附</span>附录</h2>
+
+  <details>
+    <summary>A. 本期条目总表（15 条）</summary>
+    <div><div class="tbl"><table>
+      <thead><tr><th>日期</th><th>方向</th><th>阶段</th><th>条目</th><th>来源</th><th>去向</th></tr></thead>
+      <tbody>
+        <tr><td class="num">10-22</td><td>医疗</td><td><span class="chip dj">懂劲</span></td><td>儿科出院文书 RCT</td><td>medRxiv</td><td>建议入书</td></tr>
+        <tr><td class="num">10-22</td><td>通用</td><td><span class="chip zs">招熟</span></td><td>Agent Skills 捐给 AAIF</td><td>Anthropic</td><td>待定</td></tr>
+        <tr><td class="num">10-22</td><td>通用</td><td><span class="chip zs">招熟</span></td><td>OpenShell 开源</td><td>GitHub、Hacker News</td><td>建议试用</td></tr>
+        <tr><td class="num">10-22</td><td>通用</td><td><span class="chip dj">懂劲</span></td><td>形式化验证规模化</td><td>Anthropic</td><td>待定</td></tr>
+        <tr><td class="num">10-21</td><td>金融</td><td><span class="chip zs">招熟</span></td><td>Starling 金融犯罪调查 Agent</td><td>Finextra</td><td>待定</td></tr>
+        <tr><td class="num">10-21</td><td>金融</td><td><span class="chip dj">懂劲</span></td><td>Quant-Arena 基准</td><td>HF Daily Papers</td><td>待定</td></tr>
+        <tr><td class="num">10-21</td><td>产品</td><td><span class="chip zs">招熟</span></td><td>Claude Duet 留存问题</td><td>Lenny's Newsletter</td><td>待定</td></tr>
+        <tr><td class="num">10-21</td><td>通用</td><td><span class="chip dj">懂劲</span></td><td>华为与 DeepSeek 的相互依存</td><td>SemiAnalysis</td><td>不入书</td></tr>
+        <tr><td class="num">10-21</td><td>医疗</td><td><span class="chip dj">懂劲</span></td><td>数千 Agent 分析脑细胞数据</td><td>OpenAI</td><td>待定</td></tr>
+        <tr><td class="num">10-20</td><td>金融</td><td><span class="chip zs">招熟</span></td><td>Visa、Mastercard 试点 Agent 支付</td><td>Finextra</td><td>待定</td></tr>
+        <tr><td class="num">10-20</td><td>金融</td><td><span class="chip zs">招熟</span></td><td>Terminal X 评审 Agent</td><td>OpenAI</td><td>待定</td></tr>
+        <tr><td class="num">10-20</td><td>医疗</td><td><span class="chip zs">招熟</span></td><td>OpenAI 收购 Orchestra Bio</td><td>OpenAI</td><td>待定</td></tr>
+        <tr><td class="num">10-19</td><td>通用</td><td><span class="chip sm">神明</span></td><td>Jack Clark IMF 演讲</td><td>Import AI</td><td>待定</td></tr>
+        <tr><td class="num">10-16</td><td>金融</td><td><span class="chip zs">招熟</span></td><td>Itaú 全客群对话式银行</td><td>OpenAI</td><td>待定</td></tr>
+        <tr><td class="num">10-15</td><td>金融</td><td><span class="chip dj">懂劲</span></td><td>FSB 12 条良好实践定稿</td><td>FSB</td><td>建议入书</td></tr>
+      </tbody>
+    </table></div></div>
+  </details>
+
+  <details>
+    <summary>B. 草稿盘点</summary>
+    <div><p style="padding:0 16px 12px">drafts/inbox/ 目前没有草稿，本期无需盘点。</p></div>
+  </details>
+
+  <details>
+    <summary>C. 信息源表现（20 个源）</summary>
+    <div><div class="tbl"><table>
+      <thead><tr><th>信息源</th><th>本期条目</th><th>被引用</th><th>引用率</th><th>备注</th></tr></thead>
+      <tbody>
+        <tr><td>OpenAI News</td><td class="num">20</td><td class="num">5</td><td><span class="ratio" style="width:25px"></span></td><td>客户案例占一半以上，需要过滤</td></tr>
+        <tr><td>Anthropic News</td><td class="num">7</td><td class="num">2</td><td><span class="ratio" style="width:29px"></span></td><td>形式化验证一文在 /research 栏目</td></tr>
+        <tr><td>Google DeepMind</td><td class="num">2</td><td class="num">0</td><td></td><td>本周与重点方向无关</td></tr>
+        <tr><td>HF Daily Papers</td><td class="num">12</td><td class="num">3</td><td><span class="ratio" style="width:25px"></span></td><td>论文详情页抓取被挡，API 正常</td></tr>
+        <tr><td>Simon Willison</td><td class="num">10</td><td class="num">1</td><td><span class="ratio" style="width:10px"></span></td><td></td></tr>
+        <tr><td>Hacker News</td><td class="num">4</td><td class="num">2</td><td><span class="ratio" style="width:50px"></span></td><td></td></tr>
+        <tr><td>Import AI</td><td class="num">1</td><td class="num">1</td><td><span class="ratio" style="width:100px"></span></td><td></td></tr>
+        <tr><td>Interconnects</td><td class="num">2</td><td class="num">2</td><td><span class="ratio" style="width:100px"></span></td><td></td></tr>
+        <tr><td>SemiAnalysis</td><td class="num">1</td><td class="num">1</td><td><span class="ratio" style="width:100px"></span></td><td></td></tr>
+        <tr><td>Latent Space</td><td class="num">1</td><td class="num">0</td><td></td><td></td></tr>
+        <tr><td>量子位</td><td class="num">8</td><td class="num">1</td><td><span class="ratio" style="width:13px"></span></td><td>只拿到 10-21 至 10-22 的条目</td></tr>
+        <tr><td>Finextra AI</td><td class="num">12</td><td class="num">5</td><td><span class="ratio" style="width:42px"></span></td><td>文章页抓取被挡，RSS 正常</td></tr>
+        <tr><td>Net Interest</td><td class="num">1</td><td class="num">1</td><td><span class="ratio" style="width:100px"></span></td><td></td></tr>
+        <tr><td>Fintech Business Weekly</td><td class="num">1</td><td class="num">0</td><td></td><td>本周无 AI 内容</td></tr>
+        <tr><td>FSB</td><td class="num">4</td><td class="num">1</td><td><span class="ratio" style="width:25px"></span></td><td></td></tr>
+        <tr><td>STAT AI</td><td class="num">5</td><td class="num">1</td><td><span class="ratio" style="width:20px"></span></td><td>大多为 STAT+</td></tr>
+        <tr><td>medRxiv</td><td class="num">10</td><td class="num">2</td><td><span class="ratio" style="width:20px"></span></td><td></td></tr>
+        <tr><td>npj Digital Medicine</td><td class="num">0</td><td class="num">0</td><td></td><td>feed 最新条目停在 08-31</td></tr>
+        <tr><td>Ground Truths</td><td class="num">1</td><td class="num">0</td><td></td><td>本周无 AI 内容</td></tr>
+        <tr><td>Lenny's Newsletter</td><td class="num">7</td><td class="num">2</td><td><span class="ratio" style="width:29px"></span></td><td></td></tr>
+      </tbody>
+    </table></div></div>
+  </details>
+</section>
+
+<footer>Nook · AI 雷达 · 每周三、周六各一期 · 信息源清单见仓库 src/appendix/sources.md · 💰 表示付费内容，只依据免费部分 · “厂商自报”表示数据来自厂商自己的发布</footer>
+</div>
