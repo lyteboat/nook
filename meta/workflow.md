@@ -31,7 +31,7 @@
 
 ## 每周维护报告
 
-- 每周日一份，写在 `meta/maintenance/YYYY-MM-DD.html`，用 `meta/maintenance/_template.html`，同时发布为 artifact。
+- 每周日一份，写在 `meta/maintenance/YYYY-MM-DD.html`，用 `meta/maintenance/_template.html`。默认只产出文件，不自动发布 artifact。
 - 第一屏只放一句话结论和需要 Yue 决定的事，细节放在后面。
 
 ## 信息源清单维护
@@ -44,4 +44,4 @@
 
 - 范围：`drafts/inbox/` 以外的临时文件（如项目共享目录里的草稿、截图、中间产物），以及本项目里不再被书稿或雷达引用的 artifact。账号下其他项目的 artifact 不在范围内。
 - 每周日列出候选清单，说明每一项为什么可以清理。仓库内的删除走 PR；artifact 和共享目录文件删除后无法恢复，先给 Yue 确认再删。
-- 雷达存档（包括各期雷达的 artifact）和已入书内容不在清理范围内。
+- 雷达存档和已入书内容不在清理范围内。
