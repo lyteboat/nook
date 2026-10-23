@@ -2,7 +2,7 @@
 created: YYYY-MM-DD
 source: 我的思考 | 讨论 | 雷达 YYYY-MM-DD | 外部链接
 target: 第 N 章 章节名（不确定可写“待定”）
-status: 新建 | 讨论中 | 待归档
+status: 新建 | 讨论中 | 待归档 | 搁置
 ---
 
 # 主题
