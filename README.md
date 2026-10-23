@@ -18,11 +18,14 @@ nook/
 │   └── appendix/        附录：术语表、信息源清单、版本记录
 ├── drafts/              草稿池（临时，定期清理）
 │   ├── inbox/           新进来的想法、问题、讨论片段
-│   └── _template.md     草稿模板
+│   ├── _template.md     草稿模板
+│   └── _template-study.html  讨论草稿模板（HTML，招熟、懂劲、神明）
 ├── radar/               外部动态雷达存档（长期保留）
 │   ├── 2026/            按年份归档，每周三、周六各一期
 │   └── _template.md     雷达模板
 ├── meta/                写作规范与维护流程
+│   ├── learner.md       我的背景与学习法（招熟、懂劲、神明）
+│   ├── roles.md         讨论角色与讨论流程
 │   ├── style-guide.md   写作规范
 │   └── workflow.md      从输入到成书的流程、草稿清理规则
 ├── book.toml            mdBook 配置

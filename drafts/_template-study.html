@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--
+  讨论草稿模板（功法图）
+  用法：复制为 drafts/inbox/YYYY-MM-DD-主题.html，替换所有“……”占位内容。
+  元信息写在下面的 meta 标签里，对应 Markdown 草稿的 front matter。
+  图一律用 Mermaid 写在 <pre class="mermaid"> 里；没用到的图和格子整块删掉，不要留空壳。
+-->
+<meta name="nook:created" content="YYYY-MM-DD">
+<meta name="nook:source" content="讨论">
+<meta name="nook:target" content="第 N 章 章节名 | 待定">
+<meta name="nook:status" content="讨论中 | 待归档">
+<meta name="nook:stage" content="招熟 | 懂劲">
+<title>主题</title>
+<style>
+  :root {
+    --bg: #fbfaf7; --fg: #1f1f1f; --muted: #6b6b6b; --line: #e3e0d8;
+    --card: #ffffff; --accent: #8a3b12; --zhao: #2f6f4f; --jin: #2c5282; --shen: #6b3fa0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17171a; --fg: #e8e6e1; --muted: #a09d96; --line: #34333a;
+      --card: #1f1f24; --accent: #e08a5a; --zhao: #6fbf95; --jin: #7fa8e0; --shen: #b894e6;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #17171a; --fg: #e8e6e1; --muted: #a09d96; --line: #34333a;
+    --card: #1f1f24; --accent: #e08a5a; --zhao: #6fbf95; --jin: #7fa8e0; --shen: #b894e6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font: 16px/1.75 -apple-system, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  }
+  main { max-width: 920px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font-size: 1.9rem; margin: 0 0 4px; }
+  h2 { margin: 48px 0 12px; padding-left: 12px; border-left: 4px solid var(--accent); }
+  h3 { margin: 28px 0 8px; }
+  .meta { color: var(--muted); font-size: .9rem; }
+  .one-line { font-size: 1.15rem; padding: 16px; background: var(--card); border: 1px solid var(--line); border-radius: 8px; }
+  section.zhao h2 { border-color: var(--zhao); }
+  section.jin h2 { border-color: var(--jin); }
+  section.shen h2 { border-color: var(--shen); }
+  .tag { display: inline-block; font-size: .8rem; padding: 0 8px; border-radius: 99px; color: var(--bg); vertical-align: middle; }
+  .zhao .tag { background: var(--zhao); } .jin .tag { background: var(--jin); } .shen .tag { background: var(--shen); }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; margin: 8px 0; background: var(--card); }
+  th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: color-mix(in srgb, var(--line) 50%, var(--card)); white-space: nowrap; }
+  figure { margin: 12px 0; padding: 12px; background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow-x: auto; }
+  figcaption { color: var(--muted); font-size: .85rem; margin-top: 6px; }
+  pre.mermaid { margin: 0; text-align: center; background: transparent; }
+  pre:not(.mermaid) { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 12px; overflow-x: auto; }
+  code { font-family: "JetBrains Mono", Menlo, Consolas, monospace; font-size: .9em; }
+  blockquote { margin: 12px 0; padding: 8px 16px; border-left: 4px solid var(--shen); color: var(--muted); }
+  .opinion { padding: 12px 16px; border: 1px dashed var(--accent); border-radius: 8px; }
+  ul.todo { list-style: none; padding-left: 0; } ul.todo li::before { content: "☐ "; }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <h1>主题</h1>
+  <p class="meta">YYYY-MM-DD · 讨论 · 目标章节：待定 · 状态：讨论中</p>
+</header>
+
+<section>
+  <h2>开题</h2>
+  <div class="table-wrap"><table>
+    <tr><th>问题</th><td>……一两句话说清我想弄明白什么。</td></tr>
+    <tr><th>场景</th><td>……为什么学，打算用在哪里。</td></tr>
+    <tr><th>目标阶段</th><td>招熟 / 懂劲</td></tr>
+  </table></div>
+  <p class="one-line"><strong>一句话：</strong>……它是什么，要解决什么问题。它不是什么。</p>
+</section>
+
+<section>
+  <h2>全景图</h2>
+  <!-- 用一张图交代它在整个系统里的位置。系统类主题优先用 C4 上下文图，概念类主题用思维导图。 -->
+  <figure>
+    <pre class="mermaid">
+C4Context
+  title ……的系统上下文
+  Person(user, "使用者", "……")
+  System(core, "……", "本次讨论的对象")
+  System_Ext(ext, "外部系统", "……")
+  Rel(user, core, "……")
+  Rel(core, ext, "……")
+    </pre>
+    <figcaption>图 1：……</figcaption>
+  </figure>
+</section>
+
+<section class="zhao">
+  <h2>招熟：会用 <span class="tag">如何做</span></h2>
+
+  <h3>心法</h3>
+  <p>……正确的工作流概念和核心思想，先用一张流程图说清楚。</p>
+  <figure>
+    <pre class="mermaid">
+flowchart LR
+  A[……] --> B[……] --> C{……?}
+  C -- 是 --> D[……]
+  C -- 否 --> B
+    </pre>
+    <figcaption>图 2：……的工作流</figcaption>
+  </figure>
+
+  <h3>招式（5 到 9 项，按重要性排序）</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>#</th><th>招式</th><th>什么时候用</th><th>怎么用</th><th>类比（Java / C# / Python）</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>……</td><td>……</td><td>……</td><td>……</td></tr>
+      <tr><td>2</td><td>……</td><td>……</td><td>……</td><td>……</td></tr>
+      <tr><td>3</td><td>……</td><td>……</td><td>……</td><td>……</td></tr>
+      <tr><td>4</td><td>……</td><td>……</td><td>……</td><td>……</td></tr>
+      <tr><td>5</td><td>……</td><td>……</td><td>……</td><td>……</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>例子</h3>
+  <p>……一个能立刻上手的例子。</p>
+  <pre><code>……</code></pre>
+</section>
+
+<section class="jin">
+  <h2>懂劲：知道为什么 <span class="tag">为何如此</span></h2>
+
+  <h3>心法：原理</h3>
+  <p>……原理和数学直觉。架构类用架构图或 C4 容器图，交互类用时序图。</p>
+  <figure>
+    <pre class="mermaid">
+sequenceDiagram
+  participant A as ……
+  participant B as ……
+  A->>B: ……
+  B-->>A: ……
+    </pre>
+    <figcaption>图 3：……</figcaption>
+  </figure>
+
+  <h3>权衡与缺陷</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>维度</th><th>优点</th><th>代价 / 缺陷</th><th>失效条件或反例</th></tr></thead>
+    <tbody><tr><td>……</td><td>……</td><td>……</td><td>……</td></tr></tbody>
+  </table></div>
+
+  <h3>相邻概念</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>概念</th><th>相同点</th><th>关键区别</th><th>什么时候选它</th></tr></thead>
+    <tbody><tr><td>……</td><td>……</td><td>……</td><td>……</td></tr></tbody>
+  </table></div>
+
+  <h3>视角</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>角色</th><th>关心什么</th><th>怎么看它</th></tr></thead>
+    <tbody>
+      <tr><td>研究者</td><td>……</td><td>……</td></tr>
+      <tr><td>开发者</td><td>……</td><td>……</td></tr>
+      <tr><td>使用者</td><td>……</td><td>……</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>招式：调参、优化、调试（5 到 9 项）</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>#</th><th>招式</th><th>解决什么问题</th><th>做法</th></tr></thead>
+    <tbody><tr><td>1</td><td>……</td><td>……</td><td>……</td></tr></tbody>
+  </table></div>
+</section>
+
+<section class="shen">
+  <h2>神明：点到为止 <span class="tag">本质</span></h2>
+  <blockquote>……一两句话：背后的根源，以后可以往哪里探索。</blockquote>
+</section>
+
+<section>
+  <h2>我的看法</h2>
+  <div class="opinion">……</div>
+</section>
+
+<section>
+  <h2>待解决</h2>
+  <ul class="todo"><li>……</li></ul>
+</section>
+
+<section>
+  <h2>参考</h2>
+  <ul><li><a href="#">来源名称</a>，YYYY-MM-DD</li></ul>
+</section>
+
+</main>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
+<script>
+  const dark = document.documentElement.dataset.theme === "dark" ||
+    (document.documentElement.dataset.theme !== "light" && matchMedia("(prefers-color-scheme: dark)").matches);
+  mermaid.initialize({ startOnLoad: true, theme: dark ? "dark" : "neutral", securityLevel: "strict" });
+</script>
+</body>
+</html>
