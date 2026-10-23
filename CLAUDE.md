@@ -6,5 +6,6 @@
 - 未成形的内容放 `drafts/inbox/`，用 `drafts/_template.md`，文件名 `YYYY-MM-DD-主题.md`。不要把草稿直接写进 `src/`。
 - 外部动态雷达放 `radar/YYYY/YYYY-MM-DD.md`，用 `radar/_template.md`，每周三、周六各一期。
 - 草稿清理与归档规则见 `meta/workflow.md`，写作规范见 `meta/style-guide.md`，动笔前先读。
+- 我提出问题或概念要讨论时，按 `meta/roles.md` 的三个角色（风清扬讲解、周伯通提问、王语嫣记录）和工作流进行：在同一个 thread 里切换角色，不开子代理；每轮留一个问题给我，我说“收”后整理成草稿。
 - 修改章节时同步更新章节开头的状态与“最近更新”日期。
 - 提交前运行 `mdbook build` 确认能构建。

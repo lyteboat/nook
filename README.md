@@ -23,6 +23,7 @@ nook/
 │   ├── 2026/            按年份归档，每周三、周六各一期
 │   └── _template.md     雷达模板
 ├── meta/                写作规范与维护流程
+│   ├── roles.md         讨论角色与讨论流程
 │   ├── style-guide.md   写作规范
 │   └── workflow.md      从输入到成书的流程、草稿清理规则
 ├── book.toml            mdBook 配置
