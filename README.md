@@ -27,7 +27,7 @@ nook/
 │   ├── backlog.md       待研究清单
 │   ├── maintenance/     每周维护报告（HTML，每周日一份）
 │   ├── learner.md       我的背景与学习法（招熟、懂劲、神明）
-│   ├── roles.md         讨论角色与讨论流程
+│   ├── roles.md         讨论角色与报告流程
 │   ├── style-guide.md   写作规范
 │   └── workflow.md      从输入到成书的流程、草稿清理规则
 ├── book.toml            mdBook 配置
