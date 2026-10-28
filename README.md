@@ -6,6 +6,8 @@ Nook 是一本持续生长的书：**《Nook：我的 AI 指南针》**。它由
 
 书稿用 Markdown 写作，用 [mdBook](https://rust-lang.github.io/mdBook/) 生成网站，以后也可以导出 PDF 或整理出版。
 
+在线阅读：<https://lyteboat.github.io/nook/>。每次合并到 main，GitHub Actions 自动构建并发布到 GitHub Pages。
+
 ## 目录结构
 
 ```text
