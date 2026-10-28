@@ -2,8 +2,8 @@
 """生成 GitHub Pages 站点：本周简报首页、全部条目、每期雷达。
 
 扫描 radar/YYYY/YYYY-MM-DD.html，按日期倒序排列。
-- 首页（index.html）：最新一期的结论、数字、本期必懂、按方向分栏的速览，下面是往期。
-- 全部条目（items.html）：汇总每期附录 A 的条目总表，可搜索，可按方向、阶段、去向筛选。
+- 首页（index.html）：最新一期的结论、数字、本期必懂、按行业分栏的速览，下面是往期。
+- 全部条目（items.html）：汇总每期附录 A 的条目总表，可搜索，可按行业、阶段、技术标签筛选。
 - 每期页面带侧栏：上面是本期章节目录（取页面里带 id 的 h2），下面是按年、月分组的全部期数。
 每期页面补上 doctype、charset、viewport、侧栏和上一期、下一期链接，正文和样式不改。
 源文件不改。用法：python3 scripts/build_site.py [输出目录，默认 _site]
@@ -219,22 +219,27 @@ def digest(source):
             "xinfa": kv.get("心法", ""), "zhaoshi": kv.get("招式", ""),
         })
     items = []
-    tbl = re.search(r"条目总表.*?<tbody>(.*?)</tbody>", source, re.S)
-    for tr in re.findall(r"<tr>(.*?)</tr>", tbl.group(1) if tbl else "", re.S):
-        tds = re.findall(r"<td[^>]*>(.*?)</td>", tr, re.S)
-        if len(tds) < 6:
+    tbl = re.search(r"条目总表.*?<thead>(.*?)</thead>.*?<tbody>(.*?)</tbody>", source, re.S)
+    cols = [text_of(th) for th in re.findall(r"<th[^>]*>(.*?)</th>", tbl.group(1), re.S)] if tbl else []
+    for tr in re.findall(r"<tr>(.*?)</tr>", tbl.group(2) if tbl else "", re.S):
+        row = dict(zip(cols, re.findall(r"<td[^>]*>(.*?)</td>", tr, re.S)))
+        if "条目" not in row:
             continue
-        chip = re.search(r"chip (zs|dj|sm)", tds[2])
-        name = text_of(tds[3])
+        chip = re.search(r"chip (zs|dj|sm)", row.get("阶段", ""))
+        name = text_of(row["条目"])
+        # 早期的表头叫“方向”，还有一类“产品”，现在统一归到行业的“通用”。
+        industry = text_of(row.get("行业", row.get("方向", ""))) or "通用"
         items.append({
-            "date": text_of(tds[0]), "dir": text_of(tds[1]), "cls": chip.group(1) if chip else "",
-            "stage": text_of(tds[2]), "name": re.sub(r"^新\s*·\s*", "", name), "new": name.startswith("新"),
-            "src": text_of(tds[4]), "to": text_of(tds[5]),
+            "date": text_of(row.get("日期", "")), "ind": industry if industry in INDUSTRIES else "通用",
+            "cls": chip.group(1) if chip else "", "stage": text_of(row.get("阶段", "")),
+            "name": re.sub(r"^新\s*·\s*", "", name), "new": name.startswith("新"),
+            "tags": [t for t in re.split(r"[、,，/]\s*", text_of(row.get("标签", ""))) if t],
+            "src": text_of(row.get("来源", "")),
         })
     return {"thesis": thesis, "stats": stats, "musts": musts, "items": items}
 
 
-DIRS = [("通用", "通用"), ("金融", "金融"), ("医疗", "医疗"), ("产品", "AI 产品")]
+INDUSTRIES = ["通用", "金融", "医疗"]
 
 PAGE_CSS = """<style>
 :root{--bg:#f6f7f5;--surface:#fff;--ink:#1b2321;--muted:#5d6966;--line:#dde2df;--wash:#eef1ef;--accent:#1f5f58;--on-accent:#fff;
@@ -284,7 +289,8 @@ footer{max-width:1080px;margin:0 auto;padding:0 0 40px;font-size:13px;color:var(
 .legend{display:flex;gap:16px;font-size:12px;color:var(--muted);align-items:center}
 .legend span{display:inline-flex;gap:6px;align-items:center}
 .dot{display:inline-block;width:8px;height:8px;border-radius:50%;flex:none}.dot.zs{background:var(--zs)}.dot.dj{background:var(--dj)}.dot.sm{background:var(--sm)}
-.board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.tag{display:inline-block;font-size:11px;line-height:1.5;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 5px;margin-left:5px;white-space:nowrap}
 .col{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px}
 .col h3{font-size:16px;font-weight:600;display:flex;justify-content:space-between;margin-bottom:10px}
 .col ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
@@ -303,13 +309,13 @@ footer{max-width:1080px;margin:0 auto;padding:0 0 40px;font-size:13px;color:var(
 .row .lab{color:var(--muted);width:3em}
 .f{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:2px 12px;cursor:pointer}
 .f[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.f .num{font-size:11px;opacity:.6;margin-left:2px}
 .count{font-size:13px;color:var(--muted);margin-left:auto}
 table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);font-size:14px}
 th{text-align:left;font-size:12px;color:var(--muted);font-weight:600;background:var(--wash);padding:10px 14px}
 td{padding:11px 14px;border-top:1px solid var(--line);vertical-align:top}
 td.name{font-weight:500}
-.to{font-size:12px;border-radius:4px;padding:1px 7px;white-space:nowrap}
-.to.book{background:var(--accent);color:var(--on-accent)}.to.try{border:1px solid var(--accent);color:var(--accent)}.to.na{color:var(--muted)}
+td .tag{margin:0 4px 2px 0}
 @media (max-width:900px){.hero,.musts,.board{grid-template-columns:1fr}.hero h1{font-size:30px}.archive a{grid-template-columns:1fr;gap:2px}
   .top{gap:12px}.top nav{gap:14px}
   thead{display:none}table,tbody,tr,td{display:block}tr{border-top:1px solid var(--line);padding:8px 0}td{border:0;padding:2px 14px}}
@@ -359,12 +365,13 @@ def render_index(issues):
                       f'<span class="muted">只读这几条，也能抓住本期八成的价值</span></div><div class="musts">{cards}</div></section>')
     if dg["items"]:
         cols = []
-        for key, label in DIRS:
-            rows = [i for i in dg["items"] if i["dir"] == key]
+        for label in INDUSTRIES:
+            rows = [i for i in dg["items"] if i["ind"] == label]
             if not rows:
                 continue
             lis = "".join(f'<li><span class="dot {i["cls"]}"></span><span>{"<span class=new>新</span>" if i["new"] else ""}'
-                          f'{html.escape(i["name"])}</span></li>' for i in rows)
+                          f'{html.escape(i["name"])}{"".join(f"<span class=tag>{html.escape(t)}</span>" for t in i["tags"])}</span></li>'
+                          for i in rows)
             cols.append(f'<div class="col"><h3>{label}<span class="num muted">{len(rows)}</span></h3><ul>{lis}</ul></div>')
         blocks.append('<section><div class="sec-h"><h2>本期速览</h2><div class="legend"><span><i class="dot zs"></i>招熟</span>'
                       '<span><i class="dot dj"></i>懂劲</span><span><i class="dot sm"></i>神明</span></div>'
@@ -382,17 +389,16 @@ def render_index(issues):
 
 ITEMS_JS = """<script>
 (function(){
-  var D=JSON.parse(document.getElementById('data').textContent),sel={dir:{},stage:{},to:{}};
-  var cls={'建议入书':'book','建议试用':'try'},dirs={'产品':'AI 产品'};
+  var D=JSON.parse(document.getElementById('data').textContent),sel={ind:{},stage:{},tag:{}};
   function e(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-  function ok(k,v){var s=sel[k],any=false;for(var x in s)if(s[x]){any=true;if(x===v)return true}return !any}
+  function ok(k,vs){var s=sel[k],any=false;vs=[].concat(vs);for(var x in s)if(s[x]){any=true;if(vs.indexOf(x)>-1)return true}return !any}
   function draw(){
     var q=document.getElementById('q').value.trim().toLowerCase();
-    var rows=D.filter(function(i){return ok('dir',i.dir)&&ok('stage',i.stage)&&ok('to',i.to)&&(!q||(i.name+' '+i.src).toLowerCase().indexOf(q)>-1)});
+    var rows=D.filter(function(i){return ok('ind',i.ind)&&ok('stage',i.stage)&&ok('tag',i.tags)&&(!q||(i.name+' '+i.src+' '+i.tags.join(' ')).toLowerCase().indexOf(q)>-1)});
     document.getElementById('count').textContent='显示 '+rows.length+' / '+D.length+' 条';
-    document.getElementById('tb').innerHTML=rows.map(function(i){return '<tr><td class="num">'+e(i.date)+'</td><td>'+e(dirs[i.dir]||i.dir)+
+    document.getElementById('tb').innerHTML=rows.map(function(i){return '<tr><td class="num">'+e(i.date)+'</td><td>'+e(i.ind)+
       '</td><td><span class="chip '+i.cls+'">'+e(i.stage)+'</span></td><td class="name">'+(i.new?'<span class="new">新</span>':'')+e(i.name)+
-      '</td><td class="muted">'+e(i.src)+'</td><td><span class="to '+(cls[i.to]||'na')+'">'+e(i.to)+'</span></td><td><a class="num" href="'+i.href+'">'+e(i.issue.slice(5))+'</a></td></tr>'}).join('');
+      '</td><td>'+i.tags.map(function(t){return '<span class="tag">'+e(t)+'</span>'}).join('')+'</td><td class="muted">'+e(i.src)+'</td><td><a class="num" href="'+i.href+'">'+e(i.issue.slice(5))+'</a></td></tr>'}).join('');
   }
   [].forEach.call(document.querySelectorAll('.f'),function(b){b.addEventListener('click',function(){
     var on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);sel[b.dataset.k][b.dataset.v]=on;draw()})});
@@ -406,7 +412,11 @@ def render_items(issues):
     items = []
     for i in issues:
         items += [dict(x, issue=str(i["date"]), href=f'radar/{i["rel"]}') for x in i["digest"]["items"]]
-    book = sum(1 for x in items if x["to"] == "建议入书")
+    counts = {}
+    for x in items:
+        for t in x["tags"]:
+            counts[t] = counts.get(t, 0) + 1
+    tags = sorted(counts, key=lambda t: (-counts[t], t))
 
     def chips(key, vals):
         return "".join(f'<button type="button" class="f" aria-pressed="false" data-k="{key}" data-v="{v}">{lab}</button>' for v, lab in vals)
@@ -414,17 +424,17 @@ def render_items(issues):
     data = json.dumps(items, ensure_ascii=False).replace("</", "<\\/")
     body = (f'<section class="lib-h"><div><div class="eyebrow">全部条目</div><h1>历期雷达条目总表</h1></div>'
             f'<div class="kpi"><div><b>{len(issues)}</b><span>期雷达</span></div><div><b>{len(items)}</b><span>个条目</span></div>'
-            f'<div><b>{book}</b><span>建议入书</span></div></div></section>\n'
+            f'<div><b>{len(tags)}</b><span>个技术标签</span></div></div></section>\n'
             '<section><div class="filters">'
-            '<input id="q" type="search" placeholder="搜索条目或来源，比如 Agent、FSB、medRxiv" aria-label="搜索">'
-            f'<div class="row"><span class="lab">方向</span>{chips("dir", DIRS)}</div>'
-            f'<div class="row"><span class="lab">阶段</span>{chips("stage", [("招熟", "招熟"), ("懂劲", "懂劲"), ("神明", "神明")])}</div>'
-            f'<div class="row"><span class="lab">去向</span>{chips("to", [("建议入书", "建议入书"), ("建议试用", "建议试用"), ("待定", "待定"), ("不入书", "不入书")])}'
-            '<span class="count" id="count"></span></div></div>'
-            '<table><thead><tr><th>日期</th><th>方向</th><th>阶段</th><th>条目</th><th>来源</th><th>去向</th><th>所在期</th></tr></thead>'
+            '<input id="q" type="search" placeholder="搜索条目、标签或来源，比如 RAG、FSB、medRxiv" aria-label="搜索">'
+            f'<div class="row"><span class="lab">行业</span>{chips("ind", [(x, x) for x in INDUSTRIES])}</div>'
+            f'<div class="row"><span class="lab">阶段</span>{chips("stage", [("招熟", "招熟"), ("懂劲", "懂劲"), ("神明", "神明")])}'
+            '<span class="count" id="count"></span></div>'
+            f'<div class="row"><span class="lab">标签</span>{chips("tag", [(t, f"{t} <span class=num>{counts[t]}</span>") for t in tags])}</div></div>'
+            '<table><thead><tr><th>日期</th><th>行业</th><th>阶段</th><th>条目</th><th>标签</th><th>来源</th><th>所在期</th></tr></thead>'
             '<tbody id="tb"></tbody></table></section>\n'
             f'<script type="application/json" id="data">{data}</script>')
-    return page("全部条目 · Nook AI 雷达", "历期 AI 雷达的全部条目，可按方向、阶段、去向筛选。", "items", body, ITEMS_JS)
+    return page("全部条目 · Nook AI 雷达", "历期 AI 雷达的全部条目，可按行业、阶段、技术标签筛选。", "items", body, ITEMS_JS)
 
 
 def main():
