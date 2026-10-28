@@ -231,7 +231,7 @@ def digest(source):
             "ind": first(r'<span class="ind">(.*?)</span>', art),
             "refs": [("#" + aid, re.sub(r"^新\s*·\s*", "", first(r'<span class="name">(.*?)</span>', art)))],
             "fields": [(k, text_of(v)) for k, v in re.findall(r"<dt>(\w+)<small>.*?</small></dt>\s*<dd>(.*?)</dd>", art, re.S)],
-            "src": (re.search(r'<p class="src">来源：(.*?)</p>', art, re.S) or re.search("()", "")).group(1),
+            "src": (re.search(r'<p class="src">原文：(.*?)</p>', art, re.S) or re.search("()", "")).group(1),
         })
     concl = dict(re.findall(r'<details class="item" id="([^"]+)">\s*<summary><span class="c">(.*?)</span>', source, re.S))
     concl.update({m["refs"][0][0][1:]: m["title"] for m in musts})
@@ -397,8 +397,8 @@ def tag_link(t):
 def basis_html(fragment, href):
     """依据原样保留来源链接，其余标签去掉；正文内的锚点改成指向这一期。"""
     out = []
-    for part in re.split(r'(<a href="[^"]*">.*?</a>)', fragment, flags=re.S):
-        m = re.match(r'<a href="([^"]*)">(.*?)</a>$', part, re.S)
+    for part in re.split(r'(<a href="[^"]*"[^>]*>.*?</a>)', fragment, flags=re.S):
+        m = re.match(r'<a href="([^"]*)"[^>]*>(.*?)</a>$', part, re.S)
         if m:
             url = href + m.group(1) if m.group(1).startswith("#") else m.group(1)
             out.append(f'<a href="{html.escape(url)}">{html.escape(text_of(m.group(2)))}</a>')
@@ -454,7 +454,7 @@ def render_index(issues):
             + (f' <span class="ind">{html.escape(m["ind"])}</span>' if m["ind"] else "")
             + f'</div><h3><a href="{href}{m["refs"][0][0]}">{html.escape(m["title"])}</a></h3><dl class="w6">'
             + "".join(f'<dt>{k}<small>{FIELD_ZH.get(k, "")}</small></dt><dd>{html.escape(v)}</dd>' for k, v in m["fields"])
-            + '</dl>' + (f'<p class="src">来源：{basis_html(m["src"], href)}</p>' if m["src"] else "") + '</article>'
+            + '</dl>' + (f'<p class="src">原文：{basis_html(m["src"], href)}</p>' if m["src"] else "") + '</article>'
             for n, m in enumerate(dg["musts"], 1))
         two = any(m["track"] for m in dg["musts"])
         sub = "技术、产品各两条，每条一句结论加六栏"
