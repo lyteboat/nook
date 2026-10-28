@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
-"""生成 GitHub Pages 站点：雷达首页 + 每期雷达，带侧栏目录导航。
+"""生成 GitHub Pages 站点：本周简报首页、全部条目、每期雷达。
 
-扫描 radar/YYYY/YYYY-MM-DD.html，按日期倒序生成首页。首页和每期页面共用一个侧栏：
-上面是当前这一期的章节目录（取页面里带 id 的 h2），下面是按年、月分组的全部期数。
+扫描 radar/YYYY/YYYY-MM-DD.html，按日期倒序排列。
+- 首页（index.html）：最新一期的结论、数字、本期必懂、按方向分栏的速览，下面是往期。
+- 全部条目（items.html）：汇总每期附录 A 的条目总表，可搜索，可按方向、阶段、去向筛选。
+- 每期页面带侧栏：上面是本期章节目录（取页面里带 id 的 h2），下面是按年、月分组的全部期数。
 每期页面补上 doctype、charset、viewport、侧栏和上一期、下一期链接，正文和样式不改。
 源文件不改。用法：python3 scripts/build_site.py [输出目录，默认 _site]
 """
 import datetime
 import html
+import json
 import pathlib
 import re
 import sys
@@ -125,6 +128,7 @@ def collect():
             "rel": path.relative_to(RADAR).as_posix(),
             "title": first(r"<h1[^>]*>(.*?)</h1>", source) or f"Nook 雷达 {date}",
             "sections": sections(source),
+            "digest": digest(source),
             "source": source,
         })
     issues.sort(key=lambda i: i["date"], reverse=True)
@@ -140,7 +144,9 @@ def by_month(issues):
 
 def sidebar(issues, prefix, current=None):
     """prefix 是从当前页面回到站点根目录的相对路径。"""
-    parts = [f'<a class="nk-brand" href="{prefix}">Nook AI 雷达</a>']
+    parts = [f'<a class="nk-brand" href="{prefix}">Nook AI 雷达</a>',
+             f'<ul class="nk-toc"><li><a href="{prefix}"><span>本期简报</span></a></li>'
+             f'<li><a href="{prefix}items.html"><span>全部条目</span></a></li></ul>']
     if current and current["sections"]:
         parts.append('<div class="nk-label">本期目录</div><ul class="nk-toc">')
         for sid, no, title in current["sections"]:
@@ -190,88 +196,235 @@ def wrap_page(issues, n):
     return HEAD + body + "\n</html>\n"
 
 
-def render_index(issues):
-    blocks = []
-    for (y, mth), group in by_month(issues).items():
-        rows = []
-        for i in group:
-            d = i["date"]
-            latest = i is issues[0]
-            badge = '<span class="badge">最新</span>' if latest else ""
-            rows.append(
-                f'<li class="{"issue latest" if latest else "issue"}"><a href="radar/{i["rel"]}">'
-                f'<span class="date num">{d:%Y-%m-%d}<small>周{WEEKDAYS[d.weekday()]}</small></span>'
-                f'<span class="title">{html.escape(i["title"])}{badge}</span></a></li>'
-            )
-        blocks.append(f'<section><h2 id="m-{y}-{mth:02d}">{y} 年 {mth} 月</h2><ol>{"".join(rows)}</ol></section>')
-    body = "\n".join(blocks) if blocks else '<p class="empty">还没有雷达。</p>'
-    updated = issues[0]["date"].isoformat() if issues else "—"
-    return (INDEX.replace("{{FONTS}}", FONTS).replace("{{NAV_CSS}}", NAV_CSS)
-            .replace("{{NAV}}", sidebar(issues, "./")).replace("{{NAV_JS}}", NAV_JS)
-            .replace("{{ISSUES}}", body).replace("{{COUNT}}", str(len(issues))).replace("{{UPDATED}}", updated))
+def digest(source):
+    """从一期雷达里取首页要用的结构化内容：一句话结论、数字、本期必懂、附录 A 的条目总表。
+
+    雷达按模板写，这些块都有固定的 class；某一期缺了哪块，就跳过哪块。
+    """
+    m = re.search(r'<p class="thesis">(.*?)</p>', source, re.S)
+    thesis = text_of(m.group(1)) if m else ""
+    head = re.search(r'<div class="stats">((?:\s*<div>.*?</div>)+)', source, re.S)
+    stats = [(text_of(b), text_of(s)) for b, s in
+             re.findall(r'<div><b>(.*?)</b><span>(.*?)</span></div>', head.group(1) if head else "")]
+    musts = []
+    for art in re.findall(r'<article class="must">(.*?)</article>', source, re.S):
+        h3 = re.search(r"<h3>(.*?)</h3>", art, re.S)
+        if not h3:
+            continue
+        chip = re.search(r'chip (zs|dj|sm)">(.*?)<', h3.group(1))
+        kv = dict((text_of(k), text_of(v)) for k, v in re.findall(r"<dt>(.*?)</dt>\s*<dd>(.*?)</dd>", art, re.S))
+        musts.append({
+            "title": text_of(re.sub(r'<span class="chip.*?</span>', "", h3.group(1))),
+            "cls": chip.group(1) if chip else "", "stage": chip.group(2) if chip else "",
+            "xinfa": kv.get("心法", ""), "zhaoshi": kv.get("招式", ""),
+        })
+    items = []
+    tbl = re.search(r"条目总表.*?<tbody>(.*?)</tbody>", source, re.S)
+    for tr in re.findall(r"<tr>(.*?)</tr>", tbl.group(1) if tbl else "", re.S):
+        tds = re.findall(r"<td[^>]*>(.*?)</td>", tr, re.S)
+        if len(tds) < 6:
+            continue
+        chip = re.search(r"chip (zs|dj|sm)", tds[2])
+        name = text_of(tds[3])
+        items.append({
+            "date": text_of(tds[0]), "dir": text_of(tds[1]), "cls": chip.group(1) if chip else "",
+            "stage": text_of(tds[2]), "name": re.sub(r"^新\s*·\s*", "", name), "new": name.startswith("新"),
+            "src": text_of(tds[4]), "to": text_of(tds[5]),
+        })
+    return {"thesis": thesis, "stats": stats, "musts": musts, "items": items}
 
 
-INDEX = """<!doctype html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Nook AI 雷达</title>
-<meta name="description" content="每周三、周六各一期，追踪 AI 模型、Agent、数据与行业落地的关键动态。">
-{{FONTS}}<style>
-:root{
-  --bg:#f6f7f5; --surface:#ffffff; --ink:#1b2321; --muted:#5d6966; --line:#dde2df; --wash:#eef1ef; --accent:#1f5f58;
-  --f-display:"Noto Serif SC","Songti SC","SimSun",serif;
-  --f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
-  --f-data:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
-}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#121715; --surface:#1a201e; --ink:#e3e9e6; --muted:#9aa6a2; --line:#2c3532; --wash:#202825; --accent:#6fc1b5; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#121715; --surface:#1a201e; --ink:#e3e9e6; --muted:#9aa6a2; --line:#2c3532; --wash:#202825; --accent:#6fc1b5; color-scheme:dark}
+DIRS = [("通用", "通用"), ("金融", "金融"), ("医疗", "医疗"), ("产品", "AI 产品")]
+
+PAGE_CSS = """<style>
+:root{--bg:#f6f7f5;--surface:#fff;--ink:#1b2321;--muted:#5d6966;--line:#dde2df;--wash:#eef1ef;--accent:#1f5f58;--on-accent:#fff;
+--zs:#2f7d5b;--zs-bg:#e3f1ea;--dj:#3d55a3;--dj-bg:#e6eaf7;--sm:#a1701c;--sm-bg:#f6ecd8;
+--f-display:"Noto Serif SC","Songti SC","SimSun",serif;--f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+--f-data:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#121715;--surface:#1a201e;--ink:#e3e9e6;--muted:#9aa6a2;--line:#2c3532;
+--wash:#202825;--accent:#6fc1b5;--on-accent:#0f1513;--zs:#6cc59a;--zs-bg:#1c3328;--dj:#9aaef0;--dj-bg:#232b45;--sm:#e0b45e;--sm-bg:#3a2f1a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121715;--surface:#1a201e;--ink:#e3e9e6;--muted:#9aa6a2;--line:#2c3532;
+--wash:#202825;--accent:#6fc1b5;--on-accent:#0f1513;--zs:#6cc59a;--zs-bg:#1c3328;--dj:#9aaef0;--dj-bg:#232b45;--sm:#e0b45e;--sm-bg:#3a2f1a;color-scheme:dark}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.wrap{max-width:880px;margin:0 auto;padding-block:48px 64px;display:grid;gap:32px}
-header{display:grid;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:22px}
-.eyebrow{font-family:var(--f-data);font-size:12px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
-h1{font-family:var(--f-display);font-size:34px;font-weight:900;margin:0;line-height:1.35}
-h2{font-family:var(--f-display);font-size:18px;font-weight:600;margin:0 0 12px;color:var(--muted)}
-header p{margin:0;color:var(--muted)}
-.meta{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:13px;color:var(--muted)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.75 var(--f-body);
+  padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+a{color:var(--accent)}
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.35}
+p{margin:0}
 .num{font-family:var(--f-data);font-variant-numeric:tabular-nums}
-ol{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-.issue a{display:grid;grid-template-columns:8.5em 1fr;gap:16px;align-items:baseline;padding:14px 18px;
-  background:var(--surface);border:1px solid var(--line);border-radius:6px;color:inherit;text-decoration:none}
-.issue a:hover{border-color:var(--accent)}
-.issue a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.latest a{border-left:4px solid var(--accent);padding-block:20px}
-.latest .title{font-size:20px}
-.date{font-size:13px;color:var(--muted);display:flex;gap:8px}
-.date small{font-family:var(--f-body)}
-.title{font-family:var(--f-display);font-size:17px;font-weight:600;line-height:1.5}
-.badge{display:inline-block;margin-left:10px;font-family:var(--f-body);font-size:12px;font-weight:700;color:var(--accent);
-  background:var(--wash);border-radius:999px;padding:0 9px;vertical-align:3px}
+.muted{color:var(--muted)}
+.eyebrow{font:600 12px/1.4 var(--f-data);letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+.chip{display:inline-flex;font-size:12px;font-weight:700;padding:1px 9px;border-radius:999px;white-space:nowrap;letter-spacing:.04em}
+.zs{color:var(--zs);background:var(--zs-bg)}.dj{color:var(--dj);background:var(--dj-bg)}.sm{color:var(--sm);background:var(--sm-bg)}
+.new{font-size:11px;font-weight:700;color:var(--accent);margin-right:5px}
+.top{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:24px;padding:18px 0;border-bottom:1px solid var(--line)}
+.top>a{font-family:var(--f-display);font-size:19px;font-weight:900;color:var(--ink);text-decoration:none}
+.top nav{display:flex;gap:20px;font-size:14px;margin-left:auto}
+.top nav a{color:var(--muted);text-decoration:none}.top nav a[aria-current]{color:var(--ink);font-weight:700}
+main{max-width:1080px;margin:0 auto;padding:40px 0 64px;display:grid;gap:52px}
+.sec-h{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 14px;margin-bottom:18px}.sec-h h2{font-size:24px;font-weight:900}
 .empty{color:var(--muted)}
-footer{font-size:13px;color:var(--muted)}
-footer a{color:var(--accent)}
-@media (max-width:560px){.issue a{grid-template-columns:1fr;gap:4px} h1{font-size:28px}}
+footer{max-width:1080px;margin:0 auto;padding:0 0 40px;font-size:13px;color:var(--muted)}
+/* 首页：本周简报 */
+.hero{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:40px;align-items:end}
+.hero h1{font-size:40px;font-weight:900;margin:10px 0 18px}
+.thesis{font-family:var(--f-display);font-size:19px;font-weight:600;line-height:1.7;padding-left:16px;border-left:4px solid var(--accent)}
+.cta{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+.btn{display:inline-block;padding:9px 18px;border-radius:6px;text-decoration:none;font-weight:700;font-size:14px}
+.btn.pri{background:var(--accent);color:var(--on-accent)}.btn.sec{border:1px solid var(--line);color:var(--ink);background:var(--surface)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.stats div{background:var(--surface);padding:16px 18px}.stats b{display:block;font:600 28px/1.2 var(--f-data)}.stats span{font-size:12px;color:var(--muted)}
+.musts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.must{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:8px;padding:20px;display:grid;gap:12px;align-content:start}
+.must .no{font:600 13px var(--f-data);color:var(--muted);display:flex;gap:8px;align-items:center}
+.must h3{font-size:18px;font-weight:600}
+.must dl{margin:0}.must dt{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.08em}
+.must dd{margin:2px 0 10px;font-size:14px;line-height:1.7}
+.must .more{font-size:13px}
+.legend{display:flex;gap:16px;font-size:12px;color:var(--muted);align-items:center}
+.legend span{display:inline-flex;gap:6px;align-items:center}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;flex:none}.dot.zs{background:var(--zs)}.dot.dj{background:var(--dj)}.dot.sm{background:var(--sm)}
+.board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.col{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px}
+.col h3{font-size:16px;font-weight:600;display:flex;justify-content:space-between;margin-bottom:10px}
+.col ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.col li{display:grid;grid-template-columns:8px 1fr;gap:8px;font-size:13px;line-height:1.5}.col li .dot{margin-top:6px}
+.archive{display:grid;gap:8px}
+.archive a{display:grid;grid-template-columns:10em 1fr auto;gap:16px;padding:12px 16px;background:var(--surface);border:1px solid var(--line);border-radius:6px;color:inherit;text-decoration:none}
+.archive a:hover{border-color:var(--accent)}
+.archive .m{font-family:var(--f-display);font-weight:600;color:var(--muted);margin:10px 0 2px}
+/* 全部条目 */
+.kpi{display:flex;gap:28px}.kpi div{display:grid}.kpi b{font:600 26px/1.2 var(--f-data)}.kpi span{font-size:12px;color:var(--muted)}
+.lib-h{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:20px}
+.lib-h h1{font-size:34px;font-weight:900;margin-top:8px}
+.filters{display:grid;gap:10px;position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 0;border-bottom:1px solid var(--line)}
+.filters input{width:100%;font:inherit;padding:9px 14px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:13px}
+.row .lab{color:var(--muted);width:3em}
+.f{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:2px 12px;cursor:pointer}
+.f[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.count{font-size:13px;color:var(--muted);margin-left:auto}
+table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);font-size:14px}
+th{text-align:left;font-size:12px;color:var(--muted);font-weight:600;background:var(--wash);padding:10px 14px}
+td{padding:11px 14px;border-top:1px solid var(--line);vertical-align:top}
+td.name{font-weight:500}
+.to{font-size:12px;border-radius:4px;padding:1px 7px;white-space:nowrap}
+.to.book{background:var(--accent);color:var(--on-accent)}.to.try{border:1px solid var(--accent);color:var(--accent)}.to.na{color:var(--muted)}
+@media (max-width:900px){.hero,.musts,.board{grid-template-columns:1fr}.hero h1{font-size:30px}.archive a{grid-template-columns:1fr;gap:2px}
+  .top{gap:12px}.top nav{gap:14px}
+  thead{display:none}table,tbody,tr,td{display:block}tr{border-top:1px solid var(--line);padding:8px 0}td{border:0;padding:2px 14px}}
 </style>
-{{NAV_CSS}}</head>
-<body>
-{{NAV}}<div class="wrap">
-<header>
-  <div class="eyebrow">Nook · 每周三、周六更新</div>
-  <h1>Nook AI 雷达</h1>
-  <p>追踪模型、Agent、数据与金融、医疗落地的关键动态。</p>
-  <div class="meta"><span>共 <b class="num">{{COUNT}}</b> 期</span><span>最近更新 <span class="num">{{UPDATED}}</span></span></div>
-</header>
-{{ISSUES}}
-<footer>源文件在 <a href="https://github.com/lyteboat/nook">GitHub · lyteboat/nook</a>。</footer>
-</div>
-{{NAV_JS}}</body>
-</html>
 """
+
+
+CURRENT = ' aria-current="page"'
+
+
+def page(title, desc, current, body, script=""):
+    nav = "".join(
+        f'<a href="{href}"{CURRENT if key == current else ""}>{label}</a>'
+        for key, href, label in [("home", "./", "本期"), ("items", "items.html", "全部条目"), ("archive", "./#archive", "往期")])
+    return (HEAD + f"<title>{title}</title>\n"
+            f'<meta name="description" content="{desc}">\n{FONTS}{PAGE_CSS}</head>\n<body>\n'
+            f'<div class="top"><a href="./">Nook AI 雷达</a><nav aria-label="栏目">{nav}</nav></div>\n'
+            f"<main>\n{body}\n</main>\n"
+            f'<footer>每周三、周六更新。源文件在 <a href="https://github.com/lyteboat/nook">GitHub · lyteboat/nook</a>。</footer>\n'
+            f"{script}</body>\n</html>\n")
+
+
+def render_index(issues):
+    if not issues:
+        return page("Nook AI 雷达", "", "home", '<p class="empty">还没有雷达。</p>')
+    latest = issues[0]
+    dg, d = latest["digest"], latest["date"]
+    href = f'radar/{latest["rel"]}'
+    stats = "".join(f'<div><b>{html.escape(b)}</b><span>{html.escape(s)}</span></div>' for b, s in dg["stats"])
+    thesis = f'<p class="thesis">{html.escape(dg["thesis"])}</p>' if dg["thesis"] else ""
+    hero = (f'<section class="hero"><div><div class="eyebrow">本期 · {d} 周{WEEKDAYS[d.weekday()]}</div>'
+            f'<h1>{html.escape(latest["title"])}</h1>{thesis}'
+            f'<div class="cta"><a class="btn pri" href="{href}">读完整一期</a>'
+            + ('<a class="btn sec" href="#must">只读 3 分钟版</a>' if dg["musts"] else "")
+            + f'</div></div>{f"<div class=stats>{stats}</div>" if stats else ""}</section>')
+    blocks = [hero]
+    if dg["musts"]:
+        cards = "".join(
+            f'<article class="must"><div class="no">{n:02d}'
+            + (f' <span class="chip {m["cls"]}">{html.escape(m["stage"])}</span>' if m["cls"] else "")
+            + f'</div><h3>{html.escape(m["title"])}</h3><dl>'
+            + (f'<dt>心法</dt><dd>{html.escape(m["xinfa"])}</dd>' if m["xinfa"] else "")
+            + (f'<dt>招式</dt><dd>{html.escape(m["zhaoshi"])}</dd>' if m["zhaoshi"] else "")
+            + f'</dl><a class="more" href="{href}#s-must">看依据和来源 →</a></article>'
+            for n, m in enumerate(dg["musts"], 1))
+        blocks.append(f'<section id="must"><div class="sec-h"><h2>本期必懂</h2>'
+                      f'<span class="muted">只读这几条，也能抓住本期八成的价值</span></div><div class="musts">{cards}</div></section>')
+    if dg["items"]:
+        cols = []
+        for key, label in DIRS:
+            rows = [i for i in dg["items"] if i["dir"] == key]
+            if not rows:
+                continue
+            lis = "".join(f'<li><span class="dot {i["cls"]}"></span><span>{"<span class=new>新</span>" if i["new"] else ""}'
+                          f'{html.escape(i["name"])}</span></li>' for i in rows)
+            cols.append(f'<div class="col"><h3>{label}<span class="num muted">{len(rows)}</span></h3><ul>{lis}</ul></div>')
+        blocks.append('<section><div class="sec-h"><h2>本期速览</h2><div class="legend"><span><i class="dot zs"></i>招熟</span>'
+                      '<span><i class="dot dj"></i>懂劲</span><span><i class="dot sm"></i>神明</span></div>'
+                      f'<a href="items.html" style="margin-left:auto;font-size:14px">在全部条目里筛选 →</a></div>'
+                      f'<div class="board">{"".join(cols)}</div></section>')
+    arch = []
+    for (y, mth), group in by_month(issues).items():
+        arch.append(f'<div class="m">{y} 年 {mth} 月</div>')
+        arch += [f'<a href="radar/{i["rel"]}"><span class="num muted">{i["date"]} 周{WEEKDAYS[i["date"].weekday()]}</span>'
+                 f'<span>{html.escape(i["title"])}</span><span class="muted">→</span></a>' for i in group]
+    blocks.append(f'<section id="archive"><div class="sec-h"><h2>往期</h2><span class="muted">共 {len(issues)} 期</span></div>'
+                  f'<div class="archive">{"".join(arch)}</div></section>')
+    return page("Nook AI 雷达", "每周三、周六各一期，追踪 AI 模型、Agent、数据与行业落地的关键动态。", "home", "\n".join(blocks))
+
+
+ITEMS_JS = """<script>
+(function(){
+  var D=JSON.parse(document.getElementById('data').textContent),sel={dir:{},stage:{},to:{}};
+  var cls={'建议入书':'book','建议试用':'try'},dirs={'产品':'AI 产品'};
+  function e(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function ok(k,v){var s=sel[k],any=false;for(var x in s)if(s[x]){any=true;if(x===v)return true}return !any}
+  function draw(){
+    var q=document.getElementById('q').value.trim().toLowerCase();
+    var rows=D.filter(function(i){return ok('dir',i.dir)&&ok('stage',i.stage)&&ok('to',i.to)&&(!q||(i.name+' '+i.src).toLowerCase().indexOf(q)>-1)});
+    document.getElementById('count').textContent='显示 '+rows.length+' / '+D.length+' 条';
+    document.getElementById('tb').innerHTML=rows.map(function(i){return '<tr><td class="num">'+e(i.date)+'</td><td>'+e(dirs[i.dir]||i.dir)+
+      '</td><td><span class="chip '+i.cls+'">'+e(i.stage)+'</span></td><td class="name">'+(i.new?'<span class="new">新</span>':'')+e(i.name)+
+      '</td><td class="muted">'+e(i.src)+'</td><td><span class="to '+(cls[i.to]||'na')+'">'+e(i.to)+'</span></td><td><a class="num" href="'+i.href+'">'+e(i.issue.slice(5))+'</a></td></tr>'}).join('');
+  }
+  [].forEach.call(document.querySelectorAll('.f'),function(b){b.addEventListener('click',function(){
+    var on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);sel[b.dataset.k][b.dataset.v]=on;draw()})});
+  document.getElementById('q').addEventListener('input',draw);draw();
+})();
+</script>
+"""
+
+
+def render_items(issues):
+    items = []
+    for i in issues:
+        items += [dict(x, issue=str(i["date"]), href=f'radar/{i["rel"]}') for x in i["digest"]["items"]]
+    book = sum(1 for x in items if x["to"] == "建议入书")
+
+    def chips(key, vals):
+        return "".join(f'<button type="button" class="f" aria-pressed="false" data-k="{key}" data-v="{v}">{lab}</button>' for v, lab in vals)
+
+    data = json.dumps(items, ensure_ascii=False).replace("</", "<\\/")
+    body = (f'<section class="lib-h"><div><div class="eyebrow">全部条目</div><h1>历期雷达条目总表</h1></div>'
+            f'<div class="kpi"><div><b>{len(issues)}</b><span>期雷达</span></div><div><b>{len(items)}</b><span>个条目</span></div>'
+            f'<div><b>{book}</b><span>建议入书</span></div></div></section>\n'
+            '<section><div class="filters">'
+            '<input id="q" type="search" placeholder="搜索条目或来源，比如 Agent、FSB、medRxiv" aria-label="搜索">'
+            f'<div class="row"><span class="lab">方向</span>{chips("dir", DIRS)}</div>'
+            f'<div class="row"><span class="lab">阶段</span>{chips("stage", [("招熟", "招熟"), ("懂劲", "懂劲"), ("神明", "神明")])}</div>'
+            f'<div class="row"><span class="lab">去向</span>{chips("to", [("建议入书", "建议入书"), ("建议试用", "建议试用"), ("待定", "待定"), ("不入书", "不入书")])}'
+            '<span class="count" id="count"></span></div></div>'
+            '<table><thead><tr><th>日期</th><th>方向</th><th>阶段</th><th>条目</th><th>来源</th><th>去向</th><th>所在期</th></tr></thead>'
+            '<tbody id="tb"></tbody></table></section>\n'
+            f'<script type="application/json" id="data">{data}</script>')
+    return page("全部条目 · Nook AI 雷达", "历期 AI 雷达的全部条目，可按方向、阶段、去向筛选。", "items", body, ITEMS_JS)
 
 
 def main():
@@ -279,6 +432,7 @@ def main():
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / ".nojekyll").write_text("")
     (OUT / "index.html").write_text(render_index(issues), encoding="utf-8")
+    (OUT / "items.html").write_text(render_items(issues), encoding="utf-8")
     for n, i in enumerate(issues):
         dest = OUT / "radar" / i["rel"]
         dest.parent.mkdir(parents=True, exist_ok=True)
