@@ -1,355 +1,139 @@
 <title>Nook 雷达 YYYY-MM-DD</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <!--
 Nook AI 雷达模板（HTML）。每期复制本文件为 radar/YYYY/YYYY-MM-DD.html，替换占位内容，样式不要改。
-范例：radar/2026/2026-10-24.html（首期）。交付：只产出文件，复制到 /mnt/project-files/nook/radar/ 附在回复里；不自动发布 artifact，Yue 要求时才发布。
+范例：radar/2026/2026-10-24.html。交付：只产出文件，复制到 /mnt/project-files/nook/radar/ 附在回复里；不自动发布 artifact，Yue 要求时才发布。
 
-读者：Yue。传统工程背景（Java、C#、Python），做过一些后训练，正在做金融、医疗方向的 AI 产品。
-学法：招熟 → 懂劲 → 神明。先抓住 20% 最关键的内容，覆盖 80% 的场景。
+读者：Yue，传统工程背景，做金融、医疗方向的 AI 产品。目标是降低阅读和理解成本：读者只看结论和事实，不看编辑过程。
 
 写法：
-1. 编辑流程（质量要求最高的一步）：先写附录 A 的条目总表，每条归到一条线：讲模型、方法、工具、标准的归“技术”，讲产品设计和业务价值的归“产品”，拿不准就问“这条改变的是怎么做出来，还是做给谁、值多少”。再由“主编”和“Agent 专家”两个角色逐篇读原文（不是只读标题和导语），按所在线的四个维度各打 1 到 5 分。
-   技术线：影响 35%（会不会改变业界对技术方向的判断，重要讲座、文章也算）、创新 25%（原来做不到的事有没有了思路）、实践 25%（有没有开源代码、标准、库、轮子）、热度 15%（大家是不是都在关注）。总分 = 加权和 × 20 × 证据系数，厂商自报或只读到导语乘 0.8，预印本或没重读原文乘 0.9，其余 1.0。
-   产品线：洞见 35%（有没有新的设计发现、原则或价值判断）、价值 25%（对用户或业务的价值有多大、能不能算清）、证据 25%（有没有用户数据、对照实验、经营数字）、可迁移 15%（能不能用到金融、医疗产品上）。总分 = 加权和 × 20，证据已是一个维度，不另乘系数。
-   总分取整，同分先比第一维度，再比第二维度。“编辑部打分”一节分技术、产品两张表，各按总分降序，每条一句评语；原文抓不到的条目在表下注明。然后收敛：两条线各取总分前二进本期必看，共四张卡；“主编的收敛”一段说明这四条有没有共同点；h1 和一句话结论从这段收敛出来，每个判断带一个最硬的事实。确实没有共同点，就如实写“本周没有统一主线”，不为凑主线改分或挑条目。必看每条按顺序写六项：轨道（技术或产品）、条目（<a href="#i-slug"> 链到正文）、评分（总分和四项分）、依据（原文里最硬的数字，带来源链接和日期）、心法（一到两句原理，不超过 60 字）、招式（一到三个动作，落到金融、医疗产品上）。
-2. 每条信号标阶段：.chip.zs 招熟（能马上用，回答怎么做）、.chip.dj 懂劲（原理与权衡，回答为什么）、.chip.sm 神明（长期方向，只写一两句）。招熟和懂劲为主，神明最多一两条。
-3. 术语首次出现写成“中文（English）”。工程概念可以用 Java、C#、Python 的类比讲，基础概念不解释。
-4. 标题即结论：h1 和 h3 写成判断句；h1 取自“主编的收敛”。由宏观到微观：格局与监管 → 平台与工具 → 金融 → 医疗 → 产品：设计与价值 → 值得一读 → 本期招式 → 神明。
-5. 能画就画：有数字的对比用条形图（.track），一周内的事件用时间线（SVG），分层结构用分层图（SVG），阶段分布必画（.bar + .matrix）。图表文字颜色只用 CSS 变量，深浅色都要可读。
-6. 每个判断都有依据：机构、数字、日期、链接。转引的内容要找到原作者（博客的链接帖、周刊里的摘录常常是别人的文章）；二手转述的数字要对照原始榜单，注明版本、是否开工具，前后数字口径不同就写明。推断写在 .view 里，以“我的看法”开头。厂商数据注明“厂商自报”，付费内容标 💰 并只依据免费部分。
-7. 宁缺毋滥：全期 10 到 15 条；本期招式 5 到 9 项；没有内容的分区整节删掉，编号顺延。
-8. 中文按 tuiqiao 技能写：不用破折号，不堆形容词，数字说话。交付前按 tuiqiao 的验收清单通读全期，重点是标题、一句话结论、必看卡和各节的“我的看法”，并用它的扫描脚本 zh_style_scan.py 扫一遍。一句话结论只写判断和最硬的事实，不写“技术线和产品线的前二”这类过程交代。
-9. 附录 A 条目总表是站点“全部条目”页的数据源：“行业”只填通用、金融、医疗之一；“轨道”只填技术、产品之一；“总分”填编辑部打分的总分；“标签”填一到三个技术标签，用顿号分隔，从 radar/README.md 的标签词表里选，词表里没有的先补进词表。“条目”单元格写成 <a href="#i-slug">条目</a>，并在正文里讲这一条的元素（tr、li、p 或 div）上加同名 id="i-slug"，站点首页和全部条目页点条目会跳到这里；几条共用一段正文时可以指向同一个 id。
+1. 每个条目固定为一句结论加六栏：What 是什么、Why 为什么重要、How 怎么做的、Who 谁、When 何时、Action 我们做什么。结论写成判断句，读者只读结论也能知道发生了什么。六栏各一到三句，不解释常识，不写铺垫。局限写在 How 末尾，厂商自报、预印本这类状态写在 When。
+2. 页面只有五块：标题和一句话结论、本期必看（技术、产品各两条，展开）、技术和产品的其余条目（按重要程度排序，折叠成一行结论，点开看六栏）、本期行动、附录 A 条目总表。不写编辑流程、打分说明、阶段图、“我的看法”和长图注。
+3. 编辑流程是内部工作，结果写进同名的 YYYY-MM-DD.notes.html（不发布）：先归线（讲模型、方法、工具、标准的归技术，讲产品设计和业务价值的归产品），再逐篇读原文打分。技术线：影响 35%、创新 25%、实践 25%、热度 15%，乘证据系数（厂商自报或只读到导语 0.8，预印本或没重读原文 0.9，其余 1.0）；产品线：洞见 35%、价值 25%、证据 25%、可迁移 15%。总分 = 加权和 × 20，取整。两条线各取前二进必看，其余按总分排序。h1 和一句话结论从四条必看收敛出来；没有共同点就如实写，不为凑主线改分。原文核对、草稿盘点、信息源表现也记在 notes 里。
+4. 每条标阶段：.chip.zs 招熟（能马上用）、.chip.dj 懂劲（要想明白的原理）、.chip.sm 神明（长期方向）。行业不是通用时加 <span class="ind">金融</span> 或医疗。
+5. 每个事实都有出处：机构、数字、日期、链接。转引的内容找到原作者；二手转述的数字对照原始来源。付费内容只依据免费部分。
+6. 宁缺毋滥：全期 10 到 15 条，本期行动 5 到 9 项。
+7. 中文按 tuiqiao 技能写，交付前按它的验收清单通读全期，并用扫描脚本 zh_style_scan.py 扫一遍。一句话结论只写判断和最硬的事实，不写过程交代。
+8. 附录 A 条目总表是站点的数据源：“行业”只填通用、金融、医疗；“轨道”只填技术、产品；“总分”填 notes 里的总分；“标签”一到三个，从 radar/README.md 的词表里选。“条目”单元格写成 <a href="#i-slug">，正文里这一条的 article 或 details 用同名 id。
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
-/* 版式：一列简报，宽 880px；先给结论和“必看”，再由宏观到微观展开。三阶段用固定的三种颜色贯穿全页。 */
+/* 版式：一列简报，宽 880px。每个条目一句结论加六栏：What、Why、How、Who、When、Action。 */
 :root{
   --bg:#f6f7f5; --surface:#ffffff; --ink:#1b2321; --muted:#5d6966; --line:#dde2df; --wash:#eef1ef;
-  --accent:#1f5f58;
-  --zs:#2f7d5b; --zs-bg:#e3f1ea;      /* 招熟 */
-  --dj:#3d55a3; --dj-bg:#e6eaf7;      /* 懂劲 */
-  --sm:#a1701c; --sm-bg:#f6ecd8;      /* 神明 */
-  --warn:#b4462f; --ok:#2f7d5b;
+  --accent:#1f5f58; --prod:#8a4b9c;
+  --zs:#2f7d5b; --zs-bg:#e3f1ea; --dj:#3d55a3; --dj-bg:#e6eaf7; --sm:#a1701c; --sm-bg:#f6ecd8;
   --f-display:"Noto Serif SC","Songti SC","SimSun",serif;
   --f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
   --f-data:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#121715; --surface:#1a201e; --ink:#e3e9e6; --muted:#9aa6a2; --line:#2c3532; --wash:#202825;
-  --accent:#6fc1b5; --zs:#6cc59a; --zs-bg:#1c3328; --dj:#9aaef0; --dj-bg:#232b45; --sm:#e0b45e; --sm-bg:#3a2f1a;
-  --warn:#ef8a73; --ok:#6cc59a; color-scheme:dark}}
+  --accent:#6fc1b5; --prod:#d3a0e3; --zs:#6cc59a; --zs-bg:#1c3328; --dj:#9aaef0; --dj-bg:#232b45; --sm:#e0b45e; --sm-bg:#3a2f1a; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#121715; --surface:#1a201e; --ink:#e3e9e6; --muted:#9aa6a2; --line:#2c3532; --wash:#202825;
-  --accent:#6fc1b5; --zs:#6cc59a; --zs-bg:#1c3328; --dj:#9aaef0; --dj-bg:#232b45; --sm:#e0b45e; --sm-bg:#3a2f1a;
-  --warn:#ef8a73; --ok:#6cc59a; color-scheme:dark}
-body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;
+  --accent:#6fc1b5; --prod:#d3a0e3; --zs:#6cc59a; --zs-bg:#1c3328; --dj:#9aaef0; --dj-bg:#232b45; --sm:#e0b45e; --sm-bg:#3a2f1a; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .wrap{max-width:880px;margin:0 auto;padding-block:40px 64px;display:grid;gap:44px}
-h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.35}
-h1{font-size:34px;font-weight:900;letter-spacing:.01em}
-h2{font-size:23px;font-weight:900;display:flex;gap:12px;align-items:baseline}
-h2 .no{font-family:var(--f-data);font-size:13px;color:var(--muted);font-weight:600;letter-spacing:.08em}
-h3{font-size:18px;font-weight:600}
-p{margin:0}
-a{color:var(--accent);text-underline-offset:3px}
-a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-section{display:grid;gap:18px;min-width:0}
-.eyebrow{font-family:var(--f-data);font-size:12px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
-.muted{color:var(--muted)}
-.small{font-size:13px}
-.num{font-family:var(--f-data);font-variant-numeric:tabular-nums}
-
-/* 刊头 */
-header{display:grid;gap:14px;border-bottom:2px solid var(--ink);padding-bottom:22px}
-.meta{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:13px;color:var(--muted)}
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:6px;overflow:hidden}
-.stats div{background:var(--surface);padding:12px 14px;display:grid;gap:2px}
-.stats b{font-family:var(--f-data);font-size:24px;font-weight:600;font-variant-numeric:tabular-nums}
-.stats span{font-size:12px;color:var(--muted)}
-.note{font-size:13px;color:var(--muted);background:var(--wash);padding:8px 12px;border-radius:4px}
-
-/* 结论 */
-.thesis{font-family:var(--f-display);font-size:21px;font-weight:600;line-height:1.6;padding-left:18px;border-left:4px solid var(--accent)}
-
-/* 阶段标签 */
-.chip{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;padding:1px 9px;border-radius:999px;white-space:nowrap;letter-spacing:.04em;vertical-align:2px}
-.zs{color:var(--zs);background:var(--zs-bg)} .dj{color:var(--dj);background:var(--dj-bg)} .sm{color:var(--sm);background:var(--sm-bg)}
-.pay{font-size:12px;color:var(--sm);white-space:nowrap}
-
-/* 阶段图例与分布 */
-.legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.legend div{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px;display:grid;gap:4px;font-size:13px}
-.dist{display:grid;gap:10px}
-.bar{display:flex;height:30px;border-radius:5px;overflow:hidden;font-size:12px;font-weight:700}
-.bar div{display:flex;align-items:center;justify-content:center;color:var(--surface);min-width:0}
-.bar .zsb{background:var(--zs)} .bar .djb{background:var(--dj)} .bar .smb{background:var(--sm)}
-.matrix{width:100%;border-collapse:collapse;font-size:13px}
-.matrix th,.matrix td{padding:8px 10px;text-align:center;border-bottom:1px solid var(--line)}
-.matrix th:first-child,.matrix td:first-child{text-align:left}
-.cell{display:inline-block;min-width:34px;padding:2px 0;border-radius:4px;font-family:var(--f-data);font-weight:600}
-.c0{color:var(--muted)}
-
-/* 必看卡片 */
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.35}
+h1{font-size:34px;font-weight:900;margin:8px 0 16px}
+h2{font-size:22px;font-weight:900;margin-bottom:16px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+h2 .count{font:400 13px var(--f-body);color:var(--muted)}
+a{color:var(--accent)}
+.eyebrow{font:600 12px/1.5 var(--f-data);letter-spacing:.06em;color:var(--muted)}
+.thesis{margin:0;font-family:var(--f-display);font-size:18px;font-weight:600;line-height:1.75;padding-left:16px;border-left:4px solid var(--accent)}
+.chip{display:inline-flex;font-size:12px;font-weight:700;padding:0 8px;border-radius:999px;white-space:nowrap}
+.zs{color:var(--zs);background:var(--zs-bg)}.dj{color:var(--dj);background:var(--dj-bg)}.sm{color:var(--sm);background:var(--sm-bg)}
+.item-meta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;font-size:13px;color:var(--muted)}
+.ind{font-size:12px;color:var(--accent);background:var(--wash);border-radius:4px;padding:0 6px}
+.must-no{font:700 13px var(--f-data);color:var(--accent)}
 .musts{display:grid;gap:16px}
-.must{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:20px 22px;display:grid;gap:12px;min-width:0}
-.must-head{display:flex;gap:14px;align-items:flex-start}
-.must-no{font-family:var(--f-data);font-size:28px;font-weight:600;color:var(--muted);line-height:1}
-.must-head h3{flex:1;min-width:0}
-.kv{display:grid;grid-template-columns:52px minmax(0,1fr);gap:8px 14px;font-size:14px}
-.kv dt{font-weight:700;color:var(--muted);font-size:13px;padding-top:1px}
-.kv dd{margin:0;min-width:0}
-
-/* 表格 */
-.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
-table{border-collapse:collapse;width:100%;font-size:13.5px}
-th{font-weight:700;text-align:left;color:var(--muted);font-size:12px;letter-spacing:.04em;background:var(--wash)}
-th,td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
-tr:last-child td{border-bottom:0}
-td.nowrap,th.nowrap{white-space:nowrap}
-tr.top td{background:var(--wash)}
-
-/* 依据列表 */
-.facts{list-style:none;margin:0;padding:0;display:grid;gap:12px}
-.facts li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:start}
-.view{background:var(--wash);border-radius:6px;padding:12px 16px;font-size:14px}
-.view b{color:var(--accent)}
-.src{font-size:12.5px;color:var(--muted)}
-
-/* 图 */
-figure{margin:0;display:grid;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px 20px;min-width:0}
-figcaption{font-size:12.5px;color:var(--muted)}
-.fig-title{font-weight:700;font-size:14px}
-svg text{fill:var(--ink);font-family:var(--f-body)}
-svg .t-muted{fill:var(--muted)}
-.hbar{display:grid;gap:12px}
-.hrow{display:grid;grid-template-columns:150px minmax(0,1fr);gap:12px;align-items:center;font-size:13px}
-.track{display:flex;height:24px;border-radius:4px;overflow:hidden;background:var(--wash)}
-.track div{display:flex;align-items:center;padding:0 8px;font-family:var(--f-data);font-size:12px;font-weight:600;white-space:nowrap;color:var(--surface)}
-.seg-ok{background:var(--ok)} .seg-miss{background:var(--warn)}
-.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.subhead{display:grid;gap:6px}
-
-/* 招式 */
-.moves{counter-reset:m;display:grid;gap:10px;list-style:none;margin:0;padding:0}
-.moves li{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:12px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px}
-.moves li::before{counter-increment:m;content:counter(m);font-family:var(--f-data);font-weight:600;color:var(--muted)}
-.tag{font-size:12px;color:var(--muted);white-space:nowrap}
-
-.shenming{background:var(--sm-bg);border-radius:8px;padding:20px 22px;font-family:var(--f-display);font-size:17px;line-height:1.8;color:var(--ink)}
-.shenming .chip{font-family:var(--f-body)}
-details{background:var(--surface);border:1px solid var(--line);border-radius:6px}
-details summary{cursor:pointer;padding:12px 16px;font-weight:700;font-size:14px}
-details summary:focus-visible{outline:2px solid var(--accent)}
-details > div{padding:0 0 4px}
-details .tbl{border:0;border-top:1px solid var(--line);border-radius:0}
-.ratio{display:inline-block;height:8px;background:var(--accent);border-radius:4px;vertical-align:middle}
-footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
-
-@media (max-width:640px){
-  h1{font-size:27px} .thesis{font-size:18px}
-  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .legend,.two{grid-template-columns:minmax(0,1fr)}
-  .hrow{grid-template-columns:minmax(0,1fr)}
-  .moves li{grid-template-columns:24px minmax(0,1fr)} .moves li .tag{grid-column:2}
-}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.must{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:8px;padding:18px 22px;display:grid;gap:10px;scroll-margin-top:72px}
+.must.prod{border-top-color:var(--prod)}.must.prod .must-no{color:var(--prod)}
+.must h3{font-size:20px;font-weight:900}
+.w6{margin:0;display:grid;grid-template-columns:7.5em 1fr;gap:8px 14px}
+.w6 dt{font:700 13px/1.6 var(--f-data);color:var(--accent);padding-top:2px}
+.must.prod .w6 dt{color:var(--prod)}
+.w6 dt small{display:block;font:400 12px var(--f-body);color:var(--muted)}
+.w6 dd{margin:0;font-size:14.5px}
+.src{margin:0;font-size:13px;color:var(--muted);padding-top:8px;border-top:1px dashed var(--line)}
+.items{display:grid;gap:8px}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:8px;scroll-margin-top:72px}
+.item summary{cursor:pointer;list-style:none;padding:12px 18px;display:grid;gap:4px}
+.item summary::-webkit-details-marker{display:none}
+.item summary .c{font-weight:700;font-size:15.5px}
+.item summary .c::before{content:"▸";color:var(--muted);margin-right:8px;display:inline-block;transition:transform .15s}
+.item[open] summary .c::before{transform:rotate(90deg)}
+.item summary .item-meta{padding-left:20px}
+.item[open] summary{border-bottom:1px solid var(--line)}
+.item .w6,.item .src{margin:12px 18px}
+.item .src{margin-top:0}
+.acts{margin:0;padding-left:22px;display:grid;gap:8px}
+.acts li{font-size:14.5px}.acts a{font-weight:700;margin-right:8px;text-decoration:none}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface);margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:12px;color:var(--muted);background:var(--wash);padding:8px 10px;white-space:nowrap}
+td{padding:8px 10px;border-top:1px solid var(--line);vertical-align:top}
+.num{font-family:var(--f-data)}
+details>summary{cursor:pointer}
+footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+@media (max-width:640px){h1{font-size:26px}.w6{grid-template-columns:1fr;gap:0}.w6 dd{margin-bottom:8px}}
 </style>
 <div class="wrap">
-
 <header>
-  <div class="eyebrow">Nook · AI 雷达 · 第 N 期</div>
-  <h1>本期主线，写成一句判断</h1>
-  <div class="meta"><span>YYYY-MM-DD（周三 / 周六）</span><span>时间窗 YYYY-MM-DD 至 MM-DD</span><span>读者：Yue（工程背景，做金融、医疗 AI 产品）</span></div>
-  <div class="stats">
-    <div><b>N</b><span>扫描信息源</span></div>
-    <div><b>N</b><span>读过的条目</span></div>
-    <div><b>N</b><span>入选条目</span></div>
-    <div><b>N 分钟</b><span>只读“本期必看”</span></div>
-  </div>
+  <div class="eyebrow">Nook · AI 雷达 · YYYY-MM-DD 周N · MM-DD 至 MM-DD · N 条</div>
+  <h1>标题即结论，从四条必看收敛出来</h1>
+  <p class="thesis">一句话结论：一个判断，加四条必看里最硬的事实。</p>
 </header>
 
-<section aria-labelledby="s-thesis">
-  <div class="eyebrow" id="s-thesis">一句话结论</div>
-  <p class="thesis">从“主编的收敛”得出：前几名的共同点是什么，逐条带一个最硬的事实；没有共同点就写“本周没有统一主线”。</p>
-</section>
-
-<section aria-labelledby="s-stage">
-  <h2 id="s-stage"><span class="no">00</span>怎么读这一期</h2>
-  <div class="legend">
-    <div><span><span class="chip zs">招熟</span></span><span>能马上用的工具和做法，回答“怎么做”。</span></div>
-    <div><span><span class="chip dj">懂劲</span></span><span>要想明白的原理和权衡，回答“为什么”。</span></div>
-    <div><span><span class="chip sm">神明</span></span><span>长期方向和根本问题，点到为止。</span></div>
-  </div>
-  <figure>
-    <div class="fig-title">本期 N 条入选内容的阶段分布</div>
-    <div class="dist">
-      <div class="bar" role="img" aria-label="招熟 a 条，懂劲 b 条，神明 c 条">
-        <div class="zsb" style="width:50%">招熟 a</div><div class="djb" style="width:40%">懂劲 b</div><div class="smb" style="width:10%">c</div>
-      </div>
-      <div class="tbl" style="border:0"><table class="matrix">
-        <thead><tr><th>行业</th><th>招熟</th><th>懂劲</th><th>神明</th><th>合计</th></tr></thead>
-        <tbody>
-          <tr><td>通用</td><td><span class="cell zs">0</span></td><td><span class="cell dj">0</span></td><td><span class="cell sm">0</span></td><td class="num">0</td></tr>
-          <tr><td>金融</td><td><span class="cell zs">0</span></td><td><span class="cell dj">0</span></td><td><span class="cell c0">0</span></td><td class="num">0</td></tr>
-          <tr><td>医疗</td><td><span class="cell zs">0</span></td><td><span class="cell dj">0</span></td><td><span class="cell c0">0</span></td><td class="num">0</td></tr>
-        </tbody>
-      </table></div>
-    </div>
-    <figcaption>一句话读图。数值为 0 的格子用 .c0。</figcaption>
-  </figure>
-</section>
-
 <section aria-labelledby="s-must">
-  <h2 id="s-must"><span class="no">01</span>本期必看（技术、产品各取前二）</h2>
-  <p class="muted">只读这一节，也能抓住本期八成的价值。</p>
+  <h2 id="s-must">本期必看</h2>
   <div class="musts">
-    <article class="must">
-      <div class="must-head"><span class="must-no">技术 1</span><h3>判断句 <span class="chip zs">招熟</span></h3></div>
-      <dl class="kv">
-        <dt>轨道</dt><dd>技术</dd>
-        <dt>条目</dt><dd><a href="#i-slug">附录 A 里的条目名</a></dd>
-        <dt>评分</dt><dd>总分 NN · 影响 N · 创新 N · 实践 N · 热度 N</dd>
-        <dt>依据</dt><dd>事实与数字（<a href="#">来源</a>，MM-DD）。</dd>
-        <dt>心法</dt><dd>一到两句原理，可用工程类比，不超过 60 字。</dd>
-        <dt>招式</dt><dd>一到三个具体动作，落到金融、医疗产品上。</dd>
-      </dl>
-    </article>
-    <article class="must">
-      <div class="must-head"><span class="must-no">技术 2</span><h3>判断句 <span class="chip zs">招熟</span></h3></div>
-      <dl class="kv">
-        <dt>轨道</dt><dd>技术</dd>
-        <dt>条目</dt><dd><a href="#i-slug">附录 A 里的条目名</a></dd>
-        <dt>评分</dt><dd>总分 NN · 影响 N · 创新 N · 实践 N · 热度 N</dd>
-        <dt>依据</dt><dd>事实与数字（<a href="#">来源</a>，MM-DD）。</dd>
-        <dt>心法</dt><dd>一到两句原理，可用工程类比，不超过 60 字。</dd>
-        <dt>招式</dt><dd>一到三个具体动作，落到金融、医疗产品上。</dd>
-      </dl>
-    </article>
-    <article class="must">
-      <div class="must-head"><span class="must-no">产品 1</span><h3>判断句 <span class="chip zs">招熟</span></h3></div>
-      <dl class="kv">
-        <dt>轨道</dt><dd>产品</dd>
-        <dt>条目</dt><dd><a href="#i-slug">附录 A 里的条目名</a></dd>
-        <dt>评分</dt><dd>总分 NN · 洞见 N · 价值 N · 证据 N · 可迁移 N</dd>
-        <dt>依据</dt><dd>事实与数字（<a href="#">来源</a>，MM-DD）。</dd>
-        <dt>心法</dt><dd>一到两句原理，可用工程类比，不超过 60 字。</dd>
-        <dt>招式</dt><dd>一到三个具体动作，落到金融、医疗产品上。</dd>
-      </dl>
-    </article>
-    <article class="must">
-      <div class="must-head"><span class="must-no">产品 2</span><h3>判断句 <span class="chip zs">招熟</span></h3></div>
-      <dl class="kv">
-        <dt>轨道</dt><dd>产品</dd>
-        <dt>条目</dt><dd><a href="#i-slug">附录 A 里的条目名</a></dd>
-        <dt>评分</dt><dd>总分 NN · 洞见 N · 价值 N · 证据 N · 可迁移 N</dd>
-        <dt>依据</dt><dd>事实与数字（<a href="#">来源</a>，MM-DD）。</dd>
-        <dt>心法</dt><dd>一到两句原理，可用工程类比，不超过 60 字。</dd>
-        <dt>招式</dt><dd>一到三个具体动作，落到金融、医疗产品上。</dd>
-      </dl>
-    </article>
+  <!-- 技术 1、技术 2、产品 1、产品 2 四张卡；产品卡的 class 写成 "must prod" -->
+  <article class="must" id="i-slug">
+    <div class="item-meta"><span class="must-no">技术 1</span><span class="chip dj">懂劲</span><span class="name">附录 A 里的条目名</span></div>
+    <h3>一句话结论</h3>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>一两句：谁发布了什么、做了什么，带最硬的数字。</dd><dt>Why<small>为什么重要</small></dt><dd>它改变了什么判断，对金融、医疗 AI 产品意味着什么。</dd><dt>How<small>怎么做的</small></dt><dd>方法、数据和关键结果；局限写在这一栏末尾。</dd><dt>Who<small>谁</small></dt><dd>机构或作者，有利益关联的写明。</dd><dt>When<small>何时</small></dt><dd>MM-DD；状态，比如预印本、厂商自报、试点、权重未放出。</dd><dt>Action<small>我们做什么</small></dt><dd>一到三个具体动作，落到金融、医疗产品上。</dd></dl>
+    <p class="src">来源：<a href="#">来源名</a>，MM-DD</p>
+  </article>
   </div>
 </section>
 
-<section aria-labelledby="s-score">
-  <h2 id="s-score"><span class="no">02</span>编辑部打分</h2>
-  <p>一句话说明两条线的维度和权重（见写法第 1 条）。</p>
-  <p class="view"><b>主编的收敛</b>：前几名的共同点，或者如实说没有；讲能力的条目为什么排在前面或后面。</p>
-  <h3>技术线</h3>
-  <div class="tbl">
-    <table>
-      <thead><tr><th>#</th><th>条目</th><th class="nowrap">影响</th><th class="nowrap">创新</th><th class="nowrap">实践</th><th class="nowrap">热度</th><th class="nowrap">证据系数</th><th class="nowrap">总分</th><th>评语</th></tr></thead>
-      <tbody>
-        <tr class="top"><td class="num">1</td><td><a href="#i-slug">条目名</a></td><td class="num">N</td><td class="num">N</td><td class="num">N</td><td class="num">N</td><td class="num">1.0</td><td class="num"><b>NN</b></td><td>一句评语</td></tr>
-      </tbody>
-    </table>
+<section aria-labelledby="s-tech">
+  <h2 id="s-tech">技术<span class="count">其余 N 条，按重要程度排序，点开看详情</span></h2>
+  <div class="items">
+  <details class="item" id="i-slug2">
+    <summary><span class="c">一句话结论</span><span class="item-meta"><span class="chip zs">招熟</span><span class="ind">金融</span><span class="name">附录 A 里的条目名</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>一两句：谁发布了什么、做了什么，带最硬的数字。</dd><dt>Why<small>为什么重要</small></dt><dd>它改变了什么判断，对金融、医疗 AI 产品意味着什么。</dd><dt>How<small>怎么做的</small></dt><dd>方法、数据和关键结果；局限写在这一栏末尾。</dd><dt>Who<small>谁</small></dt><dd>机构或作者，有利益关联的写明。</dd><dt>When<small>何时</small></dt><dd>MM-DD；状态，比如预印本、厂商自报、试点、权重未放出。</dd><dt>Action<small>我们做什么</small></dt><dd>一到三个具体动作，落到金融、医疗产品上。</dd></dl>
+    <p class="src">来源：<a href="#">来源名</a>，MM-DD</p>
+  </details>
   </div>
-  <h3>产品线</h3>
-  <div class="tbl">
-    <table>
-      <thead><tr><th>#</th><th>条目</th><th class="nowrap">洞见</th><th class="nowrap">价值</th><th class="nowrap">证据</th><th class="nowrap">可迁移</th><th class="nowrap">总分</th><th>评语</th></tr></thead>
-      <tbody>
-        <tr class="top"><td class="num">1</td><td><a href="#i-slug">条目名</a></td><td class="num">N</td><td class="num">N</td><td class="num">N</td><td class="num">N</td><td class="num"><b>NN</b></td><td>一句评语</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p class="muted">原文核对：哪些来源重读了原文，哪些抓不到、沿用了笔记；重读时发现的更正。</p>
-</section>
-
-<section aria-labelledby="s-macro">
-  <h2 id="s-macro"><span class="no">03</span>宏观：格局与监管</h2>
-  <div class="subhead"><h3>判断句</h3><p>一两句展开。</p></div>
-  <!-- 有数字就配图：<figure> + SVG 或 .hbar 条形图 -->
-  <ul class="facts">
-    <li><span class="chip zs">招熟</span><span>一句话事实，带数字。<span class="src">（<a href="#">来源</a>，MM-DD）</span></span></li>
-  </ul>
-  <p class="view"><b>我的看法</b>：为什么重要，接下来看什么，对应第 N 章。</p>
-</section>
-
-<section aria-labelledby="s-meso">
-  <h2 id="s-meso"><span class="no">04</span>中观：平台、模型与工具</h2>
-  <!-- 同宏观：判断 → 图 → 带阶段的依据 → 看法 -->
-</section>
-
-<section aria-labelledby="s-fin">
-  <h2 id="s-fin"><span class="no">05</span>行业：金融 AI</h2>
-  <div class="subhead"><h3>判断句</h3><p>一两句展开。</p></div>
-  <!-- 事件多时画一周时间线（见首期），x 轴按日期等距 -->
-  <div class="tbl"><table>
-    <thead><tr><th>阶段</th><th>信号</th><th>说明</th><th>来源</th></tr></thead>
-    <tbody><tr><td><span class="chip zs">招熟</span></td><td>机构 + 动作</td><td>一句话，带数字</td><td class="nowrap"><a href="#">来源</a>，MM-DD</td></tr></tbody>
-  </table></div>
-  <p class="view"><b>对金融产品的启示</b>：一到三条，能直接拿去讨论的。</p>
-  <p class="small muted"><b>待验证</b>：本期没法确认、需要继续跟的问题。</p>
-</section>
-
-<section aria-labelledby="s-med">
-  <h2 id="s-med"><span class="no">06</span>行业：医疗 AI</h2>
-  <!-- 同金融：判断 → 图 → 信号表 → 对医疗产品的启示 → 待验证 -->
 </section>
 
 <section aria-labelledby="s-prod">
-  <h2 id="s-prod"><span class="no">07</span>产品：设计与价值</h2>
-  <p>本期归到产品线的 N 条，按总分从高到低列出并链到正文；金融、医疗的几条写在行业节，这里只放不属于具体行业的。</p>
-  <!-- 产品设计和业务价值：判断 → 带阶段的依据 → 可借鉴的做法（.view） -->
+  <h2 id="s-prod">产品<span class="count">其余 N 条，按重要程度排序，点开看详情</span></h2>
+  <div class="items"><!-- 同技术 --></div>
 </section>
 
-<section aria-labelledby="s-read">
-  <h2 id="s-read"><span class="no">08</span>微观：值得一读</h2>
-  <div class="tbl"><table>
-    <thead><tr><th>材料</th><th>阶段</th><th>为什么值得读</th><th>建议归入</th><th>深度</th></tr></thead>
-    <tbody><tr><td><a href="#">标题</a></td><td><span class="chip dj">懂劲</span></td><td>对我们的价值</td><td class="nowrap">第 N 章</td><td>精读 / 浏览</td></tr></tbody>
-  </table></div>
-</section>
-
-<section aria-labelledby="s-moves">
-  <h2 id="s-moves"><span class="no">09</span>本期招式</h2>
-  <ol class="moves">
-    <li><span>具体做什么（5 到 9 项）</span><span class="tag"><span class="chip zs">招熟</span> 试用 / 精读 / 入书 / 观察</span></li>
-  </ol>
-</section>
-
-<section aria-labelledby="s-sm">
-  <h2 id="s-sm"><span class="no">10</span>神明：点到为止</h2>
-  <p class="shenming"><span class="chip sm">神明</span> 一两句话，留一个值得长期想的问题，不展开。</p>
+<section aria-labelledby="s-act">
+  <h2 id="s-act">本期行动</h2>
+  <ol class="acts"><li><a href="#i-slug">条目名</a>这一条的 Action。</li></ol>
 </section>
 
 <section aria-labelledby="s-appx">
-  <h2 id="s-appx"><span class="no">附</span>附录</h2>
-  <details><summary>A. 本期条目总表（N 条）</summary><div><div class="tbl"><table>
+  <h2 id="s-appx">附录</h2>
+  <details><summary>本期条目总表（N 条）</summary><div class="tbl"><table>
     <thead><tr><th>日期</th><th>行业</th><th>轨道</th><th>阶段</th><th>条目</th><th>标签</th><th>总分</th><th>来源</th><th>去向</th></tr></thead>
-    <tbody><tr><td class="num">MM-DD</td><td>通用 / 金融 / 医疗</td><td>技术 / 产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-slug">条目</a></td><td>Agent、评测</td><td class="num">NN</td><td>来源</td><td>待定 / 建议入书 / 已转草稿 / 已入书 / 不入书</td></tr></tbody>
-  </table></div></div></details>
-  <details><summary>B. 草稿盘点（仅周六，周三删掉）</summary><div><div class="tbl"><table>
-    <thead><tr><th>草稿</th><th>创建日期</th><th>去向</th><th>说明</th></tr></thead><tbody></tbody>
-  </table></div></div></details>
-  <details><summary>C. 信息源表现</summary><div><div class="tbl"><table>
-    <thead><tr><th>信息源</th><th>本期条目</th><th>被引用</th><th>引用率</th><th>备注</th></tr></thead>
-    <tbody><tr><td>名称</td><td class="num">0</td><td class="num">0</td><td><span class="ratio" style="width:0px"></span></td><td>每周维护的依据；宽度 = 引用率 × 100px</td></tr></tbody>
-  </table></div></div></details>
+    <tbody><tr><td class="num">MM-DD</td><td>通用</td><td>技术</td><td><span class="chip zs">招熟</span></td><td><a href="#i-slug">条目名</a></td><td>Agent、评测</td><td class="num">NN</td><td>来源</td><td>待定 / 建议入书 / 建议试用 / 不入书</td></tr></tbody>
+  </table></div></details>
 </section>
 
-<footer>Nook · AI 雷达 · 每周三、周六各一期 · 信息源清单见仓库 src/appendix/sources.md · 💰 表示付费内容，只依据免费部分 · “厂商自报”表示数据来自厂商自己的发布</footer>
+<footer>Nook · AI 雷达 · 每周三、周六各一期 · 阶段：<span class="chip zs">招熟</span> 能马上用 <span class="chip dj">懂劲</span> 要想明白 <span class="chip sm">神明</span> 长期方向</footer>
 </div>
+<script>
+(function(){function o(){var e=location.hash&&document.getElementById(location.hash.slice(1));if(e&&e.tagName==='DETAILS')e.open=true}
+window.addEventListener('hashchange',o);o()})();
+</script>

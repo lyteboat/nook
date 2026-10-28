@@ -1,0 +1,199 @@
+<title>Nook 雷达 2026-10-24 · 内部记录</title>
+<style>
+/* 版式：一列简报，宽 880px；先给结论和“必看”，再由宏观到微观展开。三阶段用固定的三种颜色贯穿全页。 */
+:root{
+  --bg:#f6f7f5; --surface:#ffffff; --ink:#1b2321; --muted:#5d6966; --line:#dde2df; --wash:#eef1ef;
+  --accent:#1f5f58;
+  --zs:#2f7d5b; --zs-bg:#e3f1ea;      /* 招熟 */
+  --dj:#3d55a3; --dj-bg:#e6eaf7;      /* 懂劲 */
+  --sm:#a1701c; --sm-bg:#f6ecd8;      /* 神明 */
+  --warn:#b4462f; --ok:#2f7d5b;
+  --f-display:"Noto Serif SC","Songti SC","SimSun",serif;
+  --f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121715; --surface:#1a201e; --ink:#e3e9e6; --muted:#9aa6a2; --line:#2c3532; --wash:#202825;
+  --accent:#6fc1b5; --zs:#6cc59a; --zs-bg:#1c3328; --dj:#9aaef0; --dj-bg:#232b45; --sm:#e0b45e; --sm-bg:#3a2f1a;
+  --warn:#ef8a73; --ok:#6cc59a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121715; --surface:#1a201e; --ink:#e3e9e6; --muted:#9aa6a2; --line:#2c3532; --wash:#202825;
+  --accent:#6fc1b5; --zs:#6cc59a; --zs-bg:#1c3328; --dj:#9aaef0; --dj-bg:#232b45; --sm:#e0b45e; --sm-bg:#3a2f1a;
+  --warn:#ef8a73; --ok:#6cc59a; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:880px;margin:0 auto;padding-block:40px 64px;display:grid;gap:44px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.35}
+h1{font-size:34px;font-weight:900;letter-spacing:.01em}
+h2{font-size:23px;font-weight:900;display:flex;gap:12px;align-items:baseline}
+h2 .no{font-family:var(--f-data);font-size:13px;color:var(--muted);font-weight:600;letter-spacing:.08em}
+h3{font-size:18px;font-weight:600}
+p{margin:0}
+a{color:var(--accent);text-underline-offset:3px}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+section{display:grid;gap:18px;min-width:0}
+.eyebrow{font-family:var(--f-data);font-size:12px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.num{font-family:var(--f-data);font-variant-numeric:tabular-nums}
+
+/* 刊头 */
+header{display:grid;gap:14px;border-bottom:2px solid var(--ink);padding-bottom:22px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:13px;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.stats div{background:var(--surface);padding:12px 14px;display:grid;gap:2px}
+.stats b{font-family:var(--f-data);font-size:24px;font-weight:600;font-variant-numeric:tabular-nums}
+.stats span{font-size:12px;color:var(--muted)}
+.note{font-size:13px;color:var(--muted);background:var(--wash);padding:8px 12px;border-radius:4px}
+
+/* 结论 */
+.thesis{font-family:var(--f-display);font-size:21px;font-weight:600;line-height:1.6;padding-left:18px;border-left:4px solid var(--accent)}
+
+/* 阶段标签 */
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;padding:1px 9px;border-radius:999px;white-space:nowrap;letter-spacing:.04em;vertical-align:2px}
+.zs{color:var(--zs);background:var(--zs-bg)} .dj{color:var(--dj);background:var(--dj-bg)} .sm{color:var(--sm);background:var(--sm-bg)}
+.pay{font-size:12px;color:var(--sm);white-space:nowrap}
+
+/* 阶段图例与分布 */
+.legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.legend div{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px;display:grid;gap:4px;font-size:13px}
+.dist{display:grid;gap:10px}
+.bar{display:flex;height:30px;border-radius:5px;overflow:hidden;font-size:12px;font-weight:700}
+.bar div{display:flex;align-items:center;justify-content:center;color:var(--surface);min-width:0}
+.bar .zsb{background:var(--zs)} .bar .djb{background:var(--dj)} .bar .smb{background:var(--sm)}
+.matrix{width:100%;border-collapse:collapse;font-size:13px}
+.matrix th,.matrix td{padding:8px 10px;text-align:center;border-bottom:1px solid var(--line)}
+.matrix th:first-child,.matrix td:first-child{text-align:left}
+.cell{display:inline-block;min-width:34px;padding:2px 0;border-radius:4px;font-family:var(--f-data);font-weight:600}
+.c0{color:var(--muted)}
+
+/* 必看卡片 */
+.musts{display:grid;gap:16px}
+.must{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:20px 22px;display:grid;gap:12px;min-width:0}
+.must-head{display:flex;gap:14px;align-items:flex-start}
+.must-no{font-family:var(--f-data);font-size:28px;font-weight:600;color:var(--muted);line-height:1}
+.must-head h3{flex:1;min-width:0}
+.kv{display:grid;grid-template-columns:52px minmax(0,1fr);gap:8px 14px;font-size:14px}
+.kv dt{font-weight:700;color:var(--muted);font-size:13px;padding-top:1px}
+.kv dd{margin:0;min-width:0}
+
+/* 表格 */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th{font-weight:700;text-align:left;color:var(--muted);font-size:12px;letter-spacing:.04em;background:var(--wash)}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.nowrap,th.nowrap{white-space:nowrap}
+tr.top td{background:var(--wash)}
+
+/* 依据列表 */
+.facts{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.facts li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:start}
+.view{background:var(--wash);border-radius:6px;padding:12px 16px;font-size:14px}
+.view b{color:var(--accent)}
+.src{font-size:12.5px;color:var(--muted)}
+
+/* 图 */
+figure{margin:0;display:grid;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px 20px;min-width:0}
+figcaption{font-size:12.5px;color:var(--muted)}
+.fig-title{font-weight:700;font-size:14px}
+svg text{fill:var(--ink);font-family:var(--f-body)}
+svg .t-muted{fill:var(--muted)}
+.hbar{display:grid;gap:12px}
+.hrow{display:grid;grid-template-columns:150px minmax(0,1fr);gap:12px;align-items:center;font-size:13px}
+.track{display:flex;height:24px;border-radius:4px;overflow:hidden;background:var(--wash)}
+.track div{display:flex;align-items:center;padding:0 8px;font-family:var(--f-data);font-size:12px;font-weight:600;white-space:nowrap;color:var(--surface)}
+.seg-ok{background:var(--ok)} .seg-miss{background:var(--warn)}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.subhead{display:grid;gap:6px}
+
+/* 招式 */
+.moves{counter-reset:m;display:grid;gap:10px;list-style:none;margin:0;padding:0}
+.moves li{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:12px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px}
+.moves li::before{counter-increment:m;content:counter(m);font-family:var(--f-data);font-weight:600;color:var(--muted)}
+.tag{font-size:12px;color:var(--muted);white-space:nowrap}
+
+.shenming{background:var(--sm-bg);border-radius:8px;padding:20px 22px;font-family:var(--f-display);font-size:17px;line-height:1.8;color:var(--ink)}
+.shenming .chip{font-family:var(--f-body)}
+details{background:var(--surface);border:1px solid var(--line);border-radius:6px}
+details summary{cursor:pointer;padding:12px 16px;font-weight:700;font-size:14px}
+details summary:focus-visible{outline:2px solid var(--accent)}
+details > div{padding:0 0 4px}
+details .tbl{border:0;border-top:1px solid var(--line);border-radius:0}
+.ratio{display:inline-block;height:8px;background:var(--accent);border-radius:4px;vertical-align:middle}
+footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
+
+@media (max-width:640px){
+  h1{font-size:27px} .thesis{font-size:18px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .legend,.two{grid-template-columns:minmax(0,1fr)}
+  .hrow{grid-template-columns:minmax(0,1fr)}
+  .moves li{grid-template-columns:24px minmax(0,1fr)} .moves li .tag{grid-column:2}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+<!-- 内部记录，不上站点：编辑部打分、原文核对、草稿盘点、信息源表现。build_site.py 只发布 YYYY-MM-DD.html。 -->
+<div class="wrap">
+<h1>2026-10-24 · 内部记录</h1>
+<section aria-labelledby="s-score">
+  <h2 id="s-score"><span class="no">02</span>编辑部打分</h2>
+  <p>每条先归到一条线：讲模型、方法、工具、标准的归<b>技术</b>，讲产品设计和业务价值的归<b>产品</b>。按主编和 Agent 专家两种视角逐篇读原文，按所在线的四个维度各打 1 到 5 分，加权后折成百分制。两条线各取前二进本期必看。</p>
+  <div class="tbl"><table>
+    <thead><tr><th>线</th><th>维度和权重</th><th>附加</th></tr></thead>
+    <tbody>
+      <tr><td><b>技术</b></td><td>影响 35%：会不会改变业界对技术方向的判断 · 创新 25%：原来做不到的事有没有了思路 · 实践 25%：有没有开源代码、标准、库 · 热度 15%：大家是不是都在关注</td><td>乘证据系数：厂商自报、只读到导语 0.8，预印本或没重读原文 0.9</td></tr>
+      <tr><td><b>产品</b></td><td>洞见 35%：有没有新的设计发现或价值判断 · 价值 25%：对用户或业务的价值有多大、能不能算清 · 证据 25%：有没有用户数据、对照实验、经营数字 · 可迁移 15%：能不能用到金融、医疗产品上</td><td>证据已是一个维度，不另乘系数</td></tr>
+    </tbody>
+  </table></div>
+  <p class="view"><b>主编的收敛</b>：四条必看的共同点是，Agent 的可信靠模型之外的机制。技术线靠证明和隔离：形式化验证把“不会崩溃”变成可检查的证明，OpenShell 把权限交给沙箱和凭证代理。产品线靠审计和授权：儿科试验量出了人工审核的漏检，银行把读和写分开授权。Kimi K3.1 Pro、脑细胞分析这类讲模型能力的条目，影响分或实践分不低，但不改变这个判断。</p>
+  <h3 style="margin-top:8px">技术线</h3>
+  <div class="tbl"><table><thead><tr><th>#</th><th>条目</th><th class="nowrap">影响</th><th class="nowrap">创新</th><th class="nowrap">实践</th><th class="nowrap">热度</th><th class="nowrap">证据</th><th class="nowrap">总分</th><th>评语</th></tr></thead><tbody><tr class="top"><td class="num">1</td><td><a href="#i-formal">形式化验证规模化</a></td><td class="num">5</td><td class="num">5</td><td class="num">3</td><td class="num">4</td><td class="num">1.0</td><td class="num"><b>87</b></td><td>推翻“形式化验证只适合航电”的判断；证明和 Claude skill 已公开</td></tr><tr class="top"><td class="num">2</td><td><a href="#i-agent-infra">OpenShell 开源</a></td><td class="num">3</td><td class="num">3</td><td class="num">5</td><td class="num">4</td><td class="num">1.0</td><td class="num"><b>73</b></td><td>Apache-2.0 开源沙箱，拿来就能用，GitHub 1.95 万星</td></tr><tr><td class="num">3</td><td><a href="#i-aisi">AISI 测试事故复盘</a></td><td class="num">4</td><td class="num">3</td><td class="num">3</td><td class="num">4</td><td class="num">1.0</td><td class="num"><b>70</b></td><td>AISI 因此改为断网测试，行业对 Agent 测试环境的判断变了</td></tr><tr><td class="num">4</td><td><a href="#i-kimi">Kimi K3.1 Pro</a></td><td class="num">4</td><td class="num">2</td><td class="num">4</td><td class="num">4</td><td class="num">1.0</td><td class="num"><b>70</b></td><td>据 Simon Willison，即将开放权重的模型首次逼近前沿</td></tr><tr><td class="num">5</td><td><a href="#i-thinkingbox">ThinkingBox 可验证奖励</a></td><td class="num">3</td><td class="num">4</td><td class="num">4</td><td class="num">2</td><td class="num">1.0</td><td class="num"><b>67</b></td><td>数据库终态当奖励，方法和基准都公开</td></tr><tr><td class="num">6</td><td><a href="#i-agent-infra">Agent Skills 捐给 AAIF</a></td><td class="num">3</td><td class="num">1</td><td class="num">5</td><td class="num">4</td><td class="num">1.0</td><td class="num"><b>63</b></td><td>标准本身不新，但成了中立标准，70 多个平台已接入</td></tr><tr><td class="num">7</td><td><a href="#i-deepseek">华为与 DeepSeek 的相互依存</a></td><td class="num">4</td><td class="num">2</td><td class="num">3</td><td class="num">3</td><td class="num">1.0</td><td class="num"><b>62</b></td><td>DeepSeek 开源了 Ascend 算子，国产算力路线更清楚</td></tr><tr><td class="num">8</td><td><a href="#i-fsb">FSB 12 条良好实践定稿</a></td><td class="num">4</td><td class="num">1</td><td class="num">4</td><td class="num">2</td><td class="num">1.0</td><td class="num"><b>59</b></td><td>金融 AI 监管框架定稿，12 条可逐条对照</td></tr><tr><td class="num">9</td><td><a href="#i-quant">Quant-Arena 基准</a></td><td class="num">3</td><td class="num">3</td><td class="num">4</td><td class="num">2</td><td class="num">0.9</td><td class="num"><b>56</b></td><td>基准公开；这次没重读原文</td></tr><tr><td class="num">10</td><td><a href="#i-brain">数千 Agent 分析脑细胞数据</a></td><td class="num">3</td><td class="num">4</td><td class="num">2</td><td class="num">3</td><td class="num">0.9</td><td class="num"><b>54</b></td><td>思路新，结论待实验验证，厂商发布</td></tr><tr><td class="num">11</td><td><a href="#i-jackclark">Jack Clark IMF 演讲</a></td><td class="num">4</td><td class="num">2</td><td class="num">1</td><td class="num">3</td><td class="num">1.0</td><td class="num"><b>52</b></td><td>面向央行和财长讲“加速已经开始”，影响方向判断</td></tr></tbody></table></div>
+  <h3 style="margin-top:8px">产品线</h3>
+  <div class="tbl"><table><thead><tr><th>#</th><th>条目</th><th class="nowrap">洞见</th><th class="nowrap">价值</th><th class="nowrap">证据</th><th class="nowrap">可迁移</th><th class="nowrap">总分</th><th>评语</th></tr></thead><tbody><tr class="top"><td class="num">1</td><td><a href="#i-peds-rct">儿科出院文书 RCT</a></td><td class="num">4</td><td class="num">4</td><td class="num">5</td><td class="num">5</td><td class="num"><b>88</b></td><td>随机试验量出医生审核漏了什么，审核界面设计的直接证据</td></tr><tr class="top"><td class="num">2</td><td><a href="#i-bank-readonly">银行对外部 Agent 只开只读</a></td><td class="num">4</td><td class="num">4</td><td class="num">3</td><td class="num">5</td><td class="num"><b>78</b></td><td>读写分离授权的现成范式，划定金融 Agent 的商业边界</td></tr><tr><td class="num">3</td><td><a href="#i-layoffs">裁员与信用数据并购</a></td><td class="num">3</td><td class="num">4</td><td class="num">3</td><td class="num">3</td><td class="num"><b>65</b></td><td>LSEG 为专有数据付出四年近两倍的价钱</td></tr><tr><td class="num">4</td><td><a href="#i-fde">OpenAI 的 FDE 做法</a></td><td class="num">3</td><td class="num">4</td><td class="num">2</td><td class="num">4</td><td class="num"><b>63</b></td><td>复用让交付从两个月缩到一天，但是厂商自报</td></tr><tr><td class="num">5</td><td><a href="#i-fr-parents">法国家长生成式 AI 调查</a></td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num">4</td><td class="num"><b>63</b></td><td>信任取决于医学监督，样本大，作者是平台员工</td></tr><tr><td class="num">6</td><td><a href="#i-terminalx">Terminal X 评审 Agent</a></td><td class="num">3</td><td class="num">3</td><td class="num">2</td><td class="num">4</td><td class="num"><b>58</b></td><td>评审环节的价值可度量，厂商自报</td></tr><tr><td class="num">7</td><td><a href="#i-duet">Claude Duet 留存问题</a></td><td class="num">3</td><td class="num">2</td><td class="num">2</td><td class="num">4</td><td class="num"><b>53</b></td><td>精致不等于被天天用，个人测评</td></tr><tr><td class="num">8</td><td><a href="#i-visa">Visa、Mastercard 试点 Agent 支付</a></td><td class="num">3</td><td class="num">3</td><td class="num">2</td><td class="num">2</td><td class="num"><b>52</b></td><td>Agent 支付仍在试点</td></tr><tr><td class="num">9</td><td><a href="#i-itau">Itaú 全客群对话式银行</a></td><td class="num">2</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num"><b>48</b></td><td>规模大，缺效果数字</td></tr><tr><td class="num">10</td><td><a href="#i-starling">Starling 金融犯罪调查 Agent</a></td><td class="num">2</td><td class="num">3</td><td class="num">1</td><td class="num">3</td><td class="num"><b>43</b></td><td>只有标题级信息</td></tr><tr><td class="num">11</td><td><a href="#i-orchestra">OpenAI 收购 Orchestra Bio</a></td><td class="num">1</td><td class="num">2</td><td class="num">1</td><td class="num">1</td><td class="num"><b>25</b></td><td>只有收购消息</td></tr></tbody></table></div>
+  <p class="muted">原文核对：10-28 重读了 Anthropic、Hugging Face、FSB、medRxiv、Simon Willison、The Paypers、The Logic、Crypto Briefing、SemiAnalysis、FStech、Net Interest 等来源的原文。Finextra 和 OpenAI 的页面拒绝自动抓取，Starling、Visa、Itaú、FDE、Terminal X、Orchestra 六条沿用首次扫描时的笔记，评分已按证据不足处理。</p>
+</section>
+<section><h2>其他</h2>
+<details>
+    <summary>B. 草稿盘点</summary>
+    <div><div class="tbl"><table>
+      <thead><tr><th>草稿</th><th>创建</th><th>状态</th><th>去向</th><th>理由</th><th>下次到期</th></tr></thead>
+      <tbody>
+        <tr><td>2026-10-23-注意力机制.html</td><td class="num">10-23</td><td>讨论中</td><td>保留</td><td>刚建一天，讨论还在进行，目标第 1 章</td><td class="num">11-22</td></tr>
+      </tbody>
+    </table></div></div>
+  </details>
+
+  <details>
+    <summary>C. 信息源表现（23 个源，两次扫描累计）</summary>
+    <div><div class="tbl"><table>
+      <thead><tr><th>信息源</th><th>本期条目</th><th>被引用</th><th>引用率</th><th>备注</th></tr></thead>
+      <tbody>
+        <tr><td>OpenAI News</td><td class="num">26</td><td class="num">6</td><td><span class="ratio" style="width:23px"></span></td><td>客户案例占一半以上，需要过滤；10-24 文章页抓取被挡，只拿到 RSS 摘要</td></tr>
+        <tr><td>Anthropic News</td><td class="num">8</td><td class="num">3</td><td><span class="ratio" style="width:38px"></span></td><td>形式化验证和 AISI 复盘都在 Research 栏目</td></tr>
+        <tr><td>Google DeepMind</td><td class="num">3</td><td class="num">0</td><td></td><td>本周与重点方向无关</td></tr>
+        <tr><td>HF Daily Papers</td><td class="num">27</td><td class="num">3</td><td><span class="ratio" style="width:11px"></span></td><td>10-23 这批以多模态和机器人为主，没有金融、医疗论文</td></tr>
+        <tr><td>Hugging Face Blog</td><td class="num">4</td><td class="num">1</td><td><span class="ratio" style="width:25px"></span></td><td>10-24 起补扫</td></tr>
+        <tr><td>arXiv q-fin</td><td class="num">6</td><td class="num">1</td><td><span class="ratio" style="width:17px"></span></td><td>10-24 起补扫；关键词过滤后 6 篇</td></tr>
+        <tr><td>Simon Willison</td><td class="num">15</td><td class="num">2</td><td><span class="ratio" style="width:13px"></span></td><td></td></tr>
+        <tr><td>Hacker News</td><td class="num">4</td><td class="num">2</td><td><span class="ratio" style="width:50px"></span></td><td>10-24 查询结果最新一条停在 10-13，可能是接口排序问题，周日维护时核查</td></tr>
+        <tr><td>GitHub Trending</td><td class="num">5</td><td class="num">0</td><td></td><td>10-24 抓到的榜单是多年前的旧仓库，疑似页面缓存，周日维护时核查</td></tr>
+        <tr><td>Import AI</td><td class="num">1</td><td class="num">1</td><td><span class="ratio" style="width:100px"></span></td><td></td></tr>
+        <tr><td>Interconnects</td><td class="num">2</td><td class="num">2</td><td><span class="ratio" style="width:100px"></span></td><td></td></tr>
+        <tr><td>SemiAnalysis</td><td class="num">2</td><td class="num">1</td><td><span class="ratio" style="width:50px"></span></td><td>10-23 的 Trainium 实测偏硬件，未入选</td></tr>
+        <tr><td>Latent Space</td><td class="num">2</td><td class="num">0</td><td></td><td>Kimi 一条与 Simon Willison 重复，引用后者</td></tr>
+        <tr><td>量子位</td><td class="num">9</td><td class="num">1</td><td><span class="ratio" style="width:11px"></span></td><td>feed 每次只给一两天的条目</td></tr>
+        <tr><td>Finextra AI</td><td class="num">28</td><td class="num">8</td><td><span class="ratio" style="width:29px"></span></td><td>文章页抓取被挡，RSS 正常，细节靠搜索补位</td></tr>
+        <tr><td>Net Interest</td><td class="num">2</td><td class="num">1</td><td><span class="ratio" style="width:50px"></span></td><td>10-23《Capital Wars》讲 CoreWeave 的融资，偏资本市场，未入选</td></tr>
+        <tr><td>Fintech Business Weekly</td><td class="num">1</td><td class="num">0</td><td></td><td>10-11 之后没有更新</td></tr>
+        <tr><td>FSB</td><td class="num">5</td><td class="num">1</td><td><span class="ratio" style="width:20px"></span></td><td></td></tr>
+        <tr><td>STAT AI</td><td class="num">5</td><td class="num">1</td><td><span class="ratio" style="width:20px"></span></td><td>大多为 STAT+；10-21 之后没有新条目</td></tr>
+        <tr><td>medRxiv</td><td class="num">13</td><td class="num">3</td><td><span class="ratio" style="width:23px"></span></td><td></td></tr>
+        <tr><td>npj Digital Medicine</td><td class="num">0</td><td class="num">0</td><td></td><td>feed 最新条目停在 08-31</td></tr>
+        <tr><td>Ground Truths</td><td class="num">1</td><td class="num">0</td><td></td><td>10-11 之后没有更新，本周无 AI 内容</td></tr>
+        <tr><td>Lenny's Newsletter</td><td class="num">7</td><td class="num">2</td><td><span class="ratio" style="width:29px"></span></td><td></td></tr>
+      </tbody>
+    </table></div></div>
+  </details>
+
+</section>
+</div>
