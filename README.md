@@ -6,7 +6,7 @@ Nook 是一本持续生长的书：**《Nook：我的 AI 指南针》**。它由
 
 书稿用 Markdown 写作，用 [mdBook](https://rust-lang.github.io/mdBook/) 生成网站，以后也可以导出 PDF 或整理出版。
 
-在线阅读：<https://lyteboat.github.io/nook/>。每次合并到 main，GitHub Actions 自动构建并发布到 GitHub Pages。
+在线站点：<https://lyteboat.github.io/nook/>。目前发布的是每周的 AI 雷达，书稿仍在写作中，成稿后再上线。每次合并到 main，GitHub Actions 运行 `scripts/build_site.py`，扫描 `radar/` 生成首页目录并发布到 GitHub Pages。
 
 ## 目录结构
 
@@ -32,6 +32,8 @@ nook/
 │   ├── roles.md         讨论角色与报告流程
 │   ├── style-guide.md   写作规范
 │   └── workflow.md      从输入到成书的流程、草稿清理规则
+├── scripts/
+│   └── build_site.py    生成 GitHub Pages 站点（雷达首页与各期雷达）
 ├── book.toml            mdBook 配置
 └── CLAUDE.md            给 Claude 的仓库约定
 ```
