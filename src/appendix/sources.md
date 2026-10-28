@@ -2,12 +2,12 @@
 
 外部动态雷达所使用的信息源。选源原则是**质量大于数量**：优先一手、原创、有深度的来源。
 
-> 状态：试用期，每周维护一次（新增、降级、移除都记在文末的“变更记录”里）。最近更新：2026-10-25。
+> 状态：试用期，每周维护一次（新增、降级、移除都记在文末的“变更记录”里）。最近更新：2026-10-28。
 
 ## 怎么读这张清单
 
 - **层级**：A = 周三、周六都扫；B = 只在周六扫；C = 每月第一个周六扫。
-- **抓取**：RSS / API / 仅网页 / 被挡，均为实测，最近一次在 2026-10-25。被挡的源用搜索补位。
+- **抓取**：RSS / API / 仅网页 / 被挡 / 不可用，均为实测，最近一次在 2026-10-28。被挡的源用搜索补位；“不可用”指源本身有用，但云环境暂时抓不到，每期重试。
 - **付费**：💰 表示全部或部分内容需要付费订阅。雷达只读免费部分，付费内容只看标题和导语，是否订阅由 Yue 决定。
 - **方向**：通用、AI 产品、金融、医疗。金融和医疗是重点追踪的行业，雷达里单独成节。
 
@@ -23,7 +23,8 @@
 | A | [arXiv cs.CL](https://rss.arxiv.org/rss/cs.CL) / cs.LG / [q-fin](https://rss.arxiv.org/rss/q-fin) | 论文 | 每天上百篇，只用金融、医疗关键词过滤 | 高 / 信噪比低 | RSS | |
 | A | [Simon Willison](https://simonwillison.net/atom/everything/) | 个人博客 | 工具与 Agent 实操最快的一手记录 | 高 / 信噪比中 | Atom | |
 | A | [Hacker News](https://hn.algolia.com/api/v1/search_by_date?tags=front_page) | 社区讨论 | 只看上过首页的 AI 讨论；原先按 100 分过滤的查询自 10-13 起不再返回新条目，10-25 改为首页查询 | 中 / 信噪比中 | API | |
-| A | [HF Trending](https://huggingface.co/api/trending) | 开源模型 | 社区正在追的模型、Space 和数据集，接替失效的 GitHub Trending | 中 / 信噪比中 | API | |
+| A | [GitHub Trending](https://github.com/trending?since=daily) | 开源项目 | 全站榜大半与 AI 无关，只留 AI 相关仓库；云环境抓到的是多年前的旧缓存，直连被代理挡，抓不到时在雷达附录 C 标“不可用”，每期重试 | 中 / 信噪比低 | 不可用（10-28） | |
+| A | [HF Trending](https://huggingface.co/api/trending) | 开源模型 | 社区正在追的模型、Space 和数据集；GitHub Trending 不可用时由它补位 | 中 / 信噪比中 | API | |
 | B | [Import AI](https://importai.substack.com/feed)（Jack Clark） | 周刊 | 研究、政策与安全的解读，每周一更新 | 高 / 信噪比高 | RSS | |
 | B | [Interconnects](https://www.interconnects.ai/feed)（Nathan Lambert） | 周刊 | 开源模型与后训练 | 高 / 信噪比高 | RSS | 💰 部分 |
 | B | [Latent Space](https://www.latent.space/feed) | 周刊 + 播客 | AI 工程师视角，访谈质量高 | 高 / 信噪比高 | RSS | |
@@ -85,12 +86,12 @@ arXiv 过滤关键词：
 | Healthcare IT News | AI 页最新内容停在 2026-06 |
 | The Information、Stratechery | 💰 全付费，质量高，是否订阅由 Yue 决定 |
 | 播客（Dwarkesh、No Priors 等） | 音频难摘要，干货会被周刊转述，按需收听 |
-| GitHub Trending | 2026-10-25 移除：抓到的是多年前的旧榜单，换语言分榜也一样；OSS Insight 的榜单也已暂停 |
 
 ## 变更记录
 
 | 日期 | 变更 |
 | --- | --- |
+| 2026-10-28 | 按 Yue 意见恢复 GitHub Trending：榜单本身有用，问题出在云环境的抓取（旧缓存、直连被挡），保留在 A 层，标“不可用”，每期重试；HF Trending 保留补位 |
 | 2026-10-25 | 第二次维护：GitHub Trending 失效，移除，由 HF Trending 接替；Hacker News 改为首页查询；npj Digital Medicine 改抓文章列表页；量子位加抓首页列表；Fintech Business Weekly、Ground Truths 两周未更新，继续观察 |
 | 2026-10-23 | 首次维护：Anthropic 增加 Research 栏目（形式化验证一文只发在这里）；OpenAI News 写明过滤规则 |
 | 2026-10-23 | 首版：29 个源，A 层 12、B 层 11、C 层 6；新增 AI 产品方向，收录 Lenny's Newsletter |
