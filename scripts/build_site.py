@@ -220,21 +220,24 @@ def digest(source):
     head = re.search(r'<div class="stats">((?:\s*<div>.*?</div>)+)', source, re.S)
     stats = [(text_of(b), text_of(s)) for b, s in
              re.findall(r'<div><b>(.*?)</b><span>(.*?)</span></div>', head.group(1) if head else "")]
-    # 每个条目一句结论加六栏（What、Why、How、Who、When、Action）。必看是展开的 article，其余条目是折叠的 details。
+    # 每个条目两行标题加六栏（What、Why、How、Who、When、Action）。期刊页的标题是事件加意义，首页速览用 data-brief 里的短标题。
+    # 必看是展开的 article，其余条目是折叠的 details。
     musts = []
-    for aid, art in re.findall(r'<article class="must[^"]*" id="([^"]+)">(.*?)</article>', source, re.S):
+    for aid, art in re.findall(r'<article class="must[^"]*" id="([^"]+)"[^>]*>(.*?)</article>', source, re.S):
         label = first(r'<span class="must-no">(.*?)</span>', art)
         chip = re.search(r'chip (zs|dj|sm)">(.*?)<', art)
         musts.append({
-            "title": first(r"<h3>(.*?)</h3>", art), "label": label, "track": label.split(" ")[0],
+            "title": first(r"<h3>(.*?)</h3>", art), "so": first(r'<p class="so">(.*?)</p>', art), "label": label, "track": label.split(" ")[0],
             "cls": chip.group(1) if chip else "", "stage": chip.group(2) if chip else "",
             "ind": first(r'<span class="ind">(.*?)</span>', art),
             "refs": [("#" + aid, re.sub(r"^新\s*·\s*", "", first(r'<span class="name">(.*?)</span>', art)))],
             "fields": [(k, text_of(v)) for k, v in re.findall(r"<dt>(\w+)<small>.*?</small></dt>\s*<dd>(.*?)</dd>", art, re.S)],
             "src": (re.search(r'<p class="src">原文：(.*?)</p>', art, re.S) or re.search("()", "")).group(1),
         })
-    concl = dict(re.findall(r'<details class="item" id="([^"]+)">\s*<summary><span class="c">(.*?)</span>', source, re.S))
+    # 10-24 那期以前没有短标题，退回期刊页的标题
+    concl = dict(re.findall(r'<details class="item" id="([^"]+)"[^>]*>\s*<summary><span class="c">(.*?)</span>', source, re.S))
     concl.update({m["refs"][0][0][1:]: m["title"] for m in musts})
+    concl.update(re.findall(r'<(?:article|details) class="(?:must|item)[^"]*" id="([^"]+)" data-brief="([^"]*)"', source))
     items = []
     tbl = re.search(r"条目总表.*?<thead>(.*?)</thead>.*?<tbody>(.*?)</tbody>", source, re.S)
     cols = [text_of(th) for th in re.findall(r"<th[^>]*>(.*?)</th>", tbl.group(1), re.S)] if tbl else []
@@ -309,6 +312,7 @@ footer{max-width:1080px;margin:0 auto;padding:0 0 40px;font-size:13px;color:var(
 .must{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:8px;padding:20px;display:grid;gap:12px;align-content:start}
 .must .no{font:600 13px var(--f-data);color:var(--muted);display:flex;gap:8px;align-items:center}
 .must h3{font-size:18px;font-weight:600}
+.must .so{margin:-6px 0 0;color:var(--muted);font-size:14.5px}
 .must dl{margin:0}.must dt{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.08em}
 .must dd{margin:2px 0 10px;font-size:14px;line-height:1.7}
 .must{scroll-margin-top:80px}
@@ -442,7 +446,7 @@ def render_index(issues):
                           + '</span></li>'
                           for i in rows)
             cols.append(f'<div class="col"><h3>{label}<span class="num muted">{len(rows)}</span></h3><ul>{lis}</ul></div>')
-        note = '<span class="muted">每条一句结论，按重要程度排序，点开看详情</span>' if tracked else ""
+        note = '<span class="muted">每条一行，写谁做了什么，按重要程度排序，点开看详情</span>' if tracked else ""
         blocks.append(f'<section><div class="sec-h"><h2>本期速览</h2>{note}<div class="legend"><span><i class="dot zs"></i>招熟</span>'
                       '<span><i class="dot dj"></i>懂劲</span><span><i class="dot sm"></i>神明</span></div>'
                       f'<a href="items.html" style="margin-left:auto;font-size:14px">在全部条目里筛选 →</a></div>'
@@ -452,12 +456,13 @@ def render_index(issues):
             f'<article class="must{" prod" if m["track"] == "产品" else ""}" id="must-{n}"><div class="no">{html.escape(labels[n - 1])}'
             + (f' <span class="chip {m["cls"]}">{html.escape(m["stage"])}</span>' if m["cls"] else "")
             + (f' <span class="ind">{html.escape(m["ind"])}</span>' if m["ind"] else "")
-            + f'</div><h3><a href="{href}{m["refs"][0][0]}">{html.escape(m["title"])}</a></h3><dl class="w6">'
+            + f'</div><h3><a href="{href}{m["refs"][0][0]}">{html.escape(m["title"])}</a></h3>'
+            + (f'<p class="so">{html.escape(text_of(m["so"]))}</p>' if m["so"] else "") + '<dl class="w6">'
             + "".join(f'<dt>{k}<small>{FIELD_ZH.get(k, "")}</small></dt><dd>{html.escape(v)}</dd>' for k, v in m["fields"])
             + '</dl>' + (f'<p class="src">原文：{basis_html(m["src"], href)}</p>' if m["src"] else "") + '</article>'
             for n, m in enumerate(dg["musts"], 1))
         two = any(m["track"] for m in dg["musts"])
-        sub = "技术、产品各两条，每条一句结论加六栏"
+        sub = "技术、产品各两条，每条写事件和意义，再分六栏"
         blocks.append(f'<section id="must"><div class="sec-h"><h2>本期必看</h2>'
                       f'<span class="muted">{sub}</span></div><div class="musts{" two" if two else ""}">{cards}</div></section>')
     blocks.append(f'<section id="archive"><div class="sec-h"><h2>最近几期</h2><span class="muted">共 {len(issues)} 期</span>'
