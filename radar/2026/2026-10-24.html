@@ -4,7 +4,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
-/* 版式：一列简报，宽 880px；先给结论和“必懂”，再由宏观到微观展开。三阶段用固定的三种颜色贯穿全页。 */
+/* 版式：一列简报，宽 880px；先给结论和“必看”，再由宏观到微观展开。三阶段用固定的三种颜色贯穿全页。 */
 :root{
   --bg:#f6f7f5; --surface:#ffffff; --ink:#1b2321; --muted:#5d6966; --line:#dde2df; --wash:#eef1ef;
   --accent:#1f5f58;
@@ -71,7 +71,7 @@ header{display:grid;gap:14px;border-bottom:2px solid var(--ink);padding-bottom:2
 .cell{display:inline-block;min-width:34px;padding:2px 0;border-radius:4px;font-family:var(--f-data);font-weight:600}
 .c0{color:var(--muted)}
 
-/* 必懂卡片 */
+/* 必看卡片 */
 .musts{display:grid;gap:16px}
 .must{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:20px 22px;display:grid;gap:12px;min-width:0}
 .must-head{display:flex;gap:14px;align-items:flex-start}
@@ -150,7 +150,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
     <div><b>23</b><span>扫描信息源</span></div>
     <div><b>~175</b><span>读过的条目</span></div>
     <div><b>22</b><span>入选条目</span></div>
-    <div><b>3 分钟</b><span>只读“本期必懂”</span></div>
+    <div><b>3 分钟</b><span>只读“本期必看”</span></div>
   </div>
   <p class="note">首期覆盖 10-16 至 10-23 的完整一周。10-24 的定时扫描又读了约 65 条，补进 7 条，正文里标“新”。两次扫描合为一期，入选 22 条，比平时的 15 条上限多。</p>
 </header>
@@ -192,7 +192,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
 </section>
 
 <section aria-labelledby="s-must">
-  <h2 id="s-must"><span class="no">01</span>本期必懂（20%）</h2>
+  <h2 id="s-must"><span class="no">01</span>本期必看（20%）</h2>
   <p class="muted">只读这一节，也能抓住本期八成的价值。</p>
   <div class="musts">
 
@@ -535,30 +535,30 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   <details>
     <summary>A. 本期条目总表（22 条）</summary>
     <div><div class="tbl"><table>
-      <thead><tr><th>日期</th><th>方向</th><th>阶段</th><th>条目</th><th>来源</th><th>去向</th></tr></thead>
+      <thead><tr><th>日期</th><th>行业</th><th>阶段</th><th>条目</th><th>标签</th><th>来源</th><th>去向</th></tr></thead>
       <tbody>
-        <tr><td class="num">10-23</td><td>通用</td><td><span class="chip dj">懂劲</span></td><td>新 · AISI 测试事故复盘</td><td>Anthropic</td><td>建议入书</td></tr>
-        <tr><td class="num">10-23</td><td>通用</td><td><span class="chip zs">招熟</span></td><td>新 · Kimi K3.1 Pro</td><td>Simon Willison</td><td>待定</td></tr>
-        <tr><td class="num">10-22</td><td>金融</td><td><span class="chip zs">招熟</span></td><td>新 · 银行对外部 Agent 只开只读</td><td>Finextra 及二手报道</td><td>建议入书</td></tr>
-        <tr><td class="num">10-22</td><td>金融</td><td><span class="chip dj">懂劲</span></td><td>新 · 裁员与信用数据并购</td><td>Finextra、FStech</td><td>待定</td></tr>
-        <tr><td class="num">10-22</td><td>通用</td><td><span class="chip dj">懂劲</span></td><td>新 · ThinkingBox 可验证奖励</td><td>HF Blog</td><td>建议试用</td></tr>
-        <tr><td class="num">10-22</td><td>产品</td><td><span class="chip zs">招熟</span></td><td>新 · OpenAI 的 FDE 做法</td><td>OpenAI</td><td>待定</td></tr>
-        <tr><td class="num">10-21</td><td>医疗</td><td><span class="chip dj">懂劲</span></td><td>新 · 法国家长生成式 AI 调查</td><td>medRxiv</td><td>待定</td></tr>
-        <tr><td class="num">10-22</td><td>医疗</td><td><span class="chip dj">懂劲</span></td><td>儿科出院文书 RCT</td><td>medRxiv</td><td>建议入书</td></tr>
-        <tr><td class="num">10-22</td><td>通用</td><td><span class="chip zs">招熟</span></td><td>Agent Skills 捐给 AAIF</td><td>Anthropic</td><td>待定</td></tr>
-        <tr><td class="num">10-22</td><td>通用</td><td><span class="chip zs">招熟</span></td><td>OpenShell 开源</td><td>GitHub、Hacker News</td><td>建议试用</td></tr>
-        <tr><td class="num">10-22</td><td>通用</td><td><span class="chip dj">懂劲</span></td><td>形式化验证规模化</td><td>Anthropic</td><td>待定</td></tr>
-        <tr><td class="num">10-21</td><td>金融</td><td><span class="chip zs">招熟</span></td><td>Starling 金融犯罪调查 Agent</td><td>Finextra</td><td>待定</td></tr>
-        <tr><td class="num">10-21</td><td>金融</td><td><span class="chip dj">懂劲</span></td><td>Quant-Arena 基准</td><td>HF Daily Papers</td><td>待定</td></tr>
-        <tr><td class="num">10-21</td><td>产品</td><td><span class="chip zs">招熟</span></td><td>Claude Duet 留存问题</td><td>Lenny's Newsletter</td><td>待定</td></tr>
-        <tr><td class="num">10-21</td><td>通用</td><td><span class="chip dj">懂劲</span></td><td>华为与 DeepSeek 的相互依存</td><td>SemiAnalysis</td><td>不入书</td></tr>
-        <tr><td class="num">10-21</td><td>医疗</td><td><span class="chip dj">懂劲</span></td><td>数千 Agent 分析脑细胞数据</td><td>OpenAI</td><td>待定</td></tr>
-        <tr><td class="num">10-20</td><td>金融</td><td><span class="chip zs">招熟</span></td><td>Visa、Mastercard 试点 Agent 支付</td><td>Finextra</td><td>待定</td></tr>
-        <tr><td class="num">10-20</td><td>金融</td><td><span class="chip zs">招熟</span></td><td>Terminal X 评审 Agent</td><td>OpenAI</td><td>待定</td></tr>
-        <tr><td class="num">10-20</td><td>医疗</td><td><span class="chip zs">招熟</span></td><td>OpenAI 收购 Orchestra Bio</td><td>OpenAI</td><td>待定</td></tr>
-        <tr><td class="num">10-19</td><td>通用</td><td><span class="chip sm">神明</span></td><td>Jack Clark IMF 演讲</td><td>Import AI</td><td>待定</td></tr>
-        <tr><td class="num">10-16</td><td>金融</td><td><span class="chip zs">招熟</span></td><td>Itaú 全客群对话式银行</td><td>OpenAI</td><td>待定</td></tr>
-        <tr><td class="num">10-15</td><td>金融</td><td><span class="chip dj">懂劲</span></td><td>FSB 12 条良好实践定稿</td><td>FSB</td><td>建议入书</td></tr>
+        <tr><td class="num">10-23</td><td>通用</td><td><span class="chip dj">懂劲</span></td><td>新 · AISI 测试事故复盘</td><td>安全对齐、评测</td><td>Anthropic</td><td>建议入书</td></tr>
+        <tr><td class="num">10-23</td><td>通用</td><td><span class="chip zs">招熟</span></td><td>新 · Kimi K3.1 Pro</td><td>模型发布</td><td>Simon Willison</td><td>待定</td></tr>
+        <tr><td class="num">10-22</td><td>金融</td><td><span class="chip zs">招熟</span></td><td>新 · 银行对外部 Agent 只开只读</td><td>Agent、权限</td><td>Finextra 及二手报道</td><td>建议入书</td></tr>
+        <tr><td class="num">10-22</td><td>金融</td><td><span class="chip dj">懂劲</span></td><td>新 · 裁员与信用数据并购</td><td>产业</td><td>Finextra、FStech</td><td>待定</td></tr>
+        <tr><td class="num">10-22</td><td>通用</td><td><span class="chip dj">懂劲</span></td><td>新 · ThinkingBox 可验证奖励</td><td>后训练、RLVR</td><td>HF Blog</td><td>建议试用</td></tr>
+        <tr><td class="num">10-22</td><td>通用</td><td><span class="chip zs">招熟</span></td><td>新 · OpenAI 的 FDE 做法</td><td>产品化</td><td>OpenAI</td><td>待定</td></tr>
+        <tr><td class="num">10-21</td><td>医疗</td><td><span class="chip dj">懂劲</span></td><td>新 · 法国家长生成式 AI 调查</td><td>用户研究</td><td>medRxiv</td><td>待定</td></tr>
+        <tr><td class="num">10-22</td><td>医疗</td><td><span class="chip dj">懂劲</span></td><td>儿科出院文书 RCT</td><td>人机协作、评测</td><td>medRxiv</td><td>建议入书</td></tr>
+        <tr><td class="num">10-22</td><td>通用</td><td><span class="chip zs">招熟</span></td><td>Agent Skills 捐给 AAIF</td><td>Agent、Skills、标准</td><td>Anthropic</td><td>待定</td></tr>
+        <tr><td class="num">10-22</td><td>通用</td><td><span class="chip zs">招熟</span></td><td>OpenShell 开源</td><td>Agent、沙箱、权限</td><td>GitHub、Hacker News</td><td>建议试用</td></tr>
+        <tr><td class="num">10-22</td><td>通用</td><td><span class="chip dj">懂劲</span></td><td>形式化验证规模化</td><td>形式化验证、AI 编程</td><td>Anthropic</td><td>待定</td></tr>
+        <tr><td class="num">10-21</td><td>金融</td><td><span class="chip zs">招熟</span></td><td>Starling 金融犯罪调查 Agent</td><td>Agent</td><td>Finextra</td><td>待定</td></tr>
+        <tr><td class="num">10-21</td><td>金融</td><td><span class="chip dj">懂劲</span></td><td>Quant-Arena 基准</td><td>评测</td><td>HF Daily Papers</td><td>待定</td></tr>
+        <tr><td class="num">10-21</td><td>通用</td><td><span class="chip zs">招熟</span></td><td>Claude Duet 留存问题</td><td>产品化</td><td>Lenny's Newsletter</td><td>待定</td></tr>
+        <tr><td class="num">10-21</td><td>通用</td><td><span class="chip dj">懂劲</span></td><td>华为与 DeepSeek 的相互依存</td><td>算力</td><td>SemiAnalysis</td><td>不入书</td></tr>
+        <tr><td class="num">10-21</td><td>医疗</td><td><span class="chip dj">懂劲</span></td><td>数千 Agent 分析脑细胞数据</td><td>多智能体、AI for Science</td><td>OpenAI</td><td>待定</td></tr>
+        <tr><td class="num">10-20</td><td>金融</td><td><span class="chip zs">招熟</span></td><td>Visa、Mastercard 试点 Agent 支付</td><td>Agent、支付</td><td>Finextra</td><td>待定</td></tr>
+        <tr><td class="num">10-20</td><td>金融</td><td><span class="chip zs">招熟</span></td><td>Terminal X 评审 Agent</td><td>Agent、LLM 评审</td><td>OpenAI</td><td>待定</td></tr>
+        <tr><td class="num">10-20</td><td>医疗</td><td><span class="chip zs">招熟</span></td><td>OpenAI 收购 Orchestra Bio</td><td>AI for Science、产业</td><td>OpenAI</td><td>待定</td></tr>
+        <tr><td class="num">10-19</td><td>通用</td><td><span class="chip sm">神明</span></td><td>Jack Clark IMF 演讲</td><td>RSI</td><td>Import AI</td><td>待定</td></tr>
+        <tr><td class="num">10-16</td><td>金融</td><td><span class="chip zs">招熟</span></td><td>Itaú 全客群对话式银行</td><td>产品化</td><td>OpenAI</td><td>待定</td></tr>
+        <tr><td class="num">10-15</td><td>金融</td><td><span class="chip dj">懂劲</span></td><td>FSB 12 条良好实践定稿</td><td>监管</td><td>FSB</td><td>建议入书</td></tr>
       </tbody>
     </table></div></div>
   </details>

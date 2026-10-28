@@ -4,3 +4,6 @@
 
 # 雷达站点构建产物
 /_site/
+
+# Python 缓存
+__pycache__/
