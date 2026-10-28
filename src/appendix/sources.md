@@ -23,8 +23,8 @@
 | A | [arXiv cs.CL](https://rss.arxiv.org/rss/cs.CL) / cs.LG / [q-fin](https://rss.arxiv.org/rss/q-fin) | 论文 | 每天上百篇，只用金融、医疗关键词过滤 | 高 / 信噪比低 | RSS | |
 | A | [Simon Willison](https://simonwillison.net/atom/everything/) | 个人博客 | 工具与 Agent 实操最快的一手记录 | 高 / 信噪比中 | Atom | |
 | A | [Hacker News](https://hn.algolia.com/api/v1/search_by_date?tags=front_page) | 社区讨论 | 只看上过首页的 AI 讨论；原先按 100 分过滤的查询自 10-13 起不再返回新条目，10-25 改为首页查询 | 中 / 信噪比中 | API | |
-| A | [GitHub Trending](https://github.com/trending?since=daily) | 开源项目 | 全站榜大半与 AI 无关，只留 AI 相关仓库；云环境抓到的是多年前的旧缓存，直连被代理挡，抓不到时在雷达附录 C 标“不可用”，每期重试 | 中 / 信噪比低 | 不可用（10-28） | |
-| A | [HF Trending](https://huggingface.co/api/trending) | 开源模型 | 社区正在追的模型、Space 和数据集；GitHub Trending 不可用时由它补位 | 中 / 信噪比中 | API | |
+| A | [GitHub Trending](https://github.com/trending?since=daily)，经 [Trendshift](https://trendshift.io/) 读取 | 开源项目 | 全站榜大半与 AI 无关，只留 AI 相关仓库。GitHub 的 robots.txt 不许抓取工具读 /trending，工具只能返回多年前的旧缓存，所以改读 Trendshift 汇总的每日榜；Trendshift 也抓不到时在雷达附录 C 标“不可用” | 中 / 信噪比低 | 仅网页 | |
+| A | [HF Trending](https://huggingface.co/api/trending) | 开源模型 | 社区正在追的模型、Space 和数据集；GitHub Trending 抓不到时由它补位 | 中 / 信噪比中 | API | |
 | B | [Import AI](https://importai.substack.com/feed)（Jack Clark） | 周刊 | 研究、政策与安全的解读，每周一更新 | 高 / 信噪比高 | RSS | |
 | B | [Interconnects](https://www.interconnects.ai/feed)（Nathan Lambert） | 周刊 | 开源模型与后训练 | 高 / 信噪比高 | RSS | 💰 部分 |
 | B | [Latent Space](https://www.latent.space/feed) | 周刊 + 播客 | AI 工程师视角，访谈质量高 | 高 / 信噪比高 | RSS | |
@@ -91,6 +91,7 @@ arXiv 过滤关键词：
 
 | 日期 | 变更 |
 | --- | --- |
+| 2026-10-28 | GitHub Trending 改经 Trendshift 读取，恢复可用：查明旧榜单来自抓取工具的缓存，GitHub 的 robots.txt 禁止抓取工具读 /trending |
 | 2026-10-28 | 按 Yue 意见恢复 GitHub Trending：榜单本身有用，问题出在云环境的抓取（旧缓存、直连被挡），保留在 A 层，标“不可用”，每期重试；HF Trending 保留补位 |
 | 2026-10-25 | 第二次维护：GitHub Trending 失效，移除，由 HF Trending 接替；Hacker News 改为首页查询；npj Digital Medicine 改抓文章列表页；量子位加抓首页列表；Fintech Business Weekly、Ground Truths 两周未更新，继续观察 |
 | 2026-10-23 | 首次维护：Anthropic 增加 Research 栏目（形式化验证一文只发在这里）；OpenAI News 写明过滤规则 |
