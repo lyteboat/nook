@@ -16,7 +16,7 @@ Nook AI 雷达模板（HTML）。每期复制本文件为 radar/YYYY/YYYY-MM-DD.
 6. 每个判断都有依据：机构、数字、日期、链接。转引的内容要找到原作者（博客的链接帖、周刊里的摘录常常是别人的文章）；二手转述的数字要对照原始榜单，注明版本、是否开工具，前后数字口径不同就写明。推断写在 .view 里，以“我的看法”开头。厂商数据注明“厂商自报”，付费内容标 💰 并只依据免费部分。
 7. 宁缺毋滥：全期 10 到 15 条；本期招式 5 到 9 项；没有内容的分区整节删掉，编号顺延。
 8. 中文按 tuiqiao 技能写：不用破折号，不堆形容词，数字说话。
-9. 附录 A 条目总表是站点“全部条目”页的数据源：“行业”只填通用、金融、医疗之一；“标签”填一到三个技术标签，用顿号分隔，从 radar/README.md 的标签词表里选，词表里没有的先补进词表。
+9. 附录 A 条目总表是站点“全部条目”页的数据源：“行业”只填通用、金融、医疗之一；“标签”填一到三个技术标签，用顿号分隔，从 radar/README.md 的标签词表里选，词表里没有的先补进词表。“条目”单元格写成 <a href="#i-slug">条目</a>，并在正文里讲这一条的元素（tr、li、p 或 div）上加同名 id="i-slug"，站点首页和全部条目页点条目会跳到这里；几条共用一段正文时可以指向同一个 id。
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -282,7 +282,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   <h2 id="s-appx"><span class="no">附</span>附录</h2>
   <details><summary>A. 本期条目总表（N 条）</summary><div><div class="tbl"><table>
     <thead><tr><th>日期</th><th>行业</th><th>阶段</th><th>条目</th><th>标签</th><th>来源</th><th>去向</th></tr></thead>
-    <tbody><tr><td class="num">MM-DD</td><td>通用 / 金融 / 医疗</td><td><span class="chip zs">招熟</span></td><td>条目</td><td>Agent、评测</td><td>来源</td><td>待定 / 建议入书 / 已转草稿 / 已入书 / 不入书</td></tr></tbody>
+    <tbody><tr><td class="num">MM-DD</td><td>通用 / 金融 / 医疗</td><td><span class="chip zs">招熟</span></td><td><a href="#i-slug">条目</a></td><td>Agent、评测</td><td>来源</td><td>待定 / 建议入书 / 已转草稿 / 已入书 / 不入书</td></tr></tbody>
   </table></div></div></details>
   <details><summary>B. 草稿盘点（仅周六，周三删掉）</summary><div><div class="tbl"><table>
     <thead><tr><th>草稿</th><th>创建日期</th><th>去向</th><th>说明</th></tr></thead><tbody></tbody>

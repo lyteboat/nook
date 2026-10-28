@@ -11,6 +11,7 @@
 import datetime
 import html
 import json
+from urllib.parse import quote
 import pathlib
 import re
 import sys
@@ -82,6 +83,8 @@ html{scroll-padding-top:16px}
 
 # 每期雷达自带一套绿色主题，发布时用站点的蓝色覆盖中性色和主色，三阶段的颜色不动。
 ISSUE_THEME = """<style>
+[id^="i-"]{scroll-margin-top:72px}
+[id^="i-"]:target{background:var(--wash);box-shadow:0 0 0 6px var(--wash);border-radius:4px}
 :root{--bg:#F3F5F8;--surface:#fff;--ink:#141A1F;--muted:#5F6A75;--line:#E3E7EB;--wash:#E6EEF6;--accent:#14598C}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0D141B;--surface:#16212C;--ink:#E6ECF2;--muted:#9AA8B6;--line:#263341;--wash:#1B2836;--accent:#7DB4E3}}
 :root[data-theme="dark"]{--bg:#0D141B;--surface:#16212C;--ink:#E6ECF2;--muted:#9AA8B6;--line:#263341;--wash:#1B2836;--accent:#7DB4E3}
@@ -235,6 +238,8 @@ def digest(source):
             continue
         chip = re.search(r"chip (zs|dj|sm)", row.get("阶段", ""))
         name = text_of(row["条目"])
+        # 条目单元格里的 <a href="#i-...">指向正文里讲这一条的位置，首页和全部条目页据此跳转
+        anchor = re.search(r'href="(#[^"]+)"', row["条目"])
         # 早期的表头叫“方向”，还有一类“产品”，现在统一归到行业的“通用”。
         industry = text_of(row.get("行业", row.get("方向", ""))) or "通用"
         items.append({
@@ -242,7 +247,7 @@ def digest(source):
             "cls": chip.group(1) if chip else "", "stage": text_of(row.get("阶段", "")),
             "name": re.sub(r"^新\s*·\s*", "", name), "new": name.startswith("新"),
             "tags": [t for t in re.split(r"[、,，/]\s*", text_of(row.get("标签", ""))) if t],
-            "src": text_of(row.get("来源", "")),
+            "src": text_of(row.get("来源", "")), "anchor": anchor.group(1) if anchor else "",
         })
     return {"thesis": thesis, "stats": stats, "musts": musts, "items": items}
 
@@ -300,6 +305,8 @@ footer{max-width:1080px;margin:0 auto;padding:0 0 40px;font-size:13px;color:var(
 .legend span{display:inline-flex;gap:6px;align-items:center}
 .dot{display:inline-block;width:8px;height:8px;border-radius:50%;flex:none}.dot.zs{background:var(--zs)}.dot.dj{background:var(--dj)}.dot.sm{background:var(--sm)}
 .board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.col a.item{color:inherit;text-decoration:none}.col a.item:hover{color:var(--accent);text-decoration:underline}
+a.tag{text-decoration:none}a.tag:hover{color:var(--accent);border-color:var(--accent)}
 .tag{display:inline-block;font-size:11px;line-height:1.5;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 5px;margin-left:5px;white-space:nowrap}
 .col{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px}
 .col h3{font-size:16px;font-weight:600;display:flex;justify-content:space-between;margin-bottom:10px}
@@ -325,6 +332,7 @@ table{width:100%;border-collapse:collapse;background:var(--surface);border:1px s
 th{text-align:left;font-size:12px;color:var(--muted);font-weight:600;background:var(--wash);padding:10px 14px}
 td{padding:11px 14px;border-top:1px solid var(--line);vertical-align:top}
 td.name{font-weight:500}
+td.name a.item{color:inherit;text-decoration:none}td.name a.item:hover{color:var(--accent);text-decoration:underline}
 td .tag{margin:0 4px 2px 0}
 @media (max-width:900px){.hero-body,.musts,.board{grid-template-columns:1fr}.hero h1{font-size:30px}.archive a{grid-template-columns:1fr;gap:2px}
   .top{gap:12px}.top nav{gap:14px}
@@ -346,6 +354,10 @@ def page(title, desc, current, body, script=""):
             f"<main>\n{body}\n</main>\n"
             f'<footer>每周三、周六更新。源文件在 <a href="https://github.com/lyteboat/nook">GitHub · lyteboat/nook</a>。</footer>\n'
             f"{script}</body>\n</html>\n")
+
+
+def tag_link(t):
+    return f'<a class="tag" href="items.html#tag={quote(t)}">{html.escape(t)}</a>'
 
 
 def render_index(issues):
@@ -378,7 +390,8 @@ def render_index(issues):
             if not rows:
                 continue
             lis = "".join(f'<li><span class="dot {i["cls"]}"></span><span>{"<span class=new>新</span>" if i["new"] else ""}'
-                          f'{html.escape(i["name"])}{"".join(f"<span class=tag>{html.escape(t)}</span>" for t in i["tags"])}</span></li>'
+                          f'<a class="item" href="{href}{i["anchor"]}">{html.escape(i["name"])}</a>'
+                          f'{"".join(tag_link(t) for t in i["tags"])}</span></li>'
                           for i in rows)
             cols.append(f'<div class="col"><h3>{label}<span class="num muted">{len(rows)}</span></h3><ul>{lis}</ul></div>')
         blocks.append('<section><div class="sec-h"><h2>本期速览</h2><div class="legend"><span><i class="dot zs"></i>招熟</span>'
@@ -405,12 +418,15 @@ ITEMS_JS = """<script>
     var rows=D.filter(function(i){return ok('ind',i.ind)&&ok('stage',i.stage)&&ok('tag',i.tags)&&(!q||(i.name+' '+i.src+' '+i.tags.join(' ')).toLowerCase().indexOf(q)>-1)});
     document.getElementById('count').textContent='显示 '+rows.length+' / '+D.length+' 条';
     document.getElementById('tb').innerHTML=rows.map(function(i){return '<tr><td class="num">'+e(i.date)+'</td><td>'+e(i.ind)+
-      '</td><td><span class="chip '+i.cls+'">'+e(i.stage)+'</span></td><td class="name">'+(i.new?'<span class="new">新</span>':'')+e(i.name)+
-      '</td><td>'+i.tags.map(function(t){return '<span class="tag">'+e(t)+'</span>'}).join('')+'</td><td class="muted">'+e(i.src)+'</td><td><a class="num" href="'+i.href+'">'+e(i.issue.slice(5))+'</a></td></tr>'}).join('');
+      '</td><td><span class="chip '+i.cls+'">'+e(i.stage)+'</span></td><td class="name">'+(i.new?'<span class="new">新</span>':'')+'<a class="item" href="'+i.href+i.anchor+'">'+e(i.name)+'</a>'+
+      '</td><td>'+i.tags.map(function(t){return '<a class="tag" href="#tag='+encodeURIComponent(t)+'">'+e(t)+'</a>'}).join('')+'</td><td class="muted">'+e(i.src)+'</td><td><a class="num" href="'+i.href+'">'+e(i.issue.slice(5))+'</a></td></tr>'}).join('');
   }
   [].forEach.call(document.querySelectorAll('.f'),function(b){b.addEventListener('click',function(){
     var on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);sel[b.dataset.k][b.dataset.v]=on;draw()})});
-  document.getElementById('q').addEventListener('input',draw);draw();
+  function fromHash(){var m=/^#tag=(.+)$/.exec(location.hash);if(!m)return;var t=decodeURIComponent(m[1]);sel.tag={};sel.tag[t]=true;
+    [].forEach.call(document.querySelectorAll('.f[data-k="tag"]'),function(b){b.setAttribute('aria-pressed',b.dataset.v===t)})}
+  window.addEventListener('hashchange',function(){fromHash();draw()});
+  document.getElementById('q').addEventListener('input',draw);fromHash();draw();
 })();
 </script>
 """

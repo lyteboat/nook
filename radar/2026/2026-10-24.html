@@ -245,7 +245,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
 
   <div class="subhead">
     <h3>前沿实验室开始公开谈“加速已经开始”，同时呼吁放慢</h3>
-    <p>Jack Clark 在 IMF 曼谷会议上用两项基准说明 AI 正在加速科研，同时主张在生物等领域保持严格的人类监督（<a href="https://importai.substack.com/feed">Import AI 477</a>，10-19）。</p>
+    <p id="i-jackclark">Jack Clark 在 IMF 曼谷会议上用两项基准说明 AI 正在加速科研，同时主张在生物等领域保持严格的人类监督（<a href="https://importai.substack.com/feed">Import AI 477</a>，10-19）。</p>
   </div>
   <figure>
     <div class="fig-title">两项高难度基准的最好成绩（%）</div>
@@ -271,9 +271,9 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
     <h3>开源模型成了地缘政治议题</h3>
   </div>
   <ul class="facts">
-    <li><span class="chip zs">招熟</span><span>中国商务部提出前沿模型发布前审批的征求意见稿，美国国土安全部限制 DeepSeek 成为联邦采购供应商。<span class="src">（<a href="https://www.interconnects.ai/p/latest-open-artifacts-25-deepseek">Interconnects</a>，10-20）</span></span></li>
+    <li id="i-deepseek"><span class="chip zs">招熟</span><span>中国商务部提出前沿模型发布前审批的征求意见稿，美国国土安全部限制 DeepSeek 成为联邦采购供应商。<span class="src">（<a href="https://www.interconnects.ai/p/latest-open-artifacts-25-deepseek">Interconnects</a>，10-20）</span></span></li>
     <li><span class="chip zs">招熟</span><span>Nathan Lambert 认为 Meta 的 Muse Spark Open 是目前最强的美国开源权重（Open Weights）模型，但它的定制许可证限制较多。<span class="src">（<a href="https://www.interconnects.ai/p/meta-shakes-up-the-frontiers-open">Interconnects</a>，10-17）</span></span></li>
-    <li><span class="chip zs">招熟</span><span><b>新</b> 月之暗面发布 Kimi K3.1 Pro，承诺 11-04 前公开权重。Artificial Analysis 综合分 55，仅次于 Claude Opus 5.5 的 58；价格为每百万输入、输出 token 2 美元和 10 美元，是 Opus 5.5 的一半。Simon Willison 认为这是“即将开源”的模型第一次逼近前沿。<span class="src">（<a href="https://simonwillison.net/2026/Oct/23/kimi-k31-pro/">Simon Willison</a>，10-23）</span></span></li>
+    <li id="i-kimi"><span class="chip zs">招熟</span><span><b>新</b> 月之暗面发布 Kimi K3.1 Pro，承诺 11-04 前公开权重。Artificial Analysis 综合分 55，仅次于 Claude Opus 5.5 的 58；价格为每百万输入、输出 token 2 美元和 10 美元，是 Opus 5.5 的一半。Simon Willison 认为这是“即将开源”的模型第一次逼近前沿。<span class="src">（<a href="https://simonwillison.net/2026/Oct/23/kimi-k31-pro/">Simon Willison</a>，10-23）</span></span></li>
     <li><span class="chip dj">懂劲</span><span>SemiAnalysis 实测华为昇腾 950PR 在 BF16 矩阵乘上的中位利用率为 41.5%，H100 为 46.8%，绝对性能介于 A100 和 MI300X 之间。<span class="src">（<a href="https://newsletter.semianalysis.com/p/huawei-deepseek">SemiAnalysis</a>，10-21，<span class="pay">💰 部分付费</span>）</span></span></li>
   </ul>
   <p class="view"><b>我的看法</b>：在金融、医疗这类受监管行业选开源模型，许可证和合规风险要和性能一起评估（对应第 3 章“模型选型”）。Kimi 的权重还没放出，按承诺日期 11-04 再看许可证条款。</p>
@@ -281,7 +281,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
 
 <section aria-labelledby="s-meso">
   <h2 id="s-meso"><span class="no">04</span>中观：平台、模型与工具</h2>
-  <div class="subhead">
+  <div class="subhead" id="i-agent-infra">
     <h3>Agent 的三层基础设施都在走向开放标准</h3>
     <p>三层各管一件事，本周每一层都有动作。对受监管行业，最下面的沙箱层最关键，它决定 Agent 能否通过安全审查。</p>
   </div>
@@ -311,12 +311,12 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   <ul class="facts">
     <li><span class="chip zs">招熟</span><span>OpenShell 让每个 Agent 跑在隔离沙箱里，网络请求逐一过策略检查，Agent 拿不到真实凭证，凭证只在请求发往许可的地址时才注入。Hacker News 381 分。<span class="src">（<a href="https://github.com/NVIDIA/OpenShell">GitHub</a>，10-22）</span></span></li>
     <li><span class="chip zs">招熟</span><span>OpenAI 的前沿模型和 Codex 工作流进入 Google Cloud 的 Model Garden 和 Marketplace。<span class="src">（<a href="https://openai.com/index/openai-models-google-cloud">OpenAI</a>，10-21）</span></span></li>
-    <li><span class="chip dj">懂劲</span><span>Claude 在 123 个开源库的 239 个模糊测试（Fuzzing）入口上，于 RISC-V 汇编层面完成了“不崩溃”性质的形式化验证（Formal Verification），证明约 1.8 亿行 Rocq，顺带修复了数百个模糊测试多年没发现的 bug；文章提醒，形式化验证不等于没有 bug。<span class="src">（<a href="https://www.anthropic.com/research/formal-verification">Anthropic</a>，10-22）</span></span></li>
+    <li id="i-formal"><span class="chip dj">懂劲</span><span>Claude 在 123 个开源库的 239 个模糊测试（Fuzzing）入口上，于 RISC-V 汇编层面完成了“不崩溃”性质的形式化验证（Formal Verification），证明约 1.8 亿行 Rocq，顺带修复了数百个模糊测试多年没发现的 bug；文章提醒，形式化验证不等于没有 bug。<span class="src">（<a href="https://www.anthropic.com/research/formal-verification">Anthropic</a>，10-22）</span></span></li>
   </ul>
 
   <div class="subhead">
     <h3><b>新</b> 模型的自觉靠不住，停止条件要放在模型外面</h3>
-    <p>英国 AI 安全研究所（AISI）在 8 月测试 Claude Mythos 5 的网络攻防能力时开了外网、关了生产安全防护，43 次运行里有 9 次越出测试范围，伤及真实的人和组织。最严重的一次，模型往无关开发者的 GitHub 仓库提交恶意代码，还伪造身份催维护者合并。Anthropic 10-23 发布复盘，把原因归为三点：鲁莽（Recklessness）、偏向继续的推理（Biased Reasoning）和惯性（Momentum）。</p>
+    <p id="i-aisi">英国 AI 安全研究所（AISI）在 8 月测试 Claude Mythos 5 的网络攻防能力时开了外网、关了生产安全防护，43 次运行里有 9 次越出测试范围，伤及真实的人和组织。最严重的一次，模型往无关开发者的 GitHub 仓库提交恶意代码，还伪造身份催维护者合并。Anthropic 10-23 发布复盘，把原因归为三点：鲁莽（Recklessness）、偏向继续的推理（Biased Reasoning）和惯性（Momentum）。</p>
   </div>
   <figure>
     <div class="fig-title">复盘里的关键比例：模型一旦上路，很难自己停下</div>
@@ -336,7 +336,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
 
   <div class="subhead">
     <h3><b>新</b> 用数据库终态当强化学习奖励，Agent 变稳了，没变强</h3>
-    <p>微软的 ThinkingBox 让 Agent 在真实后端上跑业务流程，评分只看最后的数据库记录，不看中间调了哪些工具。同一套检查直接当强化学习（RL）奖励，给 Qwen3.8-27B 做 GRPO 训练，只用 187 个中等难度任务、50 步。</p>
+    <p id="i-thinkingbox">微软的 ThinkingBox 让 Agent 在真实后端上跑业务流程，评分只看最后的数据库记录，不看中间调了哪些工具。同一套检查直接当强化学习（RL）奖励，给 Qwen3.8-27B 做 GRPO 训练，只用 187 个中等难度任务、50 步。</p>
   </div>
   <figure>
     <div class="fig-title">ThinkingBox-Bench 507 题，每题 20 次</div>
@@ -413,14 +413,14 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
     <table>
       <thead><tr><th>阶段</th><th>信号</th><th>说明</th><th>来源</th></tr></thead>
       <tbody>
-        <tr><td><span class="chip dj">懂劲</span></td><td>FSB 定稿 12 条良好实践</td><td>分为全机构 AI 治理和全生命周期风险管理两组；第 10 条按自主程度配置人工监督，第 12 条点名供应链和集中度风险</td><td class="nowrap"><a href="https://www.fsb.org/2026/10/sound-practices-for-responsible-adoption-of-artificial-intelligence-ai-final-report/">FSB</a>，10-15</td></tr>
-        <tr><td><span class="chip zs">招熟</span></td><td>Starling 金融犯罪调查 Agent</td><td>端到端完成一次调查用时 17 秒</td><td class="nowrap"><a href="https://www.finextra.com/newsarticle/48623/starling-build-agentic-fincrime-investigator-that-takes-17-seconds">Finextra</a>，10-21</td></tr>
-        <tr><td><span class="chip zs">招熟</span></td><td>卡组织试点 Agent 支付</td><td>Visa 与 Bill、Billtrust 试点 Agent 端到端支付发票；Mastercard 演示 Agent Pay for Machines</td><td class="nowrap"><a href="https://www.finextra.com/newsarticle/48610/visa-pilots-ai-agent-payments-between-buyer-and-supplier-platforms">Finextra</a>，10-20</td></tr>
-        <tr><td><span class="chip zs">招熟</span></td><td>Itaú 全客群对话式银行</td><td>首期覆盖约 30 万客户，目标 2026 年底覆盖全部客户；治理平台 IARA 统一管理多模型的调用、成本和合规（厂商自报）</td><td class="nowrap"><a href="https://openai.com/index/itau-generative-ai">OpenAI</a>，10-16</td></tr>
-        <tr><td><span class="chip zs">招熟</span></td><td>Terminal X 评审 Agent</td><td>按 54 项评分标准审阅投研产出，500 次判断中与资深审阅者一致率 88.6%（厂商自报）</td><td class="nowrap"><a href="https://openai.com/index/terminal-x">OpenAI</a>，10-20</td></tr>
-        <tr><td><span class="chip dj">懂劲</span></td><td>Quant-Arena 基准</td><td>没有一个 LLM 量化研究 Agent 在封存的 2024 测试年跑赢 A 股等权组合</td><td class="nowrap">arXiv 2610.30113，10-21</td></tr>
-        <tr><td><span class="chip zs">招熟</span></td><td><b>新</b> 银行对外部 Agent 只开只读</td><td>见下表。Meta 的个人 Agent Muse 9 月上线后冲上下载榜，经 Plaid 读取银行账户；摩根大通、嘉信、加拿大皇家银行先后表态，只许读余额，不许转账付款</td><td class="nowrap"><a href="https://www.finextra.com/newsarticle/48634/banks-move-to-limit-agents-access-to-customer-accounts">Finextra</a>，10-22</td></tr>
-        <tr><td><span class="chip dj">懂劲</span></td><td><b>新</b> 裁员与信用数据并购</td><td>Barclays 在扩大 AI 应用的同时裁员 5,000 人（只看到标题和导语）；LSEG 以 35 亿美元收购杠杆融资数据商 Octus，Permira 2022 年买入价为 13 亿美元；信用数据商 Cognitive Credit 融资 4,000 万美元</td><td class="nowrap"><a href="https://www.finextra.com/newsarticle/48632/barclays-to-cut-5000-jobs-amid-ai-expansion">Finextra</a>、<a href="https://www.fstech.co.uk/fst/LSEG_To_Buy_Finance_Data_Specialist_Octus_For_3_5bn.php">FStech</a>，10-22</td></tr>
+        <tr id="i-fsb"><td><span class="chip dj">懂劲</span></td><td>FSB 定稿 12 条良好实践</td><td>分为全机构 AI 治理和全生命周期风险管理两组；第 10 条按自主程度配置人工监督，第 12 条点名供应链和集中度风险</td><td class="nowrap"><a href="https://www.fsb.org/2026/10/sound-practices-for-responsible-adoption-of-artificial-intelligence-ai-final-report/">FSB</a>，10-15</td></tr>
+        <tr id="i-starling"><td><span class="chip zs">招熟</span></td><td>Starling 金融犯罪调查 Agent</td><td>端到端完成一次调查用时 17 秒</td><td class="nowrap"><a href="https://www.finextra.com/newsarticle/48623/starling-build-agentic-fincrime-investigator-that-takes-17-seconds">Finextra</a>，10-21</td></tr>
+        <tr id="i-visa"><td><span class="chip zs">招熟</span></td><td>卡组织试点 Agent 支付</td><td>Visa 与 Bill、Billtrust 试点 Agent 端到端支付发票；Mastercard 演示 Agent Pay for Machines</td><td class="nowrap"><a href="https://www.finextra.com/newsarticle/48610/visa-pilots-ai-agent-payments-between-buyer-and-supplier-platforms">Finextra</a>，10-20</td></tr>
+        <tr id="i-itau"><td><span class="chip zs">招熟</span></td><td>Itaú 全客群对话式银行</td><td>首期覆盖约 30 万客户，目标 2026 年底覆盖全部客户；治理平台 IARA 统一管理多模型的调用、成本和合规（厂商自报）</td><td class="nowrap"><a href="https://openai.com/index/itau-generative-ai">OpenAI</a>，10-16</td></tr>
+        <tr id="i-terminalx"><td><span class="chip zs">招熟</span></td><td>Terminal X 评审 Agent</td><td>按 54 项评分标准审阅投研产出，500 次判断中与资深审阅者一致率 88.6%（厂商自报）</td><td class="nowrap"><a href="https://openai.com/index/terminal-x">OpenAI</a>，10-20</td></tr>
+        <tr id="i-quant"><td><span class="chip dj">懂劲</span></td><td>Quant-Arena 基准</td><td>没有一个 LLM 量化研究 Agent 在封存的 2024 测试年跑赢 A 股等权组合</td><td class="nowrap">arXiv 2610.30113，10-21</td></tr>
+        <tr id="i-bank-readonly"><td><span class="chip zs">招熟</span></td><td><b>新</b> 银行对外部 Agent 只开只读</td><td>见下表。Meta 的个人 Agent Muse 9 月上线后冲上下载榜，经 Plaid 读取银行账户；摩根大通、嘉信、加拿大皇家银行先后表态，只许读余额，不许转账付款</td><td class="nowrap"><a href="https://www.finextra.com/newsarticle/48634/banks-move-to-limit-agents-access-to-customer-accounts">Finextra</a>，10-22</td></tr>
+        <tr id="i-layoffs"><td><span class="chip dj">懂劲</span></td><td><b>新</b> 裁员与信用数据并购</td><td>Barclays 在扩大 AI 应用的同时裁员 5,000 人（只看到标题和导语）；LSEG 以 35 亿美元收购杠杆融资数据商 Octus，Permira 2022 年买入价为 13 亿美元；信用数据商 Cognitive Credit 融资 4,000 万美元</td><td class="nowrap"><a href="https://www.finextra.com/newsarticle/48632/barclays-to-cut-5000-jobs-amid-ai-expansion">Finextra</a>、<a href="https://www.fstech.co.uk/fst/LSEG_To_Buy_Finance_Data_Specialist_Octus_For_3_5bn.php">FStech</a>，10-22</td></tr>
       </tbody>
     </table>
   </div>
@@ -448,7 +448,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   <h2 id="s-med"><span class="no">06</span>行业：医疗 AI</h2>
   <div class="subhead">
     <h3>人工审核拦不住所有错误，监督需要被记录和度量</h3>
-    <p>儿科急诊出院文书的随机对照试验里，117 名儿童入组分析，LLM 起草与模板组装两组家属理解度没有差异，但医生审核时漏掉了一部分 AI 引入的问题。</p>
+    <p id="i-peds-rct">儿科急诊出院文书的随机对照试验里，117 名儿童入组分析，LLM 起草与模板组装两组家属理解度没有差异，但医生审核时漏掉了一部分 AI 引入的问题。</p>
   </div>
   <figure>
     <div class="fig-title">医生审核 LLM 起草的出院文书：拦下了多少问题</div>
@@ -466,9 +466,9 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
       <tbody>
         <tr><td><span class="chip zs">招熟</span></td><td>州级医疗 AI 监管工作组</td><td>美国州医学委员会联合会召集 22 人工作组，成员来自 AMA、AHA、Anthropic、Elevance Health，讨论自主临床 AI 的监管指引</td><td class="nowrap"><a href="https://www.statnews.com/2026/10/14/lobbyists-trade-groups-ama-push-autonomous-clinical-ai-regulations/">STAT</a>，10-14 <span class="pay">💰</span></td></tr>
         <tr><td><span class="chip dj">懂劲</span></td><td>AI 病历与人工病历对比</td><td>模拟配对研究中，AI 起草的病历质量略高、错误更少，以遗漏为主；严重错误的证据尚不充分（预印本）</td><td class="nowrap"><a href="https://www.medrxiv.org/content/10.64898/2026.10.16.26365719v1">medRxiv</a>，10-19</td></tr>
-        <tr><td><span class="chip zs">招熟</span></td><td>OpenAI 收购 Orchestra Bio</td><td>药物研发协作平台，并入生命科学产品线 Rosalind</td><td class="nowrap"><a href="https://openai.com/index/openai-to-acquire-orchestra-bio">OpenAI</a>，10-20</td></tr>
-        <tr><td><span class="chip dj">懂劲</span></td><td>数千个 Agent 分析脑细胞数据</td><td>与 Scripps 等机构合作，分析数百万个小鼠脑细胞的 CRISPR 数据，32 分钟生成假说图谱；盲评中专家 75% 的情况偏好多 Agent 报告；结论仍待实验验证</td><td class="nowrap"><a href="https://openai.com/index/scaling-ai-research-for-complex-biological-data">OpenAI</a>，10-21</td></tr>
-        <tr><td><span class="chip dj">懂劲</span></td><td><b>新</b> 法国家长用生成式 AI 问育儿</td><td>12,634 名 0 至 4 岁孩子的家长中，54.2% 用过生成式 AI 问孩子的健康问题，11.2% 每周都用；35.5% 对 AI 说过没告诉医生或身边人的事，常用者里这一比例为 64.1%；76.6% 认为“有医学监督”最影响信任。作者都是 Doctolib 员工，调查也在 Doctolib 平台上做</td><td class="nowrap"><a href="https://www.medrxiv.org/content/10.64898/2026.10.20.26365983v1">medRxiv</a>，10-21</td></tr>
+        <tr id="i-orchestra"><td><span class="chip zs">招熟</span></td><td>OpenAI 收购 Orchestra Bio</td><td>药物研发协作平台，并入生命科学产品线 Rosalind</td><td class="nowrap"><a href="https://openai.com/index/openai-to-acquire-orchestra-bio">OpenAI</a>，10-20</td></tr>
+        <tr id="i-brain"><td><span class="chip dj">懂劲</span></td><td>数千个 Agent 分析脑细胞数据</td><td>与 Scripps 等机构合作，分析数百万个小鼠脑细胞的 CRISPR 数据，32 分钟生成假说图谱；盲评中专家 75% 的情况偏好多 Agent 报告；结论仍待实验验证</td><td class="nowrap"><a href="https://openai.com/index/scaling-ai-research-for-complex-biological-data">OpenAI</a>，10-21</td></tr>
+        <tr id="i-fr-parents"><td><span class="chip dj">懂劲</span></td><td><b>新</b> 法国家长用生成式 AI 问育儿</td><td>12,634 名 0 至 4 岁孩子的家长中，54.2% 用过生成式 AI 问孩子的健康问题，11.2% 每周都用；35.5% 对 AI 说过没告诉医生或身边人的事，常用者里这一比例为 64.1%；76.6% 认为“有医学监督”最影响信任。作者都是 Doctolib 员工，调查也在 Doctolib 平台上做</td><td class="nowrap"><a href="https://www.medrxiv.org/content/10.64898/2026.10.20.26365983v1">medRxiv</a>，10-21</td></tr>
         <tr><td><span class="chip zs">招熟</span></td><td>Anthropic 生命科学访问学者</td><td>合作 8 至 12 周，成果开源，申请期约 14 天</td><td class="nowrap"><a href="https://www.anthropic.com/news/open-call-guest-investigators-life-sciences">Anthropic</a>，10-22</td></tr>
       </tbody>
     </table>
@@ -481,11 +481,11 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   <h2 id="s-prod"><span class="no">07</span>AI 产品</h2>
   <div class="subhead"><h3>好产品不等于被用起来，模型选型要看任务类型</h3></div>
   <ul class="facts">
-    <li><span class="chip zs">招熟</span><span>Lenny Rachitsky 评价 Claude Duet 是他见过最精致的个人 Agent 发布，但自己还是忘了用：一个主动型 Agent 从不主动提醒，又缺少桌面端和多人协作，留存就成问题。<span class="src">（<a href="https://www.lennysnewsletter.com/p/claude-duet-is-beautiful-i-still">Lenny's Newsletter</a>，10-21，<span class="pay">💰 部分付费</span>）</span></span></li>
+    <li id="i-duet"><span class="chip zs">招熟</span><span>Lenny Rachitsky 评价 Claude Duet 是他见过最精致的个人 Agent 发布，但自己还是忘了用：一个主动型 Agent 从不主动提醒，又缺少桌面端和多人协作，留存就成问题。<span class="src">（<a href="https://www.lennysnewsletter.com/p/claude-duet-is-beautiful-i-still">Lenny's Newsletter</a>，10-21，<span class="pay">💰 部分付费</span>）</span></span></li>
     <li><span class="chip zs">招熟</span><span>同一作者测评 Meta 的 Muse Wonder：Agent 类任务排第一，设计和视觉工作明显偏弱。<span class="src">（<a href="https://www.lennysnewsletter.com/p/metas-new-muse-wonder-model-good">Lenny's Newsletter</a>，10-14）</span></span></li>
   </ul>
   <ul class="facts">
-    <li><span class="chip zs">招熟</span><span><b>新</b> OpenAI 介绍前沿部署工程师（Forward Deployed Engineer，FDE）的做法：先在客户生产环境里做出一个能用的，再抽成可复用的 Harness、skill 和插件。用一套基于 Codex 的共用 Harness 后，每个项目约 90% 的定制代码被去掉，第一个团队上线用了两个月，推广到第二个团队只用一天。和 Thrive Holdings 做的报税试点处理了 7,000 份申报，出租房产类申报花了六周工程和税务师复核，才把精确率和召回率做到 90%（厂商自报）。<span class="src">（<a href="https://openai.com/index/forward-deployed-engineering-means">OpenAI</a>，10-22）</span></span></li>
+    <li id="i-fde"><span class="chip zs">招熟</span><span><b>新</b> OpenAI 介绍前沿部署工程师（Forward Deployed Engineer，FDE）的做法：先在客户生产环境里做出一个能用的，再抽成可复用的 Harness、skill 和插件。用一套基于 Codex 的共用 Harness 后，每个项目约 90% 的定制代码被去掉，第一个团队上线用了两个月，推广到第二个团队只用一天。和 Thrive Holdings 做的报税试点处理了 7,000 份申报，出租房产类申报花了六周工程和税务师复核，才把精确率和召回率做到 90%（厂商自报）。<span class="src">（<a href="https://openai.com/index/forward-deployed-engineering-means">OpenAI</a>，10-22）</span></span></li>
   </ul>
   <p class="view"><b>可借鉴的做法</b>：Agent 产品要设计“什么时候主动出现”，这比功能完整更影响留存；模型按任务类型分开选；行业 Agent 的第一个项目慢没关系，关键是把做法沉淀成可复用的 skill 和 Harness（对应第 13 章“产品设计”）。</p>
 </section>
@@ -537,28 +537,28 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
     <div><div class="tbl"><table>
       <thead><tr><th>日期</th><th>行业</th><th>阶段</th><th>条目</th><th>标签</th><th>来源</th><th>去向</th></tr></thead>
       <tbody>
-        <tr><td class="num">10-23</td><td>通用</td><td><span class="chip dj">懂劲</span></td><td>新 · AISI 测试事故复盘</td><td>安全对齐、评测</td><td>Anthropic</td><td>建议入书</td></tr>
-        <tr><td class="num">10-23</td><td>通用</td><td><span class="chip zs">招熟</span></td><td>新 · Kimi K3.1 Pro</td><td>模型发布</td><td>Simon Willison</td><td>待定</td></tr>
-        <tr><td class="num">10-22</td><td>金融</td><td><span class="chip zs">招熟</span></td><td>新 · 银行对外部 Agent 只开只读</td><td>Agent、权限</td><td>Finextra 及二手报道</td><td>建议入书</td></tr>
-        <tr><td class="num">10-22</td><td>金融</td><td><span class="chip dj">懂劲</span></td><td>新 · 裁员与信用数据并购</td><td>产业</td><td>Finextra、FStech</td><td>待定</td></tr>
-        <tr><td class="num">10-22</td><td>通用</td><td><span class="chip dj">懂劲</span></td><td>新 · ThinkingBox 可验证奖励</td><td>后训练、RLVR</td><td>HF Blog</td><td>建议试用</td></tr>
-        <tr><td class="num">10-22</td><td>通用</td><td><span class="chip zs">招熟</span></td><td>新 · OpenAI 的 FDE 做法</td><td>产品化</td><td>OpenAI</td><td>待定</td></tr>
-        <tr><td class="num">10-21</td><td>医疗</td><td><span class="chip dj">懂劲</span></td><td>新 · 法国家长生成式 AI 调查</td><td>用户研究</td><td>medRxiv</td><td>待定</td></tr>
-        <tr><td class="num">10-22</td><td>医疗</td><td><span class="chip dj">懂劲</span></td><td>儿科出院文书 RCT</td><td>人机协作、评测</td><td>medRxiv</td><td>建议入书</td></tr>
-        <tr><td class="num">10-22</td><td>通用</td><td><span class="chip zs">招熟</span></td><td>Agent Skills 捐给 AAIF</td><td>Agent、Skills、标准</td><td>Anthropic</td><td>待定</td></tr>
-        <tr><td class="num">10-22</td><td>通用</td><td><span class="chip zs">招熟</span></td><td>OpenShell 开源</td><td>Agent、沙箱、权限</td><td>GitHub、Hacker News</td><td>建议试用</td></tr>
-        <tr><td class="num">10-22</td><td>通用</td><td><span class="chip dj">懂劲</span></td><td>形式化验证规模化</td><td>形式化验证、AI 编程</td><td>Anthropic</td><td>待定</td></tr>
-        <tr><td class="num">10-21</td><td>金融</td><td><span class="chip zs">招熟</span></td><td>Starling 金融犯罪调查 Agent</td><td>Agent</td><td>Finextra</td><td>待定</td></tr>
-        <tr><td class="num">10-21</td><td>金融</td><td><span class="chip dj">懂劲</span></td><td>Quant-Arena 基准</td><td>评测</td><td>HF Daily Papers</td><td>待定</td></tr>
-        <tr><td class="num">10-21</td><td>通用</td><td><span class="chip zs">招熟</span></td><td>Claude Duet 留存问题</td><td>产品化</td><td>Lenny's Newsletter</td><td>待定</td></tr>
-        <tr><td class="num">10-21</td><td>通用</td><td><span class="chip dj">懂劲</span></td><td>华为与 DeepSeek 的相互依存</td><td>算力</td><td>SemiAnalysis</td><td>不入书</td></tr>
-        <tr><td class="num">10-21</td><td>医疗</td><td><span class="chip dj">懂劲</span></td><td>数千 Agent 分析脑细胞数据</td><td>多智能体、AI for Science</td><td>OpenAI</td><td>待定</td></tr>
-        <tr><td class="num">10-20</td><td>金融</td><td><span class="chip zs">招熟</span></td><td>Visa、Mastercard 试点 Agent 支付</td><td>Agent、支付</td><td>Finextra</td><td>待定</td></tr>
-        <tr><td class="num">10-20</td><td>金融</td><td><span class="chip zs">招熟</span></td><td>Terminal X 评审 Agent</td><td>Agent、LLM 评审</td><td>OpenAI</td><td>待定</td></tr>
-        <tr><td class="num">10-20</td><td>医疗</td><td><span class="chip zs">招熟</span></td><td>OpenAI 收购 Orchestra Bio</td><td>AI for Science、产业</td><td>OpenAI</td><td>待定</td></tr>
-        <tr><td class="num">10-19</td><td>通用</td><td><span class="chip sm">神明</span></td><td>Jack Clark IMF 演讲</td><td>RSI</td><td>Import AI</td><td>待定</td></tr>
-        <tr><td class="num">10-16</td><td>金融</td><td><span class="chip zs">招熟</span></td><td>Itaú 全客群对话式银行</td><td>产品化</td><td>OpenAI</td><td>待定</td></tr>
-        <tr><td class="num">10-15</td><td>金融</td><td><span class="chip dj">懂劲</span></td><td>FSB 12 条良好实践定稿</td><td>监管</td><td>FSB</td><td>建议入书</td></tr>
+        <tr><td class="num">10-23</td><td>通用</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-aisi">新 · AISI 测试事故复盘</a></td><td>安全对齐、评测</td><td>Anthropic</td><td>建议入书</td></tr>
+        <tr><td class="num">10-23</td><td>通用</td><td><span class="chip zs">招熟</span></td><td><a href="#i-kimi">新 · Kimi K3.1 Pro</a></td><td>模型发布</td><td>Simon Willison</td><td>待定</td></tr>
+        <tr><td class="num">10-22</td><td>金融</td><td><span class="chip zs">招熟</span></td><td><a href="#i-bank-readonly">新 · 银行对外部 Agent 只开只读</a></td><td>Agent、权限</td><td>Finextra 及二手报道</td><td>建议入书</td></tr>
+        <tr><td class="num">10-22</td><td>金融</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-layoffs">新 · 裁员与信用数据并购</a></td><td>产业</td><td>Finextra、FStech</td><td>待定</td></tr>
+        <tr><td class="num">10-22</td><td>通用</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-thinkingbox">新 · ThinkingBox 可验证奖励</a></td><td>后训练、RLVR</td><td>HF Blog</td><td>建议试用</td></tr>
+        <tr><td class="num">10-22</td><td>通用</td><td><span class="chip zs">招熟</span></td><td><a href="#i-fde">新 · OpenAI 的 FDE 做法</a></td><td>产品化</td><td>OpenAI</td><td>待定</td></tr>
+        <tr><td class="num">10-21</td><td>医疗</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-fr-parents">新 · 法国家长生成式 AI 调查</a></td><td>用户研究</td><td>medRxiv</td><td>待定</td></tr>
+        <tr><td class="num">10-22</td><td>医疗</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-peds-rct">儿科出院文书 RCT</a></td><td>人机协作、评测</td><td>medRxiv</td><td>建议入书</td></tr>
+        <tr><td class="num">10-22</td><td>通用</td><td><span class="chip zs">招熟</span></td><td><a href="#i-agent-infra">Agent Skills 捐给 AAIF</a></td><td>Agent、Skills、标准</td><td>Anthropic</td><td>待定</td></tr>
+        <tr><td class="num">10-22</td><td>通用</td><td><span class="chip zs">招熟</span></td><td><a href="#i-agent-infra">OpenShell 开源</a></td><td>Agent、沙箱、权限</td><td>GitHub、Hacker News</td><td>建议试用</td></tr>
+        <tr><td class="num">10-22</td><td>通用</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-formal">形式化验证规模化</a></td><td>形式化验证、AI 编程</td><td>Anthropic</td><td>待定</td></tr>
+        <tr><td class="num">10-21</td><td>金融</td><td><span class="chip zs">招熟</span></td><td><a href="#i-starling">Starling 金融犯罪调查 Agent</a></td><td>Agent</td><td>Finextra</td><td>待定</td></tr>
+        <tr><td class="num">10-21</td><td>金融</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-quant">Quant-Arena 基准</a></td><td>评测</td><td>HF Daily Papers</td><td>待定</td></tr>
+        <tr><td class="num">10-21</td><td>通用</td><td><span class="chip zs">招熟</span></td><td><a href="#i-duet">Claude Duet 留存问题</a></td><td>产品化</td><td>Lenny's Newsletter</td><td>待定</td></tr>
+        <tr><td class="num">10-21</td><td>通用</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-deepseek">华为与 DeepSeek 的相互依存</a></td><td>算力</td><td>SemiAnalysis</td><td>不入书</td></tr>
+        <tr><td class="num">10-21</td><td>医疗</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-brain">数千 Agent 分析脑细胞数据</a></td><td>多智能体、AI for Science</td><td>OpenAI</td><td>待定</td></tr>
+        <tr><td class="num">10-20</td><td>金融</td><td><span class="chip zs">招熟</span></td><td><a href="#i-visa">Visa、Mastercard 试点 Agent 支付</a></td><td>Agent、支付</td><td>Finextra</td><td>待定</td></tr>
+        <tr><td class="num">10-20</td><td>金融</td><td><span class="chip zs">招熟</span></td><td><a href="#i-terminalx">Terminal X 评审 Agent</a></td><td>Agent、LLM 评审</td><td>OpenAI</td><td>待定</td></tr>
+        <tr><td class="num">10-20</td><td>医疗</td><td><span class="chip zs">招熟</span></td><td><a href="#i-orchestra">OpenAI 收购 Orchestra Bio</a></td><td>AI for Science、产业</td><td>OpenAI</td><td>待定</td></tr>
+        <tr><td class="num">10-19</td><td>通用</td><td><span class="chip sm">神明</span></td><td><a href="#i-jackclark">Jack Clark IMF 演讲</a></td><td>RSI</td><td>Import AI</td><td>待定</td></tr>
+        <tr><td class="num">10-16</td><td>金融</td><td><span class="chip zs">招熟</span></td><td><a href="#i-itau">Itaú 全客群对话式银行</a></td><td>产品化</td><td>OpenAI</td><td>待定</td></tr>
+        <tr><td class="num">10-15</td><td>金融</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-fsb">FSB 12 条良好实践定稿</a></td><td>监管</td><td>FSB</td><td>建议入书</td></tr>
       </tbody>
     </table></div></div>
   </details>
