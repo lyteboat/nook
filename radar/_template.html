@@ -8,15 +8,18 @@ Nook AI 雷达模板（HTML）。每期复制本文件为 radar/YYYY/YYYY-MM-DD.
 学法：招熟 → 懂劲 → 神明。先抓住 20% 最关键的内容，覆盖 80% 的场景。
 
 写法：
-1. 编辑流程（质量要求最高的一步）：先写附录 A 的条目总表；再由“主编”和“Agent 专家”两个角色逐篇读原文（不是只读标题和导语），给每条打四个 1 到 5 分：影响（对金融、医疗 AI 产品和行业的分量）、创新（是不是新东西）、可实践（这周能不能用到产品里）、热度（讨论和传播的程度）。总分 =（影响×0.35 + 可实践×0.30 + 创新×0.20 + 热度×0.15）×20，取整，写进“编辑部打分”表，按总分降序，每条一句评语。原文抓不到的条目在表下注明，并按信息不全扣分。然后收敛：本期必看取总分前三，一条必看就是一个条目；“主编的收敛”一段说明前几名有没有共同点、为什么讲能力的条目排在前面或后面；h1 和一句话结论从这段收敛出来，每个判断带一个最硬的事实。前几名确实没有共同点，就如实写“本周没有统一主线”。不为凑主线改分，也不为凑主线挑条目。必看每条按顺序写五项：条目（<a href="#i-slug"> 链到正文）、评分（总分和四项分）、依据（原文里最硬的数字，带来源链接和日期）、心法（一到两句原理，不超过 60 字）、招式（一到三个动作，落到金融、医疗产品上）。
+1. 编辑流程（质量要求最高的一步）：先写附录 A 的条目总表，每条归到一条线：讲模型、方法、工具、标准的归“技术”，讲产品设计和业务价值的归“产品”，拿不准就问“这条改变的是怎么做出来，还是做给谁、值多少”。再由“主编”和“Agent 专家”两个角色逐篇读原文（不是只读标题和导语），按所在线的四个维度各打 1 到 5 分。
+   技术线：影响 35%（会不会改变业界对技术方向的判断，重要讲座、文章也算）、创新 25%（原来做不到的事有没有了思路）、实践 25%（有没有开源代码、标准、库、轮子）、热度 15%（大家是不是都在关注）。总分 = 加权和 × 20 × 证据系数，厂商自报或只读到导语乘 0.8，预印本或没重读原文乘 0.9，其余 1.0。
+   产品线：洞见 35%（有没有新的设计发现、原则或价值判断）、价值 25%（对用户或业务的价值有多大、能不能算清）、证据 25%（有没有用户数据、对照实验、经营数字）、可迁移 15%（能不能用到金融、医疗产品上）。总分 = 加权和 × 20，证据已是一个维度，不另乘系数。
+   总分取整，同分先比第一维度，再比第二维度。“编辑部打分”一节分技术、产品两张表，各按总分降序，每条一句评语；原文抓不到的条目在表下注明。然后收敛：两条线各取总分前二进本期必看，共四张卡；“主编的收敛”一段说明这四条有没有共同点；h1 和一句话结论从这段收敛出来，每个判断带一个最硬的事实。确实没有共同点，就如实写“本周没有统一主线”，不为凑主线改分或挑条目。必看每条按顺序写六项：轨道（技术或产品）、条目（<a href="#i-slug"> 链到正文）、评分（总分和四项分）、依据（原文里最硬的数字，带来源链接和日期）、心法（一到两句原理，不超过 60 字）、招式（一到三个动作，落到金融、医疗产品上）。
 2. 每条信号标阶段：.chip.zs 招熟（能马上用，回答怎么做）、.chip.dj 懂劲（原理与权衡，回答为什么）、.chip.sm 神明（长期方向，只写一两句）。招熟和懂劲为主，神明最多一两条。
 3. 术语首次出现写成“中文（English）”。工程概念可以用 Java、C#、Python 的类比讲，基础概念不解释。
-4. 标题即结论：h1 和 h3 写成判断句；h1 取自“主编的收敛”。由宏观到微观：格局与监管 → 平台与工具 → 金融 → 医疗 → AI 产品 → 值得一读 → 本期招式 → 神明。
+4. 标题即结论：h1 和 h3 写成判断句；h1 取自“主编的收敛”。由宏观到微观：格局与监管 → 平台与工具 → 金融 → 医疗 → 产品：设计与价值 → 值得一读 → 本期招式 → 神明。
 5. 能画就画：有数字的对比用条形图（.track），一周内的事件用时间线（SVG），分层结构用分层图（SVG），阶段分布必画（.bar + .matrix）。图表文字颜色只用 CSS 变量，深浅色都要可读。
 6. 每个判断都有依据：机构、数字、日期、链接。转引的内容要找到原作者（博客的链接帖、周刊里的摘录常常是别人的文章）；二手转述的数字要对照原始榜单，注明版本、是否开工具，前后数字口径不同就写明。推断写在 .view 里，以“我的看法”开头。厂商数据注明“厂商自报”，付费内容标 💰 并只依据免费部分。
 7. 宁缺毋滥：全期 10 到 15 条；本期招式 5 到 9 项；没有内容的分区整节删掉，编号顺延。
 8. 中文按 tuiqiao 技能写：不用破折号，不堆形容词，数字说话。
-9. 附录 A 条目总表是站点“全部条目”页的数据源：“行业”只填通用、金融、医疗之一；“标签”填一到三个技术标签，用顿号分隔，从 radar/README.md 的标签词表里选，词表里没有的先补进词表。“条目”单元格写成 <a href="#i-slug">条目</a>，并在正文里讲这一条的元素（tr、li、p 或 div）上加同名 id="i-slug"，站点首页和全部条目页点条目会跳到这里；几条共用一段正文时可以指向同一个 id。
+9. 附录 A 条目总表是站点“全部条目”页的数据源：“行业”只填通用、金融、医疗之一；“轨道”只填技术、产品之一；“总分”填编辑部打分的总分；“标签”填一到三个技术标签，用顿号分隔，从 radar/README.md 的标签词表里选，词表里没有的先补进词表。“条目”单元格写成 <a href="#i-slug">条目</a>，并在正文里讲这一条的元素（tr、li、p 或 div）上加同名 id="i-slug"，站点首页和全部条目页点条目会跳到这里；几条共用一段正文时可以指向同一个 id。
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -105,7 +108,8 @@ table{border-collapse:collapse;width:100%;font-size:13.5px}
 th{font-weight:700;text-align:left;color:var(--muted);font-size:12px;letter-spacing:.04em;background:var(--wash)}
 th,td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
 tr:last-child td{border-bottom:0}
-td.nowrap{white-space:nowrap}
+td.nowrap,th.nowrap{white-space:nowrap}
+tr.top td{background:var(--wash)}
 
 /* 依据列表 */
 .facts{list-style:none;margin:0;padding:0;display:grid;gap:12px}
@@ -199,14 +203,48 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
 </section>
 
 <section aria-labelledby="s-must">
-  <h2 id="s-must"><span class="no">01</span>本期必看（总分前三）</h2>
+  <h2 id="s-must"><span class="no">01</span>本期必看（技术、产品各取前二）</h2>
   <p class="muted">只读这一节，也能抓住本期八成的价值。</p>
   <div class="musts">
     <article class="must">
-      <div class="must-head"><span class="must-no">1</span><h3>判断句 <span class="chip zs">招熟</span></h3></div>
+      <div class="must-head"><span class="must-no">技术 1</span><h3>判断句 <span class="chip zs">招熟</span></h3></div>
       <dl class="kv">
+        <dt>轨道</dt><dd>技术</dd>
         <dt>条目</dt><dd><a href="#i-slug">附录 A 里的条目名</a></dd>
-        <dt>评分</dt><dd>总分 NN · 影响 N · 创新 N · 可实践 N · 热度 N</dd>
+        <dt>评分</dt><dd>总分 NN · 影响 N · 创新 N · 实践 N · 热度 N</dd>
+        <dt>依据</dt><dd>事实与数字（<a href="#">来源</a>，MM-DD）。</dd>
+        <dt>心法</dt><dd>一到两句原理，可用工程类比，不超过 60 字。</dd>
+        <dt>招式</dt><dd>一到三个具体动作，落到金融、医疗产品上。</dd>
+      </dl>
+    </article>
+    <article class="must">
+      <div class="must-head"><span class="must-no">技术 2</span><h3>判断句 <span class="chip zs">招熟</span></h3></div>
+      <dl class="kv">
+        <dt>轨道</dt><dd>技术</dd>
+        <dt>条目</dt><dd><a href="#i-slug">附录 A 里的条目名</a></dd>
+        <dt>评分</dt><dd>总分 NN · 影响 N · 创新 N · 实践 N · 热度 N</dd>
+        <dt>依据</dt><dd>事实与数字（<a href="#">来源</a>，MM-DD）。</dd>
+        <dt>心法</dt><dd>一到两句原理，可用工程类比，不超过 60 字。</dd>
+        <dt>招式</dt><dd>一到三个具体动作，落到金融、医疗产品上。</dd>
+      </dl>
+    </article>
+    <article class="must">
+      <div class="must-head"><span class="must-no">产品 1</span><h3>判断句 <span class="chip zs">招熟</span></h3></div>
+      <dl class="kv">
+        <dt>轨道</dt><dd>产品</dd>
+        <dt>条目</dt><dd><a href="#i-slug">附录 A 里的条目名</a></dd>
+        <dt>评分</dt><dd>总分 NN · 洞见 N · 价值 N · 证据 N · 可迁移 N</dd>
+        <dt>依据</dt><dd>事实与数字（<a href="#">来源</a>，MM-DD）。</dd>
+        <dt>心法</dt><dd>一到两句原理，可用工程类比，不超过 60 字。</dd>
+        <dt>招式</dt><dd>一到三个具体动作，落到金融、医疗产品上。</dd>
+      </dl>
+    </article>
+    <article class="must">
+      <div class="must-head"><span class="must-no">产品 2</span><h3>判断句 <span class="chip zs">招熟</span></h3></div>
+      <dl class="kv">
+        <dt>轨道</dt><dd>产品</dd>
+        <dt>条目</dt><dd><a href="#i-slug">附录 A 里的条目名</a></dd>
+        <dt>评分</dt><dd>总分 NN · 洞见 N · 价值 N · 证据 N · 可迁移 N</dd>
         <dt>依据</dt><dd>事实与数字（<a href="#">来源</a>，MM-DD）。</dd>
         <dt>心法</dt><dd>一到两句原理，可用工程类比，不超过 60 字。</dd>
         <dt>招式</dt><dd>一到三个具体动作，落到金融、医疗产品上。</dd>
@@ -217,13 +255,23 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
 
 <section aria-labelledby="s-score">
   <h2 id="s-score"><span class="no">02</span>编辑部打分</h2>
-  <p>一句话说明打分维度和权重（见写法第 1 条）。</p>
+  <p>一句话说明两条线的维度和权重（见写法第 1 条）。</p>
   <p class="view"><b>主编的收敛</b>：前几名的共同点，或者如实说没有；讲能力的条目为什么排在前面或后面。</p>
+  <h3>技术线</h3>
   <div class="tbl">
     <table>
-      <thead><tr><th>#</th><th>条目</th><th>行业</th><th>影响</th><th>创新</th><th>可实践</th><th>热度</th><th>总分</th><th>评语</th></tr></thead>
+      <thead><tr><th>#</th><th>条目</th><th class="nowrap">影响</th><th class="nowrap">创新</th><th class="nowrap">实践</th><th class="nowrap">热度</th><th class="nowrap">证据系数</th><th class="nowrap">总分</th><th>评语</th></tr></thead>
       <tbody>
-        <tr><td class="num">1</td><td><a href="#i-slug">条目名</a></td><td>金融</td><td class="num">5</td><td class="num">3</td><td class="num">5</td><td class="num">4</td><td class="num"><b>89</b></td><td>一句评语</td></tr>
+        <tr class="top"><td class="num">1</td><td><a href="#i-slug">条目名</a></td><td class="num">N</td><td class="num">N</td><td class="num">N</td><td class="num">N</td><td class="num">1.0</td><td class="num"><b>NN</b></td><td>一句评语</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>产品线</h3>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>#</th><th>条目</th><th class="nowrap">洞见</th><th class="nowrap">价值</th><th class="nowrap">证据</th><th class="nowrap">可迁移</th><th class="nowrap">总分</th><th>评语</th></tr></thead>
+      <tbody>
+        <tr class="top"><td class="num">1</td><td><a href="#i-slug">条目名</a></td><td class="num">N</td><td class="num">N</td><td class="num">N</td><td class="num">N</td><td class="num"><b>NN</b></td><td>一句评语</td></tr>
       </tbody>
     </table>
   </div>
@@ -263,8 +311,9 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
 </section>
 
 <section aria-labelledby="s-prod">
-  <h2 id="s-prod"><span class="no">07</span>AI 产品</h2>
-  <!-- 消费级与 SaaS：判断 → 带阶段的依据 → 可借鉴的做法（.view） -->
+  <h2 id="s-prod"><span class="no">07</span>产品：设计与价值</h2>
+  <p>本期归到产品线的 N 条，按总分从高到低列出并链到正文；金融、医疗的几条写在行业节，这里只放不属于具体行业的。</p>
+  <!-- 产品设计和业务价值：判断 → 带阶段的依据 → 可借鉴的做法（.view） -->
 </section>
 
 <section aria-labelledby="s-read">
@@ -290,8 +339,8 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
 <section aria-labelledby="s-appx">
   <h2 id="s-appx"><span class="no">附</span>附录</h2>
   <details><summary>A. 本期条目总表（N 条）</summary><div><div class="tbl"><table>
-    <thead><tr><th>日期</th><th>行业</th><th>阶段</th><th>条目</th><th>标签</th><th>来源</th><th>去向</th></tr></thead>
-    <tbody><tr><td class="num">MM-DD</td><td>通用 / 金融 / 医疗</td><td><span class="chip zs">招熟</span></td><td><a href="#i-slug">条目</a></td><td>Agent、评测</td><td>来源</td><td>待定 / 建议入书 / 已转草稿 / 已入书 / 不入书</td></tr></tbody>
+    <thead><tr><th>日期</th><th>行业</th><th>轨道</th><th>阶段</th><th>条目</th><th>标签</th><th>总分</th><th>来源</th><th>去向</th></tr></thead>
+    <tbody><tr><td class="num">MM-DD</td><td>通用 / 金融 / 医疗</td><td>技术 / 产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-slug">条目</a></td><td>Agent、评测</td><td class="num">NN</td><td>来源</td><td>待定 / 建议入书 / 已转草稿 / 已入书 / 不入书</td></tr></tbody>
   </table></div></div></details>
   <details><summary>B. 草稿盘点（仅周六，周三删掉）</summary><div><div class="tbl"><table>
     <thead><tr><th>草稿</th><th>创建日期</th><th>去向</th><th>说明</th></tr></thead><tbody></tbody>

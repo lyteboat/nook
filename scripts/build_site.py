@@ -2,8 +2,9 @@
 """生成 GitHub Pages 站点：本周简报首页、全部条目、每期雷达。
 
 扫描 radar/YYYY/YYYY-MM-DD.html，按日期倒序排列。
-- 首页（index.html）：最新一期的结论、数字、本期必看、按行业分栏的速览，下面是往期。
-- 全部条目（items.html）：汇总每期附录 A 的条目总表，可搜索，可按行业、阶段、技术标签筛选。
+- 首页（index.html）：最新一期的结论、数字，技术和产品两栏速览（按总分排），本期必看，最近几期。
+- 全部条目（items.html）：汇总每期附录 A 的条目总表，可搜索，可按轨道、行业、阶段、标签筛选，可按总分排序。
+- 往期（archive.html）：每期的标题、结论和必看。
 - 每期页面带侧栏：上面是本期章节目录（取页面里带 id 的 h2），下面是按年、月分组的全部期数。
 每期页面补上 doctype、charset、viewport、侧栏和上一期、下一期链接，正文和样式不改。
 源文件不改。用法：python3 scripts/build_site.py [输出目录，默认 _site]
@@ -157,7 +158,8 @@ def sidebar(issues, prefix, current=None):
     """prefix 是从当前页面回到站点根目录的相对路径。"""
     parts = [f'<a class="nk-brand" href="{prefix}">Nook AI 雷达</a>',
              f'<ul class="nk-toc"><li><a href="{prefix}"><span>本期简报</span></a></li>'
-             f'<li><a href="{prefix}items.html"><span>全部条目</span></a></li></ul>']
+             f'<li><a href="{prefix}items.html"><span>全部条目</span></a></li>'
+             f'<li><a href="{prefix}archive.html"><span>往期</span></a></li></ul>']
     if current and current["sections"]:
         parts.append('<div class="nk-label">本期目录</div><ul class="nk-toc">')
         for sid, no, title in current["sections"]:
@@ -228,7 +230,7 @@ def digest(source):
             "title": text_of(re.sub(r'<span class="chip.*?</span>', "", h3.group(1))),
             "cls": chip.group(1) if chip else "", "stage": chip.group(2) if chip else "",
             "refs": [(a, text_of(t)) for a, t in re.findall(r'<a href="(#[^"]+)">(.*?)</a>', raw.get("条目", ""), re.S)],
-            "basis": raw.get("依据", ""), "score": text_of(raw.get("评分", "")),
+            "basis": raw.get("依据", ""), "score": text_of(raw.get("评分", "")), "track": text_of(raw.get("轨道", "")),
             "xinfa": text_of(raw.get("心法", "")), "zhaoshi": text_of(raw.get("招式", "")),
         })
     items = []
@@ -250,21 +252,24 @@ def digest(source):
             "name": re.sub(r"^新\s*·\s*", "", name), "new": name.startswith("新"),
             "tags": [t for t in re.split(r"[、,，/]\s*", text_of(row.get("标签", ""))) if t],
             "src": text_of(row.get("来源", "")), "anchor": anchor.group(1) if anchor else "",
+            # 轨道和总分从 10-24 那期起才有，更早的期数留空
+            "track": text_of(row.get("轨道", "")), "score": int(text_of(row.get("总分", "")) or 0),
         })
     return {"thesis": thesis, "stats": stats, "musts": musts, "items": items}
 
 
 INDUSTRIES = ["通用", "金融", "医疗"]
+TRACKS = ["技术", "产品"]
 
 PAGE_CSS = """<style>
 :root{--bg:#F3F5F8;--surface:#fff;--ink:#141A1F;--muted:#5F6A75;--line:#E3E7EB;--wash:#E6EEF6;--accent:#14598C;--on-accent:#fff;--brand:#0B2A45;--brand-ink:#DCE9F3;--brand-ink2:#8FAAC4;
---zs:#2f7d5b;--zs-bg:#e3f1ea;--dj:#3d55a3;--dj-bg:#e6eaf7;--sm:#a1701c;--sm-bg:#f6ecd8;
+--prod:#8a4b9c;--zs:#2f7d5b;--zs-bg:#e3f1ea;--dj:#3d55a3;--dj-bg:#e6eaf7;--sm:#a1701c;--sm-bg:#f6ecd8;
 --f-display:"Noto Serif SC","Songti SC","SimSun",serif;--f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
 --f-data:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0D141B;--surface:#16212C;--ink:#E6ECF2;--muted:#9AA8B6;--line:#263341;
---wash:#1B2836;--accent:#7DB4E3;--on-accent:#0B1A27;--brand:#08121C;--zs:#6cc59a;--zs-bg:#1c3328;--dj:#9aaef0;--dj-bg:#232b45;--sm:#e0b45e;--sm-bg:#3a2f1a;color-scheme:dark}}
+--wash:#1B2836;--accent:#7DB4E3;--on-accent:#0B1A27;--brand:#08121C;--prod:#d3a0e3;--zs:#6cc59a;--zs-bg:#1c3328;--dj:#9aaef0;--dj-bg:#232b45;--sm:#e0b45e;--sm-bg:#3a2f1a;color-scheme:dark}}
 :root[data-theme="dark"]{--bg:#0D141B;--surface:#16212C;--ink:#E6ECF2;--muted:#9AA8B6;--line:#263341;
---wash:#1B2836;--accent:#7DB4E3;--on-accent:#0B1A27;--brand:#08121C;--zs:#6cc59a;--zs-bg:#1c3328;--dj:#9aaef0;--dj-bg:#232b45;--sm:#e0b45e;--sm-bg:#3a2f1a;color-scheme:dark}
+--wash:#1B2836;--accent:#7DB4E3;--on-accent:#0B1A27;--brand:#08121C;--prod:#d3a0e3;--zs:#6cc59a;--zs-bg:#1c3328;--dj:#9aaef0;--dj-bg:#232b45;--sm:#e0b45e;--sm-bg:#3a2f1a;color-scheme:dark}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.75 var(--f-body);
   padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
@@ -320,6 +325,21 @@ a.tag{text-decoration:none}a.tag:hover{color:var(--accent);border-color:var(--ac
 .col h3{font-size:16px;font-weight:600;display:flex;justify-content:space-between;margin-bottom:10px}
 .col ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .col li{display:grid;grid-template-columns:8px 1fr;gap:8px;font-size:13px;line-height:1.5}.col li .dot{margin-top:6px}
+.board.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.col.scored li{grid-template-columns:2.2em 8px 1fr}
+.sc{font:600 13px/1.5 var(--f-data);color:var(--accent);text-align:right}
+.ind{font-size:11px;line-height:1.5;color:var(--accent);background:var(--wash);border-radius:4px;padding:0 5px;margin-left:5px;white-space:nowrap}
+.musts.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.must.prod{border-top-color:var(--prod)}.must.prod .score{color:var(--prod)}
+.issues{display:grid;gap:12px}
+.issue{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px 20px;display:grid;gap:8px}
+.issue h3{font-size:20px;font-weight:900}.issue h3 a{color:inherit;text-decoration:none}.issue h3 a:hover{color:var(--accent)}
+.issue p{font-size:14px}
+.ms{list-style:none;margin:4px 0 0;padding:10px 0 0;border-top:1px dashed var(--line);display:grid;gap:4px;font-size:14px}
+.ms .lab{display:inline-block;min-width:4.5em;font:600 12px var(--f-data);color:var(--muted)}
+.ms a{color:inherit;text-decoration:none}.ms a:hover{color:var(--accent)}
+.issues .m{font-family:var(--f-display);font-weight:600;color:var(--muted);margin:10px 0 0}
+th.sort{cursor:pointer;color:var(--accent)}
 .archive{display:grid;gap:8px}
 .archive a{display:grid;grid-template-columns:10em 1fr auto;gap:16px;padding:12px 16px;background:var(--surface);border:1px solid var(--line);border-radius:6px;color:inherit;text-decoration:none}
 .archive a:hover{border-color:var(--accent)}
@@ -342,7 +362,7 @@ td{padding:11px 14px;border-top:1px solid var(--line);vertical-align:top}
 td.name{font-weight:500}
 td.name a.item{color:inherit;text-decoration:none}td.name a.item:hover{color:var(--accent);text-decoration:underline}
 td .tag{margin:0 4px 2px 0}
-@media (max-width:900px){.hero-body,.musts,.board{grid-template-columns:1fr}.hero h1{font-size:30px}.archive a{grid-template-columns:1fr;gap:2px}
+@media (max-width:900px){.hero-body,.musts,.musts.two,.board,.board.two{grid-template-columns:1fr}.hero h1{font-size:30px}.archive a{grid-template-columns:1fr;gap:2px}
   .top{gap:12px}.top nav{gap:14px}
   thead{display:none}table,tbody,tr,td{display:block}tr{border-top:1px solid var(--line);padding:8px 0}td{border:0;padding:2px 14px}}
 </style>
@@ -355,7 +375,7 @@ CURRENT = ' aria-current="page"'
 def page(title, desc, current, body, script=""):
     nav = "".join(
         f'<a href="{href}"{CURRENT if key == current else ""}>{label}</a>'
-        for key, href, label in [("home", "./", "本期"), ("items", "items.html", "全部条目"), ("archive", "./#archive", "往期")])
+        for key, href, label in [("home", "./", "本期"), ("items", "items.html", "全部条目"), ("archive", "archive.html", "往期")])
     return (HEAD + f"<title>{title}</title>\n"
             f'<meta name="description" content="{desc}">\n{FONTS}{PAGE_CSS}</head>\n<body>\n'
             f'<header class="topbar"><div class="top"><a href="./">Nook AI 雷达</a><nav aria-label="栏目">{nav}</nav></div></header>\n'
@@ -393,31 +413,39 @@ def render_index(issues):
             f'<h1><a href="{href}">{html.escape(latest["title"])}</a></h1></div>'
             f'<div class="hero-body"><div>{thesis}</div>{f"<div class=stats>{stats}</div>" if stats else ""}</div></section>')
     blocks = [hero]
+    labels = must_labels(dg["musts"])
     # 必看的“条目”指向速览里的条目，两边互相标出来，读者看得出必看从哪几条来
+    # 两条条目可能共用一个正文锚点（比如 Skills 和 OpenShell 写在同一段），所以先按名字对，对不上再按锚点
+    names = {i["name"] for i in dg["items"]}
     must_of = {}
     for n, m in enumerate(dg["musts"], 1):
-        for a, _ in m["refs"]:
-            must_of.setdefault(a, []).append(n)
+        for a, t in m["refs"]:
+            must_of.setdefault(t if t in names else a, []).append(n)
     if dg["items"]:
+        tracked = any(i["track"] for i in dg["items"])
+        groups = ([(t, sorted((i for i in dg["items"] if i["track"] == t), key=lambda i: -i["score"])) for t in TRACKS]
+                  if tracked else [(t, [i for i in dg["items"] if i["ind"] == t]) for t in INDUSTRIES])
         cols = []
-        for label in INDUSTRIES:
-            rows = [i for i in dg["items"] if i["ind"] == label]
+        for label, rows in groups:
             if not rows:
                 continue
-            lis = "".join(f'<li><span class="dot {i["cls"]}"></span><span>{"<span class=new>新</span>" if i["new"] else ""}'
+            lis = "".join('<li>' + (f'<span class="sc">{i["score"]}</span>' if tracked else "")
+                          + f'<span class="dot {i["cls"]}"></span><span>{"<span class=new>新</span>" if i["new"] else ""}'
                           f'<a class="item" href="{href}{i["anchor"]}">{html.escape(i["name"])}</a>'
-                          + "".join(f'<a class="mustno" href="#must-{n}">必看 {n}</a>' for n in must_of.get(i["anchor"], []))
+                          + "".join(f'<a class="mustno" href="#must-{n}">必看 · {labels[n - 1]}</a>' for n in must_of.get(i["name"], must_of.get(i["anchor"], [])))
+                          + (f'<span class="ind">{i["ind"]}</span>' if tracked and i["ind"] != "通用" else "")
                           + f'{"".join(tag_link(t) for t in i["tags"])}</span></li>'
                           for i in rows)
-            cols.append(f'<div class="col"><h3>{label}<span class="num muted">{len(rows)}</span></h3><ul>{lis}</ul></div>')
-        blocks.append('<section><div class="sec-h"><h2>本期速览</h2><div class="legend"><span><i class="dot zs"></i>招熟</span>'
+            cols.append(f'<div class="col{" scored" if tracked else ""}"><h3>{label}<span class="num muted">{len(rows)}</span></h3><ul>{lis}</ul></div>')
+        note = '<span class="muted">按编辑部总分从高到低</span>' if tracked else ""
+        blocks.append(f'<section><div class="sec-h"><h2>本期速览</h2>{note}<div class="legend"><span><i class="dot zs"></i>招熟</span>'
                       '<span><i class="dot dj"></i>懂劲</span><span><i class="dot sm"></i>神明</span></div>'
                       f'<a href="items.html" style="margin-left:auto;font-size:14px">在全部条目里筛选 →</a></div>'
-                      f'<div class="board">{"".join(cols)}</div></section>')
+                      f'<div class="board{" two" if tracked else ""}">{"".join(cols)}</div></section>')
     if dg["musts"]:
         cls_of = {i["anchor"]: i["cls"] for i in dg["items"]}
         cards = "".join(
-            f'<article class="must" id="must-{n}"><div class="no">{n:02d}'
+            f'<article class="must{" prod" if m["track"] == "产品" else ""}" id="must-{n}"><div class="no">{labels[n - 1]}'
             + (f' <span class="chip {m["cls"]}">{html.escape(m["stage"])}</span>' if m["cls"] else "")
             + f'</div><h3>{html.escape(m["title"])}</h3>'
             + (f'<div class="refs"><span class="lbl">来自速览</span>'
@@ -430,36 +458,79 @@ def render_index(issues):
             + (f'<dt>招式</dt><dd>{html.escape(m["zhaoshi"])}</dd>' if m["zhaoshi"] else "")
             + '</dl></article>'
             for n, m in enumerate(dg["musts"], 1))
+        two = any(m["track"] for m in dg["musts"])
+        sub = "技术、产品各取总分前二" if two else "只读这几条，也能抓住本期八成的价值"
         blocks.append(f'<section id="must"><div class="sec-h"><h2>本期必看</h2>'
-                      f'<span class="muted">只读这几条，也能抓住本期八成的价值</span></div><div class="musts">{cards}</div></section>')
-    arch = []
+                      f'<span class="muted">{sub}</span></div><div class="musts{" two" if two else ""}">{cards}</div></section>')
+    blocks.append(f'<section id="archive"><div class="sec-h"><h2>最近几期</h2><span class="muted">共 {len(issues)} 期</span>'
+                  f'<a href="archive.html" style="margin-left:auto;font-size:14px">全部往期 →</a></div>'
+                  f'<div class="archive">{archive_rows(issues[:6], "")}</div></section>')
+    return page("Nook AI 雷达", "每周三、周六各一期，追踪 AI 技术和 AI 产品的关键动态。", "home", "\n".join(blocks))
+
+
+def must_labels(musts):
+    """有轨道的必看按轨道内的序号叫“技术 1”“产品 2”，老期数只有序号。"""
+    seen, out = {}, []
+    for n, m in enumerate(musts, 1):
+        if m["track"]:
+            seen[m["track"]] = seen.get(m["track"], 0) + 1
+            out.append(f'{m["track"]} {seen[m["track"]]}')
+        else:
+            out.append(f"{n:02d}")
+    return out
+
+
+def archive_rows(issues, prefix):
+    out = []
     for (y, mth), group in by_month(issues).items():
-        arch.append(f'<div class="m">{y} 年 {mth} 月</div>')
-        arch += [f'<a href="radar/{i["rel"]}"><span class="num muted">{i["date"]} 周{WEEKDAYS[i["date"].weekday()]}</span>'
-                 f'<span>{html.escape(i["title"])}</span><span class="muted">→</span></a>' for i in group]
-    blocks.append(f'<section id="archive"><div class="sec-h"><h2>往期</h2><span class="muted">共 {len(issues)} 期</span></div>'
-                  f'<div class="archive">{"".join(arch)}</div></section>')
-    return page("Nook AI 雷达", "每周三、周六各一期，追踪 AI 模型、Agent、数据与行业落地的关键动态。", "home", "\n".join(blocks))
+        out.append(f'<div class="m">{y} 年 {mth} 月</div>')
+        out += [f'<a href="{prefix}radar/{i["rel"]}"><span class="num muted">{i["date"]} 周{WEEKDAYS[i["date"].weekday()]}</span>'
+                f'<span>{html.escape(i["title"])}</span><span class="muted">→</span></a>' for i in group]
+    return "".join(out)
+
+
+def render_archive(issues):
+    cards = []
+    for (y, mth), group in by_month(issues).items():
+        cards.append(f'<div class="m">{y} 年 {mth} 月</div>')
+        for i in group:
+            dg, d = i["digest"], i["date"]
+            href = f'radar/{i["rel"]}'
+            labels = must_labels(dg["musts"])
+            musts = "".join(f'<li><span class="lab">{labels[n]}</span><a href="{href}{m["refs"][0][0] if m["refs"] else ""}">'
+                            f'{html.escape(m["title"])}</a></li>' for n, m in enumerate(dg["musts"]))
+            counts = " · ".join(f'{t} {sum(1 for x in dg["items"] if x["track"] == t)}' for t in TRACKS
+                                if any(x["track"] == t for x in dg["items"])) or f'{len(dg["items"])} 条'
+            cards.append(f'<article class="issue"><div class="num muted">{d} 周{WEEKDAYS[d.weekday()]} · {counts}</div>'
+                         f'<h3><a href="{href}">{html.escape(i["title"])}</a></h3>'
+                         + (f'<p class="muted">{html.escape(dg["thesis"])}</p>' if dg["thesis"] else "")
+                         + (f'<ul class="ms">{musts}</ul>' if musts else "") + '</article>')
+    body = (f'<section class="lib-h"><div><div class="eyebrow">往期</div><h1>历期雷达</h1></div>'
+            f'<div class="kpi"><div><b>{len(issues)}</b><span>期雷达</span></div></div></section>\n'
+            f'<section class="issues">{"".join(cards)}</section>')
+    return page("往期 · Nook AI 雷达", "历期 AI 雷达的标题、结论和必看。", "archive", body)
 
 
 ITEMS_JS = """<script>
 (function(){
-  var D=JSON.parse(document.getElementById('data').textContent),sel={ind:{},stage:{},tag:{}};
+  var D=JSON.parse(document.getElementById('data').textContent),sel={track:{},ind:{},stage:{},tag:{}},byScore=false;
   function e(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function ok(k,vs){var s=sel[k],any=false;vs=[].concat(vs);for(var x in s)if(s[x]){any=true;if(vs.indexOf(x)>-1)return true}return !any}
   function draw(){
     var q=document.getElementById('q').value.trim().toLowerCase();
-    var rows=D.filter(function(i){return ok('ind',i.ind)&&ok('stage',i.stage)&&ok('tag',i.tags)&&(!q||(i.name+' '+i.src+' '+i.tags.join(' ')).toLowerCase().indexOf(q)>-1)});
+    var rows=D.filter(function(i){return ok('track',i.track)&&ok('ind',i.ind)&&ok('stage',i.stage)&&ok('tag',i.tags)&&(!q||(i.name+' '+i.src+' '+i.tags.join(' ')).toLowerCase().indexOf(q)>-1)});
+    if(byScore)rows=rows.slice().sort(function(a,b){return b.score-a.score});
     document.getElementById('count').textContent='显示 '+rows.length+' / '+D.length+' 条';
-    document.getElementById('tb').innerHTML=rows.map(function(i){return '<tr><td class="num">'+e(i.date)+'</td><td>'+e(i.ind)+
+    document.getElementById('tb').innerHTML=rows.map(function(i){return '<tr><td class="num">'+e(i.date)+'</td><td>'+e(i.track||'—')+'</td><td>'+e(i.ind)+
       '</td><td><span class="chip '+i.cls+'">'+e(i.stage)+'</span></td><td class="name">'+(i.new?'<span class="new">新</span>':'')+'<a class="item" href="'+i.href+i.anchor+'">'+e(i.name)+'</a>'+
-      '</td><td>'+i.tags.map(function(t){return '<a class="tag" href="#tag='+encodeURIComponent(t)+'">'+e(t)+'</a>'}).join('')+'</td><td class="muted">'+e(i.src)+'</td><td><a class="num" href="'+i.href+'">'+e(i.issue.slice(5))+'</a></td></tr>'}).join('');
+      '</td><td>'+i.tags.map(function(t){return '<a class="tag" href="#tag='+encodeURIComponent(t)+'">'+e(t)+'</a>'}).join('')+'</td><td class="num">'+(i.score||'—')+'</td><td class="muted">'+e(i.src)+'</td><td><a class="num" href="'+i.href+'">'+e(i.issue.slice(5))+'</a></td></tr>'}).join('');
   }
   [].forEach.call(document.querySelectorAll('.f'),function(b){b.addEventListener('click',function(){
     var on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);sel[b.dataset.k][b.dataset.v]=on;draw()})});
   function fromHash(){var m=/^#tag=(.+)$/.exec(location.hash);if(!m)return;var t=decodeURIComponent(m[1]);sel.tag={};sel.tag[t]=true;
     [].forEach.call(document.querySelectorAll('.f[data-k="tag"]'),function(b){b.setAttribute('aria-pressed',b.dataset.v===t)})}
   window.addEventListener('hashchange',function(){fromHash();draw()});
+  var th=document.getElementById('bys');th.addEventListener('click',function(){byScore=!byScore;th.textContent=byScore?'总分 ↓':'总分';draw()});
   document.getElementById('q').addEventListener('input',draw);fromHash();draw();
 })();
 </script>
@@ -482,17 +553,19 @@ def render_items(issues):
     data = json.dumps(items, ensure_ascii=False).replace("</", "<\\/")
     body = (f'<section class="lib-h"><div><div class="eyebrow">全部条目</div><h1>历期雷达条目总表</h1></div>'
             f'<div class="kpi"><div><b>{len(issues)}</b><span>期雷达</span></div><div><b>{len(items)}</b><span>个条目</span></div>'
-            f'<div><b>{len(tags)}</b><span>个技术标签</span></div></div></section>\n'
+            f'<div><b>{len(tags)}</b><span>个标签</span></div></div></section>\n'
             '<section><div class="filters">'
             '<input id="q" type="search" placeholder="搜索条目、标签或来源，比如 RAG、FSB、medRxiv" aria-label="搜索">'
+            f'<div class="row"><span class="lab">轨道</span>{chips("track", [(x, x) for x in TRACKS])}</div>'
             f'<div class="row"><span class="lab">行业</span>{chips("ind", [(x, x) for x in INDUSTRIES])}</div>'
             f'<div class="row"><span class="lab">阶段</span>{chips("stage", [("招熟", "招熟"), ("懂劲", "懂劲"), ("神明", "神明")])}'
             '<span class="count" id="count"></span></div>'
             f'<div class="row"><span class="lab">标签</span>{chips("tag", [(t, f"{t} <span class=num>{counts[t]}</span>") for t in tags])}</div></div>'
-            '<table><thead><tr><th>日期</th><th>行业</th><th>阶段</th><th>条目</th><th>标签</th><th>来源</th><th>所在期</th></tr></thead>'
+            '<table><thead><tr><th>日期</th><th>轨道</th><th>行业</th><th>阶段</th><th>条目</th><th>标签</th>'
+            '<th class="sort" id="bys" title="点一下按总分从高到低排">总分</th><th>来源</th><th>所在期</th></tr></thead>'
             '<tbody id="tb"></tbody></table></section>\n'
             f'<script type="application/json" id="data">{data}</script>')
-    return page("全部条目 · Nook AI 雷达", "历期 AI 雷达的全部条目，可按行业、阶段、技术标签筛选。", "items", body, ITEMS_JS)
+    return page("全部条目 · Nook AI 雷达", "历期 AI 雷达的全部条目，可按轨道、行业、阶段、标签筛选。", "items", body, ITEMS_JS)
 
 
 def main():
@@ -501,6 +574,7 @@ def main():
     (OUT / ".nojekyll").write_text("")
     (OUT / "index.html").write_text(render_index(issues), encoding="utf-8")
     (OUT / "items.html").write_text(render_items(issues), encoding="utf-8")
+    (OUT / "archive.html").write_text(render_archive(issues), encoding="utf-8")
     for n, i in enumerate(issues):
         dest = OUT / "radar" / i["rel"]
         dest.parent.mkdir(parents=True, exist_ok=True)
