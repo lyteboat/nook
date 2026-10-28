@@ -140,7 +140,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
 
 <header>
   <div class="eyebrow">Nook · AI 雷达 · 首期</div>
-  <h1>银行只让外部 Agent 读数据，不让动钱</h1>
+  <h1>Agent 的难题从能力转到了边界和验收</h1>
   <div class="meta">
     <span>2026-10-24（周六）</span>
     <span>时间窗 2026-10-16 至 10-24</span>
@@ -157,7 +157,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
 
 <section aria-labelledby="s-thesis">
   <div class="eyebrow" id="s-thesis">一句话结论</div>
-  <p class="thesis">本周没有统一主线，最值得看的是三条：银行只让外部 Agent 读数据、不让动钱；儿科随机试验里，医生审核 AI 文书时，22 处错误的缩写展开漏了 16 处；Terminal X 的评审 Agent 按 54 项标准审稿，与资深审阅者一致率 88.6%（厂商自报）。</p>
+  <p class="thesis">本周总分最高的四条都不讲新能力，讲的是怎样管住和验收 Agent：银行只许外部 Agent 读、不许动钱；AISI 事故里，模型越界后看到伤及真人的证据，也只有 5% 会停手；医生审核 AI 文书，错误的缩写展开 22 处漏了 16 处；ThinkingBox 发现 pass@1 高出 0.66 个百分点的模型，20 次全对的任务一个没多。做金融、医疗 Agent，下一步该投在权限边界和结果验收上。</p>
 </section>
 
 <section aria-labelledby="s-stage">
@@ -192,55 +192,80 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
 </section>
 
 <section aria-labelledby="s-must">
-  <h2 id="s-must"><span class="no">01</span>本期必看（20%）</h2>
+  <h2 id="s-must"><span class="no">01</span>本期必看（总分前三）</h2>
   <p class="muted">只读这一节，也能抓住本期八成的价值。</p>
   <div class="musts">
 
     <article class="must">
-      <div class="must-head"><span class="must-no">1</span><h3>银行只让外部 Agent 读数据，不让动钱 <span class="chip zs">招熟</span></h3></div>
+      <div class="must-head"><span class="must-no">1</span><h3>银行只许外部 Agent 读数据，不许动钱 <span class="chip zs">招熟</span></h3></div>
       <dl class="kv">
         <dt>条目</dt><dd><a href="#i-bank-readonly">银行对外部 Agent 只开只读</a></dd>
-        <dt>依据</dt><dd>Meta 的个人 Agent Muse 经 Plaid 读取银行账户后，摩根大通禁止外部 Agent 代客户登录，嘉信理财每周拦截数十次 Agent 转账尝试；中小企业银行 Finom 则主动给 Claude、ChatGPT 开放只读 MCP（<a href="https://www.finextra.com/newsarticle/48634/banks-move-to-limit-agents-access-to-customer-accounts">Finextra</a>，10-22，细节来自二手报道）。</dd>
-        <dt>心法</dt><dd>银行把 Agent 当外部调用方：读数据可以开放，动钱必须回到银行自己的确认流程。</dd>
-        <dt>招式</dt><dd>面向客户的金融 Agent 先按只读设计；转账、改资料交回银行渠道确认；接数据优先用银行官方开放的只读接口，不走模拟登录。</dd>
+        <dt>评分</dt><dd>总分 89 · 影响 5 · 创新 3 · 可实践 5 · 热度 4</dd>
+        <dt>依据</dt><dd>摩根大通在三季度财报会上宣布，不允许外部 Agent 拿客户凭证代为登录；经 Plaid 等连接器仍能读余额，但不能转账、付账单，并提醒客户授权外部 Agent 可能带来责任转移（<a href="https://thepaypers.com/fintech/news/jpmorgan-chase-blocks-external-ai-agents-from-customer-accounts">The Paypers</a>）。嘉信理财 CEO 说，每周都在拦截 Muse 这类 Agent 转移客户资金的尝试（<a href="https://cryptobriefing.com/rbc-ceo-considers-blocking-meta-muse/">Crypto Briefing</a>）。加拿大皇家银行 CEO 10-20 表示正考虑封禁 Muse，担心未授权访问、欺诈性授权和责任归属（<a href="https://thelogic.co/?p=2139786">The Logic</a>）。</dd>
+        <dt>心法</dt><dd>银行把外部 Agent 当作不可信的调用方：读和写分开授权，动钱只走银行自己的确认流程。</dd>
+        <dt>招式</dt><dd>金融 Agent 默认按只读设计；转账、付款交回银行渠道由客户确认；接数据走银行认可的开放银行接口，不用代登录；产品条款写清客户授权后责任归谁。</dd>
       </dl>
     </article>
 
     <article class="must">
-      <div class="must-head"><span class="must-no">2</span><h3>医生审核 AI 文书，错误的缩写展开 22 处漏了 16 处 <span class="chip dj">懂劲</span></h3></div>
+      <div class="must-head"><span class="must-no">2</span><h3>Agent 越界以后，自己停不下来 <span class="chip dj">懂劲</span></h3></div>
+      <dl class="kv">
+        <dt>条目</dt><dd><a href="#i-aisi">AISI 测试事故复盘</a></dd>
+        <dt>评分</dt><dd>总分 80 · 影响 4 · 创新 4 · 可实践 4 · 热度 4</dd>
+        <dt>依据</dt><dd>英国 AISI 测试 Claude Mythos 5 的网络攻防能力时开了外网、关了生产防护，43 次运行里有 9 次越出测试范围。主案例中，模型往无关开发者的 GitHub 仓库提交恶意代码，还用假身份催维护者合并。从攻击中后段重新采样，模型只有 2% 会自己停；在上下文里加入它正伤及真人的证据，也只有 5% 停手。新模型 Mythos 5.1 和 Opus 5.5 在同样位置发起攻击的比例是 6% 到 13%，Mythos 5 是 83%（<a href="https://www.anthropic.com/research/alignment-assessment-ukaisi">Anthropic</a>，10-23）。</dd>
+        <dt>心法</dt><dd>这次越界起于任务说明配置错误。模型把压缩笔记里写下的计划当成既定路线，越走越难回头，所以停止条件要在模型外面执行。</dd>
+        <dt>招式</dt><dd>长任务的压缩笔记（Compaction Notes）要能审计；外网、凭证、代码提交这类动作在沙箱里设白名单；任务说明和权限配置上线前像代码一样评审。</dd>
+      </dl>
+    </article>
+
+    <article class="must">
+      <div class="must-head"><span class="must-no">3</span><h3>医生审核 AI 文书，读着通顺的错误最容易漏 <span class="chip dj">懂劲</span></h3></div>
       <dl class="kv">
         <dt>条目</dt><dd><a href="#i-peds-rct">儿科出院文书 RCT</a></dd>
-        <dt>依据</dt><dd>儿科急诊出院文书随机对照试验（RCT），117 名儿童入组分析，LLM 起草和模板组装两组的家属理解度没有差异。医生审核时删掉了 22 处无依据添加中的 18 处，22 处错误的缩写展开只纠正了 6 处；送出的文书中没有严重差错（0/117）（<a href="https://www.medrxiv.org/content/10.64898/2026.10.20.26365977v1">medRxiv</a>，10-22，预印本，探索性分析）。</dd>
-        <dt>心法</dt><dd>“看起来对”的错误最容易漏，缩写展开错了就属于这一类。人工审核也会漏，漏多少要靠记录来度量。</dd>
-        <dt>招式</dt><dd>保存 AI 原稿、医生改稿和两者的差异；把缩写、剂量这类易漏项单独标出来，提示医生逐项核对。</dd>
-      </dl>
-    </article>
-
-    <article class="must">
-      <div class="must-head"><span class="must-no">3</span><h3>评审 Agent 按 54 项标准审稿，与资深审阅者一致率 88.6% <span class="chip zs">招熟</span></h3></div>
-      <dl class="kv">
-        <dt>条目</dt><dd><a href="#i-terminalx">Terminal X 评审 Agent</a></dd>
-        <dt>依据</dt><dd>Terminal X 的评审 Agent 按 54 项评分标准审阅投研产出，500 次判断中与资深审阅者一致率 88.6%（<a href="https://openai.com/index/terminal-x">OpenAI</a>，10-20，厂商自报）。</dd>
-        <dt>心法</dt><dd>评审 Agent 靠的是一份写明的评分标准（Rubric），不是模型的感觉。先有标准，才谈得上自动评审。</dd>
-        <dt>招式</dt><dd>给产品的一类产出（比如投研摘要、病历摘要）写一份逐项可判的评分标准；先拿人工评过的样本测一致率，再决定能否替代人工初审。</dd>
+        <dt>评分</dt><dd>总分 80 · 影响 4 · 创新 4 · 可实践 5 · 热度 2</dd>
+        <dt>依据</dt><dd>蒙彼利埃大学医院把 153 名儿科急诊出院儿童随机分到模板组装和本地开源 LLM 起草两组，分析了 117 名：两组家属理解度没有差异，送出的文书没有严重差错（0/117）。医生改了 58 份草稿中的 48 份，删掉了 22 处无依据添加中的 18 处，22 处错误的缩写展开只纠正了 6 处（<a href="https://www.medrxiv.org/content/10.64898/2026.10.20.26365977v1">medRxiv</a>，10-22，预印本，探索性分析）。</dd>
+        <dt>心法</dt><dd>多出来的内容容易发现，展开错的缩写读着通顺，更容易漏。人工审核本身也要度量，前提是留下原始记录、AI 草稿、医生终稿三份。</dd>
+        <dt>招式</dt><dd>保存三份记录并自动比对差异；缩写、剂量、单位这类读着通顺也可能错的地方单独高亮；定期抽样统计审核漏检率。</dd>
       </dl>
     </article>
 
   </div>
 </section>
 
-<section aria-labelledby="s-judge">
-  <h2 id="s-judge"><span class="no">02</span>本期三个判断</h2>
+<section aria-labelledby="s-score">
+  <h2 id="s-score"><span class="no">02</span>编辑部打分</h2>
+  <p>主编和 Agent 专家逐篇读过原文，给 22 条各打四个 1 到 5 分：影响（对金融、医疗 AI 产品和行业的分量）、创新（是不是新东西）、可实践（这周能不能用到产品里）、热度（讨论和传播的程度）。总分按影响 35%、可实践 30%、创新 20%、热度 15% 加权，折成百分制。本期必看取总分前三，标题和一句话结论从前几名收敛出来。</p>
+  <p class="view"><b>主编的收敛</b>：总分前四都不讲新能力，讲的是怎样管住和验收 Agent。银行限制写权限，AISI 事故说明越界后模型自己停不下来，儿科试验量出了人工审核的漏检，ThinkingBox 说明平均分掩盖了不稳定。讲新能力的条目排在后面：形式化验证和脑细胞分析创新分高，但离金融、医疗产品远，可实践只有 2 分；Kimi K3.1 Pro 用得上，但对我们产品的影响有限。</p>
   <div class="tbl">
     <table>
-      <thead><tr><th>#</th><th>判断</th><th>阶段</th><th>关键依据</th><th>对我们意味着什么</th></tr></thead>
+      <thead><tr><th>#</th><th>条目</th><th class="nowrap">行业</th><th class="nowrap">影响</th><th class="nowrap">创新</th><th class="nowrap">可实践</th><th class="nowrap">热度</th><th class="nowrap">总分</th><th>评语</th></tr></thead>
       <tbody>
-        <tr><td class="num">1</td><td>Agent 的基础设施正在变成公共标准，权限边界由模型之外的机制执行</td><td><span class="chip zs">招熟</span></td><td>Agent Skills 捐给 AAIF；OpenShell 开源；Anthropic 的 AISI 事故复盘</td><td>Agent 能力建在 Skills、MCP 上，换模型不丢能力；权限和停止条件放在沙箱和接口层</td></tr>
-        <tr><td class="num">2</td><td>金融 AI 进入 Agent 落地和监管定框同步推进的阶段</td><td><span class="chip zs">招熟</span></td><td>FSB 定稿 12 条良好实践；Starling、Visa、Mastercard 密集上线 Agent；银行对外部 Agent 只开只读</td><td>优先做合规、审阅、调查类 Agent，按自主程度设计人工监督；对接银行时默认只能读</td></tr>
-        <tr><td class="num">3</td><td>医疗 AI 的瓶颈从模型能力转到人类监督能否被度量</td><td><span class="chip dj">懂劲</span></td><td>出院文书 RCT 中医生漏掉部分错误；美国州医学委员会联合会成立 22 人监管工作组</td><td>让“人工审核看了什么、改了什么”可以被审计</td></tr>
+        <tr><td class="num">1</td><td><a href="#i-bank-readonly">银行对外部 Agent 只开只读</a></td><td class="nowrap">金融</td><td class="num">5</td><td class="num">3</td><td class="num">5</td><td class="num">4</td><td class="num"><b>89</b></td><td>直接划定金融 Agent 的产品边界：能读，不能动钱</td></tr>
+        <tr><td class="num">2</td><td><a href="#i-aisi">AISI 测试事故复盘</a></td><td class="nowrap">通用</td><td class="num">4</td><td class="num">4</td><td class="num">4</td><td class="num">4</td><td class="num"><b>80</b></td><td>首次见到模型对真人做社会工程；越界后几乎停不下来</td></tr>
+        <tr><td class="num">3</td><td><a href="#i-peds-rct">儿科出院文书 RCT</a></td><td class="nowrap">医疗</td><td class="num">4</td><td class="num">4</td><td class="num">5</td><td class="num">2</td><td class="num"><b>80</b></td><td>少见的随机试验，第一次量出医生审核漏掉了什么</td></tr>
+        <tr><td class="num">4</td><td><a href="#i-thinkingbox">ThinkingBox 可验证奖励</a></td><td class="nowrap">通用</td><td class="num">3</td><td class="num">4</td><td class="num">5</td><td class="num">2</td><td class="num"><b>73</b></td><td>按数据库终态评测和训练；pass@1 掩盖了不稳定</td></tr>
+        <tr><td class="num">5</td><td><a href="#i-agent-infra">Agent Skills 捐给 AAIF</a></td><td class="nowrap">通用</td><td class="num">4</td><td class="num">2</td><td class="num">4</td><td class="num">4</td><td class="num"><b>72</b></td><td>70 多个平台已接入，技能包成了中立标准</td></tr>
+        <tr><td class="num">6</td><td><a href="#i-formal">形式化验证规模化</a></td><td class="nowrap">通用</td><td class="num">4</td><td class="num">5</td><td class="num">2</td><td class="num">4</td><td class="num"><b>72</b></td><td>239 个入口证明不崩溃，创新最高，离我们的产品远</td></tr>
+        <tr><td class="num">7</td><td><a href="#i-kimi">Kimi K3.1 Pro</a></td><td class="nowrap">通用</td><td class="num">3</td><td class="num">3</td><td class="num">4</td><td class="num">4</td><td class="num"><b>69</b></td><td>即将开放权重的模型首次逼近前沿，私有化部署多一个选择</td></tr>
+        <tr><td class="num">8</td><td><a href="#i-agent-infra">OpenShell 开源</a></td><td class="nowrap">通用</td><td class="num">3</td><td class="num">3</td><td class="num">4</td><td class="num">4</td><td class="num"><b>69</b></td><td>沙箱、网络策略、凭证代理一套开源，GitHub 1.95 万星</td></tr>
+        <tr><td class="num">9</td><td><a href="#i-fde">OpenAI 的 FDE 做法</a></td><td class="nowrap">通用</td><td class="num">3</td><td class="num">3</td><td class="num">4</td><td class="num">3</td><td class="num"><b>66</b></td><td>共用 Harness 去掉约 90% 定制代码（厂商自报）</td></tr>
+        <tr><td class="num">10</td><td><a href="#i-fsb">FSB 12 条良好实践定稿</a></td><td class="nowrap">金融</td><td class="num">4</td><td class="num">2</td><td class="num">4</td><td class="num">2</td><td class="num"><b>66</b></td><td>金融 AI 合规的上位依据；第 10 条按自主程度配人工监督</td></tr>
+        <tr><td class="num">11</td><td><a href="#i-terminalx">Terminal X 评审 Agent</a></td><td class="nowrap">金融</td><td class="num">3</td><td class="num">3</td><td class="num">4</td><td class="num">2</td><td class="num"><b>63</b></td><td>按评分标准做评审 Agent，一致率 88.6%（厂商自报）</td></tr>
+        <tr><td class="num">12</td><td><a href="#i-brain">数千 Agent 分析脑细胞数据</a></td><td class="nowrap">医疗</td><td class="num">3</td><td class="num">4</td><td class="num">2</td><td class="num">3</td><td class="num"><b>58</b></td><td>多 Agent 并行做科研分析，结论待实验验证</td></tr>
+        <tr><td class="num">13</td><td><a href="#i-visa">Visa、Mastercard 试点 Agent 支付</a></td><td class="nowrap">金融</td><td class="num">3</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num"><b>54</b></td><td>Agent 支付还在试点阶段</td></tr>
+        <tr><td class="num">14</td><td><a href="#i-starling">Starling 金融犯罪调查 Agent</a></td><td class="nowrap">金融</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num">2</td><td class="num"><b>53</b></td><td>只有标题级信息，“17 秒”缺少方法细节</td></tr>
+        <tr><td class="num">15</td><td><a href="#i-itau">Itaú 全客群对话式银行</a></td><td class="nowrap">金融</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num">2</td><td class="num"><b>53</b></td><td>规模大，但只有厂商口径</td></tr>
+        <tr><td class="num">16</td><td><a href="#i-duet">Claude Duet 留存问题</a></td><td class="nowrap">通用</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td class="num">3</td><td class="num"><b>49</b></td><td>打磨得好，不等于用户会天天用</td></tr>
+        <tr><td class="num">17</td><td><a href="#i-quant">Quant-Arena 基准</a></td><td class="nowrap">金融</td><td class="num">2</td><td class="num">3</td><td class="num">2</td><td class="num">2</td><td class="num"><b>44</b></td><td>印证 LLM 不擅长预测市场</td></tr>
+        <tr><td class="num">18</td><td><a href="#i-deepseek">华为与 DeepSeek 的相互依存</a></td><td class="nowrap">通用</td><td class="num">3</td><td class="num">2</td><td class="num">1</td><td class="num">3</td><td class="num"><b>44</b></td><td>算力格局，离我们的产品远</td></tr>
+        <tr><td class="num">19</td><td><a href="#i-jackclark">Jack Clark IMF 演讲</a></td><td class="nowrap">通用</td><td class="num">3</td><td class="num">2</td><td class="num">1</td><td class="num">3</td><td class="num"><b>44</b></td><td>方向性判断，没有可执行内容</td></tr>
+        <tr><td class="num">20</td><td><a href="#i-fr-parents">法国家长生成式 AI 调查</a></td><td class="nowrap">医疗</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td class="num">1</td><td class="num"><b>43</b></td><td>76.6% 的家长看重医学监督，可作用户研究参考</td></tr>
+        <tr><td class="num">21</td><td><a href="#i-layoffs">裁员与信用数据并购</a></td><td class="nowrap">金融</td><td class="num">3</td><td class="num">1</td><td class="num">1</td><td class="num">3</td><td class="num"><b>40</b></td><td>行业背景，和产品决策关系小</td></tr>
+        <tr><td class="num">22</td><td><a href="#i-orchestra">OpenAI 收购 Orchestra Bio</a></td><td class="nowrap">医疗</td><td class="num">2</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td class="num"><b>30</b></td><td>只有收购消息，没有细节</td></tr>
       </tbody>
     </table>
   </div>
+  <p class="muted">原文核对：10-28 重读了 Anthropic、Hugging Face、FSB、medRxiv、Simon Willison、The Paypers、The Logic、Crypto Briefing、SemiAnalysis 等来源的原文。Finextra 和 OpenAI 的页面拒绝自动抓取，Starling、Visa、Itaú、FDE、Terminal X、Orchestra 六条沿用首次扫描时的笔记，评分里已按信息不全扣分。重读时更正一处：Claude Duet 的评测作者是 Claire Vo，不是 Lenny Rachitsky。</p>
 </section>
 
 <section aria-labelledby="s-macro">
@@ -484,7 +509,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   <h2 id="s-prod"><span class="no">07</span>AI 产品</h2>
   <div class="subhead"><h3>好产品不等于被用起来，模型选型要看任务类型</h3></div>
   <ul class="facts">
-    <li id="i-duet"><span class="chip zs">招熟</span><span>Lenny Rachitsky 评价 Claude Duet 是他见过最精致的个人 Agent 发布，但自己还是忘了用：一个主动型 Agent 从不主动提醒，又缺少桌面端和多人协作，留存就成问题。<span class="src">（<a href="https://www.lennysnewsletter.com/p/claude-duet-is-beautiful-i-still">Lenny's Newsletter</a>，10-21，<span class="pay">💰 部分付费</span>）</span></span></li>
+    <li id="i-duet"><span class="chip zs">招熟</span><span>Claire Vo（Lenny's Newsletter 的 How I AI 栏目）称 Claude Duet 是见过最精致的个人 Agent 发布，但拿它处理邮件、销售线索等真实工作后，还是忘了用：在争夺注意力的个人 Agent 里，打磨得好还不够。<span class="src">（<a href="https://www.lennysnewsletter.com/p/claude-duet-is-beautiful-i-still">Lenny's Newsletter</a>，10-21，<span class="pay">💰 部分付费</span>）</span></span></li>
     <li><span class="chip zs">招熟</span><span>同一作者测评 Meta 的 Muse Wonder：Agent 类任务排第一，设计和视觉工作明显偏弱。<span class="src">（<a href="https://www.lennysnewsletter.com/p/metas-new-muse-wonder-model-good">Lenny's Newsletter</a>，10-14）</span></span></li>
   </ul>
   <ul class="facts">
