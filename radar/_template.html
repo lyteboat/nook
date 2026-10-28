@@ -8,10 +8,10 @@ Nook AI 雷达模板（HTML）。每期复制本文件为 radar/YYYY/YYYY-MM-DD.
 学法：招熟 → 懂劲 → 神明。先抓住 20% 最关键的内容，覆盖 80% 的场景。
 
 写法：
-1. 二八先行：先写附录 A 的条目总表，再从里面挑出“本期必看”。必看只放 1 到 3 条，读者只读这一节也不亏。每条按顺序写四项：条目（这条必看出自哪几个条目，1 到 3 个，用 <a href="#i-slug"> 链到正文，名字和附录 A 一致）、依据（这几个条目里最硬的数字，带来源链接和日期）、心法（一到两句原理，不超过 60 字）、招式（一到三个动作，落到金融、医疗产品上）。标题写成判断句，读者对照速览要能看出它从哪几条来；举不出条目的判断不进必看。“一句话结论”由必看的标题串成，每个判断带一个最硬的事实，不另起新话题。
+1. 编辑流程（质量要求最高的一步）：先写附录 A 的条目总表；再由“主编”和“Agent 专家”两个角色逐篇读原文（不是只读标题和导语），给每条打四个 1 到 5 分：影响（对金融、医疗 AI 产品和行业的分量）、创新（是不是新东西）、可实践（这周能不能用到产品里）、热度（讨论和传播的程度）。总分 =（影响×0.35 + 可实践×0.30 + 创新×0.20 + 热度×0.15）×20，取整，写进“编辑部打分”表，按总分降序，每条一句评语。原文抓不到的条目在表下注明，并按信息不全扣分。然后收敛：本期必看取总分前三，一条必看就是一个条目；“主编的收敛”一段说明前几名有没有共同点、为什么讲能力的条目排在前面或后面；h1 和一句话结论从这段收敛出来，每个判断带一个最硬的事实。前几名确实没有共同点，就如实写“本周没有统一主线”。不为凑主线改分，也不为凑主线挑条目。必看每条按顺序写五项：条目（<a href="#i-slug"> 链到正文）、评分（总分和四项分）、依据（原文里最硬的数字，带来源链接和日期）、心法（一到两句原理，不超过 60 字）、招式（一到三个动作，落到金融、医疗产品上）。
 2. 每条信号标阶段：.chip.zs 招熟（能马上用，回答怎么做）、.chip.dj 懂劲（原理与权衡，回答为什么）、.chip.sm 神明（长期方向，只写一两句）。招熟和懂劲为主，神明最多一两条。
 3. 术语首次出现写成“中文（English）”。工程概念可以用 Java、C#、Python 的类比讲，基础概念不解释。
-4. 标题即结论：h1 和 h3 写成判断句。由宏观到微观：格局与监管 → 平台与工具 → 金融 → 医疗 → AI 产品 → 值得一读 → 本期招式 → 神明。
+4. 标题即结论：h1 和 h3 写成判断句；h1 取自“主编的收敛”。由宏观到微观：格局与监管 → 平台与工具 → 金融 → 医疗 → AI 产品 → 值得一读 → 本期招式 → 神明。
 5. 能画就画：有数字的对比用条形图（.track），一周内的事件用时间线（SVG），分层结构用分层图（SVG），阶段分布必画（.bar + .matrix）。图表文字颜色只用 CSS 变量，深浅色都要可读。
 6. 每个判断都有依据：机构、数字、日期、链接。转引的内容要找到原作者（博客的链接帖、周刊里的摘录常常是别人的文章）；二手转述的数字要对照原始榜单，注明版本、是否开工具，前后数字口径不同就写明。推断写在 .view 里，以“我的看法”开头。厂商数据注明“厂商自报”，付费内容标 💰 并只依据免费部分。
 7. 宁缺毋滥：全期 10 到 15 条；本期招式 5 到 9 项；没有内容的分区整节删掉，编号顺延。
@@ -169,7 +169,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
 
 <section aria-labelledby="s-thesis">
   <div class="eyebrow" id="s-thesis">一句话结论</div>
-  <p class="thesis">由本期必看的标题串成：每个判断带一个最硬的事实，不另起新话题。</p>
+  <p class="thesis">从“主编的收敛”得出：前几名的共同点是什么，逐条带一个最硬的事实；没有共同点就写“本周没有统一主线”。</p>
 </section>
 
 <section aria-labelledby="s-stage">
@@ -199,13 +199,14 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
 </section>
 
 <section aria-labelledby="s-must">
-  <h2 id="s-must"><span class="no">01</span>本期必看（20%）</h2>
+  <h2 id="s-must"><span class="no">01</span>本期必看（总分前三）</h2>
   <p class="muted">只读这一节，也能抓住本期八成的价值。</p>
   <div class="musts">
     <article class="must">
       <div class="must-head"><span class="must-no">1</span><h3>判断句 <span class="chip zs">招熟</span></h3></div>
       <dl class="kv">
-        <dt>条目</dt><dd><a href="#i-slug">附录 A 里的条目名</a>、<a href="#i-slug2">另一个条目名</a></dd>
+        <dt>条目</dt><dd><a href="#i-slug">附录 A 里的条目名</a></dd>
+        <dt>评分</dt><dd>总分 NN · 影响 N · 创新 N · 可实践 N · 热度 N</dd>
         <dt>依据</dt><dd>事实与数字（<a href="#">来源</a>，MM-DD）。</dd>
         <dt>心法</dt><dd>一到两句原理，可用工程类比，不超过 60 字。</dd>
         <dt>招式</dt><dd>一到三个具体动作，落到金融、医疗产品上。</dd>
@@ -214,12 +215,19 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   </div>
 </section>
 
-<section aria-labelledby="s-judge">
-  <h2 id="s-judge"><span class="no">02</span>本期三个判断</h2>
-  <div class="tbl"><table>
-    <thead><tr><th>#</th><th>判断</th><th>阶段</th><th>关键依据</th><th>对我们意味着什么</th></tr></thead>
-    <tbody><tr><td class="num">1</td><td>完整的判断句</td><td><span class="chip zs">招熟</span></td><td>两三个最硬的事实</td><td>落到产品决策或书的章节</td></tr></tbody>
-  </table></div>
+<section aria-labelledby="s-score">
+  <h2 id="s-score"><span class="no">02</span>编辑部打分</h2>
+  <p>一句话说明打分维度和权重（见写法第 1 条）。</p>
+  <p class="view"><b>主编的收敛</b>：前几名的共同点，或者如实说没有；讲能力的条目为什么排在前面或后面。</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>#</th><th>条目</th><th>行业</th><th>影响</th><th>创新</th><th>可实践</th><th>热度</th><th>总分</th><th>评语</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1</td><td><a href="#i-slug">条目名</a></td><td>金融</td><td class="num">5</td><td class="num">3</td><td class="num">5</td><td class="num">4</td><td class="num"><b>89</b></td><td>一句评语</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="muted">原文核对：哪些来源重读了原文，哪些抓不到、沿用了笔记；重读时发现的更正。</p>
 </section>
 
 <section aria-labelledby="s-macro">

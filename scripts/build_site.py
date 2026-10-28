@@ -228,7 +228,7 @@ def digest(source):
             "title": text_of(re.sub(r'<span class="chip.*?</span>', "", h3.group(1))),
             "cls": chip.group(1) if chip else "", "stage": chip.group(2) if chip else "",
             "refs": [(a, text_of(t)) for a, t in re.findall(r'<a href="(#[^"]+)">(.*?)</a>', raw.get("条目", ""), re.S)],
-            "basis": raw.get("依据", ""),
+            "basis": raw.get("依据", ""), "score": text_of(raw.get("评分", "")),
             "xinfa": text_of(raw.get("心法", "")), "zhaoshi": text_of(raw.get("招式", "")),
         })
     items = []
@@ -307,6 +307,7 @@ footer{max-width:1080px;margin:0 auto;padding:0 0 40px;font-size:13px;color:var(
 .must .ref{display:inline-flex;align-items:center;gap:6px;font-size:13px;padding:3px 10px;border:1px solid var(--line);border-radius:999px;color:var(--ink);text-decoration:none;background:var(--bg)}
 .must .ref:hover{border-color:var(--accent);color:var(--accent)}
 .must{scroll-margin-top:80px}
+.must .score{font:600 13px var(--f-data);color:var(--accent)}
 .mustno{font-size:11px;font-weight:700;padding:1px 6px;border-radius:4px;background:var(--accent);color:var(--on-accent);text-decoration:none;margin-left:6px;white-space:nowrap}
 .legend{display:flex;gap:16px;font-size:12px;color:var(--muted);align-items:center}
 .legend span{display:inline-flex;gap:6px;align-items:center}
@@ -423,6 +424,7 @@ def render_index(issues):
                + "".join(f'<a class="ref" href="{href}{a}"><i class="dot {cls_of.get(a, "")}"></i>{html.escape(t)}</a>'
                          for a, t in m["refs"]) + '</div>' if m["refs"] else "")
             + '<dl>'
+            + (f'<dt>评分</dt><dd class="score">{html.escape(m["score"])}</dd>' if m["score"] else "")
             + (f'<dt>依据</dt><dd class="basis">{basis_html(m["basis"], href)}</dd>' if m["basis"] else "")
             + (f'<dt>心法</dt><dd>{html.escape(m["xinfa"])}</dd>' if m["xinfa"] else "")
             + (f'<dt>招式</dt><dd>{html.escape(m["zhaoshi"])}</dd>' if m["zhaoshi"] else "")
