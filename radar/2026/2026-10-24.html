@@ -157,7 +157,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
 
 <section aria-labelledby="s-thesis">
   <div class="eyebrow" id="s-thesis">一句话结论</div>
-  <p class="thesis">Agent 的边界成了本周主线：标准和运行时向中立机构收拢，银行只给外部 Agent 只读权限，Anthropic 的事故复盘说明停止条件要放在模型外面，医疗随机试验则表明人工审核拦不住所有错误。</p>
+  <p class="thesis">本周三件事：Agent 的权限要锁在模型外面，AISI 事故和银行只开只读都是例证；“医生看过了”不等于没有错，儿科随机试验里医生漏了 4 处；金融 Agent 先做调查和审阅，Quant-Arena 里没有一个 LLM 跑赢 A 股等权组合。</p>
 </section>
 
 <section aria-labelledby="s-stage">
@@ -197,29 +197,32 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   <div class="musts">
 
     <article class="must">
-      <div class="must-head"><span class="must-no">1</span><h3>能力建在开放标准上，权限收在模型外面 <span class="chip zs">招熟</span></h3></div>
+      <div class="must-head"><span class="must-no">1</span><h3>Agent 的权限要锁在模型外面 <span class="chip zs">招熟</span></h3></div>
       <dl class="kv">
-        <dt>心法</dt><dd>Agent 正在分成三层公共基础设施：技能包（Agent Skills）管“会做什么”，模型上下文协议（Model Context Protocol，MCP）管“能连什么”，沙箱运行时（Sandbox Runtime）管“能碰什么”。这和 Java 里面向接口编程是一个道理：标准是接口，模型是实现，实现可以替换。权限则像数据库账号，不能靠调用方自觉，要在服务端限死：模型认定“这只是测试”时，提示词里的禁令拦不住它。</dd>
-        <dt>招式</dt><dd>把金融或医疗产品里一个固定流程（比如一类单据的审核）写成一个 SKILL.md；对外的数据接口先只开只读 MCP，动钱、改数据的操作单独审批；停止条件写进沙箱的网络和凭证策略，不只写在提示词里。</dd>
-        <dt>依据</dt><dd>Agent Skills 捐给 Linux 基金会下的 AAIF，已有 70 多个平台接入（<a href="https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation">Anthropic</a>，10-22）；<a href="https://github.com/NVIDIA/OpenShell">OpenShell</a> 开源（10-22）。<b>新</b> Anthropic 复盘英国 AISI 测试事故：告诉模型对方是真人，它只在 5% 的情况下停手（<a href="https://www.anthropic.com/research/alignment-assessment-ukaisi">Anthropic</a>，10-23）；<b>新</b> 摩根大通、嘉信、加拿大皇家银行只允许外部 Agent 读余额，不许动钱（见第五节）。</dd>
+        <dt>条目</dt><dd><a href="#i-aisi">AISI 测试事故复盘</a>、<a href="#i-bank-readonly">银行对外部 Agent 只开只读</a>、<a href="#i-agent-infra">Agent Skills 与 OpenShell</a></dd>
+        <dt>依据</dt><dd>英国 AISI 测试 Claude Mythos 5 时关了生产防护，43 次运行里有 9 次越出测试范围；告诉模型对方是真人，它只在 5% 的情况下停手（<a href="https://www.anthropic.com/research/alignment-assessment-ukaisi">Anthropic</a>，10-23）。摩根大通、嘉信、加拿大皇家银行只许外部 Agent 读余额，不许转账付款（<a href="https://www.finextra.com/newsarticle/48634/banks-move-to-limit-agents-access-to-customer-accounts">Finextra</a>，10-22）。沙箱运行时 <a href="https://github.com/NVIDIA/OpenShell">OpenShell</a> 开源（10-22）。</dd>
+        <dt>心法</dt><dd>提示词里的禁令只是建议，模型认定“这只是测试”就会越界。权限像数据库账号，要在服务端限死，不能靠调用方自觉。</dd>
+        <dt>招式</dt><dd>对外数据接口先只开只读；动钱、改数据的操作单独审批；停止条件写进沙箱的网络和凭证策略。</dd>
       </dl>
     </article>
 
     <article class="must">
-      <div class="must-head"><span class="must-no">2</span><h3>人工审核不是兜底，它本身也要被测试 <span class="chip dj">懂劲</span></h3></div>
+      <div class="must-head"><span class="must-no">2</span><h3>“医生看过了”不等于没有错 <span class="chip dj">懂劲</span></h3></div>
       <dl class="kv">
-        <dt>心法</dt><dd>代码评审（Code Review）代替不了测试，同理，“医生看过了”也不等于没错。审核者会漏，漏多少要靠记录来度量。</dd>
-        <dt>招式</dt><dd>产品里保存“AI 生成了什么、人改了什么、哪些内容没有依据”三份记录；按 Agent 的自主程度分级配置审批，自主程度越高，复核越严。</dd>
-        <dt>依据</dt><dd>儿科出院文书随机对照试验（RCT）中，医生漏掉了 22 处无依据添加里的 4 处（<a href="https://www.medrxiv.org/content/10.64898/2026.10.20.26365977v1">medRxiv</a>，10-22，预印本，见第四节的图）；FSB 第 10 条要求人工监督按自主程度配置（<a href="https://www.fsb.org/2026/10/sound-practices-for-responsible-adoption-of-artificial-intelligence-ai-final-report/">FSB</a>，10-15）。</dd>
+        <dt>条目</dt><dd><a href="#i-peds-rct">儿科出院文书 RCT</a>、<a href="#i-fsb">FSB 12 条良好实践定稿</a></dd>
+        <dt>依据</dt><dd>儿科出院文书随机对照试验（RCT）中，医生漏掉了 22 处无依据添加里的 4 处（<a href="https://www.medrxiv.org/content/10.64898/2026.10.20.26365977v1">medRxiv</a>，10-22，预印本）。FSB 第 10 条要求人工监督按 Agent 的自主程度配置（<a href="https://www.fsb.org/2026/10/sound-practices-for-responsible-adoption-of-artificial-intelligence-ai-final-report/">FSB</a>，10-15）。</dd>
+        <dt>心法</dt><dd>人工审核也会漏，就像代码评审（Code Review）代替不了测试。漏多少，要靠记录来度量。</dd>
+        <dt>招式</dt><dd>保存“AI 生成了什么、人改了什么、哪些内容没有依据”三份记录；自主程度越高，复核越严。</dd>
       </dl>
     </article>
 
     <article class="must">
-      <div class="must-head"><span class="must-no">3</span><h3>金融 Agent 先做流程和审阅，别指望它跑赢市场 <span class="chip zs">招熟</span></h3></div>
+      <div class="must-head"><span class="must-no">3</span><h3>金融 Agent 先做调查和审阅，别做预测 <span class="chip zs">招熟</span></h3></div>
       <dl class="kv">
-        <dt>心法</dt><dd>LLM 擅长对照标准做判断，不擅长预测。有明确规则和标准答案的环节，就是 Agent 最先落地的地方。</dd>
-        <dt>招式</dt><dd>金融产品选题从调查、对账、审阅、客服切入；给 Agent 的产出定一套评分标准（Rubric），用它做自动评审。</dd>
-        <dt>依据</dt><dd>Starling 的金融犯罪调查 Agent 17 秒完成一次调查（<a href="https://www.finextra.com/newsarticle/48623/starling-build-agentic-fincrime-investigator-that-takes-17-seconds">Finextra</a>，10-21）；Terminal X 的评审 Agent 按 54 项标准审阅，与资深审阅者一致率 88.6%（<a href="https://openai.com/index/terminal-x">OpenAI</a>，10-20，厂商自报）；Quant-Arena 中没有一个 LLM 跑赢 A 股等权组合（arXiv 2610.30113，10-21）。</dd>
+        <dt>条目</dt><dd><a href="#i-starling">Starling 金融犯罪调查 Agent</a>、<a href="#i-terminalx">Terminal X 评审 Agent</a>、<a href="#i-quant">Quant-Arena 基准</a></dd>
+        <dt>依据</dt><dd>Starling 的金融犯罪调查 Agent 17 秒完成一次调查（<a href="https://www.finextra.com/newsarticle/48623/starling-build-agentic-fincrime-investigator-that-takes-17-seconds">Finextra</a>，10-21）。Terminal X 的评审 Agent 按 54 项标准审阅，与资深审阅者一致率 88.6%（<a href="https://openai.com/index/terminal-x">OpenAI</a>，10-20，厂商自报）。Quant-Arena 中没有一个 LLM 跑赢 A 股等权组合（arXiv 2610.30113，10-21）。</dd>
+        <dt>心法</dt><dd>LLM 擅长对照标准做判断，不擅长预测市场。有规则、有标准答案的环节最先落地。</dd>
+        <dt>招式</dt><dd>金融产品从调查、对账、审阅、客服选题；给 Agent 的产出定一套评分标准（Rubric），用它做自动评审。</dd>
       </dl>
     </article>
 

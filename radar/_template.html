@@ -8,7 +8,7 @@ Nook AI 雷达模板（HTML）。每期复制本文件为 radar/YYYY/YYYY-MM-DD.
 学法：招熟 → 懂劲 → 神明。先抓住 20% 最关键的内容，覆盖 80% 的场景。
 
 写法：
-1. 二八先行：“本期必看”只放 1 到 3 条，读者只读这一节也不亏。每条拆成心法（一句话原理）、招式（具体动作）、依据（来源、数字、日期）。
+1. 二八先行：先写附录 A 的条目总表，再从里面挑出“本期必看”。必看只放 1 到 3 条，读者只读这一节也不亏。每条按顺序写四项：条目（这条必看出自哪几个条目，1 到 3 个，用 <a href="#i-slug"> 链到正文，名字和附录 A 一致）、依据（这几个条目里最硬的数字，带来源链接和日期）、心法（一到两句原理，不超过 60 字）、招式（一到三个动作，落到金融、医疗产品上）。标题写成判断句，读者对照速览要能看出它从哪几条来；举不出条目的判断不进必看。“一句话结论”由必看的标题串成，每个判断带一个最硬的事实，不另起新话题。
 2. 每条信号标阶段：.chip.zs 招熟（能马上用，回答怎么做）、.chip.dj 懂劲（原理与权衡，回答为什么）、.chip.sm 神明（长期方向，只写一两句）。招熟和懂劲为主，神明最多一两条。
 3. 术语首次出现写成“中文（English）”。工程概念可以用 Java、C#、Python 的类比讲，基础概念不解释。
 4. 标题即结论：h1 和 h3 写成判断句。由宏观到微观：格局与监管 → 平台与工具 → 金融 → 医疗 → AI 产品 → 值得一读 → 本期招式 → 神明。
@@ -169,7 +169,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
 
 <section aria-labelledby="s-thesis">
   <div class="eyebrow" id="s-thesis">一句话结论</div>
-  <p class="thesis">一到两句话：本期最重要的变化，以及它对我们意味着什么。</p>
+  <p class="thesis">由本期必看的标题串成：每个判断带一个最硬的事实，不另起新话题。</p>
 </section>
 
 <section aria-labelledby="s-stage">
@@ -205,9 +205,10 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
     <article class="must">
       <div class="must-head"><span class="must-no">1</span><h3>判断句 <span class="chip zs">招熟</span></h3></div>
       <dl class="kv">
-        <dt>心法</dt><dd>一句话的原理或判断，可用工程类比。</dd>
-        <dt>招式</dt><dd>一两个具体动作，落到金融、医疗产品上。</dd>
+        <dt>条目</dt><dd><a href="#i-slug">附录 A 里的条目名</a>、<a href="#i-slug2">另一个条目名</a></dd>
         <dt>依据</dt><dd>事实与数字（<a href="#">来源</a>，MM-DD）。</dd>
+        <dt>心法</dt><dd>一到两句原理，可用工程类比，不超过 60 字。</dd>
+        <dt>招式</dt><dd>一到三个具体动作，落到金融、医疗产品上。</dd>
       </dl>
     </article>
   </div>
