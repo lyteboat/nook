@@ -123,7 +123,8 @@ def sections(source):
     out = []
     for sid, inner in H2_RE.findall(source):
         no = NO_RE.search(inner)
-        out.append((sid, text_of(no.group(1)) if no else "", text_of(NO_RE.sub("", inner))))
+        title = re.sub(r'<span class="count">.*?</span>', "", NO_RE.sub("", inner), flags=re.S)
+        out.append((sid, text_of(no.group(1)) if no else "", text_of(title)))
     return out
 
 
@@ -219,20 +220,21 @@ def digest(source):
     head = re.search(r'<div class="stats">((?:\s*<div>.*?</div>)+)', source, re.S)
     stats = [(text_of(b), text_of(s)) for b, s in
              re.findall(r'<div><b>(.*?)</b><span>(.*?)</span></div>', head.group(1) if head else "")]
+    # 每个条目一句结论加六栏（What、Why、How、Who、When、Action）。必看是展开的 article，其余条目是折叠的 details。
     musts = []
-    for art in re.findall(r'<article class="must">(.*?)</article>', source, re.S):
-        h3 = re.search(r"<h3>(.*?)</h3>", art, re.S)
-        if not h3:
-            continue
-        chip = re.search(r'chip (zs|dj|sm)">(.*?)<', h3.group(1))
-        raw = dict((text_of(k), v) for k, v in re.findall(r"<dt>(.*?)</dt>\s*<dd>(.*?)</dd>", art, re.S))
+    for aid, art in re.findall(r'<article class="must[^"]*" id="([^"]+)">(.*?)</article>', source, re.S):
+        label = first(r'<span class="must-no">(.*?)</span>', art)
+        chip = re.search(r'chip (zs|dj|sm)">(.*?)<', art)
         musts.append({
-            "title": text_of(re.sub(r'<span class="chip.*?</span>', "", h3.group(1))),
+            "title": first(r"<h3>(.*?)</h3>", art), "label": label, "track": label.split(" ")[0],
             "cls": chip.group(1) if chip else "", "stage": chip.group(2) if chip else "",
-            "refs": [(a, text_of(t)) for a, t in re.findall(r'<a href="(#[^"]+)">(.*?)</a>', raw.get("条目", ""), re.S)],
-            "basis": raw.get("依据", ""), "score": text_of(raw.get("评分", "")), "track": text_of(raw.get("轨道", "")),
-            "xinfa": text_of(raw.get("心法", "")), "zhaoshi": text_of(raw.get("招式", "")),
+            "ind": first(r'<span class="ind">(.*?)</span>', art),
+            "refs": [("#" + aid, re.sub(r"^新\s*·\s*", "", first(r'<span class="name">(.*?)</span>', art)))],
+            "fields": [(k, text_of(v)) for k, v in re.findall(r"<dt>(\w+)<small>.*?</small></dt>\s*<dd>(.*?)</dd>", art, re.S)],
+            "src": (re.search(r'<p class="src">来源：(.*?)</p>', art, re.S) or re.search("()", "")).group(1),
         })
+    concl = dict(re.findall(r'<details class="item" id="([^"]+)">\s*<summary><span class="c">(.*?)</span>', source, re.S))
+    concl.update({m["refs"][0][0][1:]: m["title"] for m in musts})
     items = []
     tbl = re.search(r"条目总表.*?<thead>(.*?)</thead>.*?<tbody>(.*?)</tbody>", source, re.S)
     cols = [text_of(th) for th in re.findall(r"<th[^>]*>(.*?)</th>", tbl.group(1), re.S)] if tbl else []
@@ -254,11 +256,13 @@ def digest(source):
             "src": text_of(row.get("来源", "")), "anchor": anchor.group(1) if anchor else "",
             # 轨道和总分从 10-24 那期起才有，更早的期数留空
             "track": text_of(row.get("轨道", "")), "score": int(text_of(row.get("总分", "")) or 0),
+            "concl": text_of(concl.get(anchor.group(1)[1:], "")) if anchor else "",
         })
     return {"thesis": thesis, "stats": stats, "musts": musts, "items": items}
 
 
 INDUSTRIES = ["通用", "金融", "医疗"]
+FIELD_ZH = {"What": "是什么", "Why": "为什么重要", "How": "怎么做的", "Who": "谁", "When": "何时", "Action": "我们做什么"}
 TRACKS = ["技术", "产品"]
 
 PAGE_CSS = """<style>
@@ -307,12 +311,14 @@ footer{max-width:1080px;margin:0 auto;padding:0 0 40px;font-size:13px;color:var(
 .must h3{font-size:18px;font-weight:600}
 .must dl{margin:0}.must dt{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.08em}
 .must dd{margin:2px 0 10px;font-size:14px;line-height:1.7}
-.must .refs{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding-bottom:12px;border-bottom:1px dashed var(--line)}
-.must .refs .lbl{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.08em;margin-right:2px}
-.must .ref{display:inline-flex;align-items:center;gap:6px;font-size:13px;padding:3px 10px;border:1px solid var(--line);border-radius:999px;color:var(--ink);text-decoration:none;background:var(--bg)}
-.must .ref:hover{border-color:var(--accent);color:var(--accent)}
 .must{scroll-margin-top:80px}
-.must .score{font:600 13px var(--f-data);color:var(--accent)}
+.must h3 a{color:inherit;text-decoration:none}.must h3 a:hover{color:var(--accent)}
+.must dl.w6{display:grid;grid-template-columns:6.5em 1fr;gap:6px 12px}
+.must .w6 dt{font:700 12.5px/1.7 var(--f-data);color:var(--accent);letter-spacing:0}.must.prod .w6 dt{color:var(--prod)}
+.must .w6 dt small{display:block;font:400 11.5px var(--f-body);color:var(--muted)}
+.must .w6 dd{margin:0}
+.must .src{font-size:13px;color:var(--muted);padding-top:10px;border-top:1px dashed var(--line)}
+.must .no .ind{margin-left:0}
 .mustno{font-size:11px;font-weight:700;padding:1px 6px;border-radius:4px;background:var(--accent);color:var(--on-accent);text-decoration:none;margin-left:6px;white-space:nowrap}
 .legend{display:flex;gap:16px;font-size:12px;color:var(--muted);align-items:center}
 .legend span{display:inline-flex;gap:6px;align-items:center}
@@ -326,8 +332,6 @@ a.tag{text-decoration:none}a.tag:hover{color:var(--accent);border-color:var(--ac
 .col ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .col li{display:grid;grid-template-columns:8px 1fr;gap:8px;font-size:13px;line-height:1.5}.col li .dot{margin-top:6px}
 .board.two{grid-template-columns:repeat(2,minmax(0,1fr))}
-.col.scored li{grid-template-columns:2.2em 8px 1fr}
-.sc{font:600 13px/1.5 var(--f-data);color:var(--accent);text-align:right}
 .ind{font-size:11px;line-height:1.5;color:var(--accent);background:var(--wash);border-radius:4px;padding:0 5px;margin-left:5px;white-space:nowrap}
 .musts.two{grid-template-columns:repeat(2,minmax(0,1fr))}
 .must.prod{border-top-color:var(--prod)}.must.prod .score{color:var(--prod)}
@@ -360,6 +364,8 @@ table{width:100%;border-collapse:collapse;background:var(--surface);border:1px s
 th{text-align:left;font-size:12px;color:var(--muted);font-weight:600;background:var(--wash);padding:10px 14px}
 td{padding:11px 14px;border-top:1px solid var(--line);vertical-align:top}
 td.name{font-weight:500}
+th,#tb td:nth-child(-n+4),#tb td:nth-child(7),#tb td:nth-child(9){white-space:nowrap}
+td.name .cc{font-weight:400;font-size:13px;color:var(--muted);margin-top:2px}
 td.name a.item{color:inherit;text-decoration:none}td.name a.item:hover{color:var(--accent);text-decoration:underline}
 td .tag{margin:0 4px 2px 0}
 @media (max-width:900px){.hero-body,.musts,.musts.two,.board,.board.two{grid-template-columns:1fr}.hero h1{font-size:30px}.archive a{grid-template-columns:1fr;gap:2px}
@@ -411,7 +417,7 @@ def render_index(issues):
     thesis = f'<p class="thesis">{html.escape(dg["thesis"])}</p>' if dg["thesis"] else ""
     hero = (f'<section class="hero"><div><div class="eyebrow">本期 · {d} 周{WEEKDAYS[d.weekday()]}</div>'
             f'<h1><a href="{href}">{html.escape(latest["title"])}</a></h1></div>'
-            f'<div class="hero-body"><div>{thesis}</div>{f"<div class=stats>{stats}</div>" if stats else ""}</div></section>')
+            + (f'<div class="hero-body"><div>{thesis}</div><div class="stats">{stats}</div></div>' if stats else thesis) + '</section>')
     blocks = [hero]
     labels = must_labels(dg["musts"])
     # 必看的“条目”指向速览里的条目，两边互相标出来，读者看得出必看从哪几条来
@@ -429,37 +435,29 @@ def render_index(issues):
         for label, rows in groups:
             if not rows:
                 continue
-            lis = "".join('<li>' + (f'<span class="sc">{i["score"]}</span>' if tracked else "")
-                          + f'<span class="dot {i["cls"]}"></span><span>{"<span class=new>新</span>" if i["new"] else ""}'
-                          f'<a class="item" href="{href}{i["anchor"]}">{html.escape(i["name"])}</a>'
+            lis = "".join(f'<li><span class="dot {i["cls"]}"></span><span>'
+                          f'<a class="item" href="{href}{i["anchor"]}">{html.escape(i["concl"] or i["name"])}</a>'
                           + "".join(f'<a class="mustno" href="#must-{n}">必看 · {labels[n - 1]}</a>' for n in must_of.get(i["name"], must_of.get(i["anchor"], [])))
-                          + (f'<span class="ind">{i["ind"]}</span>' if tracked and i["ind"] != "通用" else "")
-                          + f'{"".join(tag_link(t) for t in i["tags"])}</span></li>'
+                          + (f'<span class="ind">{i["ind"]}</span>' if i["ind"] != "通用" else "")
+                          + '</span></li>'
                           for i in rows)
-            cols.append(f'<div class="col{" scored" if tracked else ""}"><h3>{label}<span class="num muted">{len(rows)}</span></h3><ul>{lis}</ul></div>')
-        note = '<span class="muted">按编辑部总分从高到低</span>' if tracked else ""
+            cols.append(f'<div class="col"><h3>{label}<span class="num muted">{len(rows)}</span></h3><ul>{lis}</ul></div>')
+        note = '<span class="muted">每条一句结论，按重要程度排序，点开看详情</span>' if tracked else ""
         blocks.append(f'<section><div class="sec-h"><h2>本期速览</h2>{note}<div class="legend"><span><i class="dot zs"></i>招熟</span>'
                       '<span><i class="dot dj"></i>懂劲</span><span><i class="dot sm"></i>神明</span></div>'
                       f'<a href="items.html" style="margin-left:auto;font-size:14px">在全部条目里筛选 →</a></div>'
                       f'<div class="board{" two" if tracked else ""}">{"".join(cols)}</div></section>')
     if dg["musts"]:
-        cls_of = {i["anchor"]: i["cls"] for i in dg["items"]}
         cards = "".join(
-            f'<article class="must{" prod" if m["track"] == "产品" else ""}" id="must-{n}"><div class="no">{labels[n - 1]}'
+            f'<article class="must{" prod" if m["track"] == "产品" else ""}" id="must-{n}"><div class="no">{html.escape(labels[n - 1])}'
             + (f' <span class="chip {m["cls"]}">{html.escape(m["stage"])}</span>' if m["cls"] else "")
-            + f'</div><h3>{html.escape(m["title"])}</h3>'
-            + (f'<div class="refs"><span class="lbl">来自速览</span>'
-               + "".join(f'<a class="ref" href="{href}{a}"><i class="dot {cls_of.get(a, "")}"></i>{html.escape(t)}</a>'
-                         for a, t in m["refs"]) + '</div>' if m["refs"] else "")
-            + '<dl>'
-            + (f'<dt>评分</dt><dd class="score">{html.escape(m["score"])}</dd>' if m["score"] else "")
-            + (f'<dt>依据</dt><dd class="basis">{basis_html(m["basis"], href)}</dd>' if m["basis"] else "")
-            + (f'<dt>心法</dt><dd>{html.escape(m["xinfa"])}</dd>' if m["xinfa"] else "")
-            + (f'<dt>招式</dt><dd>{html.escape(m["zhaoshi"])}</dd>' if m["zhaoshi"] else "")
-            + '</dl></article>'
+            + (f' <span class="ind">{html.escape(m["ind"])}</span>' if m["ind"] else "")
+            + f'</div><h3><a href="{href}{m["refs"][0][0]}">{html.escape(m["title"])}</a></h3><dl class="w6">'
+            + "".join(f'<dt>{k}<small>{FIELD_ZH.get(k, "")}</small></dt><dd>{html.escape(v)}</dd>' for k, v in m["fields"])
+            + '</dl>' + (f'<p class="src">来源：{basis_html(m["src"], href)}</p>' if m["src"] else "") + '</article>'
             for n, m in enumerate(dg["musts"], 1))
         two = any(m["track"] for m in dg["musts"])
-        sub = "技术、产品各取总分前二" if two else "只读这几条，也能抓住本期八成的价值"
+        sub = "技术、产品各两条，每条一句结论加六栏"
         blocks.append(f'<section id="must"><div class="sec-h"><h2>本期必看</h2>'
                       f'<span class="muted">{sub}</span></div><div class="musts{" two" if two else ""}">{cards}</div></section>')
     blocks.append(f'<section id="archive"><div class="sec-h"><h2>最近几期</h2><span class="muted">共 {len(issues)} 期</span>'
@@ -469,15 +467,7 @@ def render_index(issues):
 
 
 def must_labels(musts):
-    """有轨道的必看按轨道内的序号叫“技术 1”“产品 2”，老期数只有序号。"""
-    seen, out = {}, []
-    for n, m in enumerate(musts, 1):
-        if m["track"]:
-            seen[m["track"]] = seen.get(m["track"], 0) + 1
-            out.append(f'{m["track"]} {seen[m["track"]]}')
-        else:
-            out.append(f"{n:02d}")
-    return out
+    return [m["label"] or f"{n:02d}" for n, m in enumerate(musts, 1)]
 
 
 def archive_rows(issues, prefix):
@@ -522,7 +512,7 @@ ITEMS_JS = """<script>
     if(byScore)rows=rows.slice().sort(function(a,b){return b.score-a.score});
     document.getElementById('count').textContent='显示 '+rows.length+' / '+D.length+' 条';
     document.getElementById('tb').innerHTML=rows.map(function(i){return '<tr><td class="num">'+e(i.date)+'</td><td>'+e(i.track||'—')+'</td><td>'+e(i.ind)+
-      '</td><td><span class="chip '+i.cls+'">'+e(i.stage)+'</span></td><td class="name">'+(i.new?'<span class="new">新</span>':'')+'<a class="item" href="'+i.href+i.anchor+'">'+e(i.name)+'</a>'+
+      '</td><td><span class="chip '+i.cls+'">'+e(i.stage)+'</span></td><td class="name">'+(i.new?'<span class="new">新</span>':'')+'<a class="item" href="'+i.href+i.anchor+'">'+e(i.name)+'</a>'+(i.concl?'<div class="cc">'+e(i.concl)+'</div>':'')+
       '</td><td>'+i.tags.map(function(t){return '<a class="tag" href="#tag='+encodeURIComponent(t)+'">'+e(t)+'</a>'}).join('')+'</td><td class="num">'+(i.score||'—')+'</td><td class="muted">'+e(i.src)+'</td><td><a class="num" href="'+i.href+'">'+e(i.issue.slice(5))+'</a></td></tr>'}).join('');
   }
   [].forEach.call(document.querySelectorAll('.f'),function(b){b.addEventListener('click',function(){
