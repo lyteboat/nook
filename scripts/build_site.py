@@ -220,7 +220,7 @@ def digest(source):
     head = re.search(r'<div class="stats">((?:\s*<div>.*?</div>)+)', source, re.S)
     stats = [(text_of(b), text_of(s)) for b, s in
              re.findall(r'<div><b>(.*?)</b><span>(.*?)</span></div>', head.group(1) if head else "")]
-    # 每个条目两行标题加六栏（What、Why、How、Who、When、Action）。期刊页的标题是事件加意义，首页速览用 data-brief 里的短标题。
+    # 每个条目是标题“主体｜做了什么”、副标题写意义，再加六栏（What、Why、How、Who、When、Action）。
     # 必看是展开的 article，其余条目是折叠的 details。
     musts = []
     for aid, art in re.findall(r'<article class="must[^"]*" id="([^"]+)"[^>]*>(.*?)</article>', source, re.S):
@@ -234,10 +234,8 @@ def digest(source):
             "fields": [(k, text_of(v)) for k, v in re.findall(r"<dt>(\w+)<small>.*?</small></dt>\s*<dd>(.*?)</dd>", art, re.S)],
             "src": (re.search(r'<p class="src">原文：(.*?)</p>', art, re.S) or re.search("()", "")).group(1),
         })
-    # 10-24 那期以前没有短标题，退回期刊页的标题
     concl = dict(re.findall(r'<details class="item" id="([^"]+)"[^>]*>\s*<summary><span class="c">(.*?)</span>', source, re.S))
     concl.update({m["refs"][0][0][1:]: m["title"] for m in musts})
-    concl.update(re.findall(r'<(?:article|details) class="(?:must|item)[^"]*" id="([^"]+)" data-brief="([^"]*)"', source))
     items = []
     tbl = re.search(r"条目总表.*?<thead>(.*?)</thead>.*?<tbody>(.*?)</tbody>", source, re.S)
     cols = [text_of(th) for th in re.findall(r"<th[^>]*>(.*?)</th>", tbl.group(1), re.S)] if tbl else []
@@ -462,7 +460,7 @@ def render_index(issues):
             + '</dl>' + (f'<p class="src">原文：{basis_html(m["src"], href)}</p>' if m["src"] else "") + '</article>'
             for n, m in enumerate(dg["musts"], 1))
         two = any(m["track"] for m in dg["musts"])
-        sub = "技术、产品各两条，每条写事件和意义，再分六栏"
+        sub = "技术、产品各两条，每条标题写谁做了什么，副标题写意义，再分六栏"
         blocks.append(f'<section id="must"><div class="sec-h"><h2>本期必看</h2>'
                       f'<span class="muted">{sub}</span></div><div class="musts{" two" if two else ""}">{cards}</div></section>')
     blocks.append(f'<section id="archive"><div class="sec-h"><h2>最近几期</h2><span class="muted">共 {len(issues)} 期</span>'
