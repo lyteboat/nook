@@ -145,52 +145,56 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
 <div class="wrap">
 
 <header>
-  <div class="eyebrow">Nook · 每周维护 · 首次</div>
-  <h1>清单整体可用，5 个源需要观察，1 件事等你决定</h1>
+  <div class="eyebrow">Nook · 每周维护 · 10-25</div>
+  <h1>GitHub Trending 失效已换掉，3 个源在观察，2 件事等你决定</h1>
   <div class="meta">
     <span>2026-10-25（周日）</span>
-    <span>依据：首期雷达（10-16 至 10-23）</span>
-    <span>检查于 2026-10-23</span>
+    <span>依据：雷达 2026-10-24（含当天增补）</span>
+    <span>检查于 2026-10-25</span>
   </div>
   <div class="stats">
-    <div><b>20</b><span>检查的信息源</span></div>
-    <div><b>2</b><span>清单变更</span></div>
+    <div><b>24</b><span>检查的信息源</span></div>
+    <div><b>5</b><span>清单变更</span></div>
     <div><b>0</b><span>仓库内清理</span></div>
-    <div><b>1</b><span>待你确认删除</span></div>
+    <div><b>4</b><span>待你确认删除</span></div>
   </div>
-  <p class="note">首次样稿。10-25 的定时维护会在这一份上更新。</p>
+  <p class="note">这份文件 10-23 先写过一版样稿，本次定时维护在原文件上更新，内容以本次实测为准。</p>
 </header>
 
 <section aria-labelledby="s-decide">
   <h2 id="s-decide"><span class="no">01</span>需要你决定的事</h2>
   <div class="decide">
-    <p><b>首次调研文档《Nook 外部信息源精选清单》是否删除？</b></p>
-    <p>它已经被仓库里的 src/appendix/sources.md 取代。<b>建议</b>：PR #2 合并后删除，避免两份清单并存。不处理的话，以后打开旧文档会看到过时的清单。</p>
-    <p class="small muted">artifact 删除后无法恢复，所以等你在线程里确认后再删。</p>
+    <p><b>1. 已合并 PR 留下的 4 个分支是否删除？</b></p>
+    <p>claude/project-thread-l9vc6e（#1）、benbeq（#2）、sugks3（#3、#5）、fk7vdp（#4）。对应的 PR 都已合并，内容都在 main 里。<b>建议</b>：删除。分支多了，以后开新 PR 时容易选错；删掉后也能在 GitHub 的 PR 页面一键恢复。</p>
   </div>
+  <div class="decide">
+    <p><b>2. 周六雷达是否保持 15 条上限？</b></p>
+    <p>10-24 那期把首期样稿和定时扫描合成一期，到了 22 条。<b>建议</b>：保持 15 条。周三、周六各看自己的时间窗，这次是样稿和定时任务撞在同一天，以后不会再合并。</p>
+  </div>
+  <p class="small muted">10-23 列过的两个旧 artifact（首次调研文档和维护样稿），你已经决定保留，本次不再列入。</p>
 </section>
 
 <section aria-labelledby="s-health">
   <h2 id="s-health"><span class="no">02</span>信息源健康度</h2>
   <figure>
-    <div class="fig-title">20 个信息源的状态</div>
-    <div class="health" role="img" aria-label="正常 15 个，关注 5 个，失效 0 个">
-      <div class="g" style="width:75%">正常 15</div>
-      <div class="y" style="width:25%">关注 5</div>
+    <div class="fig-title">24 个信息源的状态（雷达扫描的 23 个，加 C 层的 Lilian Weng）</div>
+    <div class="health" role="img" aria-label="正常 20 个，关注 3 个，失效 1 个">
+      <div class="g" style="width:83.3%">正常 20</div>
+      <div class="y" style="width:12.5%">关注 3</div>
+      <div class="rd" style="width:4.2%">1</div>
     </div>
-    <figcaption><span class="dot g"></span> 正常　<span class="dot y"></span> 关注　<span class="dot rd"></span> 失效（本次 0 个）。下表只列需要关注的源。</figcaption>
+    <figcaption><span class="dot g"></span> 正常　<span class="dot y"></span> 关注　<span class="dot rd"></span> 失效。下表只列有问题的源。上周关注的 npj Digital Medicine 和量子位，换了抓取方式后恢复正常。</figcaption>
   </figure>
   <div class="tbl"><table>
-    <thead><tr><th>信息源</th><th>层级</th><th>首期被引用</th><th>问题</th><th>动作</th></tr></thead>
+    <thead><tr><th>信息源</th><th>层级</th><th>雷达引用</th><th>问题</th><th>动作</th></tr></thead>
     <tbody>
-      <tr><td><span class="dot y"></span> 量子位</td><td>B</td><td class="num">1</td><td>feed 只保留约两天的条目（实测只有 10-21 至 10-22），两次扫描间隔三到四天，会漏掉中间的内容</td><td>下周试抓网站列表页补齐</td></tr>
-      <tr><td><span class="dot y"></span> npj Digital Medicine</td><td>B</td><td class="num">0</td><td>feed 最新条目停在 2026-08-31，可能是 feed 滞后</td><td>下周再测，仍滞后就改抓期刊网页</td></tr>
-      <tr><td><span class="dot y"></span> Fintech Business Weekly</td><td>B</td><td class="num">0</td><td>feed 最近更新是 10-14，最近两期没有 AI 内容</td><td>观察两周，仍无 AI 内容就降到 C 层</td></tr>
-      <tr><td><span class="dot y"></span> Ground Truths</td><td>B</td><td class="num">0</td><td>近一个月的文章集中在衰老和免疫，没有 AI 内容</td><td>观察两周，仍无 AI 内容就降到 C 层</td></tr>
-      <tr><td><span class="dot y"></span> OpenAI News</td><td>A</td><td class="num">5</td><td>一周 20 条，过半是客户案例，信噪比偏低</td><td>已写明过滤规则（见下节）</td></tr>
+      <tr><td><span class="dot rd"></span> GitHub Trending</td><td>A</td><td class="num">0</td><td>抓到的是多年前的旧榜单（BERT、walle 之类），换语言分榜也一样；OSS Insight 的榜单也已暂停</td><td>移除，由 HF Trending 接替</td></tr>
+      <tr><td><span class="dot y"></span> Hacker News</td><td>A</td><td class="num">2</td><td>原先按 100 分过滤的查询，最新一条停在 10-13，分数索引不再更新</td><td>改为首页查询，实测能拿到 10-24 的条目；下周看是否稳定</td></tr>
+      <tr><td><span class="dot y"></span> Fintech Business Weekly</td><td>B</td><td class="num">0</td><td>10-11 之后没有更新，已满两周</td><td>下周日仍无更新就降到 C 层</td></tr>
+      <tr><td><span class="dot y"></span> Ground Truths</td><td>B</td><td class="num">0</td><td>10-11 之后没有更新，此前一个月没有 AI 内容</td><td>下周日仍无 AI 内容就降到 C 层</td></tr>
     </tbody>
   </table></div>
-  <p class="small muted">另有两个抓取问题不影响使用：Finextra 和 HF Daily Papers 的详情页被挡，但 RSS 和 API 正常，摘要够用。</p>
+  <p class="small muted">Finextra 和 OpenAI 的文章页仍然抓不到，RSS 摘要加搜索补位够用，不影响评级。</p>
 </section>
 
 <section aria-labelledby="s-change">
@@ -198,11 +202,14 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   <div class="tbl"><table>
     <thead><tr><th>变更</th><th>信息源</th><th>理由</th><th>依据</th></tr></thead>
     <tbody>
-      <tr><td><span class="chip zs">扩充</span></td><td>Anthropic：增加 Research 栏目</td><td>形式化验证一文（10-22）只发在 Research 栏，News 和 Engineering 都没有</td><td>首期雷达附录 C</td></tr>
-      <tr><td><span class="chip dj">修订</span></td><td>OpenAI News：写明过滤规则</td><td>一周 20 条，过半是客户案例；只留金融、医疗案例和产品发布</td><td>首期雷达附录 C</td></tr>
+      <tr><td><span class="chip sm">移除</span></td><td>GitHub Trending</td><td>榜单内容过时，无法使用</td><td>10-24、10-25 两次实测</td></tr>
+      <tr><td><span class="chip zs">新增</span></td><td>HF Trending（A 层）</td><td>开源模型的热度榜，实测条目更新到 10-20；补上“社区在追什么”这一块</td><td>10-25 实测</td></tr>
+      <tr><td><span class="chip dj">修订</span></td><td>Hacker News：改为首页查询</td><td>分数过滤的查询不再返回新条目</td><td>雷达 10-24 附录 C</td></tr>
+      <tr><td><span class="chip dj">修订</span></td><td>npj Digital Medicine：改抓文章列表页</td><td>RSS 停在 08-31，但期刊每天都有新文章，10-23 就发了 5 篇</td><td>10-25 实测</td></tr>
+      <tr><td><span class="chip dj">修订</span></td><td>量子位：加抓首页列表</td><td>RSS 只保留约两天，首页能看到近 5 天</td><td>上周“下周关注”</td></tr>
     </tbody>
   </table></div>
-  <p class="small muted">首期之后才满一期，没有源达到“连续两周无引用”的降级标准，所以本次没有降级或移除。变更已写进 src/appendix/sources.md 的变更记录。</p>
+  <p class="small muted">Fintech Business Weekly 和 Ground Truths 只观察了一周，还没到“连续两周”的降级标准。本周雷达没有反复引用的二手来源：银行限制外部 Agent 一条用到 The Paypers 和 The Logic，各一次，暂不收录。变更已写进 src/appendix/sources.md 的变更记录。</p>
 </section>
 
 <section aria-labelledby="s-pay">
@@ -210,12 +217,13 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   <div class="tbl"><table>
     <thead><tr><th>信息源</th><th>本周被挡的内容</th><th>建议</th></tr></thead>
     <tbody>
-      <tr><td><span class="pay">💰</span> STAT+</td><td>AI 专题 5 篇中 3 篇只能看导语，包括州级医疗 AI 监管工作组一文</td><td><b>值得考虑订阅</b>：医疗监管是重点方向</td></tr>
-      <tr><td><span class="pay">💰</span> Net Interest</td><td>正文免费，作者的 Agent 指令和产出只发给付费订阅者</td><td>对金融 Agent 设计有参考价值，可以考虑</td></tr>
-      <tr><td><span class="pay">💰</span> Lenny's Newsletter</td><td>Community Wisdom（PRDs for agents）正文、Anthropic 研究员访谈的要点总结</td><td>继续只读免费部分；播客免费</td></tr>
-      <tr><td><span class="pay">💰</span> SemiAnalysis</td><td>华为与 DeepSeek 一文免费，其余深度报告多为付费</td><td>继续只读免费部分</td></tr>
+      <tr><td><span class="pay">💰</span> Net Interest</td><td>《Capital Wars》（10-23，讲 CoreWeave 靠借钱扩张的风险）feed 里只有摘要</td><td>和金融 AI 基础设施相关，可以考虑订阅</td></tr>
+      <tr><td><span class="pay">💰</span> SemiAnalysis</td><td>Trainium 实测（10-23）免费部分已有主要数据</td><td>继续只读免费部分</td></tr>
+      <tr><td><span class="pay">💰</span> STAT+</td><td>本周没有新文章</td><td>维持上周判断：医疗监管是重点，值得考虑订阅</td></tr>
+      <tr><td><span class="pay">💰</span> Lenny's Newsletter</td><td>本周没有新文章</td><td>继续只读免费部分</td></tr>
     </tbody>
   </table></div>
+  <p class="small muted">本周没有新增付费源。</p>
 </section>
 
 <section aria-labelledby="s-clean">
@@ -223,22 +231,30 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   <div class="two">
     <figure>
       <div class="fig-title">已清理（仓库内，可恢复）</div>
-      <p>无。drafts/inbox/ 目前没有草稿，仓库里没有过期的临时文件。</p>
+      <p>无。drafts/inbox/ 只有一份草稿（注意力机制，10-23 创建），离 30 天还早；仓库里没有过期的临时文件。</p>
     </figure>
     <figure>
-      <div class="fig-title">待你确认（删除后无法恢复）</div>
-      <p><a href="https://claude.ai/artifact/FQSposhrdKiwTNKTtxUrvT">Nook 外部信息源精选清单</a>（artifact）：内容已迁入仓库。建议 PR #2 合并后删除。</p>
+      <div class="fig-title">待你确认</div>
+      <p>4 个已合并 PR 的分支，见第 01 节。</p>
     </figure>
   </div>
-  <p class="small muted">清理范围只限本项目。账号下其他项目的 artifact 不在范围内；本项目的雷达各期 artifact 长期保留。</p>
+  <div class="tbl"><table>
+    <thead><tr><th>位置</th><th>现状</th><th>处理</th></tr></thead>
+    <tbody>
+      <tr><td>本项目 artifact</td><td>2 个：首次调研文档、维护样稿；首期雷达的 artifact 已于 10-23 删除</td><td>你已决定保留，不动</td></tr>
+      <tr><td>共享目录 /mnt/project-files/</td><td>3 个文件：雷达 10-24、维护 10-25、注意力机制草稿副本，都不满 30 天</td><td>不动</td></tr>
+      <tr><td>仓库分支</td><td>6 个远程分支，其中 4 个的 PR 已合并，1 个是待合并的雷达 PR #6</td><td>4 个已合并的待你确认</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small muted">清理范围只限本项目。账号下其他项目的 artifact 不在范围内；雷达各期长期保留。</p>
 </section>
 
 <section aria-labelledby="s-next">
   <h2 id="s-next"><span class="no">06</span>下周关注</h2>
   <ul class="facts">
-    <li><span class="dot y"></span><span>量子位：抓网站列表页能否补齐漏掉的条目。</span></li>
-    <li><span class="dot y"></span><span>npj Digital Medicine：feed 是否恢复更新。</span></li>
-    <li><span class="dot y"></span><span>Fintech Business Weekly、Ground Truths：是否连续两周没有 AI 内容。</span></li>
+    <li><span class="dot y"></span><span>Hacker News 首页查询是否稳定，HF Trending 的信噪比如何。</span></li>
+    <li><span class="dot y"></span><span>Fintech Business Weekly、Ground Truths：满两周仍无更新或无 AI 内容，就降到 C 层。</span></li>
+    <li><span class="dot g"></span><span>周三雷达收录 npj Digital Medicine 10-23 的荟萃分析《Human oversight of erroneous clinical AI》，正好接上 10-24 那期“人工审核拦不住所有错误”的判断。</span></li>
   </ul>
 </section>
 
