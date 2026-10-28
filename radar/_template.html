@@ -8,7 +8,7 @@ Nook AI 雷达模板（HTML）。每期复制本文件为 radar/YYYY/YYYY-MM-DD.
 学法：招熟 → 懂劲 → 神明。先抓住 20% 最关键的内容，覆盖 80% 的场景。
 
 写法：
-1. 二八先行：“本期必懂”只放 1 到 3 条，读者只读这一节也不亏。每条拆成心法（一句话原理）、招式（具体动作）、依据（来源、数字、日期）。
+1. 二八先行：“本期必看”只放 1 到 3 条，读者只读这一节也不亏。每条拆成心法（一句话原理）、招式（具体动作）、依据（来源、数字、日期）。
 2. 每条信号标阶段：.chip.zs 招熟（能马上用，回答怎么做）、.chip.dj 懂劲（原理与权衡，回答为什么）、.chip.sm 神明（长期方向，只写一两句）。招熟和懂劲为主，神明最多一两条。
 3. 术语首次出现写成“中文（English）”。工程概念可以用 Java、C#、Python 的类比讲，基础概念不解释。
 4. 标题即结论：h1 和 h3 写成判断句。由宏观到微观：格局与监管 → 平台与工具 → 金融 → 医疗 → AI 产品 → 值得一读 → 本期招式 → 神明。
@@ -22,7 +22,7 @@ Nook AI 雷达模板（HTML）。每期复制本文件为 radar/YYYY/YYYY-MM-DD.
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
-/* 版式：一列简报，宽 880px；先给结论和“必懂”，再由宏观到微观展开。三阶段用固定的三种颜色贯穿全页。 */
+/* 版式：一列简报，宽 880px；先给结论和“必看”，再由宏观到微观展开。三阶段用固定的三种颜色贯穿全页。 */
 :root{
   --bg:#f6f7f5; --surface:#ffffff; --ink:#1b2321; --muted:#5d6966; --line:#dde2df; --wash:#eef1ef;
   --accent:#1f5f58;
@@ -89,7 +89,7 @@ header{display:grid;gap:14px;border-bottom:2px solid var(--ink);padding-bottom:2
 .cell{display:inline-block;min-width:34px;padding:2px 0;border-radius:4px;font-family:var(--f-data);font-weight:600}
 .c0{color:var(--muted)}
 
-/* 必懂卡片 */
+/* 必看卡片 */
 .musts{display:grid;gap:16px}
 .must{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:20px 22px;display:grid;gap:12px;min-width:0}
 .must-head{display:flex;gap:14px;align-items:flex-start}
@@ -163,7 +163,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
     <div><b>N</b><span>扫描信息源</span></div>
     <div><b>N</b><span>读过的条目</span></div>
     <div><b>N</b><span>入选条目</span></div>
-    <div><b>N 分钟</b><span>只读“本期必懂”</span></div>
+    <div><b>N 分钟</b><span>只读“本期必看”</span></div>
   </div>
 </header>
 
@@ -199,7 +199,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
 </section>
 
 <section aria-labelledby="s-must">
-  <h2 id="s-must"><span class="no">01</span>本期必懂（20%）</h2>
+  <h2 id="s-must"><span class="no">01</span>本期必看（20%）</h2>
   <p class="muted">只读这一节，也能抓住本期八成的价值。</p>
   <div class="musts">
     <article class="must">

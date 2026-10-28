@@ -2,7 +2,7 @@
 """生成 GitHub Pages 站点：本周简报首页、全部条目、每期雷达。
 
 扫描 radar/YYYY/YYYY-MM-DD.html，按日期倒序排列。
-- 首页（index.html）：最新一期的结论、数字、本期必懂、按行业分栏的速览，下面是往期。
+- 首页（index.html）：最新一期的结论、数字、本期必看、按行业分栏的速览，下面是往期。
 - 全部条目（items.html）：汇总每期附录 A 的条目总表，可搜索，可按行业、阶段、技术标签筛选。
 - 每期页面带侧栏：上面是本期章节目录（取页面里带 id 的 h2），下面是按年、月分组的全部期数。
 每期页面补上 doctype、charset、viewport、侧栏和上一期、下一期链接，正文和样式不改。
@@ -197,7 +197,7 @@ def wrap_page(issues, n):
 
 
 def digest(source):
-    """从一期雷达里取首页要用的结构化内容：一句话结论、数字、本期必懂、附录 A 的条目总表。
+    """从一期雷达里取首页要用的结构化内容：一句话结论、数字、本期必看、附录 A 的条目总表。
 
     雷达按模板写，这些块都有固定的 class；某一期缺了哪块，就跳过哪块。
     """
@@ -349,7 +349,7 @@ def render_index(issues):
     hero = (f'<section class="hero"><div><div class="eyebrow">本期 · {d} 周{WEEKDAYS[d.weekday()]}</div>'
             f'<h1>{html.escape(latest["title"])}</h1>{thesis}'
             f'<div class="cta"><a class="btn pri" href="{href}">读完整一期</a>'
-            + ('<a class="btn sec" href="#must">只读 3 分钟版</a>' if dg["musts"] else "")
+            + ('<a class="btn sec" href="#must">只读本期必看</a>' if dg["musts"] else "")
             + f'</div></div>{f"<div class=stats>{stats}</div>" if stats else ""}</section>')
     blocks = [hero]
     if dg["musts"]:
@@ -361,7 +361,7 @@ def render_index(issues):
             + (f'<dt>招式</dt><dd>{html.escape(m["zhaoshi"])}</dd>' if m["zhaoshi"] else "")
             + f'</dl><a class="more" href="{href}#s-must">看依据和来源 →</a></article>'
             for n, m in enumerate(dg["musts"], 1))
-        blocks.append(f'<section id="must"><div class="sec-h"><h2>本期必懂</h2>'
+        blocks.append(f'<section id="must"><div class="sec-h"><h2>本期必看</h2>'
                       f'<span class="muted">只读这几条，也能抓住本期八成的价值</span></div><div class="musts">{cards}</div></section>')
     if dg["items"]:
         cols = []

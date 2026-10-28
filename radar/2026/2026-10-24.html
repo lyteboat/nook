@@ -4,7 +4,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
-/* 版式：一列简报，宽 880px；先给结论和“必懂”，再由宏观到微观展开。三阶段用固定的三种颜色贯穿全页。 */
+/* 版式：一列简报，宽 880px；先给结论和“必看”，再由宏观到微观展开。三阶段用固定的三种颜色贯穿全页。 */
 :root{
   --bg:#f6f7f5; --surface:#ffffff; --ink:#1b2321; --muted:#5d6966; --line:#dde2df; --wash:#eef1ef;
   --accent:#1f5f58;
@@ -71,7 +71,7 @@ header{display:grid;gap:14px;border-bottom:2px solid var(--ink);padding-bottom:2
 .cell{display:inline-block;min-width:34px;padding:2px 0;border-radius:4px;font-family:var(--f-data);font-weight:600}
 .c0{color:var(--muted)}
 
-/* 必懂卡片 */
+/* 必看卡片 */
 .musts{display:grid;gap:16px}
 .must{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:20px 22px;display:grid;gap:12px;min-width:0}
 .must-head{display:flex;gap:14px;align-items:flex-start}
@@ -150,7 +150,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
     <div><b>23</b><span>扫描信息源</span></div>
     <div><b>~175</b><span>读过的条目</span></div>
     <div><b>22</b><span>入选条目</span></div>
-    <div><b>3 分钟</b><span>只读“本期必懂”</span></div>
+    <div><b>3 分钟</b><span>只读“本期必看”</span></div>
   </div>
   <p class="note">首期覆盖 10-16 至 10-23 的完整一周。10-24 的定时扫描又读了约 65 条，补进 7 条，正文里标“新”。两次扫描合为一期，入选 22 条，比平时的 15 条上限多。</p>
 </header>
@@ -192,7 +192,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
 </section>
 
 <section aria-labelledby="s-must">
-  <h2 id="s-must"><span class="no">01</span>本期必懂（20%）</h2>
+  <h2 id="s-must"><span class="no">01</span>本期必看（20%）</h2>
   <p class="muted">只读这一节，也能抓住本期八成的价值。</p>
   <div class="musts">
 
