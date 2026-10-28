@@ -6,20 +6,21 @@ Nook AI 雷达模板（HTML）。每期复制本文件为 radar/YYYY/YYYY-MM-DD.
 读者：Yue，传统工程背景，做金融、医疗方向的 AI 产品。目标是降低阅读和理解成本：读者只看结论和事实，不看编辑过程。
 
 写法：
-1. 每个条目固定为一句结论加六栏：What 是什么、Why 为什么重要、How 怎么做的、Who 谁、When 何时、Action 我们做什么。结论写成判断句，读者只读结论也能知道发生了什么。六栏各一到三句，不解释常识，不写铺垫。局限写在 How 末尾，厂商自报、预印本这类状态写在 When。
-2. 页面只有五块：标题和一句话结论、本期必看（技术、产品各两条，展开）、技术和产品的其余条目（按重要程度排序，折叠成一行结论，点开看六栏）、本期行动、附录 A 条目总表。不写编辑流程、打分说明、阶段图、“我的看法”和长图注。
-3. 编辑流程是内部工作，结果写进同名的 YYYY-MM-DD.notes.html（不发布）：先归线（讲模型、方法、工具、标准的归技术，讲产品设计和业务价值的归产品），再逐篇读原文打分。技术线：影响 35%、创新 25%、实践 25%、热度 15%，乘证据系数（厂商自报或只读到导语 0.8，预印本或没重读原文 0.9，其余 1.0）；产品线：洞见 35%、价值 25%、证据 25%、可迁移 15%。总分 = 加权和 × 20，取整。两条线各取前二进必看，其余按总分排序。h1 和一句话结论从四条必看收敛出来；没有共同点就如实写，不为凑主线改分。原文核对、草稿盘点、信息源表现也记在 notes 里。
-4. 每条标阶段：.chip.zs 招熟（能马上用）、.chip.dj 懂劲（要想明白的原理）、.chip.sm 神明（长期方向）。行业不是通用时加 <span class="ind">金融</span> 或医疗。
-5. 每个事实都有出处：机构、数字、日期、链接。转引的内容找到原作者；二手转述的数字对照原始来源。付费内容只依据免费部分。
-6. 宁缺毋滥：全期 10 到 15 条，本期行动 5 到 9 项。
-7. 中文按 tuiqiao 技能写，交付前按它的验收清单通读全期，并用扫描脚本 zh_style_scan.py 扫一遍。一句话结论只写判断和最硬的事实，不写过程交代。
-8. 附录 A 条目总表是站点的数据源：“行业”只填通用、金融、医疗；“轨道”只填技术、产品；“总分”填 notes 里的总分；“标签”一到三个，从 radar/README.md 的词表里选。“条目”单元格写成 <a href="#i-slug">，正文里这一条的 article 或 details 用同名 id。
+1. 每个条目是一个标题加一行副标题，写法见下面第 2 条，正文固定为六栏：What 是什么、Why 为什么重要、How 怎么做的、Who 谁、When 何时、Action 我们做什么。六栏各一到三句，不解释常识，不写铺垫。局限写在 How 末尾，厂商自报、预印本这类状态写在 When。
+2. 标题写“主体｜做了什么”，首页速览和期刊页用同一个标题。主体是动手的一方：机构、公司、产品、研究团队或作者。竖线后不超过 20 字，动词要具体，比如发布、开源、证明、禁止、收购、测得、试点，不用“说明”“意味着”，不加评价。例：Anthropic｜Claude 批量写出形式化证明。标题下面的副标题 .so 写意义：一句判断，说清它改变了什么，例：写证明这一步可以交给模型了。事件细节和数字写进 What，不在标题里重复。数字和名称照原文写，厂商自报的说法不写成事实。
+3. 页面只有五块：标题和一句话结论、本期必看（技术、产品各两条，展开）、技术和产品的其余条目（按重要程度排序，折叠成标题和副标题两行，点开看六栏）、本期行动、附录 A 条目总表。不写编辑流程、打分说明、阶段图、“我的看法”和长图注。
+4. 编辑流程是内部工作，结果写进同名的 YYYY-MM-DD.notes.html（不发布）：先归线（讲模型、方法、工具、标准的归技术，讲产品设计和业务价值的归产品），再逐篇读原文打分。技术线：影响 35%、创新 25%、实践 25%、热度 15%，乘证据系数（厂商自报或只读到导语 0.8，预印本或没重读原文 0.9，其余 1.0）；产品线：洞见 35%、价值 25%、证据 25%、可迁移 15%。总分 = 加权和 × 20，取整。两条线各取前二进必看，其余按总分排序。h1 和一句话结论从四条必看收敛出来；没有共同点就如实写，不为凑主线改分。原文核对、草稿盘点、信息源表现也记在 notes 里。
+5. 每条标阶段：.chip.zs 招熟（能马上用）、.chip.dj 懂劲（要想明白的原理）、.chip.sm 神明（长期方向）。行业不是通用时加 <span class="ind">金融</span> 或医疗。
+6. 每条末尾写“原文：原文标题（来源名），MM-DD”，原文标题照原文页面或 RSS 里的标题照录，不翻译、不改写，链接到原文；几个来源用分号隔开。每个事实都有出处：机构、数字、日期、链接。转引的内容找到原作者；二手转述的数字对照原始来源。付费内容只依据免费部分。
+7. 宁缺毋滥：全期 10 到 15 条，本期行动 5 到 9 项。
+8. 中文按 tuiqiao 技能写，交付前按它的验收清单通读全期，并用扫描脚本 zh_style_scan.py 扫一遍。一句话结论只写判断和最硬的事实，不写过程交代。
+9. 附录 A 条目总表是站点的数据源：“行业”只填通用、金融、医疗；“轨道”只填技术、产品；“总分”填 notes 里的总分；“标签”一到三个，从 radar/README.md 的词表里选。“条目”单元格写成 <a href="#i-slug">，正文里这一条的 article 或 details 用同名 id。
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
-/* 版式：一列简报，宽 880px。每个条目一句结论加六栏：What、Why、How、Who、When、Action。 */
+/* 版式：一列简报，宽 880px。每个条目是标题、副标题（意义）加六栏：What、Why、How、Who、When、Action。 */
 :root{
   --bg:#f6f7f5; --surface:#ffffff; --ink:#1b2321; --muted:#5d6966; --line:#dde2df; --wash:#eef1ef;
   --accent:#1f5f58; --prod:#8a4b9c;
@@ -48,6 +49,8 @@ a{color:var(--accent)}
 .chip{display:inline-flex;font-size:12px;font-weight:700;padding:0 8px;border-radius:999px;white-space:nowrap}
 .zs{color:var(--zs);background:var(--zs-bg)}.dj{color:var(--dj);background:var(--dj-bg)}.sm{color:var(--sm);background:var(--sm-bg)}
 .item-meta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;font-size:13px;color:var(--muted)}
+.orig{font-style:italic}
+.new{font-size:11px;color:var(--accent)}
 .ind{font-size:12px;color:var(--accent);background:var(--wash);border-radius:4px;padding:0 6px}
 .must-no{font:700 13px var(--f-data);color:var(--accent)}
 .musts{display:grid;gap:16px}
@@ -68,6 +71,9 @@ a{color:var(--accent)}
 .item summary .c::before{content:"▸";color:var(--muted);margin-right:8px;display:inline-block;transition:transform .15s}
 .item[open] summary .c::before{transform:rotate(90deg)}
 .item summary .item-meta{padding-left:20px}
+.so{margin:0;color:var(--muted);font-size:15px}
+.must .so{margin-top:-6px}
+.item summary .so{padding-left:20px;font-size:14px}
 .item[open] summary{border-bottom:1px solid var(--line)}
 .item .w6,.item .src{margin:12px 18px}
 .item .src{margin-top:0}
@@ -95,9 +101,10 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   <!-- 技术 1、技术 2、产品 1、产品 2 四张卡；产品卡的 class 写成 "must prod" -->
   <article class="must" id="i-slug">
     <div class="item-meta"><span class="must-no">技术 1</span><span class="chip dj">懂劲</span><span class="name">附录 A 里的条目名</span></div>
-    <h3>一句话结论</h3>
+    <h3>主体｜做了什么，竖线后不超过 20 字</h3>
+    <p class="so">意义：一句判断，说清它改变了什么</p>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>一两句：谁发布了什么、做了什么，带最硬的数字。</dd><dt>Why<small>为什么重要</small></dt><dd>它改变了什么判断，对金融、医疗 AI 产品意味着什么。</dd><dt>How<small>怎么做的</small></dt><dd>方法、数据和关键结果；局限写在这一栏末尾。</dd><dt>Who<small>谁</small></dt><dd>机构或作者，有利益关联的写明。</dd><dt>When<small>何时</small></dt><dd>MM-DD；状态，比如预印本、厂商自报、试点、权重未放出。</dd><dt>Action<small>我们做什么</small></dt><dd>一到三个具体动作，落到金融、医疗产品上。</dd></dl>
-    <p class="src">来源：<a href="#">来源名</a>，MM-DD</p>
+    <p class="src">原文：<a href="#" lang="en">原文标题，照原文照录，不翻译</a>（来源名），MM-DD</p>
   </article>
   </div>
 </section>
@@ -106,9 +113,9 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   <h2 id="s-tech">技术<span class="count">其余 N 条，按重要程度排序，点开看详情</span></h2>
   <div class="items">
   <details class="item" id="i-slug2">
-    <summary><span class="c">一句话结论</span><span class="item-meta"><span class="chip zs">招熟</span><span class="ind">金融</span><span class="name">附录 A 里的条目名</span></span></summary>
+    <summary><span class="c">主体｜做了什么</span><span class="so">意义：一句判断</span><span class="item-meta"><span class="chip zs">招熟</span><span class="ind">金融</span><span class="orig" lang="en">原文标题</span></span></summary>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>一两句：谁发布了什么、做了什么，带最硬的数字。</dd><dt>Why<small>为什么重要</small></dt><dd>它改变了什么判断，对金融、医疗 AI 产品意味着什么。</dd><dt>How<small>怎么做的</small></dt><dd>方法、数据和关键结果；局限写在这一栏末尾。</dd><dt>Who<small>谁</small></dt><dd>机构或作者，有利益关联的写明。</dd><dt>When<small>何时</small></dt><dd>MM-DD；状态，比如预印本、厂商自报、试点、权重未放出。</dd><dt>Action<small>我们做什么</small></dt><dd>一到三个具体动作，落到金融、医疗产品上。</dd></dl>
-    <p class="src">来源：<a href="#">来源名</a>，MM-DD</p>
+    <p class="src">原文：<a href="#" lang="en">原文标题，照原文照录，不翻译</a>（来源名），MM-DD</p>
   </details>
   </div>
 </section>

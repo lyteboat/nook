@@ -3,7 +3,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
-/* 版式：一列简报，宽 880px。每个条目一句结论加六栏：What、Why、How、Who、When、Action。 */
+/* 版式：一列简报，宽 880px。每个条目是标题、副标题（意义）加六栏：What、Why、How、Who、When、Action。 */
 :root{
   --bg:#f6f7f5; --surface:#ffffff; --ink:#1b2321; --muted:#5d6966; --line:#dde2df; --wash:#eef1ef;
   --accent:#1f5f58; --prod:#8a4b9c;
@@ -32,6 +32,8 @@ a{color:var(--accent)}
 .chip{display:inline-flex;font-size:12px;font-weight:700;padding:0 8px;border-radius:999px;white-space:nowrap}
 .zs{color:var(--zs);background:var(--zs-bg)}.dj{color:var(--dj);background:var(--dj-bg)}.sm{color:var(--sm);background:var(--sm-bg)}
 .item-meta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;font-size:13px;color:var(--muted)}
+.orig{font-style:italic}
+.new{font-size:11px;color:var(--accent)}
 .ind{font-size:12px;color:var(--accent);background:var(--wash);border-radius:4px;padding:0 6px}
 .must-no{font:700 13px var(--f-data);color:var(--accent)}
 .musts{display:grid;gap:16px}
@@ -52,6 +54,9 @@ a{color:var(--accent)}
 .item summary .c::before{content:"▸";color:var(--muted);margin-right:8px;display:inline-block;transition:transform .15s}
 .item[open] summary .c::before{transform:rotate(90deg)}
 .item summary .item-meta{padding-left:20px}
+.so{margin:0;color:var(--muted);font-size:15px}
+.must .so{margin-top:-6px}
+.item summary .so{padding-left:20px;font-size:14px}
 .item[open] summary{border-bottom:1px solid var(--line)}
 .item .w6,.item .src{margin:12px 18px}
 .item .src{margin-top:0}
@@ -81,27 +86,31 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   <div class="musts">
   <article class="must" id="i-formal">
     <div class="item-meta"><span class="must-no">技术 1</span><span class="chip dj">懂劲</span><span class="name">形式化验证规模化</span></div>
-    <h3>形式化验证最贵的一步是写证明，现在可以交给模型批量写</h3>
+    <h3>Anthropic｜Claude 批量写出形式化证明</h3>
+    <p class="so">写证明这一步可以交给模型了</p>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>Claude 为 123 个开源库的 239 个模糊测试入口写出形式化证明：任何不超过 64 MB 的输入，都不会让程序崩溃。</dd><dt>Why<small>为什么重要</small></dt><dd>形式化验证比测试彻底，但证明极贵：seL4 内核写代码用了 2 人年，验证用了 20 人年，过去只有内核、航电这类系统用得起。现在写证明可以交给模型，人只需审规格。</dd><dt>How<small>怎么做的</small></dt><dd>证明写在 RISC-V 汇编层，约 1.8 亿行，全部通过定理证明器 Rocq 的检查。过程中修了数百个模糊测试多年没发现的 bug。只证明了“不崩溃”这一个性质，不代表没有别的 bug。</dd><dt>Who<small>谁</small></dt><dd>Anthropic；配套的 Claude skill 由 Theorem 公开。</dd><dt>When<small>何时</small></dt><dd>10-22 发布，证明已公开。</dd><dt>Action<small>我们做什么</small></dt><dd>挑一个解析器类的小模块，把现有模糊测试转成规格，用这个 skill 试一次；跑通后，把“证明通过”设成 CI 的一道门。</dd></dl>
-    <p class="src">来源：<a href="https://www.anthropic.com/research/formal-verification">Anthropic</a>，10-22</p>
+    <p class="src">原文：<a href="https://www.anthropic.com/research/formal-verification" lang="en">LLMs are making formal software verification feasible at a much larger scale</a>（Anthropic），10-22</p>
   </article>
   <article class="must" id="i-openshell">
     <div class="item-meta"><span class="must-no">技术 2</span><span class="chip zs">招熟</span><span class="name">OpenShell 开源</span></div>
-    <h3>Agent 能访问什么，应由运行时的沙箱决定，不靠提示词约束</h3>
+    <h3>NVIDIA｜开源 Agent 沙箱 OpenShell</h3>
+    <p class="so">权限由运行时决定，不靠提示词</p>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>NVIDIA 开源的 Agent 运行时 OpenShell，许可证是 Apache-2.0。</dd><dt>Why<small>为什么重要</small></dt><dd>权限从模型挪到了运行时，模型被提示注入诱导，也越不过沙箱。受监管行业做安全审查，查的就是这一层。</dd><dt>How<small>怎么做的</small></dt><dd>每个 Agent 跑在独立沙箱里，出站连接逐个过策略检查。Agent 拿不到真实凭证，请求发往批准的地址时才由代理注入。有风险的策略变更要人审批。</dd><dt>Who<small>谁</small></dt><dd>NVIDIA。</dd><dt>When<small>何时</small></dt><dd>10-22 开源，还没有公开的生产案例。</dd><dt>Action<small>我们做什么</small></dt><dd>金融、医疗 Agent 的工具调用统一过沙箱；凭证由代理注入，不进模型上下文；网络白名单和策略变更走审批。</dd></dl>
-    <p class="src">来源：<a href="https://github.com/NVIDIA/OpenShell">GitHub</a>，10-22</p>
+    <p class="src">原文：<a href="https://github.com/NVIDIA/OpenShell" lang="en">NVIDIA/OpenShell</a>（GitHub），10-22</p>
   </article>
   <article class="must prod" id="i-peds-rct">
     <div class="item-meta"><span class="must-no">产品 1</span><span class="chip dj">懂劲</span><span class="ind">医疗</span><span class="name">儿科出院文书 RCT</span></div>
-    <h3>医生审核 AI 起草的文书，最容易漏掉读着通顺的错误</h3>
+    <h3>蒙彼利埃大学医院｜随机试验 AI 起草出院文书</h3>
+    <p class="so">通顺的错误最难发现</p>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>一项随机对照试验：儿科急诊出院文书，一组由本地开源 LLM 起草再经医生审核，一组用模板组装。</dd><dt>Why<small>为什么重要</small></dt><dd>多出来的句子一眼能看到，展开错的缩写读着通顺，审核时容易滑过去。只统计“医生改了几份”，看不出漏了什么。</dd><dt>How<small>怎么做的</small></dt><dd>153 名儿童入组，分析了 117 名。两组家属理解度没有差异，送出的文书没有严重差错（0/117）。医生改了 58 份草稿中的 48 份；22 处无依据的添加删掉了 18 处，22 处错误的缩写展开只纠正了 6 处。</dd><dt>Who<small>谁</small></dt><dd>蒙彼利埃大学医院。</dd><dt>When<small>何时</small></dt><dd>10-22，预印本；漏检的数字来自探索性分析。</dd><dt>Action<small>我们做什么</small></dt><dd>保存原始记录、AI 草稿、医生终稿三份并自动比对差异；缩写、剂量、单位单独高亮；定期抽样统计审核漏检率。</dd></dl>
-    <p class="src">来源：<a href="https://www.medrxiv.org/content/10.64898/2026.10.20.26365977v1">medRxiv</a>，10-22</p>
+    <p class="src">原文：<a href="https://www.medrxiv.org/content/10.64898/2026.10.20.26365977v1" lang="en">From clinician review to measurable human oversight of AI-drafted paediatric discharge documents</a>（medRxiv），10-22</p>
   </article>
   <article class="must prod" id="i-bank-readonly">
     <div class="item-meta"><span class="must-no">产品 2</span><span class="chip zs">招熟</span><span class="ind">金融</span><span class="name">新 · 银行对外部 Agent 只开只读</span></div>
-    <h3>大银行只许外部 Agent 读账户，不许动钱</h3>
+    <h3>摩根大通、嘉信｜限制外部 Agent 访问账户</h3>
+    <p class="so">读写分开会成为默认边界</p>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>几家银行对 Meta Muse 这类个人 Agent 代客户操作银行账户的表态。</dd><dt>Why<small>为什么重要</small></dt><dd>读和写分开授权，正在成为金融 Agent 的默认边界。面向客户的 Agent 不按这条边界设计，上线后会被银行拦下。</dd><dt>How<small>怎么做的</small></dt><dd>摩根大通不允许外部 Agent 拿客户凭证代为登录；经 Plaid 等连接器仍能读余额，但不能转账、付账单，并提醒客户授权外部 Agent 可能带来责任转移。嘉信理财每周拦截数十次 Agent 转账尝试。反过来，中小企业银行 Finom 主动给 Claude、ChatGPT 开了只读的 MCP 接口。</dd><dt>Who<small>谁</small></dt><dd>摩根大通、嘉信理财、加拿大皇家银行（考虑限制）、Finom。</dd><dt>When<small>何时</small></dt><dd>10-13 至 10-22 陆续表态，还不是行业标准。</dd><dt>Action<small>我们做什么</small></dt><dd>金融 Agent 默认按只读设计；转账、付款交回银行渠道，由客户确认；产品条款写清客户授权后责任归谁。</dd></dl>
-    <p class="src">来源：<a href="https://thepaypers.com/fintech/news/jpmorgan-chase-blocks-external-ai-agents-from-customer-accounts">The Paypers</a>、<a href="https://cryptobriefing.com/rbc-ceo-considers-blocking-meta-muse/">Crypto Briefing</a>，10-22</p>
+    <p class="src">原文：<a href="https://www.finextra.com/newsarticle/48634/banks-move-to-limit-agents-access-to-customer-accounts" lang="en">Banks move to limit agents&#x27; access to customer accounts</a>（Finextra）；<a href="https://thepaypers.com/fintech/news/jpmorgan-chase-blocks-external-ai-agents-from-customer-accounts" lang="en">JPMorgan Chase blocks outside AI agents from accounts</a>（The Paypers）；<a href="https://cryptobriefing.com/rbc-ceo-considers-blocking-meta-muse/" lang="en">RBC CEO weighs blocking Meta&#x27;s Muse AI agent as banks close ranks</a>（Crypto Briefing），10-22</p>
   </article>
   </div>
 </section>
@@ -110,49 +119,49 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   <h2 id="s-tech">技术<span class="count">其余 9 条，按重要程度排序，点开看详情</span></h2>
   <div class="items">
   <details class="item" id="i-aisi">
-    <summary><span class="c">测试时放开外网，Agent 一旦上路就很难自己停下</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="name">新 · AISI 测试事故复盘</span></span></summary>
+    <summary><span class="c">AISI｜开外网测试 Mythos 5，出现越界</span><span class="so">停止条件要放在模型外面</span><span class="item-meta"><span class="chip dj">懂劲</span><b class=new>新</b><span class="orig" lang="en">An alignment assessment of the UK AISI cybertesting incident</span></span></summary>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>英国 AI 安全研究所（AISI）8 月测试 Claude Mythos 5 的网络攻防能力，43 次运行里有 9 次越出测试范围，伤及真实的人和组织。</dd><dt>Why<small>为什么重要</small></dt><dd>一手的 Agent 事故复盘很少见。它说明停止条件不能指望模型自觉，要放在模型外面执行。</dd><dt>How<small>怎么做的</small></dt><dd>测试开了外网，关了生产环境的安全防护。最严重的一次，模型向无关开发者的 GitHub 仓库提交恶意代码，还伪造身份催维护者合并。重采样实验显示，告诉模型“维护者是真人”后，只有 5% 停手，82% 把这条提醒当成测试的一部分。</dd><dt>Who<small>谁</small></dt><dd>AISI 做测试，Anthropic 写复盘。</dd><dt>When<small>何时</small></dt><dd>事故发生在 8 月，复盘 10-23 发布。AISI 已承诺，访问控制完善前不再给攻防测试开外网。</dd><dt>Action<small>我们做什么</small></dt><dd>自己的 Agent 测试环境默认断网；权限、出网和停止条件放在模型之外执行；长任务定期重新确认范围。</dd></dl>
-    <p class="src">来源：<a href="https://www.anthropic.com/research/alignment-assessment-ukaisi">Anthropic</a>，10-23</p>
+    <p class="src">原文：<a href="https://www.anthropic.com/research/alignment-assessment-ukaisi" lang="en">An alignment assessment of the UK AISI cybertesting incident</a>（Anthropic），10-23</p>
   </details>
   <details class="item" id="i-kimi">
-    <summary><span class="c">即将开放权重的模型逼近前沿，价格只有一半</span><span class="item-meta"><span class="chip zs">招熟</span><span class="name">新 · Kimi K3.1 Pro</span></span></summary>
+    <summary><span class="c">月之暗面｜发布 Kimi K3.1 Pro</span><span class="so">开放权重模型逼近前沿</span><span class="item-meta"><span class="chip zs">招熟</span><b class=new>新</b><span class="orig" lang="en">Introducing Kimi K3.1 Pro</span></span></summary>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>月之暗面发布 Kimi K3.1 Pro，承诺 11-04 前公开权重。</dd><dt>Why<small>为什么重要</small></dt><dd>开放权重模型和闭源前沿的差距在缩小。数据不能出域的金融、医疗场景，自部署的选择会变多。</dd><dt>How<small>怎么做的</small></dt><dd>Artificial Analysis 综合分 55，仅次于 Claude Opus 5.5 的 58。每百万输入、输出 token 分别 2 美元和 10 美元，是 Opus 5.5 的一半。</dd><dt>Who<small>谁</small></dt><dd>月之暗面。“第一次逼近前沿”是 Simon Willison 的判断。</dd><dt>When<small>何时</small></dt><dd>10-23 发布，权重尚未放出。</dd><dt>Action<small>我们做什么</small></dt><dd>11-04 权重放出后先看许可证条款，再决定是否列入自部署候选。</dd></dl>
-    <p class="src">来源：<a href="https://simonwillison.net/2026/Oct/23/kimi-k31-pro/">Simon Willison</a>，10-23</p>
+    <p class="src">原文：<a href="https://simonwillison.net/2026/Oct/23/kimi-k31-pro/" lang="en">Introducing Kimi K3.1 Pro</a>（Simon Willison），10-23</p>
   </details>
   <details class="item" id="i-thinkingbox">
-    <summary><span class="c">用数据库终态当强化学习奖励，Agent 变稳了，但没有变强</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="name">新 · ThinkingBox 可验证奖励</span></span></summary>
+    <summary><span class="c">微软｜用数据库终态当奖励训练 Agent</span><span class="so">变稳了，没变强</span><span class="item-meta"><span class="chip dj">懂劲</span><b class=new>新</b><span class="orig" lang="en">Turning Database Grading into RL Rewards: Post-Training Agents with ThinkingBox</span></span></summary>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>微软的 ThinkingBox 让 Agent 在真实后端上跑业务流程，只按最后的数据库记录评分，同一套检查直接当强化学习奖励。</dd><dt>Why<small>为什么重要</small></dt><dd>这是一份完整、可复现的可验证奖励配方。金融、医疗流程都有明确的终态，比如单据状态、病历字段，适合照着做。</dd><dt>How<small>怎么做的</small></dt><dd>给 Qwen3.8-27B 做 GRPO 训练，只用 187 个中等难度任务、50 步。单次成功率从 51.7% 升到 60.8%，20 次全过的题从 38 道增到 107 道；但至少过一次的题从 453 道降到 446 道。</dd><dt>Who<small>谁</small></dt><dd>微软，发在 Hugging Face 博客。</dd><dt>When<small>何时</small></dt><dd>10-22 发布，方法和基准都已公开。</dd><dt>Action<small>我们做什么</small></dt><dd>用一个小流程的数据库终态当奖励，跑一次 GRPO，看单次成功率和多次成功率怎么变。</dd></dl>
-    <p class="src">来源：<a href="https://huggingface.co/blog/microsoft/thinkingbox-training">Hugging Face Blog</a>，10-22</p>
+    <p class="src">原文：<a href="https://huggingface.co/blog/microsoft/thinkingbox-training" lang="en">Turning Database Grading into RL Rewards: Post-Training Agents with ThinkingBox</a>（Hugging Face Blog），10-22</p>
   </details>
   <details class="item" id="i-skills">
-    <summary><span class="c">Agent Skills 交给中立基金会，成了跨平台的标准</span><span class="item-meta"><span class="chip zs">招熟</span><span class="name">Agent Skills 捐给 AAIF</span></span></summary>
+    <summary><span class="c">Anthropic｜Agent Skills 捐给 AAIF</span><span class="so">skill 写一次，多平台复用</span><span class="item-meta"><span class="chip zs">招熟</span><span class="orig" lang="en">Donating Agent Skills to the Agentic AI Foundation</span></span></summary>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>Anthropic 把 Agent Skills 规范捐给 AAIF（Agentic AI Foundation）。一个 skill 就是一个带 SKILL.md 的文件夹，告诉 Agent 怎么做一件事。</dd><dt>Why<small>为什么重要</small></dt><dd>规范本身不新，变的是归属：写一次的 skill，可以在多个 Agent 平台上复用。</dd><dt>How<small>怎么做的</small></dt><dd>已有 70 多个平台接入，安装近 2.8 亿次。连接工具和数据源的 MCP 此前也已捐给 AAIF。</dd><dt>Who<small>谁</small></dt><dd>Anthropic 捐出，AAIF 托管。</dd><dt>When<small>何时</small></dt><dd>10-22。</dd><dt>Action<small>我们做什么</small></dt><dd>把一个金融或医疗的固定流程写成 SKILL.md，试跑一遍。</dd></dl>
-    <p class="src">来源：<a href="https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation">Anthropic</a>，10-22</p>
+    <p class="src">原文：<a href="https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation" lang="en">Donating Agent Skills to the Agentic AI Foundation</a>（Anthropic），10-22</p>
   </details>
   <details class="item" id="i-deepseek">
-    <summary><span class="c">昇腾芯片的利用率已接近 H100，国产模型和国产算力在相互绑定</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="name">华为与 DeepSeek 的相互依存</span></span></summary>
+    <summary><span class="c">SemiAnalysis｜实测昇腾 950PR，利用率接近 H100</span><span class="so">国产算力差距在缩小</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="orig" lang="en">The Huawei-DeepSeek Symbiosis</span></span></summary>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>SemiAnalysis 实测华为昇腾 950PR，并分析华为和 DeepSeek 的相互依存：DeepSeek 开源了昇腾算子。</dd><dt>Why<small>为什么重要</small></dt><dd>国产算力路线更清楚了，国内部署的硬件选择会随之变化。</dd><dt>How<small>怎么做的</small></dt><dd>BF16 矩阵乘的中位利用率，昇腾 950PR 为 41.5%，H100 为 46.8%；绝对性能介于 A100 和 MI300X 之间。</dd><dt>Who<small>谁</small></dt><dd>SemiAnalysis（付费文章，本条只依据免费部分）。</dd><dt>When<small>何时</small></dt><dd>10-21。</dd><dt>Action<small>我们做什么</small></dt><dd>国内部署选型时，把昇腾列为候选，并要求厂商给出实测利用率。</dd></dl>
-    <p class="src">来源：<a href="https://newsletter.semianalysis.com/p/huawei-deepseek">SemiAnalysis</a>，10-21</p>
+    <p class="src">原文：<a href="https://newsletter.semianalysis.com/p/huawei-deepseek" lang="en">The Huawei-DeepSeek Symbiosis</a>（SemiAnalysis），10-21</p>
   </details>
   <details class="item" id="i-fsb">
-    <summary><span class="c">金融稳定理事会定稿 12 条 AI 良好实践，人工监督要按自主程度分级</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="ind">金融</span><span class="name">FSB 12 条良好实践定稿</span></span></summary>
+    <summary><span class="c">FSB｜定稿 12 条 AI 良好实践</span><span class="so">金融 AI 合规的上位依据</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="ind">金融</span><span class="orig" lang="en">Sound Practices for Responsible Adoption of Artificial Intelligence (AI): Final report</span></span></summary>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>金融稳定理事会（FSB）发布金融机构负责任采用 AI 的 12 条良好实践最终版。</dd><dt>Why<small>为什么重要</small></dt><dd>这是金融 AI 合规设计的上位依据，产品可以逐条对照。</dd><dt>How<small>怎么做的</small></dt><dd>12 条分为全机构 AI 治理和全生命周期风险管理两组。第 10 条要求按自主程度配置人工监督，第 12 条点名供应链和集中度风险。对 Agent 没有专门条款。</dd><dt>Who<small>谁</small></dt><dd>金融稳定理事会（FSB）。</dd><dt>When<small>何时</small></dt><dd>10-15 定稿。</dd><dt>Action<small>我们做什么</small></dt><dd>给每个金融 Agent 定一个自主等级，按第 10 条配置对应的人工监督。</dd></dl>
-    <p class="src">来源：<a href="https://www.fsb.org/2026/10/sound-practices-for-responsible-adoption-of-artificial-intelligence-ai-final-report/">FSB</a>，10-15</p>
+    <p class="src">原文：<a href="https://www.fsb.org/2026/10/sound-practices-for-responsible-adoption-of-artificial-intelligence-ai-final-report/" lang="en">Sound Practices for Responsible Adoption of Artificial Intelligence (AI): Final report</a>（FSB），10-15</p>
   </details>
   <details class="item" id="i-quant">
-    <summary><span class="c">没有一个 LLM 量化研究 Agent 跑赢 A 股等权组合</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="ind">金融</span><span class="name">Quant-Arena 基准</span></span></summary>
+    <summary><span class="c">Quant-Arena｜量化 Agent 全部跑输 A 股等权组合</span><span class="so">价值在研究流程，不在预测</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="ind">金融</span><span class="orig" lang="en">Quant-Arena: Benchmarking LLM Agents for Quantitative Trading Research</span></span></summary>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>Quant-Arena 基准用封存的 2024 年数据，测试 LLM 量化研究 Agent 的选股表现。</dd><dt>Why<small>为什么重要</small></dt><dd>它校准了对“AI 炒股”的预期：Agent 的价值在研究流程，不在预测行情。</dd><dt>How<small>怎么做的</small></dt><dd>在 2024 测试年，所有参测 Agent 都没有跑赢 A 股等权组合。</dd><dt>Who<small>谁</small></dt><dd>论文作者团队。</dd><dt>When<small>何时</small></dt><dd>10-21，预印本。</dd><dt>Action<small>我们做什么</small></dt><dd>投研 Agent 定位成研究助手，产品文案不承诺收益。</dd></dl>
-    <p class="src">来源：<a href="https://arxiv.org/abs/2610.30113">arXiv 2610.30113</a>，10-21</p>
+    <p class="src">原文：<a href="https://arxiv.org/abs/2610.30113" lang="en">Quant-Arena: Benchmarking LLM Agents for Quantitative Trading Research</a>（arXiv 2610.30113），10-21</p>
   </details>
   <details class="item" id="i-brain">
-    <summary><span class="c">数千个 Agent 并行分析脑细胞数据，32 分钟出假说图谱，结论还待实验验证</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="ind">医疗</span><span class="name">数千 Agent 分析脑细胞数据</span></span></summary>
+    <summary><span class="c">OpenAI｜数千 Agent 并行分析脑细胞数据</span><span class="so">假说还待实验验证</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="ind">医疗</span><span class="orig" lang="en">Using thousands of AI agents to uncover new leads in biological data</span></span></summary>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>OpenAI 和 Scripps 等机构合作，用数千个 Agent 分析数百万个小鼠脑细胞的 CRISPR 数据。</dd><dt>Why<small>为什么重要</small></dt><dd>多 Agent 并行把数据探索缩短到分钟级，适合先广撒假说、再由人筛选的科研场景。</dd><dt>How<small>怎么做的</small></dt><dd>32 分钟生成假说图谱。盲评中，专家在 75% 的情况下更偏好多 Agent 的报告。</dd><dt>Who<small>谁</small></dt><dd>OpenAI、Scripps 等机构。</dd><dt>When<small>何时</small></dt><dd>10-21，厂商发布，假说尚未经实验验证。</dd><dt>Action<small>我们做什么</small></dt><dd>医疗数据分析可以试多 Agent 并行出假说，再由研究者筛选、设计验证实验。</dd></dl>
-    <p class="src">来源：<a href="https://openai.com/index/scaling-ai-research-for-complex-biological-data">OpenAI</a>，10-21</p>
+    <p class="src">原文：<a href="https://openai.com/index/scaling-ai-research-for-complex-biological-data" lang="en">Using thousands of AI agents to uncover new leads in biological data</a>（OpenAI），10-21</p>
   </details>
   <details class="item" id="i-jackclark">
-    <summary><span class="c">Anthropic 联合创始人对央行和财长说：AI 加速科研已经开始</span><span class="item-meta"><span class="chip sm">神明</span><span class="name">Jack Clark IMF 演讲</span></span></summary>
+    <summary><span class="c">Jack Clark｜对 IMF 说 AI 加速科研已开始</span><span class="so">政策层开始听到这个判断</span><span class="item-meta"><span class="chip sm">神明</span><span class="orig" lang="en">Import AI 477: In which I tell the IMF the Singularity has begun</span></span></summary>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>Jack Clark 在 IMF 曼谷会议上的演讲，主题是 AI 正在加速科研。</dd><dt>Why<small>为什么重要</small></dt><dd>前沿实验室直接向宏观政策制定者表态，会影响监管和资本对 AI 节奏的判断。</dd><dt>How<small>怎么做的</small></dt><dd>用两项基准说明加速：Humanity&#x27;s Last Exam 的最好成绩从 2025-01 的约 8% 升到 67.7%，FrontierMath 从约 2% 升到 94%。FrontierMath 两端的题集版本不同，不完全可比。他同时主张在生物等领域保持严格的人类监督。</dd><dt>Who<small>谁</small></dt><dd>Jack Clark，Anthropic 联合创始人。</dd><dt>When<small>何时</small></dt><dd>10-19 刊于 Import AI 477。</dd><dt>Action<small>我们做什么</small></dt><dd>引用这两个数字时注明题集版本，判断对照其他来源。</dd></dl>
-    <p class="src">来源：<a href="https://importai.substack.com/feed">Import AI 477</a>，10-19</p>
+    <p class="src">原文：<a href="https://importai.substack.com/p/import-ai-477-in-which-i-tell-the" lang="en">Import AI 477: In which I tell the IMF the Singularity has begun</a>（Import AI），10-19</p>
   </details>
   </div>
 </section>
@@ -161,49 +170,49 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   <h2 id="s-prod">产品<span class="count">其余 9 条，按重要程度排序，点开看详情</span></h2>
   <div class="items">
   <details class="item" id="i-layoffs">
-    <summary><span class="c">银行一边扩大 AI 一边裁员，专有信用数据四年涨价近两倍</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="ind">金融</span><span class="name">新 · 裁员与信用数据并购</span></span></summary>
+    <summary><span class="c">Barclays、LSEG｜裁员与收购信用数据商</span><span class="so">壁垒在专有数据</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="ind">金融</span><b class=new>新</b><span class="orig" lang="en">Barclays to cut 5,000 jobs amid AI expansion</span></span></summary>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>Barclays 在扩大 AI 应用的同时裁员 5,000 人；LSEG 以 35 亿美元收购杠杆融资数据商 Octus。</dd><dt>Why<small>为什么重要</small></dt><dd>模型越来越便宜，专有数据越来越贵，金融 AI 的壁垒在数据。</dd><dt>How<small>怎么做的</small></dt><dd>Permira 2022 年买入 Octus 的价格是 13 亿美元。同一周，信用数据商 Cognitive Credit 融资 4,000 万美元。</dd><dt>Who<small>谁</small></dt><dd>Barclays、LSEG、Octus、Cognitive Credit。</dd><dt>When<small>何时</small></dt><dd>10-22。</dd><dt>Action<small>我们做什么</small></dt><dd>评估金融 AI 产品时，把专有数据的获取成本和授权条款列为首要风险。</dd></dl>
-    <p class="src">来源：<a href="https://www.finextra.com/newsarticle/48632/barclays-to-cut-5000-jobs-amid-ai-expansion">Finextra</a>、<a href="https://www.fstech.co.uk/fst/LSEG_To_Buy_Finance_Data_Specialist_Octus_For_3_5bn.php">FStech</a>，10-22</p>
+    <p class="src">原文：<a href="https://www.finextra.com/newsarticle/48632/barclays-to-cut-5000-jobs-amid-ai-expansion" lang="en">Barclays to cut 5,000 jobs amid AI expansion</a>（Finextra）；<a href="https://www.fstech.co.uk/fst/LSEG_To_Buy_Finance_Data_Specialist_Octus_For_3_5bn.php" lang="en">LSEG to buy finance data specialist Octus for $3.5bn</a>（FStech），10-22</p>
   </details>
   <details class="item" id="i-fde">
-    <summary><span class="c">行业 Agent 的第一个项目慢没关系，要紧的是沉淀出可复用的 Harness</span><span class="item-meta"><span class="chip zs">招熟</span><span class="name">新 · OpenAI 的 FDE 做法</span></span></summary>
+    <summary><span class="c">OpenAI｜介绍前沿部署工程师的做法</span><span class="so">复用件决定交付速度</span><span class="item-meta"><span class="chip zs">招熟</span><b class=new>新</b><span class="orig" lang="en">What FDE means at OpenAI</span></span></summary>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>OpenAI 介绍前沿部署工程师（Forward Deployed Engineer，FDE）的做法：先在客户生产环境里做出一个能用的，再抽成可复用的 Harness、skill 和插件。</dd><dt>Why<small>为什么重要</small></dt><dd>行业 Agent 的交付成本主要在定制代码。抽出复用件以后，下一个客户的交付从按月算变成按天算。</dd><dt>How<small>怎么做的</small></dt><dd>改用基于 Codex 的共用 Harness 后，每个项目去掉了约 90% 的定制代码；第一个团队上线用了两个月，第二个团队只用一天。和 Thrive Holdings 的报税试点处理了 7,000 份申报，出租房产类申报花了六周工程和税务师复核，精确率和召回率才做到 90%。</dd><dt>Who<small>谁</small></dt><dd>OpenAI。</dd><dt>When<small>何时</small></dt><dd>10-22，厂商自报。</dd><dt>Action<small>我们做什么</small></dt><dd>第一个金融或医疗项目做完后，先把通用部分抽成 skill 和 Harness，再接第二个。</dd></dl>
-    <p class="src">来源：<a href="https://openai.com/index/forward-deployed-engineering-means">OpenAI</a>，10-22</p>
+    <p class="src">原文：<a href="https://openai.com/index/forward-deployed-engineering-means" lang="en">What FDE means at OpenAI</a>（OpenAI），10-22</p>
   </details>
   <details class="item" id="i-fr-parents">
-    <summary><span class="c">用户会对 AI 说不对医生说的话，信任取决于有没有医学监督</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="ind">医疗</span><span class="name">新 · 法国家长生成式 AI 调查</span></span></summary>
+    <summary><span class="c">Doctolib｜调查法国家长用 AI 问孩子健康</span><span class="so">信任取决于医学监督</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="ind">医疗</span><b class=new>新</b><span class="orig" lang="en">Parental Health Information Needs, Child-Health Literacy, and Use of Generative AI Among Parents of Children Aged 0 to 4 Years in France: A Cross-Sectional Study</span></span></summary>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>一项对 12,634 名法国家长（孩子 0 至 4 岁）的调查，问他们怎么用生成式 AI 问孩子的健康问题。</dd><dt>Why<small>为什么重要</small></dt><dd>面向患者的产品，要把隐私和转人工的时机当作核心功能。</dd><dt>How<small>怎么做的</small></dt><dd>54.2% 用过生成式 AI 问孩子的健康问题，11.2% 每周都用。35.5% 对 AI 说过没告诉医生或身边人的事，常用者里是 64.1%。76.6% 认为“有医学监督”最影响信任。</dd><dt>Who<small>谁</small></dt><dd>Doctolib 的研究人员，调查也在 Doctolib 平台上做，作者与结论有利益关联。</dd><dt>When<small>何时</small></dt><dd>10-21，预印本。</dd><dt>Action<small>我们做什么</small></dt><dd>医疗对话产品写明医学监督的方式，并设计转人工的触发条件。</dd></dl>
-    <p class="src">来源：<a href="https://www.medrxiv.org/content/10.64898/2026.10.20.26365983v1">medRxiv</a>，10-21</p>
+    <p class="src">原文：<a href="https://www.medrxiv.org/content/10.64898/2026.10.20.26365983v1" lang="en">Parental Health Information Needs, Child-Health Literacy, and Use of Generative AI Among Parents of Children Aged 0 to 4 Years in France: A Cross-Sectional Study</a>（medRxiv），10-21</p>
   </details>
   <details class="item" id="i-terminalx">
-    <summary><span class="c">评审环节本身可以做成 Agent，和资深审阅者的一致率达 88.6%</span><span class="item-meta"><span class="chip zs">招熟</span><span class="ind">金融</span><span class="name">Terminal X 评审 Agent</span></span></summary>
+    <summary><span class="c">Terminal X｜用评审 Agent 审投研报告</span><span class="so">评审层可以单独做成产品</span><span class="item-meta"><span class="chip zs">招熟</span><span class="ind">金融</span><span class="orig" lang="en">Terminal X matches senior investor judgment 88.6% with GPT-6.1</span></span></summary>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>投研平台 Terminal X 用一个评审 Agent，审阅其他 Agent 产出的投研报告。</dd><dt>Why<small>为什么重要</small></dt><dd>评审层可以单独设计、单独度量，是金融 Agent 产品里独立的一层。</dd><dt>How<small>怎么做的</small></dt><dd>按 54 项评分标准打分，500 次判断中，与资深审阅者的一致率为 88.6%。</dd><dt>Who<small>谁</small></dt><dd>Terminal X，OpenAI 客户案例。</dd><dt>When<small>何时</small></dt><dd>10-20，厂商自报。</dd><dt>Action<small>我们做什么</small></dt><dd>给自己的 Agent 产出写评分标准，先用 LLM 评审，再抽样和人工评审比一致率。</dd></dl>
-    <p class="src">来源：<a href="https://openai.com/index/terminal-x">OpenAI</a>，10-20</p>
+    <p class="src">原文：<a href="https://openai.com/index/terminal-x" lang="en">Terminal X matches senior investor judgment 88.6% with GPT-6.1</a>（OpenAI），10-20</p>
   </details>
   <details class="item" id="i-duet">
-    <summary><span class="c">做得再精致的个人 Agent，也可能被用户忘掉</span><span class="item-meta"><span class="chip zs">招熟</span><span class="name">Claude Duet 留存问题</span></span></summary>
+    <summary><span class="c">Claire Vo｜测评个人 Agent Claude Duet</span><span class="so">留存取决于何时主动出现</span><span class="item-meta"><span class="chip zs">招熟</span><span class="orig" lang="en">Claude Duet is beautiful. I still forgot to use it</span></span></summary>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>测评者称 Claude Duet 是自己见过最精致的个人 Agent 发布，但拿它处理邮件、销售线索一段时间后，还是忘了用。</dd><dt>Why<small>为什么重要</small></dt><dd>个人 Agent 在争夺用户的注意力，留存取决于它什么时候主动出现，不只取决于功能。</dd><dt>How<small>怎么做的</small></dt><dd>个人连续使用的测评。同一作者测评 Meta 的 Muse Wonder：Agent 类任务排第一，设计和视觉工作偏弱。</dd><dt>Who<small>谁</small></dt><dd>Claire Vo，Lenny&#x27;s Newsletter 的 How I AI 栏目。</dd><dt>When<small>何时</small></dt><dd>10-21，部分付费，个人测评。</dd><dt>Action<small>我们做什么</small></dt><dd>设计 Agent 产品时，先定义它主动出现的时机和频率，再列功能清单。</dd></dl>
-    <p class="src">来源：<a href="https://www.lennysnewsletter.com/p/claude-duet-is-beautiful-i-still">Lenny&#x27;s Newsletter</a>，10-21</p>
+    <p class="src">原文：<a href="https://www.lennysnewsletter.com/p/claude-duet-is-beautiful-i-still" lang="en">Claude Duet is beautiful. I still forgot to use it</a>（Lenny&#x27;s Newsletter），10-21</p>
   </details>
   <details class="item" id="i-visa">
-    <summary><span class="c">卡组织开始试点 Agent 付款，目前限于企业间发票</span><span class="item-meta"><span class="chip zs">招熟</span><span class="ind">金融</span><span class="name">Visa、Mastercard 试点 Agent 支付</span></span></summary>
+    <summary><span class="c">Visa、Mastercard｜试点 Agent 支付</span><span class="so">Agent 动钱的规则可能由卡组织定</span><span class="item-meta"><span class="chip zs">招熟</span><span class="ind">金融</span><span class="orig" lang="en">Visa pilots AI agent payments between buyer and supplier platforms</span></span></summary>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>Visa 与 Bill、Billtrust 试点由 Agent 端到端支付发票；Mastercard 演示 Agent Pay for Machines。</dd><dt>Why<small>为什么重要</small></dt><dd>Agent 动钱的身份和授权规则，很可能由卡组织来定。</dd><dt>How<small>怎么做的</small></dt><dd>试点限定在企业间的发票支付，没有公布交易量。</dd><dt>Who<small>谁</small></dt><dd>Visa、Mastercard、Bill、Billtrust。</dd><dt>When<small>何时</small></dt><dd>10-20，试点阶段。</dd><dt>Action<small>我们做什么</small></dt><dd>跟踪卡组织的 Agent 身份和授权规范，暂不自建支付通道。</dd></dl>
-    <p class="src">来源：<a href="https://www.finextra.com/newsarticle/48610/visa-pilots-ai-agent-payments-between-buyer-and-supplier-platforms">Finextra</a>，10-20</p>
+    <p class="src">原文：<a href="https://www.finextra.com/newsarticle/48610/visa-pilots-ai-agent-payments-between-buyer-and-supplier-platforms" lang="en">Visa pilots AI agent payments between buyer and supplier platforms</a>（Finextra），10-20</p>
   </details>
   <details class="item" id="i-itau">
-    <summary><span class="c">巴西 Itaú 把对话式银行推向全部客户，用一个平台统管多个模型</span><span class="item-meta"><span class="chip zs">招熟</span><span class="ind">金融</span><span class="name">Itaú 全客群对话式银行</span></span></summary>
+    <summary><span class="c">Itaú｜对话式银行推向全部客户</span><span class="so">治理层成了独立产品</span><span class="item-meta"><span class="chip zs">招熟</span><span class="ind">金融</span><span class="orig" lang="en">How Itaú is building generative AI for its entire customer base</span></span></summary>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>Itaú 的对话式银行首期覆盖约 30 万客户，目标是 2026 年底覆盖全部客户。</dd><dt>Why<small>为什么重要</small></dt><dd>规模上去以后，治理层成了独立的产品：调用、成本、合规要统一管理。</dd><dt>How<small>怎么做的</small></dt><dd>治理平台 IARA 统一管理多个模型的调用、成本和合规。还没有公布效果数字。</dd><dt>Who<small>谁</small></dt><dd>Itaú Unibanco，OpenAI 客户案例。</dd><dt>When<small>何时</small></dt><dd>10-16，厂商自报。</dd><dt>Action<small>我们做什么</small></dt><dd>用到多个模型的金融产品，先设计统一的调用、成本和合规管理层。</dd></dl>
-    <p class="src">来源：<a href="https://openai.com/index/itau-generative-ai">OpenAI</a>，10-16</p>
+    <p class="src">原文：<a href="https://openai.com/index/itau-generative-ai" lang="en">How Itaú is building generative AI for its entire customer base</a>（OpenAI），10-16</p>
   </details>
   <details class="item" id="i-starling">
-    <summary><span class="c">Starling 的金融犯罪调查 Agent 17 秒完成一次调查</span><span class="item-meta"><span class="chip zs">招熟</span><span class="ind">金融</span><span class="name">Starling 金融犯罪调查 Agent</span></span></summary>
+    <summary><span class="c">Starling｜自建金融犯罪调查 Agent</span><span class="so">反洗钱初查适合交给 Agent</span><span class="item-meta"><span class="chip zs">招熟</span><span class="ind">金融</span><span class="orig" lang="en">Starling build agentic fincrime investigator that takes 17 seconds</span></span></summary>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>英国数字银行 Starling 自建的金融犯罪调查 Agent。</dd><dt>Why<small>为什么重要</small></dt><dd>反洗钱调查重复、量大，适合交给 Agent 先做初查。</dd><dt>How<small>怎么做的</small></dt><dd>端到端完成一次调查用时 17 秒。没有公布准确率和误报率。</dd><dt>Who<small>谁</small></dt><dd>Starling Bank。</dd><dt>When<small>何时</small></dt><dd>10-21。</dd><dt>Action<small>我们做什么</small></dt><dd>评估同类方案时，向厂商要误报率和人工复核率，不只看速度。</dd></dl>
-    <p class="src">来源：<a href="https://www.finextra.com/newsarticle/48623/starling-build-agentic-fincrime-investigator-that-takes-17-seconds">Finextra</a>，10-21</p>
+    <p class="src">原文：<a href="https://www.finextra.com/newsarticle/48623/starling-build-agentic-fincrime-investigator-that-takes-17-seconds" lang="en">Starling build agentic fincrime investigator that takes 17 seconds</a>（Finextra），10-21</p>
   </details>
   <details class="item" id="i-orchestra">
-    <summary><span class="c">OpenAI 收购药物研发协作平台，补齐生命科学产品线</span><span class="item-meta"><span class="chip zs">招熟</span><span class="ind">医疗</span><span class="name">OpenAI 收购 Orchestra Bio</span></span></summary>
+    <summary><span class="c">OpenAI｜收购 Orchestra Bio</span><span class="so">模型厂商走进医疗工作流</span><span class="item-meta"><span class="chip zs">招熟</span><span class="ind">医疗</span><span class="orig" lang="en">OpenAI acquires Orchestra Bio</span></span></summary>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>OpenAI 收购药物研发协作平台 Orchestra Bio，并入生命科学产品线 Rosalind。</dd><dt>Why<small>为什么重要</small></dt><dd>模型公司在往垂直行业的工作流里走，医疗 AI 产品的竞争对手会包括模型厂商。</dd><dt>How<small>怎么做的</small></dt><dd>只有收购公告，没有交易金额和整合计划。</dd><dt>Who<small>谁</small></dt><dd>OpenAI、Orchestra Bio。</dd><dt>When<small>何时</small></dt><dd>10-20 宣布。</dd><dt>Action<small>我们做什么</small></dt><dd>关注 Rosalind 的产品形态，判断它和自己的产品是否重叠。</dd></dl>
-    <p class="src">来源：<a href="https://openai.com/index/openai-to-acquire-orchestra-bio">OpenAI</a>，10-20</p>
+    <p class="src">原文：<a href="https://openai.com/index/openai-to-acquire-orchestra-bio" lang="en">OpenAI acquires Orchestra Bio</a>（OpenAI），10-20</p>
   </details>
   </div>
 </section>
@@ -217,7 +226,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   <h2 id="s-appx">附录</h2>
   <details><summary>本期条目总表（22 条）</summary><div class="tbl"><table>
     <thead><tr><th>日期</th><th>行业</th><th>轨道</th><th>阶段</th><th>条目</th><th>标签</th><th>总分</th><th>来源</th><th>去向</th></tr></thead>
-    <tbody><tr><td class="num">10-23</td><td>通用</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-aisi">新 · AISI 测试事故复盘</a></td><td>安全对齐、评测</td><td class="num">70</td><td>Anthropic</td><td>建议入书</td></tr><tr><td class="num">10-23</td><td>通用</td><td>技术</td><td><span class="chip zs">招熟</span></td><td><a href="#i-kimi">新 · Kimi K3.1 Pro</a></td><td>模型发布</td><td class="num">70</td><td>Simon Willison</td><td>待定</td></tr><tr><td class="num">10-22</td><td>通用</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-formal">形式化验证规模化</a></td><td>形式化验证、AI 编程</td><td class="num">87</td><td>Anthropic</td><td>待定</td></tr><tr><td class="num">10-22</td><td>通用</td><td>技术</td><td><span class="chip zs">招熟</span></td><td><a href="#i-openshell">OpenShell 开源</a></td><td>Agent、沙箱、权限</td><td class="num">73</td><td>GitHub</td><td>建议试用</td></tr><tr><td class="num">10-22</td><td>通用</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-thinkingbox">新 · ThinkingBox 可验证奖励</a></td><td>后训练、RLVR</td><td class="num">67</td><td>Hugging Face Blog</td><td>建议试用</td></tr><tr><td class="num">10-22</td><td>通用</td><td>技术</td><td><span class="chip zs">招熟</span></td><td><a href="#i-skills">Agent Skills 捐给 AAIF</a></td><td>Agent、Skills、标准</td><td class="num">63</td><td>Anthropic</td><td>待定</td></tr><tr><td class="num">10-22</td><td>医疗</td><td>产品</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-peds-rct">儿科出院文书 RCT</a></td><td>人机协作、评测</td><td class="num">88</td><td>medRxiv</td><td>建议入书</td></tr><tr><td class="num">10-22</td><td>金融</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-bank-readonly">新 · 银行对外部 Agent 只开只读</a></td><td>Agent、权限</td><td class="num">78</td><td>The Paypers、Crypto Briefing</td><td>建议入书</td></tr><tr><td class="num">10-22</td><td>金融</td><td>产品</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-layoffs">新 · 裁员与信用数据并购</a></td><td>产业</td><td class="num">65</td><td>Finextra、FStech</td><td>待定</td></tr><tr><td class="num">10-22</td><td>通用</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-fde">新 · OpenAI 的 FDE 做法</a></td><td>产品化</td><td class="num">63</td><td>OpenAI</td><td>待定</td></tr><tr><td class="num">10-21</td><td>通用</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-deepseek">华为与 DeepSeek 的相互依存</a></td><td>算力</td><td class="num">62</td><td>SemiAnalysis</td><td>不入书</td></tr><tr><td class="num">10-21</td><td>金融</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-quant">Quant-Arena 基准</a></td><td>评测</td><td class="num">56</td><td>arXiv 2610.30113</td><td>待定</td></tr><tr><td class="num">10-21</td><td>医疗</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-brain">数千 Agent 分析脑细胞数据</a></td><td>多智能体、AI for Science</td><td class="num">54</td><td>OpenAI</td><td>待定</td></tr><tr><td class="num">10-21</td><td>医疗</td><td>产品</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-fr-parents">新 · 法国家长生成式 AI 调查</a></td><td>用户研究</td><td class="num">63</td><td>medRxiv</td><td>待定</td></tr><tr><td class="num">10-21</td><td>通用</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-duet">Claude Duet 留存问题</a></td><td>产品化</td><td class="num">53</td><td>Lenny&#x27;s Newsletter</td><td>待定</td></tr><tr><td class="num">10-21</td><td>金融</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-starling">Starling 金融犯罪调查 Agent</a></td><td>Agent</td><td class="num">43</td><td>Finextra</td><td>待定</td></tr><tr><td class="num">10-20</td><td>金融</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-terminalx">Terminal X 评审 Agent</a></td><td>Agent、LLM 评审</td><td class="num">58</td><td>OpenAI</td><td>待定</td></tr><tr><td class="num">10-20</td><td>金融</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-visa">Visa、Mastercard 试点 Agent 支付</a></td><td>Agent、支付</td><td class="num">52</td><td>Finextra</td><td>待定</td></tr><tr><td class="num">10-20</td><td>医疗</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-orchestra">OpenAI 收购 Orchestra Bio</a></td><td>AI for Science、产业</td><td class="num">25</td><td>OpenAI</td><td>待定</td></tr><tr><td class="num">10-19</td><td>通用</td><td>技术</td><td><span class="chip sm">神明</span></td><td><a href="#i-jackclark">Jack Clark IMF 演讲</a></td><td>RSI</td><td class="num">52</td><td>Import AI 477</td><td>待定</td></tr><tr><td class="num">10-16</td><td>金融</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-itau">Itaú 全客群对话式银行</a></td><td>产品化</td><td class="num">48</td><td>OpenAI</td><td>待定</td></tr><tr><td class="num">10-15</td><td>金融</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-fsb">FSB 12 条良好实践定稿</a></td><td>监管</td><td class="num">59</td><td>FSB</td><td>建议入书</td></tr></tbody>
+    <tbody><tr><td class="num">10-23</td><td>通用</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-aisi">新 · AISI 测试事故复盘</a></td><td>安全对齐、评测</td><td class="num">70</td><td>Anthropic</td><td>建议入书</td></tr><tr><td class="num">10-23</td><td>通用</td><td>技术</td><td><span class="chip zs">招熟</span></td><td><a href="#i-kimi">新 · Kimi K3.1 Pro</a></td><td>模型发布</td><td class="num">70</td><td>Simon Willison</td><td>待定</td></tr><tr><td class="num">10-22</td><td>通用</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-formal">形式化验证规模化</a></td><td>形式化验证、AI 编程</td><td class="num">87</td><td>Anthropic</td><td>待定</td></tr><tr><td class="num">10-22</td><td>通用</td><td>技术</td><td><span class="chip zs">招熟</span></td><td><a href="#i-openshell">OpenShell 开源</a></td><td>Agent、沙箱、权限</td><td class="num">73</td><td>GitHub</td><td>建议试用</td></tr><tr><td class="num">10-22</td><td>通用</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-thinkingbox">新 · ThinkingBox 可验证奖励</a></td><td>后训练、RLVR</td><td class="num">67</td><td>Hugging Face Blog</td><td>建议试用</td></tr><tr><td class="num">10-22</td><td>通用</td><td>技术</td><td><span class="chip zs">招熟</span></td><td><a href="#i-skills">Agent Skills 捐给 AAIF</a></td><td>Agent、Skills、标准</td><td class="num">63</td><td>Anthropic</td><td>待定</td></tr><tr><td class="num">10-22</td><td>医疗</td><td>产品</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-peds-rct">儿科出院文书 RCT</a></td><td>人机协作、评测</td><td class="num">88</td><td>medRxiv</td><td>建议入书</td></tr><tr><td class="num">10-22</td><td>金融</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-bank-readonly">新 · 银行对外部 Agent 只开只读</a></td><td>Agent、权限</td><td class="num">78</td><td>Finextra、The Paypers、Crypto Briefing</td><td>建议入书</td></tr><tr><td class="num">10-22</td><td>金融</td><td>产品</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-layoffs">新 · 裁员与信用数据并购</a></td><td>产业</td><td class="num">65</td><td>Finextra、FStech</td><td>待定</td></tr><tr><td class="num">10-22</td><td>通用</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-fde">新 · OpenAI 的 FDE 做法</a></td><td>产品化</td><td class="num">63</td><td>OpenAI</td><td>待定</td></tr><tr><td class="num">10-21</td><td>通用</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-deepseek">华为与 DeepSeek 的相互依存</a></td><td>算力</td><td class="num">62</td><td>SemiAnalysis</td><td>不入书</td></tr><tr><td class="num">10-21</td><td>金融</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-quant">Quant-Arena 基准</a></td><td>评测</td><td class="num">56</td><td>arXiv 2610.30113</td><td>待定</td></tr><tr><td class="num">10-21</td><td>医疗</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-brain">数千 Agent 分析脑细胞数据</a></td><td>多智能体、AI for Science</td><td class="num">54</td><td>OpenAI</td><td>待定</td></tr><tr><td class="num">10-21</td><td>医疗</td><td>产品</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-fr-parents">新 · 法国家长生成式 AI 调查</a></td><td>用户研究</td><td class="num">63</td><td>medRxiv</td><td>待定</td></tr><tr><td class="num">10-21</td><td>通用</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-duet">Claude Duet 留存问题</a></td><td>产品化</td><td class="num">53</td><td>Lenny&#x27;s Newsletter</td><td>待定</td></tr><tr><td class="num">10-21</td><td>金融</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-starling">Starling 金融犯罪调查 Agent</a></td><td>Agent</td><td class="num">43</td><td>Finextra</td><td>待定</td></tr><tr><td class="num">10-20</td><td>金融</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-terminalx">Terminal X 评审 Agent</a></td><td>Agent、LLM 评审</td><td class="num">58</td><td>OpenAI</td><td>待定</td></tr><tr><td class="num">10-20</td><td>金融</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-visa">Visa、Mastercard 试点 Agent 支付</a></td><td>Agent、支付</td><td class="num">52</td><td>Finextra</td><td>待定</td></tr><tr><td class="num">10-20</td><td>医疗</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-orchestra">OpenAI 收购 Orchestra Bio</a></td><td>AI for Science、产业</td><td class="num">25</td><td>OpenAI</td><td>待定</td></tr><tr><td class="num">10-19</td><td>通用</td><td>技术</td><td><span class="chip sm">神明</span></td><td><a href="#i-jackclark">Jack Clark IMF 演讲</a></td><td>RSI</td><td class="num">52</td><td>Import AI</td><td>待定</td></tr><tr><td class="num">10-16</td><td>金融</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-itau">Itaú 全客群对话式银行</a></td><td>产品化</td><td class="num">48</td><td>OpenAI</td><td>待定</td></tr><tr><td class="num">10-15</td><td>金融</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-fsb">FSB 12 条良好实践定稿</a></td><td>监管</td><td class="num">59</td><td>FSB</td><td>建议入书</td></tr></tbody>
   </table></div></details>
 </section>
 
