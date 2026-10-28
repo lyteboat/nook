@@ -153,12 +153,12 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
     <div><b>22</b><span>入选条目</span></div>
     <div><b>3 分钟</b><span>只读“本期必看”</span></div>
   </div>
-  <p class="note">首期覆盖 10-16 至 10-23 的完整一周。10-24 的定时扫描又读了约 65 条，补进 7 条，正文里标“新”。两次扫描合为一期，入选 22 条，比平时的 15 条上限多。</p>
+  <p class="note">首期覆盖 10-16 至 10-23 整周。10-24 补扫约 65 条，增补 7 条，正文标“新”。两次扫描合为一期，共 22 条，超出平时 15 条的上限。</p>
 </header>
 
 <section aria-labelledby="s-thesis">
   <div class="eyebrow" id="s-thesis">一句话结论</div>
-  <p class="thesis">技术线和产品线的第一、二名指向同一件事：让 Agent 可信，要靠模型之外的机制。技术上，Claude 证明了 239 个开源入口在任何不超过 64 MB 的输入下都不会崩溃，OpenShell 把沙箱和凭证代理开源；产品上，医生审核 AI 文书时，22 处错误的缩写展开漏了 16 处，银行只许外部 Agent 读数据、不许动钱。</p>
+  <p class="thesis">本期四条必看都把信任放在模型之外。Claude 证明 239 个开源入口对 64 MB 以内的任意输入都不会崩溃；NVIDIA 开源沙箱 OpenShell，凭证不进 Agent；儿科随机试验中，医生审核 AI 文书漏改了 22 处缩写展开错误中的 16 处；摩根大通只许外部 Agent 读余额，不许转账。</p>
 </section>
 
 <section aria-labelledby="s-stage">
@@ -226,7 +226,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
         <dt>条目</dt><dd><a href="#i-peds-rct">儿科出院文书 RCT</a></dd>
         <dt>评分</dt><dd>总分 88 · 洞见 4 · 价值 4 · 证据 5 · 可迁移 5</dd>
         <dt>依据</dt><dd>蒙彼利埃大学医院把 153 名儿科急诊出院儿童随机分到模板组装和本地开源 LLM 起草两组，分析了 117 名：两组家属理解度没有差异，送出的文书没有严重差错（0/117）。医生改了 58 份草稿中的 48 份，删掉了 22 处无依据添加中的 18 处，22 处错误的缩写展开只纠正了 6 处（<a href="https://www.medrxiv.org/content/10.64898/2026.10.20.26365977v1">medRxiv</a>，10-22，预印本，探索性分析）。</dd>
-        <dt>心法</dt><dd>多出来的内容容易发现，展开错的缩写读着通顺，更容易漏。审核界面要把 AI 改了什么摆到眼前。</dd>
+        <dt>心法</dt><dd>无依据的添加容易发现，展开错的缩写读着通顺，更容易漏。审核界面要逐处标出 AI 的改动。</dd>
         <dt>招式</dt><dd>保存原始记录、AI 草稿、医生终稿三份并自动比对差异；缩写、剂量、单位单独高亮；定期抽样统计审核漏检率。</dd>
       </dl>
     </article>
@@ -247,7 +247,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
 
 <section aria-labelledby="s-score">
   <h2 id="s-score"><span class="no">02</span>编辑部打分</h2>
-  <p>每条先归到一条线：讲模型、方法、工具、标准的归<b>技术</b>，讲产品设计和业务价值的归<b>产品</b>。主编和 Agent 专家逐篇读原文，按所在线的四个维度各打 1 到 5 分，加权后折成百分制。两条线各取前二进本期必看。</p>
+  <p>每条先归到一条线：讲模型、方法、工具、标准的归<b>技术</b>，讲产品设计和业务价值的归<b>产品</b>。按主编和 Agent 专家两种视角逐篇读原文，按所在线的四个维度各打 1 到 5 分，加权后折成百分制。两条线各取前二进本期必看。</p>
   <div class="tbl"><table>
     <thead><tr><th>线</th><th>维度和权重</th><th>附加</th></tr></thead>
     <tbody>
@@ -255,9 +255,9 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
       <tr><td><b>产品</b></td><td>洞见 35%：有没有新的设计发现或价值判断 · 价值 25%：对用户或业务的价值有多大、能不能算清 · 证据 25%：有没有用户数据、对照实验、经营数字 · 可迁移 15%：能不能用到金融、医疗产品上</td><td>证据已是一个维度，不另乘系数</td></tr>
     </tbody>
   </table></div>
-  <p class="view"><b>主编的收敛</b>：两条线的前二指向同一件事，让 Agent 可信要靠模型之外的机制。技术线是证明和隔离：形式化验证把“不会崩溃”变成可检查的证明，OpenShell 把权限交给沙箱和凭证代理。产品线是审计和授权：儿科试验量出了人工审核的漏检，银行把读和写分开授权。讲模型能力的条目（Kimi K3.1 Pro、脑细胞分析）影响或实践分不低，但不改变这个判断。</p>
+  <p class="view"><b>主编的收敛</b>：四条必看的共同点是，Agent 的可信靠模型之外的机制。技术线靠证明和隔离：形式化验证把“不会崩溃”变成可检查的证明，OpenShell 把权限交给沙箱和凭证代理。产品线靠审计和授权：儿科试验量出了人工审核的漏检，银行把读和写分开授权。Kimi K3.1 Pro、脑细胞分析这类讲模型能力的条目，影响分或实践分不低，但不改变这个判断。</p>
   <h3 style="margin-top:8px">技术线</h3>
-  <div class="tbl"><table><thead><tr><th>#</th><th>条目</th><th class="nowrap">影响</th><th class="nowrap">创新</th><th class="nowrap">实践</th><th class="nowrap">热度</th><th class="nowrap">证据</th><th class="nowrap">总分</th><th>评语</th></tr></thead><tbody><tr class="top"><td class="num">1</td><td><a href="#i-formal">形式化验证规模化</a></td><td class="num">5</td><td class="num">5</td><td class="num">3</td><td class="num">4</td><td class="num">1.0</td><td class="num"><b>87</b></td><td>推翻“形式化验证只适合航电”的判断；证明和 Claude skill 已公开</td></tr><tr class="top"><td class="num">2</td><td><a href="#i-agent-infra">OpenShell 开源</a></td><td class="num">3</td><td class="num">3</td><td class="num">5</td><td class="num">4</td><td class="num">1.0</td><td class="num"><b>73</b></td><td>Apache-2.0 开源沙箱，拿来就能用，GitHub 1.95 万星</td></tr><tr><td class="num">3</td><td><a href="#i-aisi">AISI 测试事故复盘</a></td><td class="num">4</td><td class="num">3</td><td class="num">3</td><td class="num">4</td><td class="num">1.0</td><td class="num"><b>70</b></td><td>AISI 因此改为断网测试，行业对 Agent 测试环境的判断变了</td></tr><tr><td class="num">4</td><td><a href="#i-kimi">Kimi K3.1 Pro</a></td><td class="num">4</td><td class="num">2</td><td class="num">4</td><td class="num">4</td><td class="num">1.0</td><td class="num"><b>70</b></td><td>即将开放权重的模型首次逼近前沿，改变开源与闭源差距的判断</td></tr><tr><td class="num">5</td><td><a href="#i-thinkingbox">ThinkingBox 可验证奖励</a></td><td class="num">3</td><td class="num">4</td><td class="num">4</td><td class="num">2</td><td class="num">1.0</td><td class="num"><b>67</b></td><td>数据库终态当奖励，方法和基准都公开</td></tr><tr><td class="num">6</td><td><a href="#i-agent-infra">Agent Skills 捐给 AAIF</a></td><td class="num">3</td><td class="num">1</td><td class="num">5</td><td class="num">4</td><td class="num">1.0</td><td class="num"><b>63</b></td><td>标准本身不新，但成了中立标准，70 多个平台已接入</td></tr><tr><td class="num">7</td><td><a href="#i-deepseek">华为与 DeepSeek 的相互依存</a></td><td class="num">4</td><td class="num">2</td><td class="num">3</td><td class="num">3</td><td class="num">1.0</td><td class="num"><b>62</b></td><td>DeepSeek 开源了 Ascend 算子，国产算力路线更清楚</td></tr><tr><td class="num">8</td><td><a href="#i-fsb">FSB 12 条良好实践定稿</a></td><td class="num">4</td><td class="num">1</td><td class="num">4</td><td class="num">2</td><td class="num">1.0</td><td class="num"><b>59</b></td><td>金融 AI 监管框架定稿，12 条可逐条对照</td></tr><tr><td class="num">9</td><td><a href="#i-quant">Quant-Arena 基准</a></td><td class="num">3</td><td class="num">3</td><td class="num">4</td><td class="num">2</td><td class="num">0.9</td><td class="num"><b>56</b></td><td>基准公开；这次没重读原文</td></tr><tr><td class="num">10</td><td><a href="#i-brain">数千 Agent 分析脑细胞数据</a></td><td class="num">3</td><td class="num">4</td><td class="num">2</td><td class="num">3</td><td class="num">0.9</td><td class="num"><b>54</b></td><td>思路新，结论待实验验证，厂商发布</td></tr><tr><td class="num">11</td><td><a href="#i-jackclark">Jack Clark IMF 演讲</a></td><td class="num">4</td><td class="num">2</td><td class="num">1</td><td class="num">3</td><td class="num">1.0</td><td class="num"><b>52</b></td><td>面向央行和财长讲“加速已经开始”，影响方向判断</td></tr></tbody></table></div>
+  <div class="tbl"><table><thead><tr><th>#</th><th>条目</th><th class="nowrap">影响</th><th class="nowrap">创新</th><th class="nowrap">实践</th><th class="nowrap">热度</th><th class="nowrap">证据</th><th class="nowrap">总分</th><th>评语</th></tr></thead><tbody><tr class="top"><td class="num">1</td><td><a href="#i-formal">形式化验证规模化</a></td><td class="num">5</td><td class="num">5</td><td class="num">3</td><td class="num">4</td><td class="num">1.0</td><td class="num"><b>87</b></td><td>推翻“形式化验证只适合航电”的判断；证明和 Claude skill 已公开</td></tr><tr class="top"><td class="num">2</td><td><a href="#i-agent-infra">OpenShell 开源</a></td><td class="num">3</td><td class="num">3</td><td class="num">5</td><td class="num">4</td><td class="num">1.0</td><td class="num"><b>73</b></td><td>Apache-2.0 开源沙箱，拿来就能用，GitHub 1.95 万星</td></tr><tr><td class="num">3</td><td><a href="#i-aisi">AISI 测试事故复盘</a></td><td class="num">4</td><td class="num">3</td><td class="num">3</td><td class="num">4</td><td class="num">1.0</td><td class="num"><b>70</b></td><td>AISI 因此改为断网测试，行业对 Agent 测试环境的判断变了</td></tr><tr><td class="num">4</td><td><a href="#i-kimi">Kimi K3.1 Pro</a></td><td class="num">4</td><td class="num">2</td><td class="num">4</td><td class="num">4</td><td class="num">1.0</td><td class="num"><b>70</b></td><td>据 Simon Willison，即将开放权重的模型首次逼近前沿</td></tr><tr><td class="num">5</td><td><a href="#i-thinkingbox">ThinkingBox 可验证奖励</a></td><td class="num">3</td><td class="num">4</td><td class="num">4</td><td class="num">2</td><td class="num">1.0</td><td class="num"><b>67</b></td><td>数据库终态当奖励，方法和基准都公开</td></tr><tr><td class="num">6</td><td><a href="#i-agent-infra">Agent Skills 捐给 AAIF</a></td><td class="num">3</td><td class="num">1</td><td class="num">5</td><td class="num">4</td><td class="num">1.0</td><td class="num"><b>63</b></td><td>标准本身不新，但成了中立标准，70 多个平台已接入</td></tr><tr><td class="num">7</td><td><a href="#i-deepseek">华为与 DeepSeek 的相互依存</a></td><td class="num">4</td><td class="num">2</td><td class="num">3</td><td class="num">3</td><td class="num">1.0</td><td class="num"><b>62</b></td><td>DeepSeek 开源了 Ascend 算子，国产算力路线更清楚</td></tr><tr><td class="num">8</td><td><a href="#i-fsb">FSB 12 条良好实践定稿</a></td><td class="num">4</td><td class="num">1</td><td class="num">4</td><td class="num">2</td><td class="num">1.0</td><td class="num"><b>59</b></td><td>金融 AI 监管框架定稿，12 条可逐条对照</td></tr><tr><td class="num">9</td><td><a href="#i-quant">Quant-Arena 基准</a></td><td class="num">3</td><td class="num">3</td><td class="num">4</td><td class="num">2</td><td class="num">0.9</td><td class="num"><b>56</b></td><td>基准公开；这次没重读原文</td></tr><tr><td class="num">10</td><td><a href="#i-brain">数千 Agent 分析脑细胞数据</a></td><td class="num">3</td><td class="num">4</td><td class="num">2</td><td class="num">3</td><td class="num">0.9</td><td class="num"><b>54</b></td><td>思路新，结论待实验验证，厂商发布</td></tr><tr><td class="num">11</td><td><a href="#i-jackclark">Jack Clark IMF 演讲</a></td><td class="num">4</td><td class="num">2</td><td class="num">1</td><td class="num">3</td><td class="num">1.0</td><td class="num"><b>52</b></td><td>面向央行和财长讲“加速已经开始”，影响方向判断</td></tr></tbody></table></div>
   <h3 style="margin-top:8px">产品线</h3>
   <div class="tbl"><table><thead><tr><th>#</th><th>条目</th><th class="nowrap">洞见</th><th class="nowrap">价值</th><th class="nowrap">证据</th><th class="nowrap">可迁移</th><th class="nowrap">总分</th><th>评语</th></tr></thead><tbody><tr class="top"><td class="num">1</td><td><a href="#i-peds-rct">儿科出院文书 RCT</a></td><td class="num">4</td><td class="num">4</td><td class="num">5</td><td class="num">5</td><td class="num"><b>88</b></td><td>随机试验量出医生审核漏了什么，审核界面设计的直接证据</td></tr><tr class="top"><td class="num">2</td><td><a href="#i-bank-readonly">银行对外部 Agent 只开只读</a></td><td class="num">4</td><td class="num">4</td><td class="num">3</td><td class="num">5</td><td class="num"><b>78</b></td><td>读写分离授权的现成范式，划定金融 Agent 的商业边界</td></tr><tr><td class="num">3</td><td><a href="#i-layoffs">裁员与信用数据并购</a></td><td class="num">3</td><td class="num">4</td><td class="num">3</td><td class="num">3</td><td class="num"><b>65</b></td><td>LSEG 为专有数据付出四年近两倍的价钱</td></tr><tr><td class="num">4</td><td><a href="#i-fde">OpenAI 的 FDE 做法</a></td><td class="num">3</td><td class="num">4</td><td class="num">2</td><td class="num">4</td><td class="num"><b>63</b></td><td>复用让交付从两个月缩到一天，但是厂商自报</td></tr><tr><td class="num">5</td><td><a href="#i-fr-parents">法国家长生成式 AI 调查</a></td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num">4</td><td class="num"><b>63</b></td><td>信任取决于医学监督，样本大，作者是平台员工</td></tr><tr><td class="num">6</td><td><a href="#i-terminalx">Terminal X 评审 Agent</a></td><td class="num">3</td><td class="num">3</td><td class="num">2</td><td class="num">4</td><td class="num"><b>58</b></td><td>评审环节的价值可度量，厂商自报</td></tr><tr><td class="num">7</td><td><a href="#i-duet">Claude Duet 留存问题</a></td><td class="num">3</td><td class="num">2</td><td class="num">2</td><td class="num">4</td><td class="num"><b>53</b></td><td>精致不等于被天天用，个人测评</td></tr><tr><td class="num">8</td><td><a href="#i-visa">Visa、Mastercard 试点 Agent 支付</a></td><td class="num">3</td><td class="num">3</td><td class="num">2</td><td class="num">2</td><td class="num"><b>52</b></td><td>Agent 支付仍在试点</td></tr><tr><td class="num">9</td><td><a href="#i-itau">Itaú 全客群对话式银行</a></td><td class="num">2</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num"><b>48</b></td><td>规模大，缺效果数字</td></tr><tr><td class="num">10</td><td><a href="#i-starling">Starling 金融犯罪调查 Agent</a></td><td class="num">2</td><td class="num">3</td><td class="num">1</td><td class="num">3</td><td class="num"><b>43</b></td><td>只有标题级信息</td></tr><tr><td class="num">11</td><td><a href="#i-orchestra">OpenAI 收购 Orchestra Bio</a></td><td class="num">1</td><td class="num">2</td><td class="num">1</td><td class="num">1</td><td class="num"><b>25</b></td><td>只有收购消息</td></tr></tbody></table></div>
   <p class="muted">原文核对：10-28 重读了 Anthropic、Hugging Face、FSB、medRxiv、Simon Willison、The Paypers、The Logic、Crypto Briefing、SemiAnalysis、FStech、Net Interest 等来源的原文。Finextra 和 OpenAI 的页面拒绝自动抓取，Starling、Visa、Itaú、FDE、Terminal X、Orchestra 六条沿用首次扫描时的笔记，评分已按证据不足处理。</p>
@@ -267,7 +267,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   <h2 id="s-macro"><span class="no">03</span>宏观：格局与监管</h2>
 
   <div class="subhead">
-    <h3>前沿实验室开始公开谈“加速已经开始”，同时呼吁放慢</h3>
+    <h3>前沿实验室开始公开谈“加速已经开始”，同时主张严格监督</h3>
     <p id="i-jackclark">Jack Clark 在 IMF 曼谷会议上用两项基准说明 AI 正在加速科研，同时主张在生物等领域保持严格的人类监督（<a href="https://importai.substack.com/feed">Import AI 477</a>，10-19）。</p>
   </div>
   <figure>
@@ -288,7 +288,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
     </svg>
     <figcaption>数据来自 Jack Clark 的演讲稿，10-23 对照公开榜单核对：FrontierMath 的 2% 是 2024-11 首版成绩，94% 对应的是 2026-06 修订后的 v2 题集（Tiers 1–3，开启工具，GPT-6 Astra 与 GPT-6.1 Sol 并列 93.7%），修订版成绩普遍高约 12 个百分点，两端不完全可比。HLE 的 67.7% 是 Clark 所说的 Claude Opus 5.5 成绩，llm-stats 榜单目前最高为 65.0%，可能是测试版本不同。Clark 是 Anthropic 联合创始人。纵轴 0 到 100 线性。</figcaption>
   </figure>
-  <p class="view"><b>我的看法</b>：这是前沿实验室联合创始人对宏观政策听众的发言，立场鲜明，数字可以引用，判断要和其他来源对照着看。</p>
+  <p class="view"><b>我的看法</b>：演讲者是前沿实验室的联合创始人，听众是央行和财政官员。数字可以引用，判断要对照其他来源。</p>
 
   <div class="subhead">
     <h3>开源模型成了地缘政治议题</h3>
@@ -306,7 +306,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   <h2 id="s-meso"><span class="no">04</span>中观：平台、模型与工具</h2>
   <div class="subhead" id="i-agent-infra">
     <h3>Agent 的三层基础设施都在走向开放标准</h3>
-    <p>三层各管一件事，本周每一层都有动作。对受监管行业，最下面的沙箱层最关键，它决定 Agent 能否通过安全审查。</p>
+    <p>三层各管一件事，本周技能包和沙箱两层有动作。对受监管行业，沙箱层最关键，它决定 Agent 能否通过安全审查。</p>
   </div>
   <figure>
     <div class="fig-title">Agent 基础设施的三层，以及本周各层的动作</div>
@@ -382,7 +382,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   <h2 id="s-fin"><span class="no">05</span>行业：金融 AI</h2>
   <div class="subhead">
     <h3>监管给出了框架，机构在流程环节密集上线 Agent</h3>
-    <p>一周之内，从监管框架到卡组织、银行、投研机构都有动作，但一项基准提醒我们，Agent 的价值在流程，不在预测。</p>
+    <p>一周内，监管机构、卡组织、银行和投研机构都有动作。Quant-Arena 基准里，没有一个 LLM 量化 Agent 跑赢等权组合：Agent 的价值在流程环节，不在预测行情。</p>
   </div>
   <figure>
     <div class="fig-title">本周金融 AI 时间线</div>
@@ -463,15 +463,15 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
     </div>
     <figcaption>来源：<a href="https://thepaypers.com/fintech/news/jpmorgan-chase-blocks-external-ai-agents-from-customer-accounts">The Paypers</a>（摩根大通）、<a href="https://cryptobriefing.com/rbc-ceo-considers-blocking-meta-muse/">Crypto Briefing</a>（嘉信）、<a href="https://thelogic.co/?p=2139786">The Logic</a>（RBC，CEO Dave McKay 10-20 接受 Bloomberg 采访）、Finextra 新闻稿标题与导语（Finom、S&amp;P）。Finextra 的标题还提到 BMO，但没找到 BMO 的原话。Finextra 文章页抓取被挡，细节来自二手报道。</figcaption>
   </figure>
-  <p class="view"><b>对金融产品的启示</b>：Itaú 的 IARA 和 Terminal X 的评审 Agent 说明，治理层和评审层本身就是产品，值得单独设计；人工监督按自主程度分级，可以直接引用 FSB 第 10 条作为设计依据。银行的表态说明“读”和“写”要分开授权：做面向客户的金融 Agent，先按只读设计，动钱的操作走银行自己的渠道和确认流程。摩根大通还提醒，客户授权外部 Agent 可能意味着责任转移，这是产品条款要写清的地方。</p>
+  <p class="view"><b>对金融产品的启示</b>：治理层和评审层本身就是产品，Itaú 的 IARA 和 Terminal X 的评审 Agent 都是单独设计的。人工监督按自主程度分级，可直接引用 FSB 第 10 条作依据。读和写要分开授权：面向客户的金融 Agent 先按只读设计，动钱的操作走银行自己的渠道和确认流程。摩根大通还提醒，客户授权外部 Agent 可能带来责任转移，产品条款要写清。</p>
   <p class="small muted"><b>待验证</b>：FSB 对 Agent 没有专门条款，各国监管会不会在此基础上出更细的 Agent 指引；银行对外部 Agent 的限制会不会从个别表态变成行业标准。</p>
 </section>
 
 <section aria-labelledby="s-med">
   <h2 id="s-med"><span class="no">06</span>行业：医疗 AI</h2>
   <div class="subhead">
-    <h3>人工审核拦不住所有错误，监督需要被记录和度量</h3>
-    <p id="i-peds-rct">儿科急诊出院文书的随机对照试验里，117 名儿童入组分析，LLM 起草与模板组装两组家属理解度没有差异，但医生审核时漏掉了一部分 AI 引入的问题。</p>
+    <h3>人工审核拦不住所有错误，监督要记录、要度量</h3>
+    <p id="i-peds-rct">一项儿科急诊出院文书的随机对照试验分析了 117 名儿童：LLM 起草和模板组装两组，家属理解度没有差异，但医生审核时漏掉了一部分 AI 引入的问题。</p>
   </div>
   <figure>
     <div class="fig-title">医生审核 LLM 起草的出院文书：拦下了多少问题</div>
@@ -496,7 +496,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
       </tbody>
     </table>
   </div>
-  <p class="view"><b>对医疗产品的启示</b>：编辑次数和满意度评分说明不了审核者漏掉了什么，产品要记录 AI 写了什么、人改了什么；监管从州一级起步，合规设计要预留按地区调整的空间。家长调查说明，用户会对 AI 说出不对医生说的话，面向患者的产品要把隐私和“何时转人工”当成核心功能来设计。</p>
+  <p class="view"><b>对医疗产品的启示</b>：编辑次数和满意度说明不了审核漏了什么，产品要记录 AI 写了什么、人改了什么。监管从州一级起步，合规设计要留出按地区调整的余地。家长调查显示，用户会对 AI 说不对医生说的话，面向患者的产品要把隐私和转人工的时机当作核心功能。</p>
   <p class="small muted"><b>待验证</b>：量子位报道清华 AIR 孵化的多智能体方案让“医生 AI 分身坐诊医院”（<a href="https://www.qbitai.com/2026/10/504734.html">量子位</a>，10-21），标题偏夸张，需要找到一手资料再判断。</p>
 </section>
 
@@ -509,9 +509,9 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
     <li><span class="chip zs">招熟</span><span>同一作者测评 Meta 的 Muse Wonder：Agent 类任务排第一，设计和视觉工作明显偏弱。<span class="src">（<a href="https://www.lennysnewsletter.com/p/metas-new-muse-wonder-model-good">Lenny's Newsletter</a>，10-14）</span></span></li>
   </ul>
   <ul class="facts">
-    <li id="i-fde"><span class="chip zs">招熟</span><span><b>新</b> OpenAI 介绍前沿部署工程师（Forward Deployed Engineer，FDE）的做法：先在客户生产环境里做出一个能用的，再抽成可复用的 Harness、skill 和插件。用一套基于 Codex 的共用 Harness 后，每个项目约 90% 的定制代码被去掉，第一个团队上线用了两个月，推广到第二个团队只用一天。和 Thrive Holdings 做的报税试点处理了 7,000 份申报，出租房产类申报花了六周工程和税务师复核，才把精确率和召回率做到 90%（厂商自报）。<span class="src">（<a href="https://openai.com/index/forward-deployed-engineering-means">OpenAI</a>，10-22）</span></span></li>
+    <li id="i-fde"><span class="chip zs">招熟</span><span><b>新</b> OpenAI 介绍前沿部署工程师（Forward Deployed Engineer，FDE）的做法：先在客户生产环境里做出一个能用的，再抽成可复用的 Harness、skill 和插件。改用一套基于 Codex 的共用 Harness 后，每个项目去掉了约 90% 的定制代码，第一个团队上线用了两个月，推广到第二个团队只用一天。和 Thrive Holdings 做的报税试点处理了 7,000 份申报，出租房产类申报花了六周工程和税务师复核，才把精确率和召回率做到 90%（厂商自报）。<span class="src">（<a href="https://openai.com/index/forward-deployed-engineering-means">OpenAI</a>，10-22）</span></span></li>
   </ul>
-  <p class="view"><b>可借鉴的做法</b>：Agent 产品要设计“什么时候主动出现”，这比功能完整更影响留存；模型按任务类型分开选；行业 Agent 的第一个项目慢没关系，关键是把做法沉淀成可复用的 skill 和 Harness（对应第 13 章“产品设计”）。</p>
+  <p class="view"><b>可借鉴的做法</b>：个人 Agent 要设计好何时主动出现，Duet 的例子说明这比功能完整更影响留存。模型按任务类型分开选。行业 Agent 的第一个项目慢一点没关系，要紧的是把做法沉淀成可复用的 skill 和 Harness（对应第 13 章“产品设计”）。</p>
 </section>
 
 <section aria-labelledby="s-read">
@@ -550,7 +550,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
 
 <section aria-labelledby="s-sm">
   <h2 id="s-sm"><span class="no">10</span>神明：点到为止</h2>
-  <p class="shenming"><span class="chip sm">神明</span> 如果“AI 研究 AI”成真，工程师最后留下的价值是写代码、定标准，还是判断什么值得做？Jeremy Scheff 的文章《My obituary for programming》给了一个程序员视角的答案：编码 Agent 拿走的，正是很多程序员最享受的解题部分。Simon Willison 转引时补了一句，对只想把系统做出来的人这是收获，对享受解题本身的人这是真实的失去（<a href="https://simonwillison.net/2026/Oct/19/my-obituary-for-programming/">Simon Willison</a>，10-19）。</p>
+  <p class="shenming"><span class="chip sm">神明</span> 如果“AI 研究 AI”成真，工程师最后留下的价值是写代码、定标准，还是判断什么值得做？Jeremy Scheff 的文章《My obituary for programming》给了一个程序员视角的答案：编码 Agent 拿走的是很多程序员最享受的解题部分。Simon Willison 转引时补了一句，对只想把系统做出来的人这是收获，对享受解题本身的人这是真实的失去（<a href="https://simonwillison.net/2026/Oct/19/my-obituary-for-programming/">Simon Willison</a>，10-19）。</p>
 </section>
 
 <section aria-labelledby="s-appx">
