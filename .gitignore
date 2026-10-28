@@ -1,3 +1,6 @@
 # mdBook 构建产物
 /book/
 .DS_Store
+
+# 雷达站点构建产物
+/_site/

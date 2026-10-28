@@ -1,4 +1,4 @@
-name: Build book
+name: Build site
 
 on:
   pull_request:
@@ -24,15 +24,18 @@ jobs:
         run: |
           curl -sSL https://github.com/rust-lang/mdBook/releases/download/v0.4.40/mdbook-v0.4.40-x86_64-unknown-linux-gnu.tar.gz | tar -xz
           sudo mv mdbook /usr/local/bin/
-      - name: Build
+      # 书稿还在写，只检查能否构建，暂不发布
+      - name: Build book
         run: mdbook build
+      - name: Build site
+        run: python3 scripts/build_site.py _site
       - name: Upload Pages artifact
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
-          path: book
+          path: _site
 
-  # PR 只构建、不发布；合并到 main 后才部署到 GitHub Pages
+  # PR 只构建、不发布；合并到 main 后才把雷达站点部署到 GitHub Pages
   deploy:
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     needs: build
