@@ -36,9 +36,9 @@ FONTS = (
 
 # 侧栏样式和脚本：类名、变量都加 nk 前缀，不和雷达页面自己的样式冲突。
 NAV_CSS = """<style>
-:root{--nk-bg:#eef1ef;--nk-ink:#1b2321;--nk-muted:#5d6966;--nk-line:#dde2df;--nk-accent:#1f5f58;--nk-hi:#ffffff;--nk-w:272px}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--nk-bg:#171d1b;--nk-ink:#e3e9e6;--nk-muted:#9aa6a2;--nk-line:#2c3532;--nk-accent:#6fc1b5;--nk-hi:#202825}}
-:root[data-theme="dark"]{--nk-bg:#171d1b;--nk-ink:#e3e9e6;--nk-muted:#9aa6a2;--nk-line:#2c3532;--nk-accent:#6fc1b5;--nk-hi:#202825}
+:root{--nk-bg:#EAEEF3;--nk-ink:#141A1F;--nk-muted:#5F6A75;--nk-line:#DBE1E7;--nk-accent:#14598C;--nk-hi:#ffffff;--nk-w:272px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--nk-bg:#111a23;--nk-ink:#E6ECF2;--nk-muted:#9AA8B6;--nk-line:#263341;--nk-accent:#7DB4E3;--nk-hi:#1B2836}}
+:root[data-theme="dark"]{--nk-bg:#111a23;--nk-ink:#E6ECF2;--nk-muted:#9AA8B6;--nk-line:#263341;--nk-accent:#7DB4E3;--nk-hi:#1B2836}
 html{scroll-padding-top:16px}
 .nk-side{position:fixed;inset:0 auto 0 0;width:var(--nk-w);z-index:50;background:var(--nk-bg);border-right:1px solid var(--nk-line);
   overflow-y:auto;padding:22px 18px 40px;font:14px/1.6 "Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:var(--nk-ink);
@@ -77,6 +77,14 @@ html{scroll-padding-top:16px}
   .nk-bar a{color:var(--nk-ink);text-decoration:none;font-weight:700}
 }
 @media (max-width:560px){.nk-pager{grid-template-columns:1fr}.nk-pager .next{grid-column:1}}
+</style>
+"""
+
+# 每期雷达自带一套绿色主题，发布时用站点的蓝色覆盖中性色和主色，三阶段的颜色不动。
+ISSUE_THEME = """<style>
+:root{--bg:#F3F5F8;--surface:#fff;--ink:#141A1F;--muted:#5F6A75;--line:#E3E7EB;--wash:#E6EEF6;--accent:#14598C}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0D141B;--surface:#16212C;--ink:#E6ECF2;--muted:#9AA8B6;--line:#263341;--wash:#1B2836;--accent:#7DB4E3}}
+:root[data-theme="dark"]{--bg:#0D141B;--surface:#16212C;--ink:#E6ECF2;--muted:#9AA8B6;--line:#263341;--wash:#1B2836;--accent:#7DB4E3}
 </style>
 """
 
@@ -190,7 +198,7 @@ def wrap_page(issues, n):
     nav = sidebar(issues, "../../", issue)
     cut = source.rfind("</style>")
     cut = cut + len("</style>") if cut != -1 else 0
-    body = source[:cut] + "\n" + NAV_CSS + nav + source[cut:] + "\n" + pager(issues, n) + NAV_JS
+    body = source[:cut] + "\n" + ISSUE_THEME + NAV_CSS + nav + source[cut:] + "\n" + pager(issues, n) + NAV_JS
     if re.match(r"\s*<!doctype", source, re.I):
         return body
     return HEAD + body + "\n</html>\n"
@@ -242,14 +250,14 @@ def digest(source):
 INDUSTRIES = ["通用", "金融", "医疗"]
 
 PAGE_CSS = """<style>
-:root{--bg:#f6f7f5;--surface:#fff;--ink:#1b2321;--muted:#5d6966;--line:#dde2df;--wash:#eef1ef;--accent:#1f5f58;--on-accent:#fff;
+:root{--bg:#F3F5F8;--surface:#fff;--ink:#141A1F;--muted:#5F6A75;--line:#E3E7EB;--wash:#E6EEF6;--accent:#14598C;--on-accent:#fff;--brand:#0B2A45;--brand-ink:#DCE9F3;--brand-ink2:#8FAAC4;
 --zs:#2f7d5b;--zs-bg:#e3f1ea;--dj:#3d55a3;--dj-bg:#e6eaf7;--sm:#a1701c;--sm-bg:#f6ecd8;
 --f-display:"Noto Serif SC","Songti SC","SimSun",serif;--f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
 --f-data:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#121715;--surface:#1a201e;--ink:#e3e9e6;--muted:#9aa6a2;--line:#2c3532;
---wash:#202825;--accent:#6fc1b5;--on-accent:#0f1513;--zs:#6cc59a;--zs-bg:#1c3328;--dj:#9aaef0;--dj-bg:#232b45;--sm:#e0b45e;--sm-bg:#3a2f1a;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#121715;--surface:#1a201e;--ink:#e3e9e6;--muted:#9aa6a2;--line:#2c3532;
---wash:#202825;--accent:#6fc1b5;--on-accent:#0f1513;--zs:#6cc59a;--zs-bg:#1c3328;--dj:#9aaef0;--dj-bg:#232b45;--sm:#e0b45e;--sm-bg:#3a2f1a;color-scheme:dark}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0D141B;--surface:#16212C;--ink:#E6ECF2;--muted:#9AA8B6;--line:#263341;
+--wash:#1B2836;--accent:#7DB4E3;--on-accent:#0B1A27;--brand:#08121C;--zs:#6cc59a;--zs-bg:#1c3328;--dj:#9aaef0;--dj-bg:#232b45;--sm:#e0b45e;--sm-bg:#3a2f1a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0D141B;--surface:#16212C;--ink:#E6ECF2;--muted:#9AA8B6;--line:#263341;
+--wash:#1B2836;--accent:#7DB4E3;--on-accent:#0B1A27;--brand:#08121C;--zs:#6cc59a;--zs-bg:#1c3328;--dj:#9aaef0;--dj-bg:#232b45;--sm:#e0b45e;--sm-bg:#3a2f1a;color-scheme:dark}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.75 var(--f-body);
   padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
@@ -262,21 +270,23 @@ p{margin:0}
 .chip{display:inline-flex;font-size:12px;font-weight:700;padding:1px 9px;border-radius:999px;white-space:nowrap;letter-spacing:.04em}
 .zs{color:var(--zs);background:var(--zs-bg)}.dj{color:var(--dj);background:var(--dj-bg)}.sm{color:var(--sm);background:var(--sm-bg)}
 .new{font-size:11px;font-weight:700;color:var(--accent);margin-right:5px}
-.top{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:24px;padding:18px 0;border-bottom:1px solid var(--line)}
-.top>a{font-family:var(--f-display);font-size:19px;font-weight:900;color:var(--ink);text-decoration:none}
+.topbar{background:var(--brand);margin:0 calc(-1 * max(16px,env(safe-area-inset-right,0px))) 0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));
+  padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+.top{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:24px;padding:16px 0}
+.top>a{font-family:var(--f-display);font-size:19px;font-weight:900;color:#fff;text-decoration:none}
 .top nav{display:flex;gap:20px;font-size:14px;margin-left:auto}
-.top nav a{color:var(--muted);text-decoration:none}.top nav a[aria-current]{color:var(--ink);font-weight:700}
+.top nav a{color:var(--brand-ink2);text-decoration:none}.top nav a:hover{color:var(--brand-ink)}
+.top nav a[aria-current]{color:#fff;font-weight:700;box-shadow:inset 0 -2px 0 #fff;padding-bottom:4px}
 main{max-width:1080px;margin:0 auto;padding:40px 0 64px;display:grid;gap:52px}
 .sec-h{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 14px;margin-bottom:18px}.sec-h h2{font-size:24px;font-weight:900}
 .empty{color:var(--muted)}
 footer{max-width:1080px;margin:0 auto;padding:0 0 40px;font-size:13px;color:var(--muted)}
 /* 首页：本周简报 */
-.hero{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:40px;align-items:end}
-.hero h1{font-size:40px;font-weight:900;margin:10px 0 18px}
+.hero{display:grid;gap:22px}
+.hero h1{font-size:40px;font-weight:900;margin-top:10px}
+.hero h1 a{color:inherit;text-decoration:none}.hero h1 a:hover{color:var(--accent)}
+.hero-body{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:40px;align-items:start}
 .thesis{font-family:var(--f-display);font-size:19px;font-weight:600;line-height:1.7;padding-left:16px;border-left:4px solid var(--accent)}
-.cta{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
-.btn{display:inline-block;padding:9px 18px;border-radius:6px;text-decoration:none;font-weight:700;font-size:14px}
-.btn.pri{background:var(--accent);color:var(--on-accent)}.btn.sec{border:1px solid var(--line);color:var(--ink);background:var(--surface)}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
 .stats div{background:var(--surface);padding:16px 18px}.stats b{display:block;font:600 28px/1.2 var(--f-data)}.stats span{font-size:12px;color:var(--muted)}
 .musts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
@@ -316,7 +326,7 @@ th{text-align:left;font-size:12px;color:var(--muted);font-weight:600;background:
 td{padding:11px 14px;border-top:1px solid var(--line);vertical-align:top}
 td.name{font-weight:500}
 td .tag{margin:0 4px 2px 0}
-@media (max-width:900px){.hero,.musts,.board{grid-template-columns:1fr}.hero h1{font-size:30px}.archive a{grid-template-columns:1fr;gap:2px}
+@media (max-width:900px){.hero-body,.musts,.board{grid-template-columns:1fr}.hero h1{font-size:30px}.archive a{grid-template-columns:1fr;gap:2px}
   .top{gap:12px}.top nav{gap:14px}
   thead{display:none}table,tbody,tr,td{display:block}tr{border-top:1px solid var(--line);padding:8px 0}td{border:0;padding:2px 14px}}
 </style>
@@ -332,7 +342,7 @@ def page(title, desc, current, body, script=""):
         for key, href, label in [("home", "./", "本期"), ("items", "items.html", "全部条目"), ("archive", "./#archive", "往期")])
     return (HEAD + f"<title>{title}</title>\n"
             f'<meta name="description" content="{desc}">\n{FONTS}{PAGE_CSS}</head>\n<body>\n'
-            f'<div class="top"><a href="./">Nook AI 雷达</a><nav aria-label="栏目">{nav}</nav></div>\n'
+            f'<header class="topbar"><div class="top"><a href="./">Nook AI 雷达</a><nav aria-label="栏目">{nav}</nav></div></header>\n'
             f"<main>\n{body}\n</main>\n"
             f'<footer>每周三、周六更新。源文件在 <a href="https://github.com/lyteboat/nook">GitHub · lyteboat/nook</a>。</footer>\n'
             f"{script}</body>\n</html>\n")
@@ -347,10 +357,8 @@ def render_index(issues):
     stats = "".join(f'<div><b>{html.escape(b)}</b><span>{html.escape(s)}</span></div>' for b, s in dg["stats"])
     thesis = f'<p class="thesis">{html.escape(dg["thesis"])}</p>' if dg["thesis"] else ""
     hero = (f'<section class="hero"><div><div class="eyebrow">本期 · {d} 周{WEEKDAYS[d.weekday()]}</div>'
-            f'<h1>{html.escape(latest["title"])}</h1>{thesis}'
-            f'<div class="cta"><a class="btn pri" href="{href}">读完整一期</a>'
-            + ('<a class="btn sec" href="#must">只读本期必看</a>' if dg["musts"] else "")
-            + f'</div></div>{f"<div class=stats>{stats}</div>" if stats else ""}</section>')
+            f'<h1><a href="{href}">{html.escape(latest["title"])}</a></h1></div>'
+            f'<div class="hero-body"><div>{thesis}</div>{f"<div class=stats>{stats}</div>" if stats else ""}</div></section>')
     blocks = [hero]
     if dg["musts"]:
         cards = "".join(
