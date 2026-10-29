@@ -2,9 +2,10 @@
 """生成 GitHub Pages 站点：本周简报首页、全部条目、每期雷达。
 
 扫描 radar/YYYY/YYYY-MM-DD.html，按日期倒序排列。
-- 首页（index.html）：最新一期的结论、数字，技术和产品两栏速览（按总分排），本期必看，最近几期。
+- 首页（index.html）：最新一期的简报，即结论、数字，技术和产品两栏速览（按总分排），本期必看，最近几期。
+- 每期简报（brief/YYYY-MM-DD.html）：和首页同一版式，往期也能按简报读，带上一期、下一期翻页。
 - 全部条目（items.html）：汇总每期附录 A 的条目总表，可搜索，可按轨道、行业、阶段、标签筛选，可按总分排序。
-- 往期（archive.html）：每期的标题、结论和必看。
+- 往期（archive.html）：每期的标题、结论和必看，标题进简报，另有链接进全文。
 - 每期页面带侧栏：上面是本期章节目录（取页面里带 id 的 h2），下面是按年、月分组的全部期数。
 每期页面补上 doctype、charset、viewport、侧栏和上一期、下一期链接，正文和样式不改。
 源文件不改。用法：python3 scripts/build_site.py [输出目录，默认 _site]
@@ -158,8 +159,9 @@ def by_month(issues):
 def sidebar(issues, prefix, current=None):
     """prefix 是从当前页面回到站点根目录的相对路径。"""
     parts = [f'<a class="nk-brand" href="{prefix}">Nook AI 雷达</a>',
-             f'<ul class="nk-toc"><li><a href="{prefix}"><span>本期简报</span></a></li>'
-             f'<li><a href="{prefix}items.html"><span>全部条目</span></a></li>'
+             f'<ul class="nk-toc"><li><a href="{prefix}"><span>最新简报</span></a></li>'
+             + (f'<li><a href="{prefix}{brief_href(current)}"><span>这期简报</span></a></li>' if current else "")
+             + f'<li><a href="{prefix}items.html"><span>全部条目</span></a></li>'
              f'<li><a href="{prefix}archive.html"><span>往期</span></a></li></ul>']
     if current and current["sections"]:
         parts.append('<div class="nk-label">本期目录</div><ul class="nk-toc">')
@@ -183,6 +185,10 @@ def sidebar(issues, prefix, current=None):
     bar = (f'<div class="nk-bar"><button type="button" aria-label="打开目录">☰ 目录</button>'
            f'<a href="{prefix}">Nook AI 雷达</a></div>\n')
     return bar + '<nav class="nk-side" aria-label="站点目录">' + "\n".join(parts) + "</nav>\n"
+
+
+def brief_href(issue):
+    return f'brief/{issue["date"]}.html'
 
 
 def pager(issues, n):
@@ -347,6 +353,10 @@ a.tag{text-decoration:none}a.tag:hover{color:var(--accent);border-color:var(--ac
 .issues .m{font-family:var(--f-display);font-weight:600;color:var(--muted);margin:10px 0 0}
 th.sort{cursor:pointer;color:var(--accent)}
 .archive{display:grid;gap:8px}
+.bpager{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.bpager a{display:grid;gap:2px;padding:12px 16px;background:var(--surface);border:1px solid var(--line);border-radius:6px;color:inherit;text-decoration:none}
+.bpager a:hover{border-color:var(--accent)}.bpager .next{grid-column:2;text-align:right}.bpager small{color:var(--muted);font-size:12px}
+.issue .go{display:flex;gap:18px;font-size:14px}
 .archive a{display:grid;grid-template-columns:10em 1fr auto;gap:16px;padding:12px 16px;background:var(--surface);border:1px solid var(--line);border-radius:6px;color:inherit;text-decoration:none}
 .archive a:hover{border-color:var(--accent)}
 .archive .m{font-family:var(--f-display);font-weight:600;color:var(--muted);margin:10px 0 2px}
@@ -370,7 +380,7 @@ th,#tb td:nth-child(-n+4),#tb td:nth-child(7),#tb td:nth-child(9){white-space:no
 td.name .cc{font-weight:400;font-size:13px;color:var(--muted);margin-top:2px}
 td.name a.item{color:inherit;text-decoration:none}td.name a.item:hover{color:var(--accent);text-decoration:underline}
 td .tag{margin:0 4px 2px 0}
-@media (max-width:900px){.hero-body,.musts,.musts.two,.board,.board.two{grid-template-columns:1fr}.hero h1{font-size:30px}.archive a{grid-template-columns:1fr;gap:2px}
+@media (max-width:900px){.hero-body,.musts,.musts.two,.board,.board.two{grid-template-columns:1fr}.hero h1{font-size:30px}.archive a{grid-template-columns:1fr;gap:2px}.bpager{grid-template-columns:1fr}.bpager .next{grid-column:1;text-align:left}
   .top{gap:12px}.top nav{gap:14px}
   thead{display:none}table,tbody,tr,td{display:block}tr{border-top:1px solid var(--line);padding:8px 0}td{border:0;padding:2px 14px}}
 </style>
@@ -380,13 +390,15 @@ td .tag{margin:0 4px 2px 0}
 CURRENT = ' aria-current="page"'
 
 
-def page(title, desc, current, body, script=""):
+def page(title, desc, current, body, script="", prefix=""):
+    """prefix 是从当前页面回到站点根目录的相对路径，简报页在 brief/ 下，要带 ../。"""
+    home = prefix or "./"
     nav = "".join(
         f'<a href="{href}"{CURRENT if key == current else ""}>{label}</a>'
-        for key, href, label in [("home", "./", "本期"), ("items", "items.html", "全部条目"), ("archive", "archive.html", "往期")])
+        for key, href, label in [("home", home, "本期"), ("items", prefix + "items.html", "全部条目"), ("archive", prefix + "archive.html", "往期")])
     return (HEAD + f"<title>{title}</title>\n"
             f'<meta name="description" content="{desc}">\n{FONTS}{PAGE_CSS}</head>\n<body>\n'
-            f'<header class="topbar"><div class="top"><a href="./">Nook AI 雷达</a><nav aria-label="栏目">{nav}</nav></div></header>\n'
+            f'<header class="topbar"><div class="top"><a href="{home}">Nook AI 雷达</a><nav aria-label="栏目">{nav}</nav></div></header>\n'
             f"<main>\n{body}\n</main>\n"
             f'<footer>每周三、周六更新。源文件在 <a href="https://github.com/lyteboat/nook">GitHub · lyteboat/nook</a>。</footer>\n'
             f"{script}</body>\n</html>\n")
@@ -409,15 +421,16 @@ def basis_html(fragment, href):
     return "".join(out)
 
 
-def render_index(issues):
+def render_brief(issues, pos=0, prefix=""):
+    """一期的简报。pos=0、prefix 为空时就是首页；往期的简报写在 brief/ 下，版式相同。"""
     if not issues:
         return page("Nook AI 雷达", "", "home", '<p class="empty">还没有雷达。</p>')
-    latest = issues[0]
+    latest = issues[pos]
     dg, d = latest["digest"], latest["date"]
-    href = f'radar/{latest["rel"]}'
+    href = f'{prefix}radar/{latest["rel"]}'
     stats = "".join(f'<div><b>{html.escape(b)}</b><span>{html.escape(s)}</span></div>' for b, s in dg["stats"])
     thesis = f'<p class="thesis">{html.escape(dg["thesis"])}</p>' if dg["thesis"] else ""
-    hero = (f'<section class="hero"><div><div class="eyebrow">本期 · {d} 周{WEEKDAYS[d.weekday()]}</div>'
+    hero = (f'<section class="hero"><div><div class="eyebrow">{"本期" if pos == 0 else "往期"} · {d} 周{WEEKDAYS[d.weekday()]}</div>'
             f'<h1><a href="{href}">{html.escape(latest["title"])}</a></h1></div>'
             + (f'<div class="hero-body"><div>{thesis}</div><div class="stats">{stats}</div></div>' if stats else thesis) + '</section>')
     blocks = [hero]
@@ -447,7 +460,7 @@ def render_index(issues):
         note = '<span class="muted">每条一行，写谁做了什么，按重要程度排序，点开看详情</span>' if tracked else ""
         blocks.append(f'<section><div class="sec-h"><h2>本期速览</h2>{note}<div class="legend"><span><i class="dot zs"></i>招熟</span>'
                       '<span><i class="dot dj"></i>懂劲</span><span><i class="dot sm"></i>神明</span></div>'
-                      f'<a href="items.html" style="margin-left:auto;font-size:14px">在全部条目里筛选 →</a></div>'
+                      f'<a href="{prefix}items.html" style="margin-left:auto;font-size:14px">在全部条目里筛选 →</a></div>'
                       f'<div class="board{" two" if tracked else ""}">{"".join(cols)}</div></section>')
     if dg["musts"]:
         cards = "".join(
@@ -463,10 +476,27 @@ def render_index(issues):
         sub = "技术、产品各两条，每条标题写谁做了什么，副标题写意义，再分六栏"
         blocks.append(f'<section id="must"><div class="sec-h"><h2>本期必看</h2>'
                       f'<span class="muted">{sub}</span></div><div class="musts{" two" if two else ""}">{cards}</div></section>')
+    blocks.append(f'<p><a href="{href}">读这一期全文 →</a></p>')
+    if prefix:
+        blocks.append(brief_pager(issues, pos, prefix))
     blocks.append(f'<section id="archive"><div class="sec-h"><h2>最近几期</h2><span class="muted">共 {len(issues)} 期</span>'
-                  f'<a href="archive.html" style="margin-left:auto;font-size:14px">全部往期 →</a></div>'
-                  f'<div class="archive">{archive_rows(issues[:6], "")}</div></section>')
-    return page("Nook AI 雷达", "每周三、周六各一期，追踪 AI 技术和 AI 产品的关键动态。", "home", "\n".join(blocks))
+                  f'<a href="{prefix}archive.html" style="margin-left:auto;font-size:14px">全部往期 →</a></div>'
+                  f'<div class="archive">{archive_rows(issues[:6], prefix)}</div></section>')
+    if not prefix:
+        return page("Nook AI 雷达", "每周三、周六各一期，追踪 AI 技术和 AI 产品的关键动态。", "home", "\n".join(blocks))
+    return page(f"{d} 简报 · Nook AI 雷达", html.escape(dg["thesis"] or latest["title"]), "archive", "\n".join(blocks), prefix=prefix)
+
+
+def brief_pager(issues, n, prefix):
+    """简报页之间的翻页，issues 按日期倒序。"""
+    links = []
+    if n + 1 < len(issues):
+        i = issues[n + 1]
+        links.append(f'<a href="{prefix}{brief_href(i)}"><small>← 上一期 {i["date"]}</small>{html.escape(i["title"])}</a>')
+    if n > 0:
+        i = issues[n - 1]
+        links.append(f'<a class="next" href="{prefix}{brief_href(i)}"><small>下一期 {i["date"]} →</small>{html.escape(i["title"])}</a>')
+    return f'<nav class="bpager" aria-label="翻页">{"".join(links)}</nav>' if links else ""
 
 
 def must_labels(musts):
@@ -477,7 +507,7 @@ def archive_rows(issues, prefix):
     out = []
     for (y, mth), group in by_month(issues).items():
         out.append(f'<div class="m">{y} 年 {mth} 月</div>')
-        out += [f'<a href="{prefix}radar/{i["rel"]}"><span class="num muted">{i["date"]} 周{WEEKDAYS[i["date"].weekday()]}</span>'
+        out += [f'<a href="{prefix}{brief_href(i)}"><span class="num muted">{i["date"]} 周{WEEKDAYS[i["date"].weekday()]}</span>'
                 f'<span>{html.escape(i["title"])}</span><span class="muted">→</span></a>' for i in group]
     return "".join(out)
 
@@ -495,9 +525,10 @@ def render_archive(issues):
             counts = " · ".join(f'{t} {sum(1 for x in dg["items"] if x["track"] == t)}' for t in TRACKS
                                 if any(x["track"] == t for x in dg["items"])) or f'{len(dg["items"])} 条'
             cards.append(f'<article class="issue"><div class="num muted">{d} 周{WEEKDAYS[d.weekday()]} · {counts}</div>'
-                         f'<h3><a href="{href}">{html.escape(i["title"])}</a></h3>'
+                         f'<h3><a href="{brief_href(i)}">{html.escape(i["title"])}</a></h3>'
                          + (f'<p class="muted">{html.escape(dg["thesis"])}</p>' if dg["thesis"] else "")
-                         + (f'<ul class="ms">{musts}</ul>' if musts else "") + '</article>')
+                         + (f'<ul class="ms">{musts}</ul>' if musts else "")
+                         + f'<p class="go"><a href="{brief_href(i)}">看简报 →</a><a href="{href}">读全文 →</a></p></article>')
     body = (f'<section class="lib-h"><div><div class="eyebrow">往期</div><h1>历期雷达</h1></div>'
             f'<div class="kpi"><div><b>{len(issues)}</b><span>期雷达</span></div></div></section>\n'
             f'<section class="issues">{"".join(cards)}</section>')
@@ -565,7 +596,10 @@ def main():
     issues = collect()
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / ".nojekyll").write_text("")
-    (OUT / "index.html").write_text(render_index(issues), encoding="utf-8")
+    (OUT / "index.html").write_text(render_brief(issues), encoding="utf-8")
+    (OUT / "brief").mkdir(exist_ok=True)
+    for n, i in enumerate(issues):
+        (OUT / brief_href(i)).write_text(render_brief(issues, n, "../"), encoding="utf-8")
     (OUT / "items.html").write_text(render_items(issues), encoding="utf-8")
     (OUT / "archive.html").write_text(render_archive(issues), encoding="utf-8")
     for n, i in enumerate(issues):
