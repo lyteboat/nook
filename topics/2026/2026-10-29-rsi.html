@@ -1,0 +1,193 @@
+<title>Nook 专题 · RSI 递归自我改进</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* 专题版式：一列长文，宽 880px。封面、先看这 20%、一张图、招熟、懂劲、神明、时间线、版图、我们做什么、还没想清楚的、来源。 */
+:root{
+  --bg:#F3F5F8; --surface:#ffffff; --ink:#141A1F; --muted:#5F6A75; --line:#E3E7EB; --wash:#E6EEF6;
+  --accent:#14598C; --cover:#0B2A45; --cover-ink:#DCE9F3; --cover-ink2:#8FAAC4;
+  --zs:#2f7d5b; --zs-bg:#e3f1ea; --dj:#3d55a3; --dj-bg:#e6eaf7; --sm:#a1701c; --sm-bg:#f6ecd8;
+  --f-display:"Noto Serif SC","Songti SC","SimSun",serif;
+  --f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0D141B; --surface:#16212C; --ink:#E6ECF2; --muted:#9AA8B6; --line:#263341; --wash:#1B2836;
+  --accent:#7DB4E3; --cover:#08121C; --zs:#6cc59a; --zs-bg:#1c3328; --dj:#9aaef0; --dj-bg:#232b45; --sm:#e0b45e; --sm-bg:#3a2f1a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D141B; --surface:#16212C; --ink:#E6ECF2; --muted:#9AA8B6; --line:#263341; --wash:#1B2836;
+  --accent:#7DB4E3; --cover:#08121C; --zs:#6cc59a; --zs-bg:#1c3328; --dj:#9aaef0; --dj-bg:#232b45; --sm:#e0b45e; --sm-bg:#3a2f1a; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15.5px;line-height:1.8;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:880px;margin:0 auto;padding-block:32px 64px;display:grid;gap:48px}
+.wrap>*{min-width:0}
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.35}
+h2{font-size:24px;font-weight:900;margin-bottom:16px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+h2 .no{font:600 13px var(--f-data);color:var(--muted)}
+h2 .sub{font:400 14px var(--f-body);color:var(--muted)}
+h3{font-size:17px;font-weight:600}
+p{margin:0}
+a{color:var(--accent)}
+.num{font-family:var(--f-data);font-variant-numeric:tabular-nums}
+.chip{display:inline-flex;font-size:12px;font-weight:700;padding:0 9px;border-radius:999px;white-space:nowrap}
+.zs{color:var(--zs);background:var(--zs-bg)}.dj{color:var(--dj);background:var(--dj-bg)}.sm{color:var(--sm);background:var(--sm-bg)}
+.tag{display:inline-block;font-size:12px;line-height:1.6;border:1px solid currentColor;border-radius:4px;padding:0 6px;opacity:.85}
+/* 封面 */
+.cover{background:var(--cover);color:var(--cover-ink);border-radius:10px;padding:36px 36px 30px;display:grid;gap:16px}
+.cover .eyebrow{font:600 12px/1.5 var(--f-data);letter-spacing:.12em;color:var(--cover-ink2)}
+.cover .eyebrow a{color:inherit}
+.cover h1{font-size:36px;font-weight:900;color:#fff}
+.cover .thesis{font-family:var(--f-display);font-size:18px;font-weight:600;line-height:1.75;color:var(--cover-ink);padding-left:16px;border-left:4px solid var(--cover-ink2)}
+.cover .meta{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:13px;color:var(--cover-ink2)}
+/* 先看这 20% */
+.keys{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;counter-reset:k}
+.keys li{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px 18px;display:grid;gap:6px;counter-increment:k}
+.keys li::before{content:"0" counter(k);font:600 13px var(--f-data);color:var(--accent)}
+.keys b{font-family:var(--f-display);font-size:17px;font-weight:600;line-height:1.5}
+.keys span{font-size:14.5px;color:var(--muted)}
+/* 一张图 */
+.map{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px}
+.map svg{display:block;width:100%;height:auto}
+.map figcaption{font-size:13px;color:var(--muted);margin-top:10px}
+.map .box{fill:var(--wash);stroke:var(--line)}.map .box.hi{fill:var(--surface);stroke:var(--accent);stroke-width:1.5}
+.map text{fill:var(--ink);font:14px var(--f-body)}.map text.s{fill:var(--muted);font-size:12px}
+.map .ln{stroke:var(--muted);stroke-width:1.4;fill:none}.map .ah{fill:var(--muted)}
+/* 三阶段：心法一句，招式 5 到 9 项 */
+.stage{border-left:4px solid var(--c);padding-left:22px;display:grid;gap:16px}
+.st-zs{--c:var(--zs)}.st-dj{--c:var(--dj)}.st-sm{--c:var(--sm)}
+.stage h2{margin:0}.stage h2 .chip{font-family:var(--f-body)}
+.xf{font-family:var(--f-display);font-size:17px;font-weight:600;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 18px}
+.xf::before{content:"心法";display:block;font:700 12px var(--f-data);color:var(--c);letter-spacing:.1em;margin-bottom:4px}
+.moves{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:m}
+.moves>li{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 18px 14px 56px;position:relative;display:grid;gap:6px;counter-increment:m}
+.moves>li::before{content:counter(m);position:absolute;left:18px;top:14px;width:24px;height:24px;border-radius:50%;background:var(--c);color:#fff;font:600 13px/24px var(--f-data);text-align:center}
+.moves p{font-size:14.5px}
+.eg{color:var(--muted);font-size:14px!important;padding-left:12px;border-left:2px solid var(--line)}
+/* 时间线 */
+.timeline{list-style:none;margin:0;padding:0 0 0 18px;border-left:2px solid var(--line);display:grid;gap:14px}
+.timeline li{position:relative;display:grid;grid-template-columns:6.5em 1fr;gap:4px 14px}
+.timeline li::before{content:"";position:absolute;left:-25px;top:8px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--accent)}
+.timeline time{font:600 13px/1.9 var(--f-data);color:var(--muted)}
+.timeline b{font-weight:700}.timeline span{grid-column:2;font-size:14px;color:var(--muted)}
+/* 表格、行动、来源 */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:12.5px;color:var(--muted);background:var(--wash);padding:9px 12px;white-space:nowrap}
+td{padding:9px 12px;border-top:1px solid var(--line);vertical-align:top}
+.acts{margin:0;padding-left:22px;display:grid;gap:8px}.acts li{font-size:14.5px}
+.open{margin:0;padding-left:22px;display:grid;gap:8px;font-size:14.5px}
+.refs{margin:0;padding-left:22px;display:grid;gap:4px;font-size:13.5px;color:var(--muted)}
+.sister{display:flex;justify-content:space-between;gap:16px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 18px;text-decoration:none;color:inherit}
+.sister:hover{border-color:var(--accent)}.sister small{display:block;color:var(--muted);font-size:12px}
+footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+@media (max-width:640px){.cover{padding:24px 20px}.cover h1{font-size:27px}.keys{grid-template-columns:1fr}.stage{padding-left:14px}
+  .moves>li{padding-left:48px}.moves>li::before{left:14px}.timeline li{grid-template-columns:1fr}.timeline span{grid-column:1}}
+</style>
+<div class="wrap">
+<header class="cover" data-after="2026-10-28" data-tags="RSI、AI 编程、安全对齐">
+  <div class="eyebrow">Nook · 专题 01 · 2026-10-29 · 接 <a href="../../radar/2026/2026-10-28.html">10-28 期雷达</a> · 样稿</div>
+  <h1>RSI 先发生在 Harness 上，改权重还远</h1>
+  <p class="thesis">样稿：一句话结论写判断和最硬的事实。比如 AlphaEvolve 用模型改写 Google 的调度算法，收回约 0.7% 的全局算力；Darwin Gödel Machine 自己改自己的代码，SWE-bench 从 20% 升到 50%。能自我改进的前提是有可靠的验证器。</p>
+  <div class="meta"><span>阅读约 15 分钟</span><span class="tag">RSI</span><span class="tag">AI 编程</span><span class="tag">安全对齐</span></div>
+</header>
+
+<section aria-labelledby="t-keys">
+  <h2 id="t-keys"><span class="no">00</span>先看这 20%<span class="sub">四个判断，读完这一节就够用</span></h2>
+  <ol class="keys">
+    <li><b>“自我”分三层：Harness、权重、组织</b><span>改提示词、技能和工具已经天天在发生；改权重要训练闭环；组织层是数据飞轮。</span></li>
+    <li><b>没有验证器就没有 RSI</b><span>Coding 有编译器和单元测试，金融、医疗的对错要等几个月才知道。</span></li>
+    <li><b>前沿实验室把 AI 研发自动化当成能力红线</b><span>Anthropic 的 RSP 单列 AI R&amp;D 阈值，到线就加防护。</span></li>
+    <li><b>受监管行业要的是“预先批准的变更”</b><span>FDA 的 PCCP 和银行的 SR 11-7 都要求先写清楚能怎么改。</span></li>
+  </ol>
+</section>
+
+<section aria-labelledby="t-map">
+  <h2 id="t-map"><span class="no">01</span>一张图看懂<span class="sub">自我改进的闭环和三层“自我”</span></h2>
+  <figure class="map">
+    <svg viewBox="0 0 820 230" role="img" aria-label="自我改进闭环：生成、执行、验证、筛选、更新，更新作用在 Harness、权重、组织三层">
+      <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0,0L10,5L0,10z"/></marker></defs>
+      <rect class="box" x="10" y="30" width="130" height="60" rx="6"/><text x="75" y="58" text-anchor="middle">生成候选</text><text class="s" x="75" y="78" text-anchor="middle">代码、提示词、策略</text>
+      <rect class="box" x="180" y="30" width="130" height="60" rx="6"/><text x="245" y="58" text-anchor="middle">执行</text><text class="s" x="245" y="78" text-anchor="middle">沙箱、回测</text>
+      <rect class="box hi" x="350" y="30" width="130" height="60" rx="6"/><text x="415" y="58" text-anchor="middle">验证器打分</text><text class="s" x="415" y="78" text-anchor="middle">测试、指标、专家</text>
+      <rect class="box" x="520" y="30" width="130" height="60" rx="6"/><text x="585" y="58" text-anchor="middle">筛选</text><text class="s" x="585" y="78" text-anchor="middle">留下更好的</text>
+      <rect class="box" x="690" y="30" width="120" height="60" rx="6"/><text x="750" y="58" text-anchor="middle">更新自我</text><text class="s" x="750" y="78" text-anchor="middle">见下方三层</text>
+      <path class="ln" d="M140,60H178M310,60H348M480,60H518M650,60H688" marker-end="url(#ah)"/>
+      <path class="ln" d="M750,92V112H75V92" marker-end="url(#ah)"/>
+      <rect class="box" x="140" y="150" width="170" height="64" rx="6"/><text x="225" y="178" text-anchor="middle">Harness 层</text><text class="s" x="225" y="198" text-anchor="middle">已在发生 · 招熟</text>
+      <rect class="box" x="330" y="150" width="170" height="64" rx="6"/><text x="415" y="178" text-anchor="middle">权重层</text><text class="s" x="415" y="198" text-anchor="middle">实验室内部 · 懂劲</text>
+      <rect class="box" x="520" y="150" width="170" height="64" rx="6"/><text x="605" y="178" text-anchor="middle">组织层</text><text class="s" x="605" y="198" text-anchor="middle">数据飞轮 · 神明</text>
+    </svg>
+    <figcaption>样稿示意：正式稿会换成核对过的结构图。验证器那一格决定闭环能不能转起来。</figcaption>
+  </figure>
+</section>
+
+<section class="stage st-zs" aria-labelledby="t-zs">
+  <h2 id="t-zs"><span class="no">02</span>招熟 · 现在就能用<span class="chip zs">招熟</span></h2>
+  <p class="xf">样稿：心法一句话。先让 Harness 自己变好，权重不动。</p>
+  <ol class="moves">
+    <li><h3>招式名，五到九项</h3><p>每项两三句：做什么、为什么、怎么做。</p><p class="eg">例：配一个具体例子，最好来自金融或医疗。</p></li>
+    <li><h3>把失败轨迹沉淀成技能</h3><p>样稿正文。</p></li>
+    <li><h3>评测集先于改进</h3><p>样稿正文。</p></li>
+  </ol>
+</section>
+
+<section class="stage st-dj" aria-labelledby="t-dj">
+  <h2 id="t-dj"><span class="no">03</span>懂劲 · 想明白原理<span class="chip dj">懂劲</span></h2>
+  <p class="xf">样稿：心法一句话。</p>
+  <ol class="moves">
+    <li><h3>STaR：用自己的正确推理训练自己</h3><p>样稿正文。</p></li>
+    <li><h3>AlphaEvolve：进化搜索加自动评估</h3><p>样稿正文。</p></li>
+  </ol>
+</section>
+
+<section class="stage st-sm" aria-labelledby="t-sm">
+  <h2 id="t-sm"><span class="no">04</span>神明 · 长期方向<span class="chip sm">神明</span></h2>
+  <p class="xf">样稿：点到为止，一两个判断。</p>
+  <ol class="moves">
+    <li><h3>智能爆炸假说</h3><p>样稿正文。</p></li>
+  </ol>
+</section>
+
+<section aria-labelledby="t-time">
+  <h2 id="t-time"><span class="no">05</span>时间线</h2>
+  <ol class="timeline">
+    <li><time>1965</time><b>I. J. Good 提出“智能爆炸”</b><span>样稿：一句意义。</span></li>
+    <li><time>2022-03</time><b>STaR</b><span>样稿：一句意义。</span></li>
+    <li><time>2025-05</time><b>AlphaEvolve、Darwin Gödel Machine</b><span>样稿：一句意义。</span></li>
+  </ol>
+</section>
+
+<section aria-labelledby="t-who">
+  <h2 id="t-who"><span class="no">06</span>版图<span class="sub">谁在做，做到哪一层</span></h2>
+  <div class="tbl"><table>
+    <thead><tr><th>主体</th><th>做了什么</th><th>改哪一层</th><th>验证器</th><th>阶段</th></tr></thead>
+    <tbody>
+      <tr><td>Google DeepMind</td><td>AlphaEvolve</td><td>算法代码</td><td>自动评估函数</td><td><span class="chip dj">懂劲</span></td></tr>
+      <tr><td>Sakana AI 等</td><td>Darwin Gödel Machine</td><td>Agent 自身代码</td><td>SWE-bench</td><td><span class="chip dj">懂劲</span></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section aria-labelledby="t-act">
+  <h2 id="t-act"><span class="no">07</span>我们做什么</h2>
+  <ol class="acts"><li>样稿：五到九项，写给金融、医疗 AI 产品。</li></ol>
+</section>
+
+<section aria-labelledby="t-open">
+  <h2 id="t-open"><span class="no">08</span>还没想清楚的</h2>
+  <ul class="open"><li>样稿：留给下一期专题或待研究清单的问题。</li></ul>
+</section>
+
+<!-- nook:related 站点构建时在这里插入“雷达里的相关条目”，按封面的 data-tags 匹配附录 A 的标签 -->
+
+<section aria-labelledby="t-src">
+  <h2 id="t-src"><span class="no">09</span>来源</h2>
+  <ol class="refs"><li>原文标题照录（来源），YYYY-MM-DD</li></ol>
+</section>
+
+<a class="sister" href="2026-10-29-ai-biopharma.html"><span><small>姊妹篇 · 专题 02</small>AI 做药：从平台公司到一人生物制药公司</span><span>→</span></a>
+
+<footer>Nook · 专题 · 阶段：<span class="chip zs">招熟</span> 能马上用 <span class="chip dj">懂劲</span> 要想明白 <span class="chip sm">神明</span> 长期方向</footer>
+</div>

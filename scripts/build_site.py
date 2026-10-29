@@ -6,6 +6,8 @@
 - 每期简报（brief/YYYY-MM-DD.html）：和首页同一版式，往期也能按简报读，带上一期、下一期翻页。
 - 全部条目（items.html）：汇总每期附录 A 的条目总表，可搜索，可按轨道、行业、阶段、标签筛选，可按总分排序。
 - 往期（archive.html）：每期的标题、结论和必看，标题进简报，另有链接进全文。
+- 专题（topics.html、topics/YYYY/YYYY-MM-DD-slug.html）：长文解读，封面的 data-after 写它接在哪一期之后，
+  那一期的简报和首页在必看之后加“本期专题”；专题页末尾按封面的 data-tags 列出雷达里的相关条目。
 - 每期页面带侧栏：上面是本期章节目录（取页面里带 id 的 h2），下面是按年、月分组的全部期数。
 每期页面补上 doctype、charset、viewport、侧栏和上一期、下一期链接，正文和样式不改。
 源文件不改。用法：python3 scripts/build_site.py [输出目录，默认 _site]
@@ -20,10 +22,12 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 RADAR = ROOT / "radar"
+TOPICS = ROOT / "topics"
 OUT = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else ROOT / "_site")
 
 WEEKDAYS = "一二三四五六日"
 NAME_RE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})\.html$")
+TOPIC_RE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})-([a-z0-9-]+)\.html$")
 H2_RE = re.compile(r'<h2[^>]*\bid="([^"]+)"[^>]*>(.*?)</h2>', re.S)
 NO_RE = re.compile(r'<span class="no">(.*?)</span>', re.S)
 HEAD = (
@@ -62,6 +66,8 @@ html{scroll-padding-top:16px}
 .nk-issues .t{font-size:13px;line-height:1.5}
 .nk-issues a.cur{background:var(--nk-hi);border-left-color:var(--nk-accent)}
 .nk-issues a.cur .t{color:var(--nk-accent);font-weight:500}
+.nk-issues a.tp{padding:2px 10px 2px 22px}.nk-issues a.tp .t{font-size:12.5px;color:var(--nk-muted)}
+.nk-issues a.tp .t::before{content:"专题 · ";color:var(--nk-accent)}
 .nk-bar{display:none}
 .nk-pager{max-width:880px;margin:0 auto 56px;display:grid;grid-template-columns:1fr 1fr;gap:12px;
   font:14px/1.5 "Noto Sans SC","PingFang SC",system-ui,sans-serif}
@@ -124,7 +130,7 @@ def sections(source):
     out = []
     for sid, inner in H2_RE.findall(source):
         no = NO_RE.search(inner)
-        title = re.sub(r'<span class="count">.*?</span>', "", NO_RE.sub("", inner), flags=re.S)
+        title = re.sub(r'<span class="(?:count|sub|chip [a-z]+)">.*?</span>', "", NO_RE.sub("", inner), flags=re.S)
         out.append((sid, text_of(no.group(1)) if no else "", text_of(title)))
     return out
 
@@ -149,6 +155,41 @@ def collect():
     return issues
 
 
+def collect_topics():
+    topics = []
+    for path in sorted(TOPICS.glob("*/*.html")):
+        m = TOPIC_RE.match(path.name)
+        if not m:
+            continue
+        source = path.read_text(encoding="utf-8")
+        cover = re.search(r'<header class="cover"([^>]*)>', source)
+        attrs = dict(re.findall(r'data-(\w+)="([^"]*)"', cover.group(1))) if cover else {}
+        keys = re.search(r'<ol class="keys">(.*?)</ol>', source, re.S)
+        topics.append({
+            "date": datetime.date(*map(int, m.groups()[:3])),
+            "rel": path.relative_to(TOPICS).as_posix(),
+            "title": first(r"<h1[^>]*>(.*?)</h1>", source) or path.stem,
+            "no": first(r"专题 (\d+)", source),
+            "thesis": first(r'<p class="thesis">(.*?)</p>', source),
+            "keys": [text_of(k) for k in re.findall(r"<li><b>(.*?)</b>", keys.group(1) if keys else "", re.S)],
+            "tags": [t for t in re.split(r"[、,，]\s*", attrs.get("tags", "")) if t],
+            "after": attrs.get("after", ""),
+            "sections": sections(source),
+            "source": source,
+        })
+    topics.sort(key=lambda t: t["no"])
+    topics.sort(key=lambda t: t["date"], reverse=True)
+    return topics
+
+
+def attach_topics(issues, topics):
+    """每期挂上接在它之后的专题，按专题编号排；专题也记下它接的那一期。"""
+    for i in issues:
+        i["topics"] = sorted((t for t in topics if t["after"] == str(i["date"])), key=lambda t: t["no"])
+        for t in i["topics"]:
+            t["issue"] = i
+
+
 def by_month(issues):
     groups = {}
     for i in issues:
@@ -160,11 +201,12 @@ def sidebar(issues, prefix, current=None):
     """prefix 是从当前页面回到站点根目录的相对路径。"""
     parts = [f'<a class="nk-brand" href="{prefix}">Nook AI 雷达</a>',
              f'<ul class="nk-toc"><li><a href="{prefix}"><span>最新简报</span></a></li>'
-             + (f'<li><a href="{prefix}{brief_href(current)}"><span>这期简报</span></a></li>' if current else "")
-             + f'<li><a href="{prefix}items.html"><span>全部条目</span></a></li>'
+             + (f'<li><a href="{prefix}{brief_href(current)}"><span>这期简报</span></a></li>' if current and "digest" in current else "")
+             + f'<li><a href="{prefix}topics.html"><span>专题</span></a></li>'
+             f'<li><a href="{prefix}items.html"><span>全部条目</span></a></li>'
              f'<li><a href="{prefix}archive.html"><span>往期</span></a></li></ul>']
     if current and current["sections"]:
-        parts.append('<div class="nk-label">本期目录</div><ul class="nk-toc">')
+        parts.append(f'<div class="nk-label">{"本期目录" if "digest" in current else "专题目录"}</div><ul class="nk-toc">')
         for sid, no, title in current["sections"]:
             parts.append(f'<li><a href="#{html.escape(sid)}"><span class="n">{html.escape(no)}</span>'
                          f'<span>{html.escape(title)}</span></a></li>')
@@ -181,6 +223,9 @@ def sidebar(issues, prefix, current=None):
             d = i["date"]
             parts.append(f'<li><a href="{prefix}radar/{i["rel"]}"{cur}><span class="d">{d:%m-%d} 周{WEEKDAYS[d.weekday()]}</span>'
                          f'<span class="t">{html.escape(i["title"])}</span></a></li>')
+            for t in i.get("topics", []):
+                cur = ' cur" aria-current="page' if t is current else ""
+                parts.append(f'<li><a class="tp{cur}" href="{prefix}topics/{t["rel"]}"><span class="t">{html.escape(t["title"])}</span></a></li>')
     parts.append("</ul>")
     bar = (f'<div class="nk-bar"><button type="button" aria-label="打开目录">☰ 目录</button>'
            f'<a href="{prefix}">Nook AI 雷达</a></div>\n')
@@ -214,6 +259,31 @@ def wrap_page(issues, n):
     if re.match(r"\s*<!doctype", source, re.I):
         return body
     return HEAD + body + "\n</html>\n"
+
+
+def wrap_topic(issues, topic):
+    """专题和每期雷达一样是片段：补骨架和侧栏，在 nook:related 标记处插入雷达里的相关条目。"""
+    source = re.sub(r"<!-- nook:related.*?-->", lambda _: related_items(issues, topic), topic["source"], flags=re.S)
+    cut = source.rfind("</style>")
+    cut = cut + len("</style>") if cut != -1 else 0
+    body = source[:cut] + "\n" + ISSUE_THEME + NAV_CSS + sidebar(issues, "../../", topic) + source[cut:] + "\n" + NAV_JS
+    return HEAD + body + "\n</html>\n"
+
+
+def related_items(issues, topic):
+    rows = []
+    for i in issues:
+        for x in i["digest"]["items"]:
+            hit = [t for t in x["tags"] if t in topic["tags"]]
+            if hit:
+                rows.append(f'<tr><td class="num">{html.escape(x["date"])}</td><td><a href="../../radar/{i["rel"]}{x["anchor"]}">'
+                            f'{html.escape(x["concl"] or x["name"])}</a></td><td>{"、".join(map(html.escape, x["tags"]))}</td>'
+                            f'<td class="num"><a href="../../{brief_href(i)}">{i["date"]:%m-%d} 期</a></td></tr>')
+    if not rows:
+        return ""
+    return ('<section aria-labelledby="t-rel"><h2 id="t-rel">雷达里的相关条目<span class="sub">按标签 '
+            + "、".join(map(html.escape, topic["tags"])) + ' 自动汇总</span></h2><div class="tbl"><table><thead><tr><th>日期</th><th>条目</th>'
+            '<th>标签</th><th>所在期</th></tr></thead><tbody>' + "".join(rows) + '</tbody></table></div></section>')
 
 
 def digest(source):
@@ -360,6 +430,21 @@ th.sort{cursor:pointer;color:var(--accent)}
 .archive a{display:grid;grid-template-columns:10em 1fr auto;gap:16px;padding:12px 16px;background:var(--surface);border:1px solid var(--line);border-radius:6px;color:inherit;text-decoration:none}
 .archive a:hover{border-color:var(--accent)}
 .archive .m{font-family:var(--f-display);font-weight:600;color:var(--muted);margin:10px 0 2px}
+/* 专题卡：封面是深色头，下面是四个关键判断 */
+.topics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.topic{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;display:grid;grid-template-rows:auto 1fr auto}
+.topic .tc{background:var(--brand);color:var(--brand-ink);padding:22px 22px 18px;display:grid;gap:10px}
+.topic .tc .eyebrow{color:var(--brand-ink2)}
+.topic h3{font-size:22px;font-weight:900;color:#fff}.topic h3 a{color:inherit;text-decoration:none}.topic h3 a:hover{text-decoration:underline}
+.topic .tc p{font-size:14px;line-height:1.7;color:var(--brand-ink)}
+.topic ol{margin:0;padding:16px 22px 4px 40px;display:grid;gap:6px;font-size:14px}
+.topic ol li::marker{font:600 12px var(--f-data);color:var(--accent)}
+.topic .tf{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:12px 22px 18px;font-size:14px}
+.topic .tf .tag{margin:0}.topic .tf .go{margin-left:auto;font-weight:700;text-decoration:none}
+.topic-list{display:grid;gap:12px}
+.cover-topics{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+.cover-topics a{display:inline-flex;gap:8px;align-items:baseline;padding:6px 14px;border-radius:999px;background:var(--brand);color:var(--brand-ink);text-decoration:none;font-size:14px}
+.cover-topics a:hover{color:#fff}.cover-topics b{font:600 12px var(--f-data);color:var(--brand-ink2)}
 /* 全部条目 */
 .kpi{display:flex;gap:28px}.kpi div{display:grid}.kpi b{font:600 26px/1.2 var(--f-data)}.kpi span{font-size:12px;color:var(--muted)}
 .lib-h{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:20px}
@@ -380,7 +465,7 @@ th,#tb td:nth-child(-n+4),#tb td:nth-child(7),#tb td:nth-child(9){white-space:no
 td.name .cc{font-weight:400;font-size:13px;color:var(--muted);margin-top:2px}
 td.name a.item{color:inherit;text-decoration:none}td.name a.item:hover{color:var(--accent);text-decoration:underline}
 td .tag{margin:0 4px 2px 0}
-@media (max-width:900px){.hero-body,.musts,.musts.two,.board,.board.two{grid-template-columns:1fr}.hero h1{font-size:30px}.archive a{grid-template-columns:1fr;gap:2px}.bpager{grid-template-columns:1fr}.bpager .next{grid-column:1;text-align:left}
+@media (max-width:900px){.hero-body,.musts,.musts.two,.board,.board.two,.topics{grid-template-columns:1fr}.hero h1{font-size:30px}.archive a{grid-template-columns:1fr;gap:2px}.bpager{grid-template-columns:1fr}.bpager .next{grid-column:1;text-align:left}
   .top{gap:12px}.top nav{gap:14px}
   thead{display:none}table,tbody,tr,td{display:block}tr{border-top:1px solid var(--line);padding:8px 0}td{border:0;padding:2px 14px}}
 </style>
@@ -395,7 +480,7 @@ def page(title, desc, current, body, script="", prefix=""):
     home = prefix or "./"
     nav = "".join(
         f'<a href="{href}"{CURRENT if key == current else ""}>{label}</a>'
-        for key, href, label in [("home", home, "本期"), ("items", prefix + "items.html", "全部条目"), ("archive", prefix + "archive.html", "往期")])
+        for key, href, label in [("home", home, "本期"), ("topics", prefix + "topics.html", "专题"), ("items", prefix + "items.html", "全部条目"), ("archive", prefix + "archive.html", "往期")])
     return (HEAD + f"<title>{title}</title>\n"
             f'<meta name="description" content="{desc}">\n{FONTS}{PAGE_CSS}</head>\n<body>\n'
             f'<header class="topbar"><div class="top"><a href="{home}">Nook AI 雷达</a><nav aria-label="栏目">{nav}</nav></div></header>\n'
@@ -404,8 +489,8 @@ def page(title, desc, current, body, script="", prefix=""):
             f"{script}</body>\n</html>\n")
 
 
-def tag_link(t):
-    return f'<a class="tag" href="items.html#tag={quote(t)}">{html.escape(t)}</a>'
+def tag_link(t, prefix=""):
+    return f'<a class="tag" href="{prefix}items.html#tag={quote(t)}">{html.escape(t)}</a>'
 
 
 def basis_html(fragment, href):
@@ -421,7 +506,27 @@ def basis_html(fragment, href):
     return "".join(out)
 
 
-def render_brief(issues, pos=0, prefix=""):
+def topic_card(t, prefix):
+    href = f'{prefix}topics/{t["rel"]}'
+    keys = "".join(f"<li>{html.escape(k)}</li>" for k in t["keys"])
+    return (f'<article class="topic"><div class="tc"><div class="eyebrow">专题 {html.escape(t["no"])} · {t["date"]:%m-%d}</div>'
+            f'<h3><a href="{href}">{html.escape(t["title"])}</a></h3>'
+            + (f'<p>{html.escape(t["thesis"])}</p>' if t["thesis"] else "") + '</div>'
+            + (f'<ol>{keys}</ol>' if keys else "<div></div>")
+            + '<div class="tf">' + "".join(tag_link(x, prefix) for x in t["tags"]) + f'<a class="go" href="{href}">读专题 →</a></div></article>')
+
+
+def render_topics(topics):
+    rows = []
+    for (y, mth), group in by_month(topics).items():
+        rows.append(f'<div class="m">{y} 年 {mth} 月</div><div class="topics">{"".join(topic_card(t, "") for t in group)}</div>')
+    body = (f'<section class="lib-h"><div><div class="eyebrow">专题</div><h1>专题解读</h1></div>'
+            f'<div class="kpi"><div><b>{len(topics)}</b><span>篇专题</span></div></div></section>\n'
+            + (f'<section class="topic-list issues">{"".join(rows)}</section>' if rows else '<p class="empty">还没有专题。</p>'))
+    return page("专题 · Nook AI 雷达", "雷达之外的长文解读，按招熟、懂劲、神明三阶段展开。", "topics", body)
+
+
+def render_brief(issues, pos=0, prefix="", all_topics=()):
     """一期的简报。pos=0、prefix 为空时就是首页；往期的简报写在 brief/ 下，版式相同。"""
     if not issues:
         return page("Nook AI 雷达", "", "home", '<p class="empty">还没有雷达。</p>')
@@ -434,6 +539,10 @@ def render_brief(issues, pos=0, prefix=""):
             f'<h1><a href="{href}">{html.escape(latest["title"])}</a></h1></div>'
             + (f'<div class="hero-body"><div>{thesis}</div><div class="stats">{stats}</div></div>' if stats else thesis) + '</section>')
     blocks = [hero]
+    if latest["topics"]:
+        # 封面上列出本期专题，像杂志封面的要目，点了跳到下面的专题区
+        blocks[0] = hero[:-len("</section>")] + ('<div class="cover-topics"><span class="eyebrow">本期专题</span>' + "".join(
+            f'<a href="#topics"><b>{html.escape(t["no"])}</b>{html.escape(t["title"])}</a>' for t in latest["topics"]) + '</div></section>')
     labels = must_labels(dg["musts"])
     # 必看的“条目”指向速览里的条目，两边互相标出来，读者看得出必看从哪几条来
     # 两条条目可能共用一个正文锚点（比如 Skills 和 OpenShell 写在同一段），所以先按名字对，对不上再按锚点
@@ -477,6 +586,13 @@ def render_brief(issues, pos=0, prefix=""):
         blocks.append(f'<section id="must"><div class="sec-h"><h2>本期必看</h2>'
                       f'<span class="muted">{sub}</span></div><div class="musts{" two" if two else ""}">{cards}</div></section>')
     blocks.append(f'<p><a href="{href}">读这一期全文 →</a></p>')
+    shown, heading = latest["topics"], "本期专题"
+    if not shown and pos == 0 and all_topics:
+        shown, heading = all_topics[:2], "最近专题"
+    if shown:
+        blocks.append(f'<section id="topics"><div class="sec-h"><h2>{heading}</h2><span class="muted">接在这一期之后的长文解读，先看四个判断</span>'
+                      f'<a href="{prefix}topics.html" style="margin-left:auto;font-size:14px">全部专题 →</a></div>'
+                      f'<div class="topics">{"".join(topic_card(t, prefix) for t in shown)}</div></section>')
     if prefix:
         blocks.append(brief_pager(issues, pos, prefix))
     blocks.append(f'<section id="archive"><div class="sec-h"><h2>最近几期</h2><span class="muted">共 {len(issues)} 期</span>'
@@ -522,6 +638,8 @@ def render_archive(issues):
             labels = must_labels(dg["musts"])
             musts = "".join(f'<li><span class="lab">{labels[n]}</span><a href="{href}{m["refs"][0][0] if m["refs"] else ""}">'
                             f'{html.escape(m["title"])}</a></li>' for n, m in enumerate(dg["musts"]))
+            musts += "".join(f'<li><span class="lab">专题 {html.escape(t["no"])}</span><a href="topics/{t["rel"]}">{html.escape(t["title"])}</a></li>'
+                             for t in i["topics"])
             counts = " · ".join(f'{t} {sum(1 for x in dg["items"] if x["track"] == t)}' for t in TRACKS
                                 if any(x["track"] == t for x in dg["items"])) or f'{len(dg["items"])} 条'
             cards.append(f'<article class="issue"><div class="num muted">{d} 周{WEEKDAYS[d.weekday()]} · {counts}</div>'
@@ -594,19 +712,26 @@ def render_items(issues):
 
 def main():
     issues = collect()
+    topics = collect_topics()
+    attach_topics(issues, topics)
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / ".nojekyll").write_text("")
-    (OUT / "index.html").write_text(render_brief(issues), encoding="utf-8")
+    (OUT / "index.html").write_text(render_brief(issues, all_topics=topics), encoding="utf-8")
     (OUT / "brief").mkdir(exist_ok=True)
     for n, i in enumerate(issues):
         (OUT / brief_href(i)).write_text(render_brief(issues, n, "../"), encoding="utf-8")
     (OUT / "items.html").write_text(render_items(issues), encoding="utf-8")
     (OUT / "archive.html").write_text(render_archive(issues), encoding="utf-8")
+    (OUT / "topics.html").write_text(render_topics(topics), encoding="utf-8")
+    for t in topics:
+        dest = OUT / "topics" / t["rel"]
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(wrap_topic(issues, t), encoding="utf-8")
     for n, i in enumerate(issues):
         dest = OUT / "radar" / i["rel"]
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text(wrap_page(issues, n), encoding="utf-8")
-    print(f"站点已生成：{OUT}，共 {len(issues)} 期雷达")
+    print(f"站点已生成：{OUT}，共 {len(issues)} 期雷达、{len(topics)} 篇专题")
 
 
 if __name__ == "__main__":
