@@ -32,7 +32,6 @@ a{color:var(--accent)}
 .chip{display:inline-flex;font-size:12px;font-weight:700;padding:0 8px;border-radius:999px;white-space:nowrap}
 .zs{color:var(--zs);background:var(--zs-bg)}.dj{color:var(--dj);background:var(--dj-bg)}.sm{color:var(--sm);background:var(--sm-bg)}
 .item-meta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;font-size:13px;color:var(--muted)}
-.orig{font-style:italic}
 .new{font-size:11px;color:var(--accent)}
 .ind{font-size:12px;color:var(--accent);background:var(--wash);border-radius:4px;padding:0 6px}
 .must-no{font:700 13px var(--f-data);color:var(--accent)}
@@ -68,7 +67,6 @@ th{text-align:left;font-size:12px;color:var(--muted);background:var(--wash);padd
 td{padding:8px 10px;border-top:1px solid var(--line);vertical-align:top}
 .num{font-family:var(--f-data)}
 details>summary{cursor:pointer}
-footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
 @media (max-width:640px){h1{font-size:26px}.w6{grid-template-columns:1fr;gap:0}.w6 dd{margin-bottom:8px}}
 </style>
 <!--
@@ -76,9 +74,9 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
 -->
 <div class="wrap">
 <header>
-  <div class="eyebrow">Nook · AI 雷达 · 2026-10-28 周三 · 10-24 至 10-28 · 10 条</div>
+  <div class="eyebrow">2026-10-28 周三 · 10-24 至 10-28 · 10 条</div>
   <h1>Agent 的建议会悄悄变成人的决定，把关要靠独立的复核</h1>
-  <p class="thesis">英国 80% 的金融机构已部署 Agent，主要用于辅助决策。Anthropic 的随机试验里，分析师在 86% 的开放决策上跟着 Agent 的倾向走，只有 15% 承认参考过它。换一个独立的评审 Agent，Terminal-Bench 准确率提高 5.9 到 9.5 分；在 200 例活检确诊的皮损上，十年前的专用 CNN 首诊准确率 62%，两款前沿大模型都是 42%。</p>
+  <p class="thesis">英国 80% 的金融机构已部署 Agent，主要用于辅助决策。Anthropic 的随机试验里，分析师在 86% 的开放决策上跟着 Agent 的倾向走，只有 15% 承认参考过它。换一个独立的评审 Agent，Terminal-Bench 准确率提高 5.9 到 9.5 分。</p>
 </header>
 
 <section aria-labelledby="s-must">
@@ -119,22 +117,22 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   <h2 id="s-tech">技术<span class="count">其余 4 条，按重要程度排序，点开看详情</span></h2>
   <div class="items">
   <details class="item" id="i-price">
-    <summary><span class="c">Max Woolf｜梳理 OpenAI、Anthropic 八次降价</span><span class="so">Agent 成本的大头是缓存读取，成本模型要定期重算</span><span class="item-meta"><span class="chip zs">招熟</span><span class="orig" lang="en">OpenAI and Anthropic cut their LLM prices by up to 80% within a few months. Why?</span></span></summary>
+    <summary><span class="c">Max Woolf｜梳理 OpenAI、Anthropic 八次降价</span><span class="so">Agent 成本的大头是缓存读取，成本模型要定期重算</span><span class="item-meta"><span class="chip zs">招熟</span></span></summary>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>Max Woolf 整理了 7 月底到 9 月底两家的八次调价：GPT-5.6 Luna 降 80%；GPT-6 Sol 比打折后的 GPT-5.6 Sol 再减半；Opus 5.5 输入、输出降 20%，缓存读取从 0.50 美元降到 0.20 美元。</dd><dt>Why<small>为什么重要</small></dt><dd>模型越来越接近大宗商品，切换成本低，价格在向边际成本靠拢。按 token 算的成本模型要定期重算。</dd><dt>How<small>怎么做的</small></dt><dd>Agent 编程场景里，缓存读取占 token 支出的 96% 到 99%，缓存价降 75%，总成本约降 70% 到 75%。Vercel 的数据：每 token 成本降到 4 月的 43.3%，总支出仍在涨，因为用量涨得比价格降得快。作者认为原因是两家互相跟价，加上开放权重模型的压力，DeepSeek V4.1 Flash 已有 29 家托管商。</dd><dt>Who<small>谁</small></dt><dd>Max Woolf（minimaxir），个人博客。</dd><dt>When<small>何时</small></dt><dd>10-25 发布，价格截至 9-29。</dd><dt>Action<small>我们做什么</small></dt><dd>成本模型里把缓存读取单列一行；Agent 的提示词保持固定前缀、少改历史，提高缓存命中；选型时把开放权重模型的多家托管价一起比。</dd></dl>
     <p class="src">原文：<a href="https://minimaxir.com/2026/10/cheap-llms/" lang="en">OpenAI and Anthropic cut their LLM prices by up to 80% within a few months. Why?</a>（Max Woolf&#x27;s Blog），10-25</p>
   </details>
   <details class="item" id="i-novelty">
-    <summary><span class="c">Ai2｜测试大模型能否判断想法新不新</span><span class="so">模型评审的结论可能取决于提示词怎么写</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="orig" lang="en">Can we trust LLMs to judge whether a research idea is novel?</span></span></summary>
+    <summary><span class="c">Ai2｜测试大模型能否判断想法新不新</span><span class="so">模型评审的结论可能取决于提示词怎么写</span><span class="item-meta"><span class="chip dj">懂劲</span></span></summary>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>Ai2 用 ICLR 2026 的评审意见建了一个新颖性评测：154 个高新颖度、145 个低新颖度的人类想法，另配 154 个模型生成的想法。</dd><dt>Why<small>为什么重要</small></dt><dd>用模型做评审（LLM-as-a-Judge），结论可能主要取决于提示词的措辞。金融、医疗里用模型打分做质检，先要测它稳不稳。</dd><dt>How<small>怎么做的</small></dt><dd>GPT-5.4 换成更简单的提示词后，准确率从 93.5% 降到 40.9%，过半判定翻转；Claude Opus 4.6 从 100% 降到 72.7%。加检索、加推理没有稳定的改善。最简单的基线，即 Opus 4.6 低推理、三次投票，macro-F1 0.854，总花费 2.59 美元，好过两个专门的评估器。局限：生成想法的标签是假设的，专家只抽查了 30 对。</dd><dt>Who<small>谁</small></dt><dd>Ai2（艾伦人工智能研究所）。</dd><dt>When<small>何时</small></dt><dd>10-27 发布。论文是 arXiv 预印本，数据集和代码已公开。</dd><dt>Action<small>我们做什么</small></dt><dd>自家的模型评审用两三种措辞各跑一遍，统计判定翻转率；先试多次投票这类简单基线，再考虑复杂的评估器。</dd></dl>
     <p class="src">原文：<a href="https://huggingface.co/blog/allenai/novelty-bench" lang="en">Can we trust LLMs to judge whether a research idea is novel?</a>（Hugging Face Blog），10-27</p>
   </details>
   <details class="item" id="i-decision-only">
-    <summary><span class="c">西奈山伊坎医学院等｜测试只输出概率的决策模型</span><span class="so">把决策和语言拆给两个模型，能减少措辞带来的偏差</span><span class="item-meta"><span class="chip sm">神明</span><span class="ind">医疗</span><span class="orig" lang="en">Decision-only medical AI: early evidence and pairing with language models</span></span></summary>
+    <summary><span class="c">西奈山伊坎医学院等｜测试只输出概率的决策模型</span><span class="so">把决策和语言拆给两个模型，能减少措辞带来的偏差</span><span class="item-meta"><span class="chip sm">神明</span><span class="ind">医疗</span></span></summary>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>一篇预印本测试了两款只输出选项概率、不生成文字的决策模型 Jev 和 OpenAI Decisions，与 GPT-6 Luna 对比，并把两类模型配对使用。</dd><dt>Why<small>为什么重要</small></dt><dd>病例描述里的标签和催促语会改变分诊结果。把决策和语言交给两个模型，是减少这类偏差的一条工程路线。</dd><dt>How<small>怎么做的</small></dt><dd>2,134 个病例，约 248 万次调用。临床事实不变、只加标签或压力暗示时，决策模型每 100 个决策多变 13.4 个，大模型多变 14.0 个；配对后降到 2.6 个，开发集降约 81%，留出数据降 42% 到 48%。分诊准确率保持在 81% 到 82%，每千条成本不超过 0.77 美元。只用了合成病例和公开数据。</dd><dt>Who<small>谁</small></dt><dd>西奈山伊坎医学院、贝斯以色列女执事医疗中心、布莱根妇女医院。作者声明无利益冲突。</dd><dt>When<small>何时</small></dt><dd>10-24，预印本。</dd><dt>Action<small>我们做什么</small></dt><dd>分诊、风控功能加一组同事实、不同措辞的扰动测试，量出决策翻转率；评估把决策和生成拆给两个模型的架构。</dd></dl>
     <p class="src">原文：<a href="https://www.medrxiv.org/content/10.64898/2026.10.21.26366149v1" lang="en">Decision-only medical AI: early evidence and pairing with language models</a>（medRxiv），10-24</p>
   </details>
   <details class="item" id="i-terra">
-    <summary><span class="c">OpenAI｜发布中档模型 GPT-6.1 Terra</span><span class="so">电脑操作这类重复任务，可以交给更便宜的中档模型</span><span class="item-meta"><span class="chip zs">招熟</span><span class="orig" lang="en">GPT-6.1 Terra</span></span></summary>
+    <summary><span class="c">OpenAI｜发布中档模型 GPT-6.1 Terra</span><span class="so">电脑操作这类重复任务，可以交给更便宜的中档模型</span><span class="item-meta"><span class="chip zs">招熟</span></span></summary>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>OpenAI 发布 GPT-6.1 Terra，主打视觉推理和电脑操作（computer use）。</dd><dt>Why<small>为什么重要</small></dt><dd>电脑操作多是重复的自动化任务，适合交给便宜、快的中档模型。填表、读图纸这类后台流程的成本会下降。</dd><dt>How<small>怎么做的</small></dt><dd>API 每百万 token 输入 1 美元、输出 5 美元，约为 GPT-5.6 Terra 和 GPT-6.1 Sol 的一半。OpenAI 没有公布基准分数。据 OpenAI 员工 Ted Sanders，Terra 的视觉和电脑操作与 Astra、Sol 相当，速度快得多，其他多数任务稍差。</dd><dt>Who<small>谁</small></dt><dd>OpenAI。试用和定位判断来自 Simon Willison。</dd><dt>When<small>何时</small></dt><dd>10-26 发布，能力为厂商自述，没有第三方基准。</dd><dt>Action<small>我们做什么</small></dt><dd>拿表单录入、单据核对这类流程，用 Terra 和现用模型各跑一组，比较完成率、耗时和成本。</dd></dl>
     <p class="src">原文：<a href="https://simonwillison.net/2026/Oct/26/gpt-61-terra/" lang="en">GPT-6.1 Terra</a>（Simon Willison）；<a href="https://openai.com/index/introducing-gpt-6-1-terra" lang="en">Introducing GPT-6.1 Terra</a>（OpenAI），10-26</p>
   </details>
@@ -145,12 +143,12 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   <h2 id="s-prod">产品<span class="count">其余 2 条，按重要程度排序，点开看详情</span></h2>
   <div class="items">
   <details class="item" id="i-drug">
-    <summary><span class="c">Anthropic｜汇报 Claude 药物研发合作进展</span><span class="so">目前收益最好算清的是文书审核</span><span class="item-meta"><span class="chip sm">神明</span><span class="ind">医疗</span><span class="orig" lang="en">Early progress on accelerating drug development with Claude</span></span></summary>
+    <summary><span class="c">Anthropic｜汇报 Claude 药物研发合作进展</span><span class="so">目前收益最好算清的是文书审核</span><span class="item-meta"><span class="chip sm">神明</span><span class="ind">医疗</span></span></summary>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>Anthropic 汇报与六家机构的合作进展，覆盖 CAR-T 设计、抗体设计、先导物优化、生产申报文件、靶点评估和临床试验规划。</dd><dt>Why<small>为什么重要</small></dt><dd>药物研发的瓶颈分散在各个环节。最容易算清收益的是文书工作，金融、医疗的合规文档也是同样的处境。</dd><dt>How<small>怎么做的</small></dt><dd>Enveda 的 1,061 页生产文件里，Claude 找出人工发现的全部 11 处问题，另报 7 处，人工审核从 25 小时以上降到 3 小时以内，减少 89%；一份申报文件 4 小时写完，手写约需三个月。Divergence 用约一个月生成约 35,000 个抗体设计；BigHat 测了约 1,010 个变体，最好的结合力提高 10 倍以上。几乎全部是临床前工作，还没有药物进入人体试验。</dd><dt>Who<small>谁</small></dt><dd>Anthropic 与 BigHat、百时美施贵宝、Divergence、Enveda、Generate、The Column Group。文中的 Mithril 已被 Anthropic 收购，存在利益关联。</dd><dt>When<small>何时</small></dt><dd>10-27 发布，数字由厂商和合作方自报，附技术报告。</dd><dt>Action<small>我们做什么</small></dt><dd>挑一类有检查清单的合规文档，比如申报材料或授信档案，做 AI 预审加人工复核的对照，量出漏检数和耗时。</dd></dl>
     <p class="src">原文：<a href="https://www.anthropic.com/research/early-progress-drug-development" lang="en">Early progress on accelerating drug development with Claude</a>（Anthropic），10-27</p>
   </details>
   <details class="item" id="i-diet">
-    <summary><span class="c">斯坦福等｜评测多模态大模型看餐照估营养</span><span class="so">离胰岛素给药要求的精度还差得远，不能直接用来算剂量</span><span class="item-meta"><span class="chip zs">招熟</span><span class="ind">医疗</span><span class="orig" lang="en">Image-Based Dietary Assessment Using Multimodal Large Language Models: Performance, Limitations, and Clinical Applicability in Diabetes</span></span></summary>
+    <summary><span class="c">斯坦福等｜评测多模态大模型看餐照估营养</span><span class="so">离胰岛素给药要求的精度还差得远，不能直接用来算剂量</span><span class="item-meta"><span class="chip zs">招熟</span><span class="ind">医疗</span></span></summary>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>斯坦福等机构用公开数据集 SNAPMe 测了 8 个多模态大模型从餐照估算营养的能力，三款进入复测，在 1,680 张照片上评估。</dd><dt>Why<small>为什么重要</small></dt><dd>医疗功能能不能用，要看临床阈值，不看平均误差。拍照记饮食能减轻患者负担，但还不能直接用来算胰岛素剂量。</dd><dt>How<small>怎么做的</small></dt><dd>表现最好的 GPT-4o mini，碳水平均绝对误差 13.3 克；各模型的平均绝对百分比误差在 52% 到 90% 之间，偏差方向不一。份量越大，低估越多；放参照物、换更新更大的模型、用思维链，都没有稳定改善。食物完整可见时识别可靠（Dice 0.74）。</dd><dt>Who<small>谁</small></dt><dd>斯坦福大学、卑尔根大学、糖尿病技术学会。</dd><dt>When<small>何时</small></dt><dd>10-24，预印本。评测基准 SeeFood 已开源。</dd><dt>Action<small>我们做什么</small></dt><dd>医疗功能的验收指标写成落在临床阈值内的比例；照片之外，补充文字描述或血糖记录等上下文。</dd></dl>
     <p class="src">原文：<a href="https://www.medrxiv.org/content/10.64898/2026.10.21.26365949v1" lang="en">Image-Based Dietary Assessment Using Multimodal Large Language Models: Performance, Limitations, and Clinical Applicability in Diabetes</a>（medRxiv），10-24</p>
   </details>
@@ -189,7 +187,6 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   </table></div></details>
 </section>
 
-<footer>Nook · AI 雷达 · 每周三、周六各一期 · 阶段：<span class="chip zs">招熟</span> 能马上用 <span class="chip dj">懂劲</span> 要想明白 <span class="chip sm">神明</span> 长期方向</footer>
 </div>
 <script>
 (function(){function o(){var e=location.hash&&document.getElementById(location.hash.slice(1));if(e&&e.tagName==='DETAILS')e.open=true}

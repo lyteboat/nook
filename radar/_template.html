@@ -49,7 +49,6 @@ a{color:var(--accent)}
 .chip{display:inline-flex;font-size:12px;font-weight:700;padding:0 8px;border-radius:999px;white-space:nowrap}
 .zs{color:var(--zs);background:var(--zs-bg)}.dj{color:var(--dj);background:var(--dj-bg)}.sm{color:var(--sm);background:var(--sm-bg)}
 .item-meta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;font-size:13px;color:var(--muted)}
-.orig{font-style:italic}
 .new{font-size:11px;color:var(--accent)}
 .ind{font-size:12px;color:var(--accent);background:var(--wash);border-radius:4px;padding:0 6px}
 .must-no{font:700 13px var(--f-data);color:var(--accent)}
@@ -85,12 +84,11 @@ th{text-align:left;font-size:12px;color:var(--muted);background:var(--wash);padd
 td{padding:8px 10px;border-top:1px solid var(--line);vertical-align:top}
 .num{font-family:var(--f-data)}
 details>summary{cursor:pointer}
-footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
 @media (max-width:640px){h1{font-size:26px}.w6{grid-template-columns:1fr;gap:0}.w6 dd{margin-bottom:8px}}
 </style>
 <div class="wrap">
 <header>
-  <div class="eyebrow">Nook · AI 雷达 · YYYY-MM-DD 周N · MM-DD 至 MM-DD · N 条</div>
+  <div class="eyebrow">YYYY-MM-DD 周N · MM-DD 至 MM-DD · N 条</div>
   <h1>标题即结论，从四条必看收敛出来</h1>
   <p class="thesis">一句话结论：一个判断，加四条必看里最硬的事实。</p>
 </header>
@@ -113,7 +111,7 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   <h2 id="s-tech">技术<span class="count">其余 N 条，按重要程度排序，点开看详情</span></h2>
   <div class="items">
   <details class="item" id="i-slug2">
-    <summary><span class="c">主体｜做了什么</span><span class="so">意义：一句判断</span><span class="item-meta"><span class="chip zs">招熟</span><span class="ind">金融</span><span class="orig" lang="en">原文标题</span></span></summary>
+    <summary><span class="c">主体｜做了什么</span><span class="so">意义：一句判断</span><span class="item-meta"><span class="chip zs">招熟</span><span class="ind">金融</span></span></summary>
     <dl class="w6"><dt>What<small>是什么</small></dt><dd>一两句：谁发布了什么、做了什么，带最硬的数字。</dd><dt>Why<small>为什么重要</small></dt><dd>它改变了什么判断，对金融、医疗 AI 产品意味着什么。</dd><dt>How<small>怎么做的</small></dt><dd>方法、数据和关键结果；局限写在这一栏末尾。</dd><dt>Who<small>谁</small></dt><dd>机构或作者，有利益关联的写明。</dd><dt>When<small>何时</small></dt><dd>MM-DD；状态，比如预印本、厂商自报、试点、权重未放出。</dd><dt>Action<small>我们做什么</small></dt><dd>一到三个具体动作，落到金融、医疗产品上。</dd></dl>
     <p class="src">原文：<a href="#" lang="en">原文标题，照原文照录，不翻译</a>（来源名），MM-DD</p>
   </details>
@@ -138,7 +136,6 @@ footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padd
   </table></div></details>
 </section>
 
-<footer>Nook · AI 雷达 · 每周三、周六各一期 · 阶段：<span class="chip zs">招熟</span> 能马上用 <span class="chip dj">懂劲</span> 要想明白 <span class="chip sm">神明</span> 长期方向</footer>
 </div>
 <script>
 (function(){function o(){var e=location.hash&&document.getElementById(location.hash.slice(1));if(e&&e.tagName==='DETAILS')e.open=true}
