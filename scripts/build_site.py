@@ -229,7 +229,7 @@ def collect_topics():
         if not m:
             continue
         source = path.read_text(encoding="utf-8")
-        cover = re.search(r'<header class="cover"([^>]*)>', source)
+        cover = re.search(r'<header class="cover[^"]*"([^>]*)>', source)
         attrs = dict(re.findall(r'data-(\w+)="([^"]*)"', cover.group(1))) if cover else {}
         topics.append({
             "date": datetime.date(*map(int, m.groups()[:3])),
