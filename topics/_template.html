@@ -1,0 +1,98 @@
+<title>专题标题：直接写对象和问题</title>
+<!--
+Nook 专题模板（A 讲义版）。复制为 topics/YYYY/YYYY-MM-DD-英文短名.html，日期是首次发布那天，替换占位内容，样式不要改。
+字数按显示宽度数：汉字和全角标点算 1，英文字母、数字和半角符号算 0.6，空格算 0.25。
+
+封面：
+- eyebrow 写“专题 NN · 类型 · 日期 · 延伸自 MM-DD 期雷达”。类型三选一：技术专题、行业专题、方法专题。
+- data-after 写延伸自哪一期雷达的日期；data-tags 写一到三个标签，从 radar/README.md 的词表里选，用顿号隔开，站点按它列出相关雷达条目。
+- 标题 12 到 26 个字，写成“主题：要回答的问题”，问题用陈述语序，末尾不加标点。thesis 是摘要，40 到 78 个字，两句：第一句是结论，第二句说边界或看点。
+
+小节顺序固定，编号不改，写不满就少写，不凑数：
+00 要点：三到五条，每条一个判断加一句依据，不超过 60 个字。不能空。
+01 全景图：一张内联 SVG，画出版图的分组，沿用 .map、.box、.hi、.ln 这几个 class，深色模式自动适配。图注不超过 40 个字。
+02 到 04 招熟、懂劲、神明：每章一句心法，不超过 40 个字；五到九个招式，标题写成动作，不超过 16 个字，说明不超过 80 个字。招熟的招式带一行“例”，落到金融或医疗产品上；懂劲、神明没有例子就不写。
+05 时间线：六到十二条，按时间正序，每条标节点类型：发布、研究、资本、监管。
+06 版图：八到二十条，按类别分组。技术专题按技术路线分，行业专题按价值链环节分，方法专题按做法分。成熟度只填已在生产、已有实验证据、仍是设想；证据只填同行评审、预印本、公司披露、媒体报道。
+07 行动建议：三到五条，动词开头，写清对象和完成标准。不能空。
+08 待解问题：二到四条，写成陈述句，说明卡在哪里。
+nook:related 标记不要删，站点在这里插入相关雷达条目，没有相关条目时不显示。
+09 来源：八条以上，原文标题照录，不翻译，带来源名、日期和链接。
+
+全文 3000 到 6000 字。中文按 tuiqiao 技能写，交付前用扫描脚本 zh_style_scan.py 扫一遍。数字和名称照原文写，厂商自报的说法不写成事实。
+-->
+<style>
+:root{--bg:#F6F3EC;--surface:#FCFAF5;--ink:#1B1814;--ink2:#3A342D;--muted:#6E665C;--line:#DDD5C8;--rule:#1B1814;--wash:#EFE9DE;--accent:#A12F2B;
+--zs:#2f7d5b;--dj:#3d55a3;--sm:#a1701c;
+--f-display:"Noto Serif SC","Songti SC","STSong",serif;--f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+--f-data:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#15120F;--surface:#1C1814;--ink:#EDE6DA;--ink2:#CFC6B8;--muted:#A0968A;--line:#342D25;--rule:#EDE6DA;--wash:#211C17;--accent:#E27D6E;
+--zs:#6cc59a;--dj:#9aaef0;--sm:#e0b45e;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#15120F;--surface:#1C1814;--ink:#EDE6DA;--ink2:#CFC6B8;--muted:#A0968A;--line:#342D25;--rule:#EDE6DA;--wash:#211C17;--accent:#E27D6E;
+--zs:#6cc59a;--dj:#9aaef0;--sm:#e0b45e;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15.5px/1.85 var(--f-body)}
+a{color:inherit}h1,h2,h3,h4,p,ol,ul,figure{margin:0;padding:0}ol,ul{list-style:none}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.4}
+.num{font-family:var(--f-data);font-variant-numeric:tabular-nums}
+.zs{--c:var(--zs)}.dj{--c:var(--dj)}.sm{--c:var(--sm)}
+.tag{display:inline-block;font:500 11.5px/1 var(--f-body);color:var(--muted);border:1px solid var(--line);border-radius:3px;padding:4px 6px 3px;white-space:nowrap}
+.map{margin:0;overflow-x:auto}.map svg{display:block;width:100%;min-width:640px;height:auto}
+.map .box{fill:var(--wash);stroke:var(--line)}.map .box.hi{fill:var(--surface);stroke:var(--accent);stroke-width:1.5}
+.map text{fill:var(--ink);font:14px var(--f-body)}.map text.s{fill:var(--muted);font-size:12px}
+.map .ln{stroke:var(--muted);stroke-width:1.4;fill:none}.map .ah{fill:var(--muted)}
+.map figcaption{font-size:13px;line-height:1.8;color:var(--muted);margin-top:12px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font:600 12px/1.4 var(--f-body);color:var(--muted);padding:8px 12px 8px 0;border-bottom:1px solid var(--rule);white-space:nowrap}
+td{padding:10px 12px 10px 0;border-bottom:1px dotted var(--line);vertical-align:top}
+.tbl{overflow-x:auto}
+h2 .sub{font:400 13.5px var(--f-body);color:var(--muted);margin-left:12px}
+
+.wrap{max-width:1160px;margin:0 auto;padding:40px 16px 0;display:grid;grid-template-columns:200px minmax(0,1fr);column-gap:56px}
+.wrap>*{grid-column:2;min-width:0}
+.cover{grid-column:1/-1;padding-bottom:32px;border-bottom:3px solid var(--rule);margin-bottom:8px}
+.eyebrow{font:600 12px/1.6 var(--f-data);letter-spacing:.06em;color:var(--muted)}.eyebrow a{color:var(--accent);text-decoration:none}
+.cover h1{font-size:clamp(28px,1.4vw + 20px,44px);font-weight:900;margin:14px 0 16px;max-width:24em}
+.thesis{font:500 clamp(16px,.3vw + 14px,19px)/1.85 var(--f-display);color:var(--ink2);max-width:46em}
+.meta{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin-top:18px;font-size:13px;color:var(--muted)}
+.toc{grid-column:1;grid-row:2/span 20;position:sticky;top:24px;align-self:start;padding-top:32px;font-size:13.5px}
+.toc b{display:block;font:600 11px/1 var(--f-data);letter-spacing:.14em;color:var(--muted);margin-bottom:12px}
+.toc a{display:grid;grid-template-columns:2em 1fr;padding:5px 0;text-decoration:none;color:var(--ink2);border-bottom:1px dotted var(--line)}
+.toc a span{font:500 12px/1.9 var(--f-data);color:var(--muted)}.toc a:hover{color:var(--accent)}
+section{padding-top:40px}
+h2{display:flex;align-items:baseline;gap:12px;font-size:24px;font-weight:900;padding-bottom:12px;border-bottom:1px solid var(--rule);margin-bottom:20px}
+h2 .no{font:600 13px var(--f-data);color:var(--muted)}h2 small{font:400 13.5px var(--f-body);color:var(--muted)}
+.keys{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 40px;counter-reset:k}
+.keys li{padding:16px 0;border-bottom:1px dotted var(--line);counter-increment:k}
+.keys b{display:block;font:700 17px/1.5 var(--f-display)}.keys b::before{content:counter(k,decimal-leading-zero);font:600 12px var(--f-data);color:var(--accent);margin-right:10px}
+.keys span{display:block;margin-top:4px;font-size:14.5px;color:var(--ink2)}
+.stage h2{border-bottom:3px solid var(--c)}.stage h2 .st{font:700 13px var(--f-body);color:var(--c)}
+.xf{font:600 19px/1.8 var(--f-display);padding:4px 0 4px 18px;border-left:3px solid var(--c);margin-bottom:12px}
+.xf::before{content:"心法";display:block;font:600 11px/1.6 var(--f-data);letter-spacing:.14em;color:var(--c)}
+.moves{counter-reset:m}
+.moves li{display:grid;grid-template-columns:2.2em minmax(0,1fr);column-gap:8px;padding:16px 0;border-bottom:1px dotted var(--line);counter-increment:m}
+.moves li::before{content:counter(m);font:700 20px/1.3 var(--f-display);color:var(--c)}
+.moves h3{font-size:17px;font-weight:700}.moves p{grid-column:2;margin-top:4px;font-size:14.5px;color:var(--ink2)}
+.moves .eg{font-size:13.5px;color:var(--muted)}.moves .eg::before{content:"例";font-weight:700;color:var(--c);margin-right:8px}
+.timeline li{display:grid;grid-template-columns:5.5em 3.5em minmax(0,1fr);gap:12px;padding:10px 0;border-bottom:1px dotted var(--line);font-size:14.5px}
+.timeline time{font:500 13px/1.85 var(--f-data);color:var(--muted)}.timeline i{font-style:normal;font-size:12px;color:var(--accent)}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 40px}
+.acts{counter-reset:a}.acts li,.open li{padding:10px 0;border-bottom:1px dotted var(--line);font-size:14.5px}
+.acts li{counter-increment:a}.acts li::before{content:counter(a) ".";font:700 14px var(--f-data);color:var(--accent);margin-right:10px}
+.open li::before{content:"？";color:var(--accent);font-weight:700;margin-right:8px}
+.refs li{font-size:13.5px;color:var(--muted);padding:6px 0}
+@media (max-width:900px){.wrap{display:block}.toc{display:none}.keys,.two{grid-template-columns:1fr}
+.timeline li{grid-template-columns:5em minmax(0,1fr)}.timeline i{grid-column:1;grid-row:2}.timeline b,.timeline span{grid-column:2;grid-row:1/3}}
+</style>
+<div class="wrap">
+<header class="cover a" data-after="YYYY-MM-DD" data-tags="标签一、标签二"><div class="eyebrow">专题 NN · 技术专题 · YYYY-MM-DD · 延伸自 <a href="../../radar/YYYY/YYYY-MM-DD.html">MM-DD 期雷达</a></div><h1>专题标题：直接写对象和问题</h1><p class="thesis">一句话结论：先下判断，再给它成立的条件。</p><div class="meta"><span>阅读约 15 分钟</span><span class="tag">标签一</span><span class="tag">标签二</span></div></header><nav class="toc" aria-label="专题目录"><b>目录</b><a href="#t-keys"><span>00</span>要点</a><a href="#t-map"><span>01</span>全景图</a><a href="#t-zs"><span>02</span>招熟 · 上手即用</a><a href="#t-dj"><span>03</span>懂劲 · 原理机制</a><a href="#t-sm"><span>04</span>神明 · 长期方向</a><a href="#t-time"><span>05</span>时间线</a><a href="#t-who"><span>06</span>版图</a><a href="#t-act"><span>07</span>行动建议</a><a href="#t-open"><span>08</span>待解问题</a><a href="#t-src"><span>09</span>来源</a></nav><section aria-labelledby="t-keys"><h2 id="t-keys"><span class="no">00</span>要点</h2><ol class="keys"><li><b>第一条要点，写成一个判断</b><span>一两句依据，带最硬的数字或出处。</span></li><li><b>第二条要点</b><span>一两句依据。</span></li><li><b>第三条要点</b><span>一两句依据。</span></li></ol></section><section aria-labelledby="t-map"><h2 id="t-map"><span class="no">01</span>全景图</h2><figure class="map"><svg viewBox="0 0 820 120" role="img" aria-label="全景图：写明这张图画的是什么">
+      <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0,0L10,5L0,10z"/></marker></defs>
+      <rect class="box" x="10" y="30" width="230" height="60" rx="6"/><text x="125" y="58" text-anchor="middle">环节一</text><text class="s" x="125" y="78" text-anchor="middle">一行说明</text>
+      <rect class="box hi" x="295" y="30" width="230" height="60" rx="6"/><text x="410" y="58" text-anchor="middle">要读者先看的环节</text><text class="s" x="410" y="78" text-anchor="middle">class 加 hi 会描红</text>
+      <rect class="box" x="580" y="30" width="230" height="60" rx="6"/><text x="695" y="58" text-anchor="middle">环节三</text><text class="s" x="695" y="78" text-anchor="middle">一行说明</text>
+      <path class="ln" d="M240,60H293M525,60H578" marker-end="url(#ah)"/>
+    </svg>
+<figcaption>图注一句：这张图回答什么问题，读者该先看哪一处。</figcaption></figure></section><section class="stage zs" aria-labelledby="t-zs"><h2 id="t-zs"><span class="no">02</span>招熟 · 上手即用</h2><p class="xf">心法一句：这一阶段最该记住的做法。</p><ol class="moves"><li><h3>招式标题，写成动作</h3><p>两三句：怎么做，为什么这样做。</p><p class="eg">落到金融或医疗产品上的一个具体做法。</p></li><li><h3>第二个招式</h3><p>两三句。</p><p class="eg">一个具体做法。</p></li></ol></section><section class="stage dj" aria-labelledby="t-dj"><h2 id="t-dj"><span class="no">03</span>懂劲 · 原理机制</h2><p class="xf">心法一句：把机制说透的那个道理。</p><ol class="moves"><li><h3>机制或方法的名字：一句说明</h3><p>两三句：它怎么运作，前提和局限是什么。</p></li><li><h3>第二个机制</h3><p>两三句。</p></li></ol></section><section class="stage sm" aria-labelledby="t-sm"><h2 id="t-sm"><span class="no">04</span>神明 · 长期方向</h2><p class="xf">心法一句：长期看由什么决定。</p><ol class="moves"><li><h3>一个长期方向</h3><p>一两句，点到为止。</p></li><li><h3>第二个方向</h3><p>一两句。</p></li></ol></section><section aria-labelledby="t-time"><h2 id="t-time"><span class="no">05</span>时间线</h2><ol class="timeline"><li><time>YYYY-MM</time><i>研究</i><span>一件事，一句话</span></li><li><time>YYYY-MM</time><i>发布</i><span>一件事，一句话</span></li></ol></section><section aria-labelledby="t-who"><h2 id="t-who"><span class="no">06</span>版图<small>按类别分组：技术路线、价值链环节或做法</small></h2><div class="tbl"><table><thead><tr><th>类别</th><th>主体</th><th>做了什么</th><th>成熟度</th><th>证据</th></tr></thead><tbody><tr><td>类别</td><td>主体</td><td>做了什么</td><td>已在生产</td><td>公司披露</td></tr><tr><td>类别</td><td>主体</td><td>做了什么</td><td>已有实验证据</td><td>预印本</td></tr></tbody></table></div></section><section aria-labelledby="t-act"><div class="two"><div><h2 id="t-act"><span class="no">07</span>行动建议</h2><ol class="acts"><li>一个具体动作，写清对象和完成标准。</li><li>第二个动作。</li></ol></div><div><h2 id="t-open"><span class="no">08</span>待解问题</h2><ul class="open"><li>一个还没有答案的问题。</li><li>第二个问题。</li></ul></div></div></section>
+<!-- nook:related -->
+<section aria-labelledby="t-src"><h2 id="t-src"><span class="no">09</span>来源</h2><ol class="refs"><li><a href="#" lang="en">原文标题，照原文照录</a>（来源名），YYYY-MM</li></ol></section>
+</div>
