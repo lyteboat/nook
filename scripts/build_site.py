@@ -433,8 +433,8 @@ def related_items(issues, topic):
                             f'{esc(x["title"])}</a></td><td>{"、".join(map(esc, x["tags"]))}</td></tr>')
     if not rows:
         return ""
-    return ('<section aria-labelledby="t-rel"><h2 id="t-rel">雷达里的相关条目<span class="sub">按标签 '
-            + "、".join(map(esc, topic["tags"])) + ' 自动汇总</span></h2><div class="tbl"><table><thead><tr><th>日期</th><th>条目</th>'
+    return ('<section aria-labelledby="t-rel"><h2 id="t-rel">相关雷达条目<span class="sub">按标签 '
+            + "、".join(map(esc, topic["tags"])) + ' 自动列出</span></h2><div class="tbl"><table><thead><tr><th>日期</th><th>条目</th>'
             '<th>标签</th></tr></thead><tbody>' + "".join(rows) + '</tbody></table></div></section>')
 
 
