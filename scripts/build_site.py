@@ -54,7 +54,7 @@ SHELL_CSS = """<style>
 --nk-line:#342D25;--nk-rule:#EDE6DA;--nk-accent:#E27D6E;--nk-on-accent:#1B1814;--nk-soft:#211C17;--nk-zs:#6cc59a;--nk-dj:#9aaef0;--nk-sm:#e0b45e;color-scheme:dark}}
 :root[data-theme="dark"]{--nk-bg:#15120F;--nk-paper:#1C1814;--nk-ink:#EDE6DA;--nk-ink2:#CFC6B8;--nk-muted:#A0968A;
 --nk-line:#342D25;--nk-rule:#EDE6DA;--nk-accent:#E27D6E;--nk-on-accent:#1B1814;--nk-soft:#211C17;--nk-zs:#6cc59a;--nk-dj:#9aaef0;--nk-sm:#e0b45e;color-scheme:dark}
-.nk-w{max-width:1600px;margin:0 auto;padding:0 var(--nk-gut);box-sizing:border-box}
+.nk-w{max-width:1200px;margin:0 auto;padding:0 var(--nk-gut);box-sizing:border-box}
 .nk-mast,.nk-nav,.nk-foot,.nk-pager{font-family:var(--nk-body);color:var(--nk-ink)}
 .nk-mast a,.nk-nav a,.nk-foot a,.nk-pager a{color:inherit;text-decoration:none}
 .nk-mh{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:24px;padding-top:28px;padding-bottom:14px}
