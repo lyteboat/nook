@@ -113,6 +113,7 @@ a.tag:hover{color:var(--nk-accent);border-color:var(--nk-accent)}
 .sec-h h2{font-size:26px;line-height:1.2;font-weight:900}.sec-h p{font-size:13.5px;color:var(--nk-muted)}
 .ph{padding:40px 0 8px}.ph h1{font-size:clamp(28px,1vw + 22px,40px);font-weight:900;line-height:1.25}.ph p{margin-top:10px;font-size:14px;color:var(--nk-muted)}
 /* 首页 */
+.cpg .nk-pager{max-width:none}
 .lead{padding:40px 0 36px;border-bottom:1px solid var(--nk-line)}
 .lead h1{text-wrap:pretty;font-size:clamp(29px,1.6vw + 22px,56px);line-height:1.25;font-weight:900;margin:0 0 20px}
 .lead .dek{font:500 clamp(16px,.3vw + 14px,19px)/1.85 var(--nk-display);color:var(--nk-ink2);max-width:60em}
@@ -471,17 +472,22 @@ def read_minutes(source):
 def render_home(issues, topics, notes):
     if not issues:
         return page("Nook", "", "home", '<p class="empty">还没有雷达。</p>')
-    latest = issues[0]
-    dg = latest["digest"]
-    href = f'radar/{latest["rel"]}'
-    blocks = [f'<section class="lead"><a href="{href}"><h1>{esc(latest["title"])}</h1>'
+    return render_cover(issues, 0, topics, notes)
+
+
+def render_cover(issues, n, topics=(), notes=(), prefix=""):
+    """每一期的封面：标题、一句话结论、专题和本期速览。首页就是最新一期的封面，另外加随笔；往期的封面带翻页。"""
+    issue = issues[n]
+    dg = issue["digest"]
+    href = f'{prefix}radar/{issue["rel"]}'
+    blocks = [f'<section class="lead"><a href="{href}"><h1>{esc(issue["title"])}</h1>'
               + (f'<p class="dek">{esc(dg["thesis"])}</p>' if dg["thesis"] else "")
-              + f'</a><p class="byl"><span>{len(dg["items"])} 条</span><i></i><span>约 {read_minutes(latest["source"])} 分钟</span>'
+              + f'</a><p class="byl"><span>{len(dg["items"])} 条</span><i></i><span>约 {read_minutes(issue["source"])} 分钟</span>'
               f'<a href="{href}">读全文 →</a></p></section>']
-    shown = latest["topics"] or topics[:2]
+    shown = issue["topics"] or (topics[:2] if n == 0 else [])
     if shown:
         blocks.append('<section class="tps" aria-label="专题"><span class="kick">专题</span><div class="two">' + "".join(
-            f'<a class="feat" href="topics/{t["rel"]}"><span class="no">{esc(t["no"])}</span><h3>{esc(t["title"])}</h3>'
+            f'<a class="feat" href="{prefix}topics/{t["rel"]}"><span class="no">{esc(t["no"])}</span><h3>{esc(t["title"])}</h3>'
             + (f'<p>{esc(t["thesis"])}</p>' if t["thesis"] else "")
             + f'<span class="tags">{"".join(f"<span class=tag>{esc(x)}</span>" for x in t["tags"])}</span></a>' for t in shown) + '</div></section>')
     if dg["items"]:
@@ -499,7 +505,16 @@ def render_home(issues, topics, notes):
     if notes:
         blocks.append('<section class="sec" aria-labelledby="s-notes"><div class="sec-h"><h2 id="s-notes">随笔</h2><p>经验、复盘和零碎的想法</p></div>'
                       f'<ul class="elist">{note_rows(notes[:6])}</ul></section>')
-    return page("Nook · 一个思考 AI 的角落", dg["thesis"] or latest["title"], "home", "\n".join(blocks), issue=latest)
+    if prefix:
+        prev = issues[n + 1] if n + 1 < len(issues) else None
+        nxt = issues[n - 1] if n > 0 else None
+        blocks.append('<div class="cpg">' + pager(prev and (cover_href(prev), prev["date"], prev["title"]), nxt and (cover_href(nxt), nxt["date"], nxt["title"])) + '</div>')
+        return page(f'第 {issue["no"]} 期 · {issue["title"]} · Nook', dg["thesis"] or issue["title"], "archive", "\n".join(blocks), prefix=prefix, issue=issue)
+    return page("Nook · 一个思考 AI 的角落", dg["thesis"] or issue["title"], "home", "\n".join(blocks), issue=issue)
+
+
+def cover_href(issue, prefix=""):
+    return f'{prefix}issues/{issue["date"]}.html'
 
 
 def render_topics(topics):
@@ -518,10 +533,10 @@ def render_archive(issues):
         for i in group:
             d, dg = i["date"], i["digest"]
             tps = "".join(f'<span class="tp"><b>专题 {esc(t["no"])}</b>{esc(t["title"])}</span>' for t in i["topics"])
-            parts.append(f'<a href="radar/{i["rel"]}"><span class="d">{d:%m-%d} 周{WEEKDAYS[d.weekday()]}<br>第 {i["no"]} 期 · {len(dg["items"])} 条</span>'
+            parts.append(f'<a href="{cover_href(i)}"><span class="d">{d:%m-%d} 周{WEEKDAYS[d.weekday()]}<br>第 {i["no"]} 期 · {len(dg["items"])} 条</span>'
                          f'<div><h2>{esc(i["title"])}</h2>' + (f'<p>{esc(dg["thesis"])}</p>' if dg["thesis"] else "")
                          + (f'<span class="tags">{tps}</span>' if tps else "") + '</div></a>')
-    body = '<section class="ph"><h1>往期</h1><p>每周三、周六各一期，点进去读全文</p></section>' + f'<section class="alist">{"".join(parts)}</section>'
+    body = '<section class="ph"><h1>往期</h1><p>每周三、周六各一期，点进去先看这一期的封面，再读全文</p></section>' + f'<section class="alist">{"".join(parts)}</section>'
     return page("往期 · Nook", "历期 AI 雷达的标题和一句话结论。", "archive", body)
 
 
@@ -611,6 +626,7 @@ def main():
     write(OUT / "notes.html", render_notes(notes))
     for n, i in enumerate(issues):
         write(OUT / "radar" / i["rel"], wrap_issue(issues, n))
+        write(OUT / cover_href(i), render_cover(issues, n, prefix="../"))
         write(OUT / "brief" / f'{i["date"]}.html', redirect(f'../radar/{i["rel"]}'))
     for t in topics:
         write(OUT / "topics" / t["rel"], wrap_topic(issues, t))
