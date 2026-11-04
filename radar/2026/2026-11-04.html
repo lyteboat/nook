@@ -1,0 +1,191 @@
+<title>Nook 雷达 2026-11-04</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* 版式：一列简报，宽 880px。每个条目是标题、副标题（意义）加六栏：What、Why、How、Who、When、Action。 */
+:root{
+  --bg:#f6f7f5; --surface:#ffffff; --ink:#1b2321; --muted:#5d6966; --line:#dde2df; --wash:#eef1ef;
+  --accent:#1f5f58; --prod:#8a4b9c;
+  --zs:#2f7d5b; --zs-bg:#e3f1ea; --dj:#3d55a3; --dj-bg:#e6eaf7; --sm:#a1701c; --sm-bg:#f6ecd8;
+  --f-display:"Noto Serif SC","Songti SC","SimSun",serif;
+  --f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121715; --surface:#1a201e; --ink:#e3e9e6; --muted:#9aa6a2; --line:#2c3532; --wash:#202825;
+  --accent:#6fc1b5; --prod:#d3a0e3; --zs:#6cc59a; --zs-bg:#1c3328; --dj:#9aaef0; --dj-bg:#232b45; --sm:#e0b45e; --sm-bg:#3a2f1a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121715; --surface:#1a201e; --ink:#e3e9e6; --muted:#9aa6a2; --line:#2c3532; --wash:#202825;
+  --accent:#6fc1b5; --prod:#d3a0e3; --zs:#6cc59a; --zs-bg:#1c3328; --dj:#9aaef0; --dj-bg:#232b45; --sm:#e0b45e; --sm-bg:#3a2f1a; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:880px;margin:0 auto;padding-block:40px 64px;display:grid;gap:44px}
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.35}
+h1{font-size:34px;font-weight:900;margin:8px 0 16px}
+h2{font-size:22px;font-weight:900;margin-bottom:16px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+h2 .count{font:400 13px var(--f-body);color:var(--muted)}
+a{color:var(--accent)}
+.eyebrow{font:600 12px/1.5 var(--f-data);letter-spacing:.06em;color:var(--muted)}
+.thesis{margin:0;font-family:var(--f-display);font-size:18px;font-weight:600;line-height:1.75;padding-left:16px;border-left:4px solid var(--accent)}
+.chip{display:inline-flex;font-size:12px;font-weight:700;padding:0 8px;border-radius:999px;white-space:nowrap}
+.zs{color:var(--zs);background:var(--zs-bg)}.dj{color:var(--dj);background:var(--dj-bg)}.sm{color:var(--sm);background:var(--sm-bg)}
+.item-meta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;font-size:13px;color:var(--muted)}
+.new{font-size:11px;color:var(--accent)}
+.ind{font-size:12px;color:var(--accent);background:var(--wash);border-radius:4px;padding:0 6px}
+.must-no{font:700 13px var(--f-data);color:var(--accent)}
+.musts{display:grid;gap:16px}
+.must{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:8px;padding:18px 22px;display:grid;gap:10px;scroll-margin-top:72px}
+.must.prod{border-top-color:var(--prod)}.must.prod .must-no{color:var(--prod)}
+.must h3{font-size:20px;font-weight:900}
+.w6{margin:0;display:grid;grid-template-columns:7.5em 1fr;gap:8px 14px}
+.w6 dt{font:700 13px/1.6 var(--f-data);color:var(--accent);padding-top:2px}
+.must.prod .w6 dt{color:var(--prod)}
+.w6 dt small{display:block;font:400 12px var(--f-body);color:var(--muted)}
+.w6 dd{margin:0;font-size:14.5px}
+.src{margin:0;font-size:13px;color:var(--muted);padding-top:8px;border-top:1px dashed var(--line)}
+.items{display:grid;gap:8px}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:8px;scroll-margin-top:72px}
+.item summary{cursor:pointer;list-style:none;padding:12px 18px;display:grid;gap:4px}
+.item summary::-webkit-details-marker{display:none}
+.item summary .c{font-weight:700;font-size:15.5px}
+.item summary .c::before{content:"▸";color:var(--muted);margin-right:8px;display:inline-block;transition:transform .15s}
+.item[open] summary .c::before{transform:rotate(90deg)}
+.item summary .item-meta{padding-left:20px}
+.so{margin:0;color:var(--muted);font-size:15px}
+.must .so{margin-top:-6px}
+.item summary .so{padding-left:20px;font-size:14px}
+.item[open] summary{border-bottom:1px solid var(--line)}
+.item .w6,.item .src{margin:12px 18px}
+.item .src{margin-top:0}
+.acts{margin:0;padding-left:22px;display:grid;gap:8px}
+.acts li{font-size:14.5px}.acts a{font-weight:700;margin-right:8px;text-decoration:none}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface);margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:12px;color:var(--muted);background:var(--wash);padding:8px 10px;white-space:nowrap}
+td{padding:8px 10px;border-top:1px solid var(--line);vertical-align:top}
+.num{font-family:var(--f-data)}
+details>summary{cursor:pointer}
+@media (max-width:640px){h1{font-size:26px}.w6{grid-template-columns:1fr;gap:0}.w6 dd{margin-bottom:8px}}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">2026-11-04 周三 · 10-31 至 11-04 · 10 条</div>
+  <h1>模型输出可以验证得更便宜，权限却在往回收</h1>
+  <p class="thesis">Anthropic 开源的 FlashProve 能证明每条回答出自承诺的模型，代价是 70 到 95 倍的 GPU 时间。一个只输出概率的决策模型评医疗回答，成本是 Opus 的 1/152，漏检更多。高盛把 Claude Code 收回给工程师，Arca 的 Agent 只提议，交易和转账由顾问执行。</p>
+</header>
+
+<section aria-labelledby="s-must">
+  <h2 id="s-must">本期必看</h2>
+  <div class="musts">
+  <article class="must" id="i-flashprove">
+    <div class="item-meta"><span class="must-no">技术 1</span><span class="chip dj">懂劲</span><span class="name">FlashProve 可证明推理</span></div>
+    <h3>Anthropic｜开源 FlashProve，证明回答来源</h3>
+    <p class="so">用户第一次能自己验证 API 背后跑的是哪个模型</p>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>Anthropic 前沿红队开源 FlashProve：模型提供方先对一套权重做承诺，之后为每条回答生成零知识证明，证明它确实由这套权重生成，且不泄露权重。</dd><dt>Why<small>为什么重要</small></dt><dd>金融、医疗的审计常要回答“当时用的是哪个模型、哪个版本”，目前只能信厂商的日志。可证明推理把这件事变成可以独立验算的证据，离生产还远，但原型已经跑通。</dd><dt>How<small>怎么做的</small></dt><dd>在 4 位量化的 Llama 4 Maverick（4000 亿参数 MoE）上，单张 H100 每秒生成约 110 个 token 的证明，是 vLLM 推理 GPU 时间的 70 到 95 倍。每 1,024 个 token 的证明约 19 MB，CPU 验证约 17 秒。一次承诺约 39 分钟，可用于约 1,600 万次请求。局限：只覆盖贪心解码和整数化权重，上下文限 1,024 token，不防时序侧信道，模型架构不保密。</dd><dt>Who<small>谁</small></dt><dd>Anthropic 前沿红队的 Roy Rinberg、Alex Allain，合作者来自 EPFL、MIT、StarkWare 和 Succinct。</dd><dt>When<small>何时</small></dt><dd>11-02 发布，Apache 2.0 开源，附技术报告、协议规范和 Lean 证明。仓库标明是研究原型，不再维护。</dd><dt>Action<small>行动建议</small></dt><dd>在模型审计清单里加一项“能否证明调用的模型版本”；向供应商问清版本锁定和变更通知机制，先用合同条款补上，等可证明推理成熟再换成技术手段。</dd></dl>
+    <p class="src">原文：<a href="https://www.anthropic.com/research/provable-inference" lang="en">Progress on provable inference for large language models</a>（Anthropic Research），11-02</p>
+  </article>
+  <article class="must" id="i-jev-judge">
+    <div class="item-meta"><span class="must-no">技术 2</span><span class="chip zs">招熟</span><span class="ind">医疗</span><span class="name">决策模型当医疗评审</span></div>
+    <h3>西奈山等｜测得决策模型评医疗回答一致率持平</h3>
+    <p class="so">便宜的评审能当初筛，漏项仍要大模型和人补查</p>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>研究者让只输出结构化概率的决策模型 TypeSafe Jev 1.13 当评审，给医疗 AI 的回答打分，与 GPT-6.1 Sol、Claude Opus 5.5 两个前沿评审和专家标注对比。</dd><dt>Why<small>为什么重要</small></dt><dd>LLM 评审的成本常比被评的模型还高，评审量一大就压不住。10-28 那期写过决策模型和 LLM 配对分诊，这篇给出了它当评审的硬数字：一致率不输前沿模型，成本低两个数量级。</dd><dt>How<small>怎么做的</small></dt><dd>5 个公开基准、25,091 个评审单元、213,913 次模型调用。在 3,614 个共同单元上，与专家一致率 Jev 66.1%、Opus 65.0%、Sol 60.7%，六项任务中四项不劣于前沿模型。全量评审用 17 分钟、1.46 美元，单次成本约为 Sol 的 1/34、Opus 的 1/152。局限：同样误报率下，Jev 漏掉 55.6% 的植入遗漏，Opus 漏掉 48.1%；按 Jev 置信度从低到高复核，查出的错误是随机抽查的 1.4 倍，但这是模拟结果。</dd><dt>Who<small>谁</small></dt><dd>Beth Israel Deaconess 医疗中心（哈佛医学院）和西奈山伊坎医学院，通讯团队含 Eyal Klang、Girish Nadkarni。</dd><dt>When<small>何时</small></dt><dd>11-02，预印本，事先在 OSF 注册；分析代码尚未公开。</dd><dt>Action<small>行动建议</small></dt><dd>评审流水线分两层：便宜的模型全量初筛，按置信度把最不确定的一批送前沿模型或专家；遗漏类错误单独抽检，不交给便宜评审；阈值按本地数据重新校准。</dd></dl>
+    <p class="src">原文：<a href="https://www.medrxiv.org/content/10.64898/2026.10.30.26366939v1" lang="en">A decision-only model as a low-cost judge of medical AI answers</a>（medRxiv），11-02</p>
+  </article>
+  <article class="must prod" id="i-arca">
+    <div class="item-meta"><span class="must-no">产品 1</span><span class="chip zs">招熟</span><span class="ind">金融</span><span class="name">Arca 财富管理 Agent</span></div>
+    <h3>Arca｜让 Agent 提议，交易和转账留给顾问</h3>
+    <p class="so">金融 Agent 推动流程，不可逆的动作由人来做</p>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>财富管理公司 Arca 的 AI 工程负责人 Aman Singh 介绍他们的做法：Agent 做后台工作，顾问做最终决定，用他的话说是“Agent 给人发提示，多过人给 Agent 发提示”。</dd><dt>Why<small>为什么重要</small></dt><dd>财富管理的任务最长要走十天，中间有多方参与和多次交接，不适合一问一答。Arca 把 Agent 设计成流程的推动者，权限边界用确定性规则写死，这套分工可以直接搬到信贷审批、理赔这类长流程。</dd><dt>How<small>怎么做的</small></dt><dd>每个客户有一份持久记忆，记录历史、近期和长期任务以及每个动作的负责人，Agent 写入，顾问查看。交易和资金划转只能由顾问执行，限制是确定性的，不交给模型判断。计算在沙箱里跑，生成的代码转成固定格式后丢弃，数据过一道检查再进后端。一个元 Agent 读顾问反馈和运行轨迹，提出改进 harness 的建议。自建 harness，按内部基准给每类任务选模型，主力是 Claude。局限：播客自述，没有准确率、错误率等数字；Agent 本身不在沙箱里。</dd><dt>Who<small>谁</small></dt><dd>Arca，近期完成 4,850 万美元融资，General Catalyst 领投，Index Ventures、Venrock 参投。</dd><dt>When<small>何时</small></dt><dd>10-31，Latent Space 播客（录于 AI Engineer 纽约站），自述做法。</dd><dt>Action<small>行动建议</small></dt><dd>设计金融 Agent 时，先列出不可逆动作（下单、转账、对外发送），用代码规则锁给人；其余步骤让 Agent 主动推进并把待办推给负责人；每个客户维护一份带负责人字段的任务记忆。</dd></dl>
+    <p class="src">原文：<a href="https://latent.space/p/arca/" lang="en">Agents Prompt People: Using Agents for Long-Horizon Financial Work</a>（Latent Space），10-31</p>
+  </article>
+  <article class="must prod" id="i-goldman">
+    <div class="item-meta"><span class="must-no">产品 2</span><span class="chip zs">招熟</span><span class="ind">金融</span><span class="name">高盛收回 AI 编程工具</span></div>
+    <h3>高盛｜把 Claude Code 收回给工程师</h3>
+    <p class="so">全员自建工具的试验结束，编程 Agent 回到专业岗位</p>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>据彭博社报道，高盛按 10 月的内部规定，不再让交易员和银行家使用 Claude Code 和 GitHub Copilot，这类工具基本只留给工程师和量化人员。</dd><dt>Why<small>为什么重要</small></dt><dd>7 月高盛 CIO Marco Argenti 还公开推崇非技术员工“氛围编程”。三个月后收回，说明大银行对业务人员自建工具的容忍度有限：问题不在模型能力，在生产环境的维护和风险。</dd><dt>How<small>怎么做的</small></dt><dd>发言人 Nick Carcaterra 说，决定出于“生产力和风险管理等多方面因素”，试验阶段已经结束，工具只留给“最适合长期使用的人”。此前交易员用这些工具监控客户流量、给头寸建模、制作材料，收回后有人不满。高盛没有披露安全事件，也没有公布评估数字。对照：BNY 让非工程人员在内部平台 Eliza 上搭应用，已有 400 多个 AI 应用上线。</dd><dt>Who<small>谁</small></dt><dd>高盛；原计划由约 12,000 名工程师完善员工用 AI 做的原型。</dd><dt>When<small>何时</small></dt><dd>11-02 彭博社报道，规定 10 月下发。彭博原文未读到，以上依据 The Decoder、PYMNTS 的转述。</dd><dt>Action<small>行动建议</small></dt><dd>在机构里推编程 Agent 前先定两件事：业务人员做的工具由谁维护上线，代码和数据在什么边界里跑；没有受治理的平台，就先只给工程岗开放。</dd></dl>
+    <p class="src">原文：<a href="https://www.finextra.com/newsarticle/48690/goldman-bans-traders-and-bankers-from-using-ai-coding-tools" lang="en">Goldman bans traders and bankers from using AI coding tools</a>（Finextra），11-03；<a href="https://the-decoder.com/goldman-sachs-pulls-ai-coding-tools-from-traders-and-bankers/" lang="en">Goldman Sachs pulls AI coding tools from traders and bankers</a>（The Decoder），11-02；<a href="https://www.pymnts.com/news/artificial-intelligence/2026/goldman-benches-its-vibe-coders-while-bny-lets-everyone-build/" lang="en">Goldman Benches Its Vibe Coders While BNY Lets Everyone Build</a>（PYMNTS），11-02</p>
+  </article>
+  </div>
+</section>
+
+<section aria-labelledby="s-tech">
+  <h2 id="s-tech">技术<span class="count">其余 5 条，按重要程度排序，点开看详情</span></h2>
+  <div class="items">
+  <details class="item" id="i-leanguard">
+    <summary><span class="c">LeanGuard 团队｜用 Lean4 规则拦截 Agent 越权调用</span><span class="so">工具调用执行前，先过一道可证明的规则检查</span><span class="item-meta"><span class="chip dj">懂劲</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>LeanGuard 在 Agent 的每次工具调用到达环境之前，用 Lean4 写的策略检查一遍，不合规就拒绝，可以把违反的规则反馈给 Agent，也可以自动找一个相近的合规调用。</dd><dt>Why<small>为什么重要</small></dt><dd>金融、医疗 Agent 的权限规则大多写在提示词里，模型可以不听。把规则放到执行层并给出证明，拒绝与否就不再取决于模型。</dd><dt>How<small>怎么做的</small></dt><dd>策略由状态谓词和执行历史上的时序算子组成，默认拒绝，判定过程证明与 LeanLTL 语义等价。在 Tau-Bench 上，5 个 Qwen 模型（0.8B 到 27B）不加防护时执行了至少 33 次策略禁止的调用，加上后为 0，任务成功率无显著变化。DTap 上直接提示注入的成功率从 57.9% 降到 5.9%。证明引导的修复在 252 次被拒调用中修好 88 次。局限：没有报告误拒率；只测了 Qwen 系列。</dd><dt>Who<small>谁</small></dt><dd>Sreehari Sankar、Vipin Chaudhary 等 20 位作者。</dd><dt>When<small>何时</small></dt><dd>11-02，arXiv 预印本，未见代码。</dd><dt>Action<small>行动建议</small></dt><dd>把 Agent 的禁止动作从提示词搬到工具网关，按“状态加历史”写成规则，例如“未完成身份核验不得查询账户”；被拒时把规则原文回给 Agent，减少重复尝试。</dd></dl>
+    <p class="src">原文：<a href="https://arxiv.org/abs/2611.02332" lang="en">LeanGuard: Lean-Verified Guardrails for Tool-Using Agents</a>（arXiv），11-02</p>
+  </details>
+  <details class="item" id="i-triage-referral">
+    <summary><span class="c">佛罗伦萨大学｜测得通用模型过度建议就医</span><span class="so">健康问答里，模型越新越爱让人去看医生</span><span class="item-meta"><span class="chip zs">招熟</span><span class="ind">医疗</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>研究者用 41 条健康和 41 条非健康的求助消息，测 53 种通用模型配置的 4,346 条回答，看它们多常建议找专业人士。</dd><dt>Why<small>为什么重要</small></dt><dd>过度转诊看着安全，实际会挤占门诊、削弱用户信任。做健康助手，要把“什么时候不必就医”也当成要测的能力。</dd><dt>How<small>怎么做的</small></dt><dd>健康类回答 74.7% 建议找专业人士，非健康类 46.3%。在评审者认为不必联系专业人士的情形下，健康类仍有 64.5% 建议就医，非健康类 27.6%（优势比 17.08），多出的部分主要是“如果……就去看医生”式的条件转诊。药物和身体健康问题上，建议就医与严重程度无关。健康与非健康的差距从 2023 年模型的 20.5 个百分点扩大到 2025、2026 年模型的约 32 个百分点。局限：消息由研究者编写；转诊与否由 3 个语言模型编码。</dd><dt>Who<small>谁</small></dt><dd>佛罗伦萨大学 Alfredo Vannacci 等，评审者为医生、药师和两名技术人员。</dd><dt>When<small>何时</small></dt><dd>11-02，预印本；回答在 2026 年 9 月生成。</dd><dt>Action<small>行动建议</small></dt><dd>健康类产品的测试集里加一组“不必就医”的病例，同时统计漏转诊和过度转诊两个比例，按严重程度分层看。</dd></dl>
+    <p class="src">原文：<a href="https://www.medrxiv.org/content/10.64898/2026.10.31.26366978v1" lang="en">Triage Advice From General-Purpose Language Models in Health and Everyday Situations</a>（medRxiv），11-02</p>
+  </details>
+  <details class="item" id="i-collab-intel">
+    <summary><span class="c">James Zou 团队｜用 240 个任务测 Agent 当队友</span><span class="so">单独做得对的事，换成协作就可能做不好</span><span class="item-meta"><span class="chip dj">懂劲</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>协作智能基准（Collaborative Intelligence Benchmark）用 240 个任务、8 个维度测 Agent 当队友的能力，比如拒绝不安全的捷径、检查较弱模型留下的工作。</dd><dt>Why<small>为什么重要</small></dt><dd>Agent 在金融、医疗里多半与人或别的 Agent 一起干活。这个基准只在模型独立能做对的任务上计分，把协作能力和个人能力分开量。</dd><dt>How<small>怎么做的</small></dt><dd>任务取自航空事故报告、临床病例、编程任务和谈判记录，结果都能程序判定。18 个模型最好得 82.2 分。前沿模型几乎都会拒绝不安全的捷径、举报不当行为，但在人际压力下容易让步，冲突中只有 14% 谈出最优结果。接手一个被弱模型作过弊的任务时，通过率从 97% 降到 81%。通用能力相近的模型，协作分最多差 11 分。</dd><dt>Who<small>谁</small></dt><dd>Sean Wu、James Zou 等。</dd><dt>When<small>何时</small></dt><dd>11-02，arXiv 预印本；公开 160 个任务的代码和数据，80 个留作盲测。</dd><dt>Action<small>行动建议</small></dt><dd>多 Agent 或人机交接的流程里，测试接手方能否发现上游的错误或作弊，不只测单个 Agent 的完成率。</dd></dl>
+    <p class="src">原文：<a href="https://arxiv.org/abs/2611.02633" lang="en">Measuring AI Agents as Teammates with Collaborative Intelligence</a>（arXiv），11-02</p>
+  </details>
+  <details class="item" id="i-statebench">
+    <summary><span class="c">Ai2｜发布 StateBench，测长文档状态追踪</span><span class="so">长文档里的数值一路改写，前沿模型会跟丢</span><span class="item-meta"><span class="chip dj">懂劲</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>StateBench 测模型能否在长文档里跟住变量的变化，分四级：只赋值一次、反复赋值、在当前值上累加、变量之间互相传值。</dd><dt>Why<small>为什么重要</small></dt><dd>账户流水、病程记录都是“状态随文档改写”的结构。长上下文检索测得好，不代表能算对最终状态。</dd><dt>How<small>怎么做的</small></dt><dd>Gemini 3.8 Flash、Claude Opus 5.5、GPT-6 Sol 和 Luna 在前两级表现好；到累加和互相传值两级，准确率随长度急降，最长的传值题只有 13% 或更低。同一任务换成电子表格编辑的写法，分数可以从接近满分掉到随机水平。从头训练的实验里，Gated DeltaNet 和混合架构能泛化到训练长度的约 250 倍，Transformer 学不会最难一级。局限：变量数固定，不覆盖中途出现新实体的情况。</dd><dt>Who<small>谁</small></dt><dd>艾伦人工智能研究所（Ai2）。</dd><dt>When<small>何时</small></dt><dd>11-03 发布，数据集在 Hugging Face 公开。</dd><dt>Action<small>行动建议</small></dt><dd>需要从长记录里算余额、累计剂量这类最终状态的场景，不让模型直接读全文给答案，改成逐条抽取变更，再用代码计算。</dd></dl>
+    <p class="src">原文：<a href="https://huggingface.co/blog/allenai/statebench" lang="en">StateBench: Testing how language models track state changes over long documents</a>（Hugging Face Blog），11-03</p>
+  </details>
+  <details class="item" id="i-promote">
+    <summary><span class="c">Benhamou 等｜给研究 Agent 的回测加停止规则</span><span class="so">Agent 批量产出策略时，回测的假阳性要随时可控</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="ind">金融</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>PROMOTE 协议为研究 Agent 生成的交易规则设计“随时有效”的晋级检验：Agent 何时提出候选、盯多久都可以，误晋级的概率仍有上界。</dd><dt>Why<small>为什么重要</small></dt><dd>Agent 生成规则的速度远超人工记录筛选过程，反复回测、看到好结果就上报，会系统性地放大假阳性。这是给量化研究 Agent 配的统计闸门。</dd><dt>How<small>怎么做的</small></dt><dd>每个候选出生时分到一份固定的检验额度，只用出生后的收益构建计入成本的 e 过程，额度总和不超过 1。24 个规则假设、3,000 条零假设路径上，不加调整的反复检验有 94.5% 的路径出现误晋级，PROMOTE 为 0.0%；Agent 自选候选和出生时间时，误晋级 1.77%。真实市场回放中，扣除成本后没有规则晋级。局限：只控制历史上的误晋级，不保证上线后仍有超额收益。</dd><dt>Who<small>谁</small></dt><dd>Eric Benhamou、Jean-Jacques Ohana 等 6 位作者。</dd><dt>When<small>何时</small></dt><dd>11-02，arXiv 预印本，已被 ICAIF 2026 录用。</dd><dt>Action<small>行动建议</small></dt><dd>让 Agent 做策略研究时，记录每个候选的提出时间，只用之后的数据检验，并给全部候选设一个总的误报预算。</dd></dl>
+    <p class="src">原文：<a href="https://arxiv.org/abs/2611.03384" lang="en">Can We Stop the Backtest Yet? Anytime-Valid Promotion Tests for Adaptive Financial Research Agents</a>（arXiv），11-02</p>
+  </details>
+  </div>
+</section>
+
+<section aria-labelledby="s-prod">
+  <h2 id="s-prod">产品<span class="count">其余 1 条，点开看详情</span></h2>
+  <div class="items">
+  <details class="item" id="i-phenoplus">
+    <summary><span class="c">犹他大学医疗｜在病历系统里嵌入表型整理工具</span><span class="so">医生只审模型提的术语，耗时少了三分之二</span><span class="item-meta"><span class="chip zs">招熟</span><span class="ind">医疗</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>Pheno+ 是嵌在犹他大学医疗电子病历里的 SMART on FHIR 应用：读取医生选定的病历，用 NLP 工具 ClinPhen 提出候选的人类表型本体（HPO）术语，医生审核后用于基因诊断。</dd><dt>Why<small>为什么重要</small></dt><dd>模型只出候选、医生做取舍，工具直接嵌在病历系统里，不另开界面。这是医疗 AI 最容易落地的一种形态，金融的尽调、反洗钱整理也是同样的结构。</dd><dt>How<small>怎么做的</small></dt><dd>8 例交叉对照中，平均总耗时从 31.1 分钟降到 10.5 分钟，少 66%（p &lt; 0.001）。17 例已确诊的单基因病中，用 Pheno+ 的术语输入 Exomiser，致病基因全部排第一。局限：样本很小，只在一家医院；摘要没有给出与不输入表型时的对比数字。</dd><dt>Who<small>谁</small></dt><dd>犹他大学和犹他大学医疗，通讯作者 Martin Tristani-Firouzi。</dd><dt>When<small>何时</small></dt><dd>11-02，预印本。</dd><dt>Action<small>行动建议</small></dt><dd>找一个“从长记录里整理结构化字段”的环节，做成嵌在现有系统里的候选加审核，记录前后耗时。</dd></dl>
+    <p class="src">原文：<a href="https://www.medrxiv.org/content/10.64898/2026.11.02.26366992v1" lang="en">Pheno+: An Electronic Health Record-Integrated, Clinician-in-the-Loop Application for Efficient Phenotyping in Clinical Genomics</a>（medRxiv），11-02</p>
+  </details>
+  </div>
+</section>
+
+<section aria-labelledby="s-act">
+  <h2 id="s-act">本期行动</h2>
+  <ol class="acts">
+    <li><a href="#i-arca">Arca 财富管理 Agent</a>列出金融 Agent 的不可逆动作，用代码规则锁给人，其余步骤让 Agent 主动推进。</li>
+    <li><a href="#i-jev-judge">决策模型当医疗评审</a>评审分两层：便宜模型全量初筛，最不确定的一批送前沿模型或专家，遗漏类错误单独抽检。</li>
+    <li><a href="#i-goldman">高盛收回 AI 编程工具</a>推编程 Agent 前先定维护人和运行边界，没有受治理的平台就只给工程岗。</li>
+    <li><a href="#i-leanguard">LeanGuard 工具调用规则</a>把禁止动作从提示词搬到工具网关，被拒时把规则原文回给 Agent。</li>
+    <li><a href="#i-flashprove">FlashProve 可证明推理</a>审计清单加一项“能否证明调用的模型版本”，先用合同条款补上。</li>
+    <li><a href="#i-triage-referral">通用模型过度建议就医</a>健康类测试集加一组“不必就医”的病例，同时统计漏转诊和过度转诊。</li>
+    <li><a href="#i-statebench">StateBench 状态追踪</a>算余额、累计剂量这类最终状态时，让模型逐条抽取变更，再用代码计算。</li>
+  </ol>
+</section>
+
+<section aria-labelledby="s-appx">
+  <h2 id="s-appx">附录</h2>
+  <details><summary>本期条目总表（10 条）</summary><div class="tbl"><table>
+    <thead><tr><th>日期</th><th>行业</th><th>轨道</th><th>阶段</th><th>条目</th><th>标签</th><th>总分</th><th>来源</th><th>去向</th></tr></thead>
+    <tbody>
+      <tr><td class="num">10-31</td><td>金融</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-arca">Arca 财富管理 Agent</a></td><td>Agent、权限、人机协作</td><td class="num">80</td><td>Latent Space</td><td>建议入书</td></tr>
+      <tr><td class="num">11-02</td><td>金融</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-goldman">高盛收回 AI 编程工具</a></td><td>AI 编程、权限、产业</td><td class="num">78</td><td>Finextra、The Decoder、PYMNTS</td><td>待定</td></tr>
+      <tr><td class="num">11-02</td><td>医疗</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-phenoplus">Pheno+ 表型整理工具</a></td><td>人机协作、产品化</td><td class="num">68</td><td>medRxiv</td><td>待定</td></tr>
+      <tr><td class="num">11-02</td><td>通用</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-flashprove">FlashProve 可证明推理</a></td><td>形式化验证、安全对齐</td><td class="num">75</td><td>Anthropic Research</td><td>建议入书</td></tr>
+      <tr><td class="num">11-02</td><td>医疗</td><td>技术</td><td><span class="chip zs">招熟</span></td><td><a href="#i-jev-judge">决策模型当医疗评审</a></td><td>LLM 评审、评测</td><td class="num">67</td><td>medRxiv</td><td>建议入书</td></tr>
+      <tr><td class="num">11-02</td><td>通用</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-leanguard">LeanGuard 工具调用规则</a></td><td>Agent、权限、形式化验证</td><td class="num">64</td><td>HF Daily Papers</td><td>待定</td></tr>
+      <tr><td class="num">11-02</td><td>医疗</td><td>技术</td><td><span class="chip zs">招熟</span></td><td><a href="#i-triage-referral">通用模型过度建议就医</a></td><td>评测</td><td class="num">56</td><td>medRxiv</td><td>待定</td></tr>
+      <tr><td class="num">11-02</td><td>通用</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-collab-intel">Agent 协作能力基准</a></td><td>评测、多智能体、人机协作</td><td class="num">56</td><td>HF Daily Papers</td><td>待定</td></tr>
+      <tr><td class="num">11-03</td><td>通用</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-statebench">StateBench 状态追踪</a></td><td>评测</td><td class="num">56</td><td>Hugging Face Blog</td><td>待定</td></tr>
+      <tr><td class="num">11-02</td><td>金融</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-promote">PROMOTE 回测停止规则</a></td><td>Agent、评测</td><td class="num">53</td><td>arXiv q-fin</td><td>待定</td></tr>
+    </tbody>
+  </table></div></details>
+</section>
+
+</div>
+<script>
+(function(){function o(){var e=location.hash&&document.getElementById(location.hash.slice(1));if(e&&e.tagName==='DETAILS')e.open=true}
+window.addEventListener('hashchange',o);o()})();
+</script>
