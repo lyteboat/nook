@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """生成 GitHub Pages 站点：雷达和随笔两个模块，墨红报刊版式。
 
-扫描 radar/YYYY/YYYY-MM-DD.html、topics/YYYY/YYYY-MM-DD-slug.html、notes/YYYY/YYYY-MM-DD-slug.html。
+扫描 radar/YYYY/YYYY-MM-DD.html、topics/YYYY/YYYY-MM-DD-slug.html、notes/YYYY/YYYY-MM-DD-slug.md（也收 .html）。
 - 首页（index.html）：最新一期的标题、一句话结论，本期专题，本期速览（技术、产品两栏，按总分排，必看四条标“必看”），最新随笔。
 - 每期页面（radar/…）：雷达原文，补上站点的报头、菜单、页尾和上一期、下一期翻页。
 - 专题（topics.html、topics/…）：长文解读，封面的 data-after 写它接在哪一期之后，那一期在首页挂出它；
@@ -29,6 +29,7 @@ OUT = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else ROOT / "_site")
 WEEKDAYS = "一二三四五六日"
 NAME_RE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})\.html$")
 SLUG_RE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})-([a-z0-9-]+)\.html$")
+NOTE_SLUG_RE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})-([a-z0-9-]+)\.(?:md|html)$")
 NOTE_KINDS = ["札记", "长文", "复盘", "过招"]
 HEAD = (
     '<!doctype html>\n<html lang="zh-CN">\n<head>\n<meta charset="utf-8">\n'
@@ -164,6 +165,10 @@ a.tag:hover{color:var(--nk-accent);border-color:var(--nk-accent)}
 .note .body ul,.note .body ol{padding-left:1.4em}.note .body ul{list-style:disc}.note .body ol{list-style:decimal}
 .note .body a{color:var(--nk-accent);text-decoration:underline;text-underline-offset:3px}
 .note .body blockquote{margin:0;padding-left:16px;border-left:3px solid var(--nk-accent);color:var(--nk-muted)}
+.note .body h3{font-size:18px;font-weight:700;color:var(--nk-ink);margin-top:1.6em}.note .body strong{color:var(--nk-ink)}
+.note .body code{font:500 .86em var(--nk-data);background:var(--nk-soft);padding:1px 5px;border-radius:3px}
+.note .body pre{font:400 13.5px/1.7 var(--nk-data);background:var(--nk-soft);padding:14px 16px;border-radius:4px;overflow-x:auto}.note .body pre code{background:none;padding:0;font-size:inherit}
+.note .body img{max-width:100%;height:auto}.note .body hr{border:0;border-top:1px solid var(--nk-line);margin:2em 0}
 .note .ref{margin-top:40px;padding-top:14px;border-top:1px solid var(--nk-line);font-size:13.5px;color:var(--nk-muted)}.note .ref a{color:var(--nk-accent)}
 @media (max-width:760px){.lead{padding:28px 0}.lead h1{font-size:29px;line-height:1.3;margin-bottom:14px}.lead .dek{font-size:16px;line-height:1.8}
 .sec{margin-top:40px}.sec-h h2{font-size:22px}.sec-h p{flex-basis:100%}
@@ -248,22 +253,26 @@ def collect_topics():
 
 
 def collect_notes():
-    """随笔是片段：<title>，加一个 <article class="note" data-kind="札记"> 包着 h1 和正文；data-ref 可写引用的那一期日期。"""
+    """随笔优先写成 Markdown（notes/YYYY/YYYY-MM-DD-slug.md），开头可写「写法」「引用」两行；
+    也收 HTML 片段：<title>，加一个 <article class="note" data-kind="札记"> 包着 h1 和正文，data-ref 写引用的那一期日期。"""
     notes = []
-    for path in sorted(NOTES.glob("*/*.html")):
-        m = SLUG_RE.match(path.name)
+    for path in sorted(NOTES.glob("*/*.md")) + sorted(NOTES.glob("*/*.html")):
+        m = NOTE_SLUG_RE.match(path.name)
         if not m:
             continue
         source = path.read_text(encoding="utf-8")
-        art = re.search(r'<article class="note"([^>]*)>(.*?)</article>', source, re.S)
-        if not art:
-            continue
-        attrs = dict(re.findall(r'data-(\w+)="([^"]*)"', art.group(1)))
-        inner = art.group(2)
+        if path.suffix == ".md":
+            attrs, inner = parse_note_md(source)
+        else:
+            art = re.search(r'<article class="note"([^>]*)>(.*?)</article>', source, re.S)
+            if not art:
+                continue
+            attrs = dict(re.findall(r'data-(\w+)="([^"]*)"', art.group(1)))
+            inner = art.group(2)
         kind = attrs.get("kind", "")
         notes.append({
             "date": datetime.date(*map(int, m.groups()[:3])),
-            "rel": path.relative_to(NOTES).as_posix(),
+            "rel": path.with_suffix(".html").relative_to(NOTES).as_posix(),
             "title": first(r"<h1[^>]*>(.*?)</h1>", inner) or path.stem,
             "kind": kind if kind in NOTE_KINDS else "札记",
             "ref": attrs.get("ref", ""),
@@ -271,6 +280,112 @@ def collect_notes():
         })
     notes.sort(key=lambda n: n["date"], reverse=True)
     return notes
+
+
+NOTE_META_KEYS = {"写法": "kind", "引用": "ref"}
+
+
+def parse_note_md(source):
+    """拆出开头 --- 之间的「写法：」「引用：」，其余按 Markdown 转成 HTML。"""
+    attrs = {}
+    fm = re.match(r"\ufeff?---\s*\n(.*?)\n---\s*\n", source, re.S)
+    if fm:
+        for line in fm.group(1).splitlines():
+            key, _, value = re.sub(r"\s*：\s*|\s*:\s*", ":", line.strip(), count=1).partition(":")
+            if key in NOTE_META_KEYS:
+                attrs[NOTE_META_KEYS[key]] = value
+        source = source[fm.end():]
+    return attrs, md_to_html(re.sub(r"<!--.*?-->", "", source, flags=re.S))
+
+
+CJK = r"[　-〿㐀-鿿＀-￯]"
+
+
+def md_inline(text):
+    """行内：`代码`、**加粗**、*斜体*、[链接](地址)、![图](地址)。先转义，代码里的内容不再处理。"""
+    codes = []
+
+    def keep(m):
+        codes.append(f"<code>{m.group(1)}</code>")
+        return f"\x00{len(codes) - 1}\x00"
+    text = re.sub(r"`([^`]+)`", keep, html.escape(text, quote=False))
+    text = re.sub(r"!\[([^\]]*)\]\(([^)\s]+)\)", r'<img src="\2" alt="\1">', text)
+    text = re.sub(r"\[([^\]]+)\]\(([^)\s]+)\)", r'<a href="\2">\1</a>', text)
+    text = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", text)
+    text = re.sub(r"(?<![*\w])\*(?!\s)(.+?)(?<!\s)\*(?![*\w])", r"<em>\1</em>", text)
+    return re.sub(r"\x00(\d+)\x00", lambda m: codes[int(m.group(1))], text)
+
+
+def md_join(lines):
+    """段内换行：两边有一边是中文就直接接上，免得浏览器把换行显示成空格。"""
+    out = ""
+    for line in lines:
+        line = line.strip()
+        if out and not (re.search(CJK + "$", out) or re.match(CJK, line)):
+            out += " "
+        out += line
+    return out
+
+
+def md_to_html(source):
+    """随笔用到的 Markdown：标题、段落、列表、引用、代码块、分隔线和行内格式。"""
+    out, para, items, quote_lines = [], [], None, []
+    lines = source.replace("\r\n", "\n").split("\n")
+
+    def flush():
+        nonlocal para, items, quote_lines
+        if para:
+            out.append(f"<p>{md_inline(md_join(para))}</p>")
+        if items:
+            tag, rows = items
+            out.append(f"<{tag}>" + "".join(f"<li>{md_inline(md_join(r))}</li>" for r in rows) + f"</{tag}>")
+        if quote_lines:
+            out.append(f"<blockquote>{md_to_html(chr(10).join(quote_lines))}</blockquote>")
+        para, items, quote_lines = [], None, []
+
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        fence = re.match(r"\s*```", line)
+        bullet = re.match(r"\s*(?:[-*+]|(\d+)[.、)])\s+(.*)", line)
+        if fence:
+            flush()
+            j = i + 1
+            while j < len(lines) and not re.match(r"\s*```", lines[j]):
+                j += 1
+            out.append("<pre><code>" + html.escape("\n".join(lines[i + 1:j]), quote=False) + "</code></pre>")
+            i = j + 1
+            continue
+        if not line.strip():
+            flush()
+        elif m := re.match(r"(#{1,4})\s+(.*?)\s*#*\s*$", line):
+            flush()
+            n = len(m.group(1))
+            out.append(f"<h{n}>{md_inline(m.group(2))}</h{n}>")
+        elif re.match(r"\s*([-*_])(\s*\1){2,}\s*$", line):
+            flush()
+            out.append("<hr>")
+        elif line.lstrip().startswith(">"):
+            if not quote_lines:
+                flush()
+            quote_lines.append(re.sub(r"^\s*>\s?", "", line))
+        elif bullet:
+            tag = "ol" if bullet.group(1) else "ul"
+            if items is None or items[0] != tag:
+                flush()
+                items = (tag, [])
+            items[1].append([bullet.group(2)])
+        elif items is not None and line.startswith((" ", "\t")):
+            items[1][-1].append(line)
+        elif quote_lines:
+            quote_lines.append(line)
+        else:
+            if items is not None:
+                flush()
+            para.append(line)
+        i += 1
+    flush()
+    return "\n".join(out)
 
 
 def attach_topics(issues, topics):
