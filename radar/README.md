@@ -30,6 +30,7 @@
 | 评测 | 基准与评测方法（Evaluation、Benchmark） |
 | LLM 评审 | 用模型做评审（LLM-as-a-Judge） |
 | 安全对齐 | 安全与对齐（Safety、Alignment） |
+| 隐私 | 个人信息与数据隐私（Privacy） |
 | 人机协作 | 人在回路（Human-in-the-loop）与人工审核 |
 | 形式化验证 | 形式化验证（Formal Verification） |
 | AI 编程 | 代码生成与编程 Agent（AI Coding） |
