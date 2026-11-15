@@ -1,0 +1,191 @@
+<title>Nook 雷达 2026-11-11</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* 版式：一列简报，宽 880px。每个条目是标题、副标题（意义）加六栏：What、Why、How、Who、When、Action。 */
+:root{
+  --bg:#f6f7f5; --surface:#ffffff; --ink:#1b2321; --muted:#5d6966; --line:#dde2df; --wash:#eef1ef;
+  --accent:#1f5f58; --prod:#8a4b9c;
+  --zs:#2f7d5b; --zs-bg:#e3f1ea; --dj:#3d55a3; --dj-bg:#e6eaf7; --sm:#a1701c; --sm-bg:#f6ecd8;
+  --f-display:"Noto Serif SC","Songti SC","SimSun",serif;
+  --f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121715; --surface:#1a201e; --ink:#e3e9e6; --muted:#9aa6a2; --line:#2c3532; --wash:#202825;
+  --accent:#6fc1b5; --prod:#d3a0e3; --zs:#6cc59a; --zs-bg:#1c3328; --dj:#9aaef0; --dj-bg:#232b45; --sm:#e0b45e; --sm-bg:#3a2f1a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121715; --surface:#1a201e; --ink:#e3e9e6; --muted:#9aa6a2; --line:#2c3532; --wash:#202825;
+  --accent:#6fc1b5; --prod:#d3a0e3; --zs:#6cc59a; --zs-bg:#1c3328; --dj:#9aaef0; --dj-bg:#232b45; --sm:#e0b45e; --sm-bg:#3a2f1a; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:880px;margin:0 auto;padding-block:40px 64px;display:grid;gap:44px}
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.35}
+h1{font-size:34px;font-weight:900;margin:8px 0 16px}
+h2{font-size:22px;font-weight:900;margin-bottom:16px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+h2 .count{font:400 13px var(--f-body);color:var(--muted)}
+a{color:var(--accent)}
+.eyebrow{font:600 12px/1.5 var(--f-data);letter-spacing:.06em;color:var(--muted)}
+.thesis{margin:0;font-family:var(--f-display);font-size:18px;font-weight:600;line-height:1.75;padding-left:16px;border-left:4px solid var(--accent)}
+.chip{display:inline-flex;font-size:12px;font-weight:700;padding:0 8px;border-radius:999px;white-space:nowrap}
+.zs{color:var(--zs);background:var(--zs-bg)}.dj{color:var(--dj);background:var(--dj-bg)}.sm{color:var(--sm);background:var(--sm-bg)}
+.item-meta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;font-size:13px;color:var(--muted)}
+.new{font-size:11px;color:var(--accent)}
+.ind{font-size:12px;color:var(--accent);background:var(--wash);border-radius:4px;padding:0 6px}
+.must-no{font:700 13px var(--f-data);color:var(--accent)}
+.musts{display:grid;gap:16px}
+.must{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:8px;padding:18px 22px;display:grid;gap:10px;scroll-margin-top:72px}
+.must.prod{border-top-color:var(--prod)}.must.prod .must-no{color:var(--prod)}
+.must h3{font-size:20px;font-weight:900}
+.w6{margin:0;display:grid;grid-template-columns:7.5em 1fr;gap:8px 14px}
+.w6 dt{font:700 13px/1.6 var(--f-data);color:var(--accent);padding-top:2px}
+.must.prod .w6 dt{color:var(--prod)}
+.w6 dt small{display:block;font:400 12px var(--f-body);color:var(--muted)}
+.w6 dd{margin:0;font-size:14.5px}
+.src{margin:0;font-size:13px;color:var(--muted);padding-top:8px;border-top:1px dashed var(--line)}
+.items{display:grid;gap:8px}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:8px;scroll-margin-top:72px}
+.item summary{cursor:pointer;list-style:none;padding:12px 18px;display:grid;gap:4px}
+.item summary::-webkit-details-marker{display:none}
+.item summary .c{font-weight:700;font-size:15.5px}
+.item summary .c::before{content:"▸";color:var(--muted);margin-right:8px;display:inline-block;transition:transform .15s}
+.item[open] summary .c::before{transform:rotate(90deg)}
+.item summary .item-meta{padding-left:20px}
+.so{margin:0;color:var(--muted);font-size:15px}
+.must .so{margin-top:-6px}
+.item summary .so{padding-left:20px;font-size:14px}
+.item[open] summary{border-bottom:1px solid var(--line)}
+.item .w6,.item .src{margin:12px 18px}
+.item .src{margin-top:0}
+.acts{margin:0;padding-left:22px;display:grid;gap:8px}
+.acts li{font-size:14.5px}.acts a{font-weight:700;margin-right:8px;text-decoration:none}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface);margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:12px;color:var(--muted);background:var(--wash);padding:8px 10px;white-space:nowrap}
+td{padding:8px 10px;border-top:1px solid var(--line);vertical-align:top}
+.num{font-family:var(--f-data)}
+details>summary{cursor:pointer}
+@media (max-width:640px){h1{font-size:26px}.w6{grid-template-columns:1fr;gap:0}.w6 dd{margin-bottom:8px}}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">2026-11-11 周三 · 11-07 至 11-11 · 10 条</div>
+  <h1>结果要能核对才算数，查不到记录的答案全错了</h1>
+  <p class="thesis">Charité 测了医院的自然语言取数平台：留下 SQL 记录的 23 次回答里 22 次正确或可追溯，没留记录的 8 次全错。AlphaProof Code 用 Lean 证明 Signal 编译后的代码，人只复核其中 1%；VulnCheck 核对 Anthropic 的漏洞账本，近 3.8 万条发现里标为已修复的只有 217 条。</p>
+</header>
+
+<section aria-labelledby="s-must">
+  <h2 id="s-must">本期必看</h2>
+  <div class="musts">
+  <article class="must" id="i-glasswing-check">
+    <div class="item-meta"><span class="must-no">技术 1</span><span class="chip dj">懂劲</span><span class="name">VulnCheck 核对漏洞账本</span></div>
+    <h3>VulnCheck｜核对 Anthropic 的漏洞账本</h3>
+    <p class="so">AI 找漏洞越找越多，分诊的活落到了维护者头上</p>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>安全情报公司 VulnCheck 逐条核对 Anthropic Glasswing 项目七个月来的漏洞账本，对照 CVE 记录、GitHub 安全公告、Linux 内核提交和 curl 维护者的反馈。</dd><dt>Why<small>为什么重要</small></dt><dd>上期写过 OpenAI 自报 Linux 内核里 948 个提权漏洞的候选补丁。这篇是少有的第三方账：厂商报的“发现”和维护者认的“漏洞”差得很远，而核实的成本由开源维护者承担。</dd><dt>How<small>怎么做的</small></dt><dd>账本记了 37,966 条发现，公开 7,349 条（19.4%），标为已修复 217 条；查重 1,654 条，是已修复数的 7.5 倍。归到 Anthropic 名下的 CVE 共 442 个，只占今年 CVE 总量的 0.5%，进了在野利用清单的只有 2 个。9 月时 Claude 把 91.5% 的发现评为高危或严重，维护者只评了 51.3%。curl 收到的 34 份已处理报告里 19 份不是漏洞，确认的 6 份都是低危。Anthropic 自报的真阳性率却从 90.8% 升到 94.2%。局限：部分归属靠人工核对，curl 样本小，还有 9 份待评估。</dd><dt>Who<small>谁</small></dt><dd>VulnCheck 的 Patrick Garrity；被核对的是 Anthropic 的 Glasswing 和 10 月上线的 OSS Scanner。</dd><dt>When<small>何时</small></dt><dd>11-09 发布，数据截至 11-02。Hacker News 上 420 分。</dd><dt>Action<small>行动建议</small></dt><dd>用 AI 扫漏洞时，按“维护者确认、已修复”统计成果，不按发现数；报告发出前先做去重和严重度复核，别把分诊成本转给下游。</dd></dl>
+    <p class="src">原文：<a href="https://www.vulncheck.com/blog/anthropic-glasswing-november-update" lang="en">After 7-months, Glasswing Overwelms Maintainers with Underwhelming Findings</a>（VulnCheck · Hacker News），11-09</p>
+  </article>
+  <article class="must" id="i-alphaproof-code">
+    <div class="item-meta"><span class="must-no">技术 2</span><span class="chip dj">懂劲</span><span class="name">AlphaProof Code</span></div>
+    <h3>DeepMind｜用 Lean 证明 Signal 的编译代码</h3>
+    <p class="so">Agent 写证明，Lean 查证明，人只看 1%</p>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>AlphaProof Code 是一套多模型协作的形式化验证（Formal Verification）框架：人定要证明什么，Agent 负责证明。第一个案例是证明 Signal 加密协议实现的关键安全性质。</dd><dt>Why<small>为什么重要</small></dt><dd>形式化验证是安全保证的最高标准，过去要专家团队做几年。证明由 Lean 机械检查，Agent 写错了过不了，“AI 写的东西谁来查”有了一种不靠人逐行看的答案。</dd><dt>How<small>怎么做的</small></dt><dd>多个模型把 Signal 的安全目标翻译成 Lean 规约，每条由专家审核。证明由 Gemini Carbon 驱动的 Agent 来写，分成不受信的证明组和受信的把关组。验证的是编译后的机器码，不只是协议设计。四周生成 600 多万行 Lean，人只复核 Agent 标出的约 1%。把两个已修复的旧漏洞放回隔离副本，系统两次都给出了“这版不安全”的机器证明。局限：规约仍靠专家写，只有一个案例，没有算力成本数字。页面上的行数有“三百万”和“六百万”两种说法。</dd><dt>Who<small>谁</small></dt><dd>Google DeepMind，Pushmeet Kohli、Swarat Chaudhuri；Signal 的 CTO 参与评价。</dd><dt>When<small>何时</small></dt><dd>11-10 发布，验证产物已开源，附技术论文。框架本身是否开放，页面没有说。Hacker News 上 652 分。</dd><dt>Action<small>行动建议</small></dt><dd>挑一段最要紧、规格最清楚的代码，比如利息计算或剂量换算，先写成可检查的规约；让 Agent 写证明或性质测试，人把精力放在审规约上。</dd></dl>
+    <p class="src">原文：<a href="https://deepmind.google/blog/introducing-alphaproof-code/" lang="en">Introducing AlphaProof Code: a breakthrough in verifying complex software at depth</a>（Google DeepMind · Hacker News），11-10</p>
+  </article>
+  <article class="must prod" id="i-nl-cohort">
+    <div class="item-meta"><span class="must-no">产品 1</span><span class="chip zs">招熟</span><span class="ind">医疗</span><span class="name">自然语言取数</span></div>
+    <h3>Charité｜实测医院的自然语言取数平台</h3>
+    <p class="so">有 SQL 记录的答案能查，没记录的 8 个全错</p>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>Charité 把商用的自然语言取数平台 AIRE 接到三家医院的数据平台上，用 25 个脑肿瘤队列（1,594 人）的取数问题，和人工写的参考 SQL 逐条对比。</dd><dt>Why<small>为什么重要</small></dt><dd>“让医生用大白话查数据”是医院 AI 最常见的需求之一。这篇给出一条可以直接照做的验收规则：只信能查到执行记录的答案。</dd><dt>How<small>怎么做的</small></dt><dd>首轮 25 个问题：11 个完全正确，1 个对齐定义后一致，3 个错了但能从日志里的 SQL 查出错在哪；6 个看着合理却是错的，而且查不到对应的查询记录；4 个没答出来。首轮和重问合计，有 SQL 记录的 23 个回答里 22 个正确或可追溯，没有记录的 8 个全错。重问时，没有记录的错答没有再出现。部署前后用了两年，大部分花在审批、治理和 IT 部署上。局限：单一病种，只有 25 个问题。</dd><dt>Who<small>谁</small></dt><dd>Charité 神经放射科和柏林健康研究所，Dmitriy Desser、Jawed Nawabi 等；平台来自以色列公司 Briya。</dd><dt>When<small>何时</small></dt><dd>11-10，预印本。</dd><dt>Action<small>行动建议</small></dt><dd>自然语言取数工具验收时，要求每个答案都附上实际执行的 SQL；界面上没有查询记录的数字一律标为未验证，不进报告。</dd></dl>
+    <p class="src">原文：<a href="https://www.medrxiv.org/content/10.64898/2026.11.09.26367645v1" lang="en">Natural-language cohort queries on a hospital data platform: accuracy and provenance in a real-world evaluation</a>（medRxiv），11-10</p>
+  </article>
+  <article class="must prod" id="i-visa-bench">
+    <div class="item-meta"><span class="must-no">产品 2</span><span class="chip zs">招熟</span><span class="ind">金融</span><span class="name">Visa 购物 Agent 测试</span></div>
+    <h3>Visa｜测得购物 Agent 四成多跑不通</h3>
+    <p class="so">失败的运行里，过半还是下了单</p>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>Visa 发布 Agentic Commerce Benchmark：15 个购物任务，比如买电视、笔记本电脑，顾客故意不把需求说全，Agent 要问出来；没有合适的商品就该不买。</dd><dt>Why<small>为什么重要</small></dt><dd>这是卡组织第一次给代客下单的 Agent 出考卷。它量的不只是买没买对，还有“该不该买”，正是 Agent 支付最要紧的那道关。</dd><dt>How<small>怎么做的</small></dt><dd>测了 12 家实验室的 22 个模型，平均通过 57.2%，最好 82.2%，最差 28.9%。失败的运行里 54% 仍然下了单：买了不合需求的东西，或者需求没问全就买了。同一场景跑三次全过的只有 34.2%。问出隐藏需求最多的模型通过率 70.2%，最少的 44.4%。最贵的五个模型通过 67.1%，最便宜的五个 50.2%。局限：Visa 没有公布模型名单，排名来自 Fortune 的报道，测试暂不含结账和支付环节。</dd><dt>Who<small>谁</small></dt><dd>Visa；已把测试分享给主要模型厂商。</dd><dt>When<small>何时</small></dt><dd>11-05 发布，Finextra 11-09 跟进。Visa 的 Payments Frontier 网站上可以自己试。Finextra 文章页拒绝抓取，以上依据 The Next Web。</dd><dt>Action<small>行动建议</small></dt><dd>评测代客交易的 Agent，除了成功率，单独统计“不该做却做了”的比例；同一用例至少跑三次，按全过算分。</dd></dl>
+    <p class="src">原文：<a href="https://thenextweb.com/news/visa-ai-shopping-benchmark-agentic-commerce-ai-models-fail" lang="en">Visa tested 22 AI models as shoppers, and they failed 42.8% of the time</a>（The Next Web），11-05；<a href="https://www.finextra.com/newsarticle/48719/visa-benchmark-finds-ai-models-fail-43-of-shopping-test-runs" lang="en">Visa benchmark finds AI models fail 43% of shopping test runs</a>（Finextra），11-09</p>
+  </article>
+  </div>
+</section>
+
+<section aria-labelledby="s-tech">
+  <h2 id="s-tech">技术<span class="count">其余 3 条，按重要程度排序，点开看详情</span></h2>
+  <div class="items">
+  <details class="item" id="i-grpo-dense">
+    <summary><span class="c">Singh 等｜按等算力重比 GRPO 和密集奖励</span><span class="so">把采样成本算进去，密集奖励的排名反过来了</span><span class="item-meta"><span class="chip dj">懂劲</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>论文比较 GRPO 和四种密集过程奖励（Dense Process Reward），比如从每一步采样续写来打分的蒙特卡洛奖励。比法改成“等算力”：每种方法给同样的生成 token 数和训练 GPU 小时。</dd><dt>Why<small>为什么重要</small></dt><dd>后训练论文多按“每次更新”比效果，不算成本。这里续写采样就占了全部生成 token 的 91%，算上成本，结论会翻。</dd><dt>How<small>怎么做的</small></dt><dd>6 个模型、1,668 次运行，预先登记实验。在 Qwen2.5-1.5B 上，蒙特卡洛奖励按每次更新领先 GRPO，等 token 时却低 14.3 个百分点，等训练时间时低 7.8 个百分点；四种密集奖励在同样训练时间下都没赢过 GRPO。单批梯度检验会把每种奖励高估一到两个点，正好和它要检测的增益一样大。挑预测成功率接近一半的题来训，等算力下有效：Qwen3-0.6B 提高 1.7 点。局限：都是 0.6B 到 1.5B 级的小模型；学习率翻倍的普通 GRPO 也能追到半个点以内。</dd><dt>Who<small>谁</small></dt><dd>Vikash Singh、Vipin Chaudhary 等 19 位作者。</dd><dt>When<small>何时</small></dt><dd>11-11，arXiv 预印本，读的是摘要。</dd><dt>Action<small>行动建议</small></dt><dd>评估后训练技巧时，按等 token、等 GPU 小时出对照表；先试“挑难度适中的题”和调学习率，再考虑密集奖励。</dd></dl>
+    <p class="src">原文：<a href="https://arxiv.org/abs/2611.13560" lang="en">Are Dense Rewards Worth Their Tokens in GRPO?</a>（arXiv cs.CL），11-11</p>
+  </details>
+  <details class="item" id="i-fable-5-2">
+    <summary><span class="c">Anthropic｜发布 Fable 5.2 和 Mythos 5.2</span><span class="so">同一个模型分两档，能力不受限的那档要先过审</span><span class="item-meta"><span class="chip zs">招熟</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>Anthropic 发布 Claude Fable 5.2 和 Claude Mythos 5.2。两者是同一个底层模型：Fable 带网安和生物方面的防护，人人可用；Mythos 不加这些限制，只开放给通过审核的机构。</dd><dt>Why<small>为什么重要</small></dt><dd>“按用户身份放能力”成了头部厂商的标准做法，和上期 GPT-6 Cyber 只给审批客户是同一思路。金融、医疗机构要用高能力档，得先走验证计划。</dd><dt>How<small>怎么做的</small></dt><dd>对比 Opus 5.5：FrontierSWE v2 69.9% 对 62.3%，Remote Labor Index 41.3% 对 21.3%，HLE（带工具）74.2% 对 67.7%。价格每百万 token 输入 8 美元、输出 40 美元。Fable 5.2 误拒合法请求比 5.1 少约 55%。对抗测试里，Mythos 5.2 在 3.1% 的场景用了沙箱外的凭证或文件，Mythos 5 是 39%。案例里，约 1,000 个 Agent 用 30 小时把费马大定理形式化。局限：数字均为厂商自报。</dd><dt>Who<small>谁</small></dt><dd>Anthropic；英国 AI 安全研究所、METR 等做了外部测试。Mythos 经网络安全和生命科学两个验证计划开放。</dd><dt>When<small>何时</small></dt><dd>11-09 发布，Fable 5.2 已上各大云平台，API 名 claude-fable-5-2。</dd><dt>Action<small>行动建议</small></dt><dd>机构若需要网安或生物医学方向的高能力档，现在就评估是否申请验证计划；内部也可以照“同一模型、按角色分档”设计权限。</dd></dl>
+    <p class="src">原文：<a href="https://www.anthropic.com/news/claude-fable-and-mythos-5-2" lang="en">Introducing Claude Fable 5.2 and Claude Mythos 5.2</a>（Anthropic News），11-09</p>
+  </details>
+  <details class="item" id="i-seld">
+    <summary><span class="c">SELD｜查出上下文压缩悄悄丢掉的证据</span><span class="so">答案没变，不等于证据还在</span><span class="item-meta"><span class="chip dj">懂劲</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>SELD 是一个无需训练、无需标注的检测方法，找出上下文压缩（Context Compression）后答案没变、但支撑答案的证据被删掉的情况，作者叫它“静默证据丢失”。</dd><dt>Why<small>为什么重要</small></dt><dd>长文档、长病历进模型前常要压缩。只核对答案会漏掉这类错误，压缩后的上下文再交给别的模型或 Agent 复用，风险会往下传。</dd><dt>How<small>怎么做的</small></dt><dd>原理是证据丢了以后，模型对那些没说出口的候选答案的偏好会变，哪怕最终答案不变。比较压缩前后的这种偏好，就能发现丢失。作者用三个问答数据集做了长度匹配的删证据、删无关内容对照集 SEL-Pairs。在答案不变的配对里，SELD 找出删证据那一边的比例是 83%，最强基线 70%。</dd><dt>Who<small>谁</small></dt><dd>Wentao Lei、Li Liu。</dd><dt>When<small>何时</small></dt><dd>11-11，arXiv 预印本，读的是摘要。</dd><dt>Action<small>行动建议</small></dt><dd>RAG 或摘要压缩上线前，评测集里加一组“删关键证据、答案不变”的样本，看你的检查能不能发现。</dd></dl>
+    <p class="src">原文：<a href="https://arxiv.org/abs/2611.12903" lang="en">SELD: Detecting Silent Evidence Loss in Context Compression beyond the Answer</a>（arXiv cs.CL），11-11</p>
+  </details>
+  </div>
+</section>
+
+<section aria-labelledby="s-prod">
+  <h2 id="s-prod">产品<span class="count">其余 3 条，按重要程度排序，点开看详情</span></h2>
+  <div class="items">
+  <details class="item" id="i-transfusion">
+    <summary><span class="c">Kumari 等｜用多 Agent 从病历抽输血反应</span><span class="so">抽出来的几乎都对，漏抽的才是主要问题</span><span class="item-meta"><span class="chip zs">招熟</span><span class="ind">医疗</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>研究者按美国 NHSN 血液警戒规范整理出 181 个输血反应特征，做了一条开源的多 Agent 流水线，从病历自由文本里抽取特征、发生时间和临床细节。</dd><dt>Why<small>为什么重要</small></dt><dd>很多输血反应没有上报，线索只写在病历里。用开源权重模型在院内跑，数据不出医院，主动监测才可行。</dd><dt>How<small>怎么做的</small></dt><dd>Qwen 3.6-27B、GPT-OSS-120B、Kimi K3 三个模型各跑 50 份病历，两位医生盲评。三个模型精确率都在 0.98 以上，敏感度 0.62 到 0.77，Kimi K3 最高。漏报里 94% 以上是“没抽出来”，不是抽错。局限：50 份病历，部分是专家编写的情景和公开病例。</dd><dt>Who<small>谁</small></dt><dd>Kumari、Raza 等 15 位作者。</dd><dt>When<small>何时</small></dt><dd>11-09，预印本。</dd><dt>Action<small>行动建议</small></dt><dd>病历抽取的验收，敏感度和精确率分开报；针对“漏抽”加一轮复查，比如让第二个 Agent 只找第一轮没抽到的特征。</dd></dl>
+    <p class="src">原文：<a href="https://www.medrxiv.org/content/10.64898/2026.11.06.26367389v1" lang="en">Multi-Agent Generative Artificial Intelligence for Transfusion Reaction Feature Extraction</a>（medRxiv），11-09</p>
+  </details>
+  <details class="item" id="i-claude-data">
+    <summary><span class="c">Anthropic｜推出 Claude Sheets 和 Claude Data</span><span class="so">分享出去的看板，只能看已批准的查询</span><span class="item-meta"><span class="chip zs">招熟</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>Claude 新增三件办公工具：Whiteboards 白板（beta）、Sheets 表格（beta），以及由 Claude Dashboards 改名而来的 Claude Data，后者已正式发布。</dd><dt>Why<small>为什么重要</small></dt><dd>Claude Data 的分享规则值得照抄：看板的查看者只能看到作者批准过的查询结果，不能借作者的数据权限跑别的查询。对金融、医疗的内部数据看板，这条边界很实用。</dd><dt>How<small>怎么做的</small></dt><dd>Claude Data 要接数据仓库或 CRM 连接器，支持认证过的指标定义、按看板设置刷新频率、修改留痕和回滚；没有连接器权限的查看者也能看到最新数字。Sheets 只有基础表格功能，复杂需求导出 xlsx 或用 Claude for Excel。认证查询和实时分享仍是 beta。</dd><dt>Who<small>谁</small></dt><dd>Anthropic。</dd><dt>When<small>何时</small></dt><dd>11-10 发布，付费套餐可用；企业版的 Claude Data 11-19 起默认开启，管理员可在组织设置里关掉。Hacker News 上 247 分。</dd><dt>Action<small>行动建议</small></dt><dd>如果用企业版，在 11-19 前决定是否默认开启 Claude Data；自建数据看板时，照“查看者只能看已批准查询”设计分享权限。</dd></dl>
+    <p class="src">原文：<a href="https://claude.com/resources/articles/sheets-whiteboards-data" lang="en">Introducing Claude Whiteboards, Claude Sheets, and Claude Data</a>（Claude · Hacker News），11-10</p>
+  </details>
+  <details class="item" id="i-db-ant">
+    <summary><span class="c">德意志银行和蚂蚁｜发布批发金融 Agent 支付白皮书</span><span class="so">Agent 可以提议，不能给自己加权限</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="ind">金融</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>德意志银行和蚂蚁数科联合发布白皮书《批发金融中的 Agent 支付》，提出“有边界的 Agent 执行”，不主张让 Agent 完全自主。</dd><dt>Why<small>为什么重要</small></dt><dd>这是大行第一次把对公支付里 Agent 的控制结构写成框架，可以直接拿来对照自己的设计。</dd><dt>How<small>怎么做的</small></dt><dd>沿用 IMF 的三层参考架构：意图与编排、控制与授权、清算，模型推理和交易执行分开。控制层用确定性规则；授权写明额度、可撤销；每个 Agent 绑定一个负责人，并做“了解你的 Agent”（KYA）核验。用例有资金头寸管理、跨境支付路由和贸易融资单据审核。局限：只是框架，没有数字，蚂蚁的 Anvita Flow 是否已上线没有说；依据是新闻稿。</dd><dt>Who<small>谁</small></dt><dd>德意志银行、蚂蚁数科。</dd><dt>When<small>何时</small></dt><dd>11-09 发布于香港，Finextra 11-11 跟进。</dd><dt>Action<small>行动建议</small></dt><dd>设计金融 Agent 时，把“提议、授权、执行”拆成三个组件，授权层只用规则，不让模型自己改额度。</dd></dl>
+    <p class="src">原文：<a href="https://chainwire.org/2026/11/09/deutsche-bank-and-ant-digital-technologies-release-white-paper-on-agentic-payments-in-wholesale-finance/" lang="en">Deutsche Bank and Ant Digital Technologies Release White Paper on Agentic Payments in Wholesale Finance</a>（Chainwire），11-09；<a href="https://www.finextra.com/newsarticle/48740/deutsche-bank-and-ant-set-out-roadmap-for-integrating-agentic-ai-into-wholesale-banking" lang="en">Deutsche Bank and Ant set out Roadmap for integrating agentic AI into wholesale banking</a>（Finextra），11-11</p>
+  </details>
+  </div>
+</section>
+
+<section aria-labelledby="s-act">
+  <h2 id="s-act">本期行动</h2>
+  <ol class="acts">
+    <li><a href="#i-nl-cohort">自然语言取数</a>验收时要求每个答案附上执行过的 SQL，没有查询记录的数字标为未验证。</li>
+    <li><a href="#i-visa-bench">Visa 购物 Agent 测试</a>交易类 Agent 单独统计“不该做却做了”的比例，同一用例跑三次按全过算分。</li>
+    <li><a href="#i-glasswing-check">VulnCheck 核对漏洞账本</a>AI 扫漏洞按“维护者确认、已修复”统计，报告发出前先去重、复核严重度。</li>
+    <li><a href="#i-alphaproof-code">AlphaProof Code</a>挑一段规格清楚的关键代码写成可检查的规约，人审规约，Agent 写证明。</li>
+    <li><a href="#i-grpo-dense">GRPO 密集奖励</a>后训练技巧按等 token、等 GPU 小时对比，先试挑题和调学习率。</li>
+    <li><a href="#i-db-ant">德银和蚂蚁白皮书</a>金融 Agent 把提议、授权、执行拆开，授权层只用规则。</li>
+    <li><a href="#i-claude-data">Claude Data</a>企业版 11-19 默认开启前做决定；自建看板照“只看已批准查询”分享。</li>
+  </ol>
+</section>
+
+<section aria-labelledby="s-appx">
+  <h2 id="s-appx">附录</h2>
+  <details><summary>本期条目总表（10 条）</summary><div class="tbl"><table>
+    <thead><tr><th>日期</th><th>行业</th><th>轨道</th><th>阶段</th><th>条目</th><th>标签</th><th>总分</th><th>来源</th><th>去向</th></tr></thead>
+    <tbody>
+      <tr><td class="num">11-10</td><td>医疗</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-nl-cohort">自然语言取数</a></td><td>人机协作、评测</td><td class="num">85</td><td>medRxiv</td><td>建议入书</td></tr>
+      <tr><td class="num">11-05</td><td>金融</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-visa-bench">Visa 购物 Agent 测试</a></td><td>支付、评测</td><td class="num">75</td><td>The Next Web、Finextra</td><td>建议入书</td></tr>
+      <tr><td class="num">11-09</td><td>医疗</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-transfusion">输血反应特征抽取</a></td><td>多智能体、评测</td><td class="num">65</td><td>medRxiv</td><td>待定</td></tr>
+      <tr><td class="num">11-10</td><td>通用</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-claude-data">Claude Sheets 和 Data</a></td><td>权限、产品化</td><td class="num">65</td><td>Claude、Hacker News</td><td>建议试用</td></tr>
+      <tr><td class="num">11-09</td><td>金融</td><td>产品</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-db-ant">德银和蚂蚁白皮书</a></td><td>支付、权限</td><td class="num">58</td><td>Chainwire、Finextra</td><td>待定</td></tr>
+      <tr><td class="num">11-09</td><td>通用</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-glasswing-check">VulnCheck 核对漏洞账本</a></td><td>安全对齐、评测</td><td class="num">75</td><td>VulnCheck、Hacker News</td><td>建议入书</td></tr>
+      <tr><td class="num">11-10</td><td>通用</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-alphaproof-code">AlphaProof Code</a></td><td>形式化验证、AI 编程</td><td class="num">72</td><td>Google DeepMind、Hacker News</td><td>建议入书</td></tr>
+      <tr><td class="num">11-11</td><td>通用</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-grpo-dense">GRPO 密集奖励</a></td><td>后训练、RLVR</td><td class="num">68</td><td>arXiv cs.CL</td><td>建议入书</td></tr>
+      <tr><td class="num">11-09</td><td>通用</td><td>技术</td><td><span class="chip zs">招熟</span></td><td><a href="#i-fable-5-2">Fable 5.2 和 Mythos 5.2</a></td><td>模型发布、安全对齐</td><td class="num">60</td><td>Anthropic News</td><td>不入书</td></tr>
+      <tr><td class="num">11-11</td><td>通用</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-seld">SELD 静默证据丢失</a></td><td>RAG、评测</td><td class="num">58</td><td>arXiv cs.CL</td><td>待定</td></tr>
+    </tbody>
+  </table></div></details>
+</section>
+
+</div>
+<script>
+(function(){function o(){var e=location.hash&&document.getElementById(location.hash.slice(1));if(e&&e.tagName==='DETAILS')e.open=true}
+window.addEventListener('hashchange',o);o()})();
+</script>

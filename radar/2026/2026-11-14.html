@@ -1,0 +1,198 @@
+<title>Nook 雷达 2026-11-14</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* 版式：一列简报，宽 880px。每个条目是标题、副标题（意义）加六栏：What、Why、How、Who、When、Action。 */
+:root{
+  --bg:#f6f7f5; --surface:#ffffff; --ink:#1b2321; --muted:#5d6966; --line:#dde2df; --wash:#eef1ef;
+  --accent:#1f5f58; --prod:#8a4b9c;
+  --zs:#2f7d5b; --zs-bg:#e3f1ea; --dj:#3d55a3; --dj-bg:#e6eaf7; --sm:#a1701c; --sm-bg:#f6ecd8;
+  --f-display:"Noto Serif SC","Songti SC","SimSun",serif;
+  --f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121715; --surface:#1a201e; --ink:#e3e9e6; --muted:#9aa6a2; --line:#2c3532; --wash:#202825;
+  --accent:#6fc1b5; --prod:#d3a0e3; --zs:#6cc59a; --zs-bg:#1c3328; --dj:#9aaef0; --dj-bg:#232b45; --sm:#e0b45e; --sm-bg:#3a2f1a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121715; --surface:#1a201e; --ink:#e3e9e6; --muted:#9aa6a2; --line:#2c3532; --wash:#202825;
+  --accent:#6fc1b5; --prod:#d3a0e3; --zs:#6cc59a; --zs-bg:#1c3328; --dj:#9aaef0; --dj-bg:#232b45; --sm:#e0b45e; --sm-bg:#3a2f1a; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:880px;margin:0 auto;padding-block:40px 64px;display:grid;gap:44px}
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.35}
+h1{font-size:34px;font-weight:900;margin:8px 0 16px}
+h2{font-size:22px;font-weight:900;margin-bottom:16px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+h2 .count{font:400 13px var(--f-body);color:var(--muted)}
+a{color:var(--accent)}
+.eyebrow{font:600 12px/1.5 var(--f-data);letter-spacing:.06em;color:var(--muted)}
+.thesis{margin:0;font-family:var(--f-display);font-size:18px;font-weight:600;line-height:1.75;padding-left:16px;border-left:4px solid var(--accent)}
+.chip{display:inline-flex;font-size:12px;font-weight:700;padding:0 8px;border-radius:999px;white-space:nowrap}
+.zs{color:var(--zs);background:var(--zs-bg)}.dj{color:var(--dj);background:var(--dj-bg)}.sm{color:var(--sm);background:var(--sm-bg)}
+.item-meta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;font-size:13px;color:var(--muted)}
+.new{font-size:11px;color:var(--accent)}
+.ind{font-size:12px;color:var(--accent);background:var(--wash);border-radius:4px;padding:0 6px}
+.must-no{font:700 13px var(--f-data);color:var(--accent)}
+.musts{display:grid;gap:16px}
+.must{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:8px;padding:18px 22px;display:grid;gap:10px;scroll-margin-top:72px}
+.must.prod{border-top-color:var(--prod)}.must.prod .must-no{color:var(--prod)}
+.must h3{font-size:20px;font-weight:900}
+.w6{margin:0;display:grid;grid-template-columns:7.5em 1fr;gap:8px 14px}
+.w6 dt{font:700 13px/1.6 var(--f-data);color:var(--accent);padding-top:2px}
+.must.prod .w6 dt{color:var(--prod)}
+.w6 dt small{display:block;font:400 12px var(--f-body);color:var(--muted)}
+.w6 dd{margin:0;font-size:14.5px}
+.src{margin:0;font-size:13px;color:var(--muted);padding-top:8px;border-top:1px dashed var(--line)}
+.items{display:grid;gap:8px}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:8px;scroll-margin-top:72px}
+.item summary{cursor:pointer;list-style:none;padding:12px 18px;display:grid;gap:4px}
+.item summary::-webkit-details-marker{display:none}
+.item summary .c{font-weight:700;font-size:15.5px}
+.item summary .c::before{content:"▸";color:var(--muted);margin-right:8px;display:inline-block;transition:transform .15s}
+.item[open] summary .c::before{transform:rotate(90deg)}
+.item summary .item-meta{padding-left:20px}
+.so{margin:0;color:var(--muted);font-size:15px}
+.must .so{margin-top:-6px}
+.item summary .so{padding-left:20px;font-size:14px}
+.item[open] summary{border-bottom:1px solid var(--line)}
+.item .w6,.item .src{margin:12px 18px}
+.item .src{margin-top:0}
+.acts{margin:0;padding-left:22px;display:grid;gap:8px}
+.acts li{font-size:14.5px}.acts a{font-weight:700;margin-right:8px;text-decoration:none}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface);margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:12px;color:var(--muted);background:var(--wash);padding:8px 10px;white-space:nowrap}
+td{padding:8px 10px;border-top:1px solid var(--line);vertical-align:top}
+.num{font-family:var(--f-data)}
+details>summary{cursor:pointer}
+@media (max-width:640px){h1{font-size:26px}.w6{grid-template-columns:1fr;gap:0}.w6 dd{margin-bottom:8px}}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">2026-11-14 周六 · 11-11 至 11-14 · 11 条</div>
+  <h1>Agent 开始替人付钱，评测分数却要重新量过</h1>
+  <p class="thesis">OCC 要求检查官按出错后果、交给 AI 多少行动权和人工监督程度定审查力度，不看技术多复杂。ChatGPT Wallet 让 Agent 替用户下单，每笔都要刷脸确认，但还没有消费限额。CNIC 统一重测 12 个开源模型，能对上的 23 个已发表分数里 19 个偏高。</p>
+</header>
+
+<section aria-labelledby="s-must">
+  <h2 id="s-must">本期必看</h2>
+  <div class="musts">
+  <article class="must" id="i-occ-framework">
+    <div class="item-meta"><span class="must-no">技术 1</span><span class="chip dj">懂劲</span><span class="ind">金融</span><span class="name">OCC 银行 AI 检查框架</span></div>
+    <h3>OCC｜发布银行 AI 的监管检查框架</h3>
+    <p class="so">审查力度看后果和放权程度，不看技术多复杂</p>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>美国货币监理署（OCC）发布检查框架，指导检查官评估银行在授信、支付、反欺诈、客服、运营、风控和交易中使用 AI 的风险。文件按现任政府的叫法，把 AI 称作“超级智能”（Super Intelligence）。</dd><dt>Why<small>为什么重要</small></dt><dd>美联储新版模型风险管理指引 SR 26-2 明确不管生成式和 Agent 类模型，这份框架补上了空白。它给出的分级标准，银行可以直接拿来给内部 AI 用例排序。</dd><dt>How<small>怎么做的</small></dt><dd>AI 不单列风险类别，银行也不用单设 AI 风险偏好，而是放进操作、合规、信用等已有类别里管。审查力度按用例的重要性定，看三件事：出错的后果、交给 AI 多少行动权（Transfer of Agency）、人工监督到什么程度，不看技术多复杂。文件举例说，一个能发起交易的简单规则型 Agent，风险可能高于只做内部起草的复杂模型。16 个要素分成六组：用途、风险、控制、监督、韧性和测试。局限：框架只指导检查官怎么查，不给银行设监管期望。</dd><dt>Who<small>谁</small></dt><dd>OCC；解读来自 Fintech Business Weekly 的 Jason Mikula 和 American Banker。</dd><dt>When<small>何时</small></dt><dd>11-05 发布，公告编号 2026-54。OCC 原文页跳转到首页没读到，以上依据 Fintech Business Weekly 和 American Banker。</dd><dt>Action<small>行动建议</small></dt><dd>按“后果、放权程度、人工监督”三项给行内 AI 用例分级；能发起交易的 Agent 先补控制和测试，哪怕它用的模型很简单。</dd></dl>
+    <p class="src">原文：<a href="https://fintechbusinessweekly.substack.com/p/occ-issues-super-intelligence-framework" lang="en">OCC Issues “Super Intelligence” Framework for Bank Examiners</a>（Fintech Business Weekly），11-08；<a href="https://www.americanbanker.com/news/occ-banks-need-strong-controls-when-delegating-to-ai-agents" lang="en">OCC: Banks need strong controls when delegating to AI agents</a>（American Banker），11-05</p>
+  </article>
+  <article class="must" id="i-benchmarkhub">
+    <div class="item-meta"><span class="must-no">技术 2</span><span class="chip dj">懂劲</span><span class="ind">医疗</span><span class="name">BenchmarkHub</span></div>
+    <h3>CNIC｜开源医疗大模型的可复现评测平台</h3>
+    <p class="so">换一条答案提取规则，排行榜就重排</p>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>BenchmarkHub 是一个开源（MIT）的评测平台，可以在院内自建：固定随机种子抽题，模型直接作答或在沙箱里当 Agent 用工具，用确定性规则判分，每个提示、回答和工具调用都存档。</dd><dt>Why<small>为什么重要</small></dt><dd>选医疗模型时大家看的是公开分数，可提示、推理参数和模型版本很少写全。这篇说明公开分数普遍偏高，选型前得在自己的环境里重测。</dd><dt>How<small>怎么做的</small></dt><dd>测了 12 个开源权重模型、15 个生物医学基准和 2 个通用基准，总体准确率 46.1% 到 80.9%。改用简单的答案提取规则重判，有的模型掉了 33.1 个百分点，排名随之改变。143 个“模型 × 基准”组合里只有 23 个能找到已发表分数，其中 19 个高于重测结果。MMMU 去掉图片后，最强的两个模型掉 18 到 19 个点；计算生物学任务给模型配上沙箱解释器，准确率提高 36 到 63 个点。局限：只测开源模型；四种提示方式的差异（最多 11.3 个点）在多重检验校正后不显著。</dd><dt>Who<small>谁</small></dt><dd>西班牙国家心血管研究中心（CNIC）的 Juan Ignacio Alvarez-Arenas、Fatima Sanchez-Cabo 等。</dd><dt>When<small>何时</small></dt><dd>11-13，预印本，代码在 GitHub。</dd><dt>Action<small>行动建议</small></dt><dd>选医疗或金融模型前，在院内或行内用同一套抽题、提示和判分规则重测候选模型；评测报告写明判分规则，看到“领先几个点”先问分是怎么判的。</dd></dl>
+    <p class="src">原文：<a href="https://www.medrxiv.org/content/10.64898/2026.11.11.26367866v1" lang="en">BenchmarkHub: an open-source platform for reproducible evaluation of large language models in healthcare</a>（medRxiv），11-13</p>
+  </article>
+  <article class="must prod" id="i-chatgpt-wallet">
+    <div class="item-meta"><span class="must-no">产品 1</span><span class="chip zs">招熟</span><span class="ind">金融</span><span class="name">ChatGPT Wallet</span></div>
+    <h3>OpenAI｜推出让 Agent 代付的 ChatGPT Wallet</h3>
+    <p class="so">每笔刷脸确认、只给一次性令牌，限额还没做</p>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>ChatGPT Wallet 让 ChatGPT 的 dots Agent 在网上替用户下单付款，用的是用户已有的银行卡，Agent 和商家都拿不到真实卡号。</dd><dt>Why<small>为什么重要</small></dt><dd>这是周活 12 亿的产品第一次正式让 Agent 动用户的钱。11-11 那期写过 Visa 的测试：购物 Agent 失败时过半仍会下单，OpenAI 的回答是每一笔都让人确认。</dd><dt>How<small>怎么做的</small></dt><dd>付款前，用户核对商品、总价和所选卡片，用 Face ID 或指纹批准，每次批准留一条授权记录。随后卡组织签发令牌代替卡号，据报道一个令牌只用于一笔交易。支持美国运通、Mastercard 和 Visa。退货和售后找商家，争议走发卡行原有的保障。上线时没有消费限额，也不能预先批准，OpenAI 说以后会加，没给时间表。商家的风控仍可能拒绝 Agent 下的单。</dd><dt>Who<small>谁</small></dt><dd>OpenAI，与三大卡组织合作；Mastercard 的 Sherri Haymond 说，Agent 下单应当加强而不是绕过支付体系的信任。</dd><dt>When<small>何时</small></dt><dd>11-13 发布，先给美国 18 岁以上的 ChatGPT Pro 用户，普通对话和 ChatGPT Work 里不能用。OpenAI 原文页拒绝抓取，以上依据 9to5Mac 和 1023 Jack 的报道。</dd><dt>Action<small>行动建议</small></dt><dd>做代付类 Agent，照它的三件事起步：每笔人工确认并留授权记录、一次性令牌代替卡号、售后和争议沿用现有渠道。限额和预授权是它还没补上的部分，自己设计时先补。</dd></dl>
+    <p class="src">原文：<a href="https://openai.com/index/introducing-chatgpt-wallet/" lang="en">Introducing ChatGPT Wallet</a>（OpenAI），11-13；<a href="https://9to5mac.com/2026/11/13/openai-launches-chatgpt-wallet-enabling-dot-agents-to-make-purchases/" lang="en">OpenAI launches ChatGPT Wallet, enabling 'dot' agents to make purchases</a>（9to5Mac），11-13；<a href="https://1023jack.com/news/openai-s-chatgpt-wallet-lets-its-agents-pay-for-you-how-it-works-and-what-it-lea/" lang="en">OpenAI’s ChatGPT Wallet Lets Its Agents Pay For You. How It Works, And What It Leaves Open</a>（1023 Jack），11-13</p>
+  </article>
+  <article class="must prod" id="i-lotus-ai">
+    <div class="item-meta"><span class="must-no">产品 2</span><span class="chip dj">懂劲</span><span class="ind">医疗</span><span class="name">Lotus AI 用户画像</span></div>
+    <h3>Lotus AI｜统计 3,223 名医疗 Agent 用户</h3>
+    <p class="so">来用的是慢病多、看病分散的中年人，不是年轻的远程问诊用户</p>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>Lotus AI 是免费的医疗 Agent 平台，由医生在后面监督。研究统计了 2026 年 2 月到 7 月完成注册、给 Agent 发过消息并关联了病历的 3,223 名用户，与美国全国数据对比。</dd><dt>Why<small>为什么重要</small></dt><dd>医疗 Agent 产品多按“年轻、健康、偶尔问诊”的用户来设计。真实用户病情更重、就诊更分散，慢病管理和跨机构协调就成了必做的功能，不是加分项。</dd><dt>How<small>怎么做的</small></dt><dd>用户中位年龄 51 岁，男性占 62%；各年龄段的慢病患病率都比全国调查高 4 到 7 个百分点。去年门诊四次以上的用户里，平均看了近五家机构，44% 属于高度分散。有功能性或症状性疾病的用户占 18%，他们触发的医生升级是其他用户的 1.8 倍，化验单是 2.6 倍，处方却不多。局限：作者来自平台方，只描述人群，没有疗效数据。</dd><dt>Who<small>谁</small></dt><dd>Lotus AI 平台方，Shen、Stark 等 6 位作者。</dd><dt>When<small>何时</small></dt><dd>11-13，预印本。</dd><dt>Action<small>行动建议</small></dt><dd>医疗 Agent 上线几个月后，把用户的年龄、慢病和就诊分散度拿去和全国数据比一次，按真实人群调整升级规则和人手。</dd></dl>
+    <p class="src">原文：<a href="https://www.medrxiv.org/content/10.64898/2026.11.12.26367291v1" lang="en">Enrollees and Early Lessons from an Agentic Healthcare Platform with Physicians in the Loop</a>（medRxiv），11-13</p>
+  </article>
+  </div>
+</section>
+
+<section aria-labelledby="s-tech">
+  <h2 id="s-tech">技术<span class="count">其余 5 条，按重要程度排序，点开看详情</span></h2>
+  <div class="items">
+  <details class="item" id="i-decision-models">
+    <summary><span class="c">决策模型｜Google、Perplexity 同周发布</span><span class="so">“选哪个”成了一次带概率的调用，比生成式评审便宜一个数量级</span><span class="item-meta"><span class="chip zs">招熟</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>决策模型（Decision Model，也叫 System One 模型）不逐字生成，输入材料和一组选项，直接给出每个选项的概率。Google 推出 Gemini Decision 1 和 Decisions API，Perplexity 开源 Decider v1.3。</dd><dt>Why<small>为什么重要</small></dt><dd>9 月 Jev 开了头，前两期写过决策模型评医疗回答、Drex 开源。现在 Google、OpenAI 都有了商用版，分类、审核、打分、路由这些环节可以从大模型里拆出来，换成便宜、稳定的调用。</dd><dt>How<small>怎么做的</small></dt><dd>Gemini Decision 1 支持是非、单选和按量表打分，接受文本、图片、音频、视频和 PDF，一次最多 1,000 个问题，端到端 150 到 250 毫秒；每百万输入 token 0.1 美元，输出不收费，每个答案带置信度。Perplexity Decider 基于 Qwen3.8-27B 微调，Apache 许可：100 万条生产请求的成本 26.47 美元，Jev 1.14 为 68.10 美元，生成式小模型 300 多美元；改动选项标签后答案只翻转 0.27%，Jev 是 2.69% 到 4.84%。局限：数字均为厂商自报，Perplexity 的成本是本地运行，没算全硬件。</dd><dt>Who<small>谁</small></dt><dd>Google DeepMind、Perplexity；同类还有 TypeSafe AI 的 Jev、OpenAI 的 GPT-6 Luna 决策模型、Cloudflare 的 Clairic。</dd><dt>When<small>何时</small></dt><dd>Gemini Decision 1 11-11 发布，Decider v1.3 11-12 发布，权重在 Hugging Face。</dd><dt>Action<small>行动建议</small></dt><dd>把流水线里的分类、合规打标、质量评审这类选项题列出来，用一家决策模型和现用大模型跑同一批样本，比准确率、置信度校准和成本。</dd></dl>
+    <p class="src">原文：<a href="https://simonwillison.net/2026/Nov/11/gemini-decisions-api/" lang="en">Gemini Decisions API</a>（Simon Willison），11-11；<a href="https://latent.space/p/ainews-d-day-decision-models-day/" lang="en">[AINews] D-Day (Decision Models Day)</a>（Latent Space），11-12；<a href="https://www.perplexity.ai/hub/blog/perplexity-decider" lang="en">Perplexity Decider v1.3: Training, eval, and use cases</a>（Perplexity · Hacker News），11-12</p>
+  </details>
+  <details class="item" id="i-medcheckpoint">
+    <summary><span class="c">MedCheckpoint｜让药物警戒 Agent 先锁定研究设计</span><span class="so">做不了的分析直接中止，不硬给结论</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="ind">医疗</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>MedCheckpoint 是做上市后药物警戒（Pharmacovigilance）的多 Agent 系统：从病历数据里找药物不良反应信号，生成真实世界证据报告。</dd><dt>Why<small>为什么重要</small></dt><dd>通用编程 Agent 做流行病学分析时会临时改口径，结果难以复现。它把 Agent 能自由决定的环节收窄，适合任何要出正式报告的分析场景。</dd><dt>How<small>怎么做的</small></dt><dd>每一步都对照可溯源的医学知识库；执行前锁定研究设计参数；患者层面的统计用人写的确定性工具算；检查点规则发现分析不可行就中止，可选人工复核。在 270 万人的模拟病历上跑 54 个问题，三位 LLM 评审给的报告质量均分 4.81 到 4.88，两个编程 Agent 基线为 4.02 到 4.55；同一问题多次运行的波动也更小。遇到不可比的对照或测不了的结局时，基线在 21 次运行里最多出 2 次误导性结果，MedCheckpoint 一次也没有。局限：数据是模拟的，质量由 LLM 评审打分。</dd><dt>Who<small>谁</small></dt><dd>Zhang、Luo 等 6 位作者。</dd><dt>When<small>何时</small></dt><dd>11-12，预印本。</dd><dt>Action<small>行动建议</small></dt><dd>让 Agent 做正式分析时，先把口径和参数写死再执行，统计交给确定性工具；加一条“前提不满足就停”的规则，验收时专门测它会不会在做不了时硬出结论。</dd></dl>
+    <p class="src">原文：<a href="https://www.medrxiv.org/content/10.64898/2026.11.10.26367711v1" lang="en">Automating postmarketing pharmacovigilance with large language model agents</a>（medRxiv），11-12</p>
+  </details>
+  <details class="item" id="i-gemini-hydrogen">
+    <summary><span class="c">Google｜发布更快更省的 Gemini 4 Hydrogen</span><span class="so">日常 Agent 任务的主力档，难题再切到 Carbon</span><span class="item-meta"><span class="chip zs">招熟</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>Gemini 4 Hydrogen 是 Gemini 4 系列里主打速度和成本的一档，定位是 Agent 工作流和日常编程的主力，难题交给 Carbon 和 Argon。</dd><dt>Why<small>为什么重要</small></dt><dd>大多数 Agent 步骤用不到最强模型。Google 在 Antigravity 里让 Hydrogen 和 Carbon 自动切换，给“按难度分配模型”提供了一组现成数字。</dd><dt>How<small>怎么做的</small></dt><dd>四档思考强度，新增 xhigh。Artificial Analysis 智能指数默认档 51 分，略高于 Argon 的 50 分，xhigh 档 54 分。Terminal-Bench 4.1 得 57%，Gemini 3.8 Flash 为 18.2%；Vals 税务 Agent 基准第一。价格每百万 token 输入 1.5 美元、输出 7.5 美元，100 万上下文内统一价。Antigravity 里的编排器在 Hydrogen 和 Carbon 间切换，任务成功率接近只用 Carbon，额度少用约 24%，快约 19%。Google 还称 Agent 任务中越权减少最多 81%。局限：均为厂商自报。</dd><dt>Who<small>谁</small></dt><dd>Google DeepMind。</dd><dt>When<small>何时</small></dt><dd>11-12 发布，已上 Gemini API、AI Studio、Gemini 企业版和 Google 搜索。</dd><dt>Action<small>行动建议</small></dt><dd>统计 Agent 流水线里各步骤用的模型和成本，把检索、改写、格式转换这类步骤换到快档模型上试一轮，只把规划和难题留给最强档。</dd></dl>
+    <p class="src">原文：<a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-hydrogen/" lang="en">Introducing Gemini 4 Hydrogen</a>（Google DeepMind），11-12</p>
+  </details>
+  <details class="item" id="i-alphagenome2">
+    <summary><span class="c">DeepMind｜发布细到细胞类型的 AlphaGenome 2</span><span class="so">找出改变基因表达的变异，数量约是此前最好模型的两倍</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="ind">医疗</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>AlphaGenome 2 预测一段 DNA 及其变异在某种组织、细胞类型或状态下怎样影响基因活动，用来把全基因组关联研究（GWAS）找到的变异落到具体的致病变异、靶基因和细胞类型上。</dd><dt>Why<small>为什么重要</small></dt><dd>第一版只能到组织层面，第二版能分到心肌细胞、免疫细胞这一级，离药物靶点发现更近一步。</dd><dt>How<small>怎么做的</small></dt><dd>训练数据包括人和小鼠 68 种组织的 1 亿多个单细胞图谱，每次只预测一个条件，并新增 DNA 甲基化读数。用户可以拿自己几十个细胞的单细胞 RNA 测序数据给模型设定条件，不用重新训练。在 28 种免疫细胞的 TenK10K 数据上，找到致病变异的比例 30%，对比模型 16%。局限：只能做研究，没有做临床验证；没有开放权重。</dd><dt>Who<small>谁</small></dt><dd>Google DeepMind，Žiga Avsec、Pushmeet Kohli 等。</dd><dt>When<small>何时</small></dt><dd>11-11 发布；非商业研究可用 API，商业用途在内测。</dd><dt>Action<small>行动建议</small></dt><dd>做药物研发或遗传病研究的团队，可以用它的预计算分数给 GWAS 候选变异排优先级，再安排湿实验验证。</dd></dl>
+    <p class="src">原文：<a href="https://deepmind.google/blog/alphagenome-2-deciphering-how-cells-read-dna-to-better-understand-disease/" lang="en">AlphaGenome 2: Deciphering how cells read DNA to better understand disease</a>（Google DeepMind），11-11</p>
+  </details>
+  <details class="item" id="i-drugcon">
+    <summary><span class="c">DrugCon｜从 22 万篇试验摘要里找互相矛盾的结论</span><span class="so">疗效结论打架，多半是结局指标或人群不同</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="ind">医疗</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>DrugCon 用大模型从随机对照试验（RCT）摘要里抽出结论，把讲同一药物和疾病的结论连起来，判断是否矛盾，并按人群、剂量、结局指标等十类因素解释原因。</dd><dt>Why<small>为什么重要</small></dt><dd>循证医学和医疗 RAG 都会碰到证据互相矛盾的情况。能说清楚“为什么矛盾”，比只判断“矛不矛盾”更有用。</dd><dt>How<small>怎么做的</small></dt><dd>跑了 224,756 篇 RCT 摘要，建成含 542 对矛盾结论的标注集。75.5% 的矛盾涉及不止一个因素，最常见的是结局指标不同（64.0%）、人群不同（51.3%）和剂量或暴露时长不同（35.6%）。矛盾检测 F1 0.744，好于规则、监督学习和自然语言推理基线；找对解释因素的 F1 只有 0.482。</dd><dt>Who<small>谁</small></dt><dd>Lan、Lu、Kilicoglu 等 5 位作者。</dd><dt>When<small>何时</small></dt><dd>11-12，预印本。</dd><dt>Action<small>行动建议</small></dt><dd>医疗 RAG 检索到相互矛盾的文献时，先比对人群、剂量和结局指标三项，再决定引用哪篇，不要直接合并成一个结论。</dd></dl>
+    <p class="src">原文：<a href="https://www.medrxiv.org/content/10.64898/2026.11.11.26367856v1" lang="en">Detecting Contradictory Evidence on Drug-Disease Associations at Scale</a>（medRxiv），11-12</p>
+  </details>
+  </div>
+</section>
+
+<section aria-labelledby="s-prod">
+  <h2 id="s-prod">产品<span class="count">其余 2 条，按重要程度排序，点开看详情</span></h2>
+  <div class="items">
+  <details class="item" id="i-navoka">
+    <summary><span class="c">Wirex｜给 Agent 单开账户和卡</span><span class="so">规则在发卡端执行，Agent 改不了</span><span class="item-meta"><span class="chip zs">招熟</span><span class="ind">金融</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>Wirex 推出 Navoka：每个 Agent 有自己的 IBAN 账户、借记卡和稳定币钱包，与用户的个人账户分开，替用户订票、付发票、转账和定投。</dd><dt>Why<small>为什么重要</small></dt><dd>和 ChatGPT Wallet 的路线正好相反：Wallet 用用户自己的卡、每笔确认；Navoka 给 Agent 单独一笔钱，用规则限住，规则内的支付不用逐笔批准。</dd><dt>How<small>怎么做的</small></dt><dd>用户设定允许的商户、单笔和每日上限、国家清单，每笔刷卡在授权时对照规则，Agent 不能改规则；超出规则的支付等用户批准。有一键冻结：冻卡、暂停规则、断开 AI 助手。每笔支付记下依据哪条规则、谁批准、为什么。Agent 看不到卡号，跑在隔离的机器上，用户撤销授权后机器清空。可接 ChatGPT、Claude 和 Grok。局限：新闻稿没写服务地区、牌照和收费。</dd><dt>Who<small>谁</small></dt><dd>Wirex，稳定币支付平台，拥有 Visa 和 Mastercard 的主会员资格。</dd><dt>When<small>何时</small></dt><dd>11-12 发布，邀请制，目前经 Telegram 使用。</dd><dt>Action<small>行动建议</small></dt><dd>设计 Agent 支付权限时，把限额、商户白名单这类规则放在发卡或授权端执行，不放在 Agent 的提示词里；同时备好一键冻结。</dd></dl>
+    <p class="src">原文：<a href="https://www.prnewswire.com/news-releases/wirex-launches-navoka-an-ai-agent-that-pays-from-its-own-bank-account-and-card-302938065.html" lang="en">Wirex Launches Navoka, an AI Agent That Pays From Its Own Bank Account and Card</a>（PR Newswire），11-12；<a href="https://www.finextra.com/pressarticle/111665/wirex-launches-navoka-an-ai-agent-that-pays-from-its-own-bank-account-and-card" lang="en">Wirex launches Navoka, an AI agent that pays from its own bank account and card</a>（Finextra），11-13</p>
+  </details>
+  <details class="item" id="i-jensen">
+    <summary><span class="c">英伟达｜黄仁勋辞去 CEO</span><span class="so">算力出口管制可能收紧，开源模型少了最大的资助方</span><span class="item-meta"><span class="chip dj">懂劲</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>黄仁勋在执掌英伟达 33 年后辞去 CEO、总裁和董事职务，CFO Colette Kress 兼任临时 CEO。</dd><dt>Why<small>为什么重要</small></dt><dd>英伟达是美国开源模型最大的资助方之一，也是反对芯片出口管制最有力的声音。两条都可能变，影响算力价格和可用的开源模型。</dd><dt>How<small>怎么做的</small></dt><dd>此前《纽约时报》报道，董事会在调查他与一名被指为中国间谍者的婚外关系，随后又曝出第二段，四天后他辞职。SemiAnalysis 认为背后还有 GPU 走私：据其芯片追踪模型，超过 1.5 吉瓦受限的英伟达芯片最终流入中国，相关出口管制立法会因此加快。Nathan Lambert 认为，英伟达对开源模型的大笔资助可能收缩，美国开源生态还很脆弱。局限：辞职原因的分析来自评论者，英伟达官方没有说明。</dd><dt>Who<small>谁</small></dt><dd>英伟达；分析来自 SemiAnalysis、Interconnects 和 Latent Space。</dd><dt>When<small>何时</small></dt><dd>11-13 宣布，下周发财报。</dd><dt>Action<small>行动建议</small></dt><dd>依赖开源模型或境外算力的项目，列出备选模型和供应商；采购算力合同时留意出口管制条款的变化。</dd></dl>
+    <p class="src">原文：<a href="https://latent.space/p/ainews-jensen-huang-resigns-after-33-years-leading-nvidia/" lang="en">[AINews] Jensen Huang resigns after 33 years leading NVIDIA</a>（Latent Space），11-13；<a href="https://newsletter.semianalysis.com/p/nvidia-and-the-world-without-jensen" lang="en">Nvidia and the World Without Jensen</a>（SemiAnalysis），11-12；<a href="https://www.interconnects.ai/p/open-source-ai-without-jensen" lang="en">Open-source AI without Jensen</a>（Interconnects），11-14</p>
+  </details>
+  </div>
+</section>
+
+<section aria-labelledby="s-act">
+  <h2 id="s-act">本期行动</h2>
+  <ol class="acts">
+    <li><a href="#i-chatgpt-wallet">ChatGPT Wallet</a>代付 Agent 每笔人工确认、留授权记录、用一次性令牌；自己先补上限额和预授权。</li>
+    <li><a href="#i-navoka">Wirex Navoka</a>限额和商户白名单放在发卡或授权端执行，不写进提示词；备好一键冻结。</li>
+    <li><a href="#i-occ-framework">OCC 检查框架</a>按出错后果、放权程度、人工监督三项给 AI 用例分级，能发起交易的 Agent 先补控制。</li>
+    <li><a href="#i-benchmarkhub">BenchmarkHub</a>选模型前用同一套抽题、提示和判分规则在本地重测，评测报告写明判分口径。</li>
+    <li><a href="#i-decision-models">决策模型</a>把流水线里的选项题拎出来，用决策模型和现用大模型比准确率、校准和成本。</li>
+    <li><a href="#i-medcheckpoint">MedCheckpoint</a>正式分析先锁口径和参数，统计用确定性工具，前提不满足就停。</li>
+    <li><a href="#i-lotus-ai">Lotus AI 用户画像</a>医疗 Agent 上线后拿真实用户和全国数据比一次，据此调整升级规则。</li>
+    <li><a href="#i-gemini-hydrogen">Gemini 4 Hydrogen</a>把检索、改写这类步骤换到快档模型试一轮，只把难题留给最强档。</li>
+  </ol>
+</section>
+
+<section aria-labelledby="s-appx">
+  <h2 id="s-appx">附录</h2>
+  <details><summary>本期条目总表（11 条）</summary><div class="tbl"><table>
+    <thead><tr><th>日期</th><th>行业</th><th>轨道</th><th>阶段</th><th>条目</th><th>标签</th><th>总分</th><th>来源</th><th>去向</th></tr></thead>
+    <tbody>
+      <tr><td class="num">11-13</td><td>金融</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-chatgpt-wallet">ChatGPT Wallet</a></td><td>支付、权限</td><td class="num">90</td><td>OpenAI、9to5Mac、1023 Jack</td><td>建议入书</td></tr>
+      <tr><td class="num">11-13</td><td>医疗</td><td>产品</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-lotus-ai">Lotus AI 用户画像</a></td><td>用户研究、人机协作</td><td class="num">72</td><td>medRxiv</td><td>待定</td></tr>
+      <tr><td class="num">11-12</td><td>金融</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-navoka">Wirex Navoka</a></td><td>支付、权限</td><td class="num">65</td><td>PR Newswire、Finextra</td><td>建议入书</td></tr>
+      <tr><td class="num">11-13</td><td>通用</td><td>产品</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-jensen">黄仁勋辞职</a></td><td>产业、算力</td><td class="num">57</td><td>Latent Space、SemiAnalysis、Interconnects</td><td>不入书</td></tr>
+      <tr><td class="num">11-05</td><td>金融</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-occ-framework">OCC 银行 AI 检查框架</a></td><td>监管、权限</td><td class="num">65</td><td>Fintech Business Weekly、American Banker</td><td>建议入书</td></tr>
+      <tr><td class="num">11-11</td><td>通用</td><td>技术</td><td><span class="chip zs">招熟</span></td><td><a href="#i-decision-models">决策模型</a></td><td>模型发布、LLM 评审</td><td class="num">64</td><td>Simon Willison、Latent Space、Perplexity</td><td>建议试用</td></tr>
+      <tr><td class="num">11-13</td><td>医疗</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-benchmarkhub">BenchmarkHub</a></td><td>评测</td><td class="num">64</td><td>medRxiv</td><td>建议入书</td></tr>
+      <tr><td class="num">11-12</td><td>医疗</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-medcheckpoint">MedCheckpoint</a></td><td>多智能体、人机协作</td><td class="num">58</td><td>medRxiv</td><td>建议入书</td></tr>
+      <tr><td class="num">11-12</td><td>通用</td><td>技术</td><td><span class="chip zs">招熟</span></td><td><a href="#i-gemini-hydrogen">Gemini 4 Hydrogen</a></td><td>模型发布</td><td class="num">58</td><td>Google DeepMind</td><td>不入书</td></tr>
+      <tr><td class="num">11-11</td><td>医疗</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-alphagenome2">AlphaGenome 2</a></td><td>AI for Science、模型发布</td><td class="num">54</td><td>Google DeepMind</td><td>待定</td></tr>
+      <tr><td class="num">11-12</td><td>医疗</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-drugcon">DrugCon 矛盾证据</a></td><td>RAG、评测</td><td class="num">53</td><td>medRxiv</td><td>待定</td></tr>
+    </tbody>
+  </table></div></details>
+</section>
+
+</div>
+<script>
+(function(){function o(){var e=location.hash&&document.getElementById(location.hash.slice(1));if(e&&e.tagName==='DETAILS')e.open=true}
+window.addEventListener('hashchange',o);o()})();
+</script>
