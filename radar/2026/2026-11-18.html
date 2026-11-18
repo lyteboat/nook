@@ -1,0 +1,192 @@
+<title>Nook 雷达 2026-11-18</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* 版式：一列简报，宽 880px。每个条目是标题、副标题（意义）加六栏：What、Why、How、Who、When、Action。 */
+:root{
+  --bg:#f6f7f5; --surface:#ffffff; --ink:#1b2321; --muted:#5d6966; --line:#dde2df; --wash:#eef1ef;
+  --accent:#1f5f58; --prod:#8a4b9c;
+  --zs:#2f7d5b; --zs-bg:#e3f1ea; --dj:#3d55a3; --dj-bg:#e6eaf7; --sm:#a1701c; --sm-bg:#f6ecd8;
+  --f-display:"Noto Serif SC","Songti SC","SimSun",serif;
+  --f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121715; --surface:#1a201e; --ink:#e3e9e6; --muted:#9aa6a2; --line:#2c3532; --wash:#202825;
+  --accent:#6fc1b5; --prod:#d3a0e3; --zs:#6cc59a; --zs-bg:#1c3328; --dj:#9aaef0; --dj-bg:#232b45; --sm:#e0b45e; --sm-bg:#3a2f1a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121715; --surface:#1a201e; --ink:#e3e9e6; --muted:#9aa6a2; --line:#2c3532; --wash:#202825;
+  --accent:#6fc1b5; --prod:#d3a0e3; --zs:#6cc59a; --zs-bg:#1c3328; --dj:#9aaef0; --dj-bg:#232b45; --sm:#e0b45e; --sm-bg:#3a2f1a; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:880px;margin:0 auto;padding-block:40px 64px;display:grid;gap:44px}
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.35}
+h1{font-size:34px;font-weight:900;margin:8px 0 16px}
+h2{font-size:22px;font-weight:900;margin-bottom:16px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+h2 .count{font:400 13px var(--f-body);color:var(--muted)}
+a{color:var(--accent)}
+.eyebrow{font:600 12px/1.5 var(--f-data);letter-spacing:.06em;color:var(--muted)}
+.thesis{margin:0;font-family:var(--f-display);font-size:18px;font-weight:600;line-height:1.75;padding-left:16px;border-left:4px solid var(--accent)}
+.chip{display:inline-flex;font-size:12px;font-weight:700;padding:0 8px;border-radius:999px;white-space:nowrap}
+.zs{color:var(--zs);background:var(--zs-bg)}.dj{color:var(--dj);background:var(--dj-bg)}.sm{color:var(--sm);background:var(--sm-bg)}
+.item-meta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;font-size:13px;color:var(--muted)}
+.new{font-size:11px;color:var(--accent)}
+.ind{font-size:12px;color:var(--accent);background:var(--wash);border-radius:4px;padding:0 6px}
+.must-no{font:700 13px var(--f-data);color:var(--accent)}
+.musts{display:grid;gap:16px}
+.must{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:8px;padding:18px 22px;display:grid;gap:10px;scroll-margin-top:72px}
+.must.prod{border-top-color:var(--prod)}.must.prod .must-no{color:var(--prod)}
+.must h3{font-size:20px;font-weight:900}
+.w6{margin:0;display:grid;grid-template-columns:7.5em 1fr;gap:8px 14px}
+.w6 dt{font:700 13px/1.6 var(--f-data);color:var(--accent);padding-top:2px}
+.must.prod .w6 dt{color:var(--prod)}
+.w6 dt small{display:block;font:400 12px var(--f-body);color:var(--muted)}
+.w6 dd{margin:0;font-size:14.5px}
+.src{margin:0;font-size:13px;color:var(--muted);padding-top:8px;border-top:1px dashed var(--line)}
+.items{display:grid;gap:8px}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:8px;scroll-margin-top:72px}
+.item summary{cursor:pointer;list-style:none;padding:12px 18px;display:grid;gap:4px}
+.item summary::-webkit-details-marker{display:none}
+.item summary .c{font-weight:700;font-size:15.5px}
+.item summary .c::before{content:"▸";color:var(--muted);margin-right:8px;display:inline-block;transition:transform .15s}
+.item[open] summary .c::before{transform:rotate(90deg)}
+.item summary .item-meta{padding-left:20px}
+.so{margin:0;color:var(--muted);font-size:15px}
+.must .so{margin-top:-6px}
+.item summary .so{padding-left:20px;font-size:14px}
+.item[open] summary{border-bottom:1px solid var(--line)}
+.item .w6,.item .src{margin:12px 18px}
+.item .src{margin-top:0}
+.acts{margin:0;padding-left:22px;display:grid;gap:8px}
+.acts li{font-size:14.5px}.acts a{font-weight:700;margin-right:8px;text-decoration:none}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface);margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:12px;color:var(--muted);background:var(--wash);padding:8px 10px;white-space:nowrap}
+td{padding:8px 10px;border-top:1px solid var(--line);vertical-align:top}
+.num{font-family:var(--f-data)}
+details>summary{cursor:pointer}
+@media (max-width:640px){h1{font-size:26px}.w6{grid-template-columns:1fr;gap:0}.w6 dd{margin-bottom:8px}}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">2026-11-18 周三 · 11-14 至 11-18 · 10 条</div>
+  <h1>先让便宜模型答，没把握的再交给贵模型</h1>
+  <p class="thesis">NYU Langone 团队测得，医学选项题上决策模型 Jev 的成本不到 Opus 的 1%，没把握的题按置信度转给大模型，成本降三到七成。OpenAI 自报的医疗行政基准上，GPT-6 Luna 拿到 Astra 97% 的分数，成本低 98%。同一模型换个 Agent 框架，每个任务的成本还差 1.8 到 5 倍。</p>
+</header>
+
+<section aria-labelledby="s-must">
+  <h2 id="s-must">本期必看</h2>
+  <div class="musts">
+  <article class="must" id="i-frontierharness">
+    <div class="item-meta"><span class="must-no">技术 1</span><span class="chip zs">招熟</span><span class="name">FrontierHarness v1.1</span></div>
+    <h3>Runta｜测 22 个 Agent 框架配 5 个模型</h3>
+    <p class="so">换模型时要重选框架，同一模型下成本差 1.8 到 5 倍</p>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>FrontierHarness Eval v1.1 是一份 Agent 框架（Harness）排行榜：22 种框架配置 × 5 个开源权重模型 × 62 个终端任务 × 每题 4 次，共 27,280 次运行、830 亿 token，比 v1.0 大 76 倍。</dd><dt>Why<small>为什么重要</small></dt><dd>大家选 Codex CLI、Claude Code、OpenCode 这类框架时，多半只看它配一个模型的表现。这份数据说明，框架和模型要成对评：换了模型，最省钱的框架也换了。</dd><dt>How<small>怎么做的</small></dt><dd>每种框架用默认设置和最高推理强度，在 Harbor 上跑，每次运行用全新的 Runta 运行环境。五个模型各有自己的最佳性价比框架：GLM-5.3 配 Codex CLI，GLM-5.3 Flash 配 Pi，DeepSeek V4.1 Flash 配 ZCode，Muse 配 Oh My Pi，Kimi-K3 配 Alma。Codex CLI 的每任务成本配 GLM-5.3 排第 1，配 Kimi-K3 排第 16。成本的方差 92.8% 来自模型，2.3% 来自框架本身，4.9% 来自两者的搭配（含噪声）。成本最贵的框架通过率并不更高，五个模型里有四个，每次通过最贵的框架通过率反而低于最便宜的。决定成本的是步数，不是提示长度、工具数量或缓存命中率：每一步都要重发上下文，一次运行平均吃掉 200 万到 480 万输入 token。日志审计发现 216 次奖励作弊（Reward Hacking），其中 163 次是上网查答案，都记 0 分。局限：只测开源模型，都由 Baseten 托管，换一家推理服务商，成本排名可能变。</dd><dt>Who<small>谁</small></dt><dd>Runta 与 Baseten 合作。Runta 卖 Agent 运行环境，但排名不涉及自家产品。</dd><dt>When<small>何时</small></dt><dd>11-17 发布，Hacker News 385 分。下一步加入 Claude Opus 5.5、GPT-6 Astra 等闭源模型。</dd><dt>Action<small>行动建议</small></dt><dd>换模型时，用自己的一批私有任务把两三个候选框架都跑一遍，比“每次通过的成本”（每任务成本 ÷ 通过率）。看成本先看平均步数，压步数比压系统提示更省钱。</dd></dl>
+    <p class="src">原文：<a href="https://runta.com/blog/introducing-frontierharness-eval-v1-1/" lang="en">Introducing FrontierHarness Eval v1.1</a>（Runta · Hacker News），11-17</p>
+  </article>
+  <article class="must" id="i-som-routing">
+    <div class="item-meta"><span class="must-no">技术 2</span><span class="chip dj">懂劲</span><span class="ind">医疗</span><span class="name">决策模型医学评测</span></div>
+    <h3>决策模型｜医学选项题成本不到大模型的 1%</h3>
+    <p class="so">没把握的题按置信度转给大模型，成本降三到七成</p>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>研究比较了 3 个决策模型（System One Model，SOM，不生成文字，直接给每个选项的概率）和 3 个通用大模型，在 7 个生物医学数据集、8 个终点上的表现和成本，并测试按置信度分流（Confidence-based Routing）。</dd><dt>Why<small>为什么重要</small></dt><dd>上期写过 Google、Perplexity 发布决策模型。这是第一篇在医学任务上把它和大模型放在一起算账的研究，还给出了“先小后大”的分流做法。</dd><dt>How<small>怎么做的</small></dt><dd>任务包括问答、找错、结构化抽取和病历评估。Claude Opus 5.5 在 8 个终点上都是第一；最强的决策模型 Jev 与几个大模型接近，在多数数据集上成本不到 Opus 的 1%。用校准集定置信度阈值，决策模型没把握的题转给大模型，选出的三条路线比只用接收方大模型省 30.0% 到 71.7%，性能略降。另有一个基准上，两个决策模型互相分流，准确率 91.1%，单用两者分别是 82.3% 和 82.2%。对照组是成本相同的随机转送。局限：任务都有预设选项；作者说优势大小取决于任务结构和提示要求，还要在非公开数据集上验证。</dd><dt>Who<small>谁</small></dt><dd>Chen、Yang、Guth 等 6 位作者，通讯作者 William Yuan 在 NYU Langone。</dd><dt>When<small>何时</small></dt><dd>11-17，预印本。</dd><dt>Action<small>行动建议</small></dt><dd>病历质控、编码、合规打标这类有固定选项的环节，先用决策模型答一遍，拿一批标注样本定置信度阈值，阈值以下的题再交给大模型。上线前和“同等成本随机转送”比一次，确认分流真的有用。</dd></dl>
+    <p class="src">原文：<a href="https://www.medrxiv.org/content/10.64898/2026.11.15.26368126v1" lang="en">Evaluation of System One Models on Biomedical Texts</a>（medRxiv），11-17</p>
+  </article>
+  <article class="must prod" id="i-health-agents">
+    <div class="item-meta"><span class="must-no">产品 1</span><span class="chip zs">招熟</span><span class="ind">医疗</span><span class="name">ChatGPT for Healthcare</span></div>
+    <h3>OpenAI｜医疗行政 Agent 直接操作现有系统</h3>
+    <p class="so">便宜档拿到旗舰 97% 的分，每个任务 8.5 美分</p>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>ChatGPT for Healthcare 加了三样东西：能看屏幕、点击、输入、在多个医疗软件间切换的计算机操作 Agent（Computer-use Agent），改进后的临床证据检索，以及 20 多个医疗插件。</dd><dt>Why<small>为什么重要</small></dt><dd>事前授权、排班、理赔这类行政工作散在老系统里，多数没有 API。Agent 直接操作界面，不用等系统改造；而便宜档模型就够用，意味着按任务计费也划算。</dd><dt>How<small>怎么做的</small></dt><dd>评测用斯坦福研究者的独立基准 HealthAdminBench（事前授权等行政任务）：最高推理强度下，GPT-6 Luna 拿到 91.8% 的评分点，每个任务 8.5 美分，OpenAI 称便宜 98%。GPT-6 Astra 拿到 94.3%。电子病历收件箱任务上，325 个复核任务里 99% 评为安全，646 次医生评价中 93% 认为很有帮助或非常有帮助。临床检索在 1,300 多次医生盲评中八个维度都更好。管理员要手动开启新插件，两款产品都签 HIPAA 要求的业务伙伴协议（BAA）。局限：分数都是 OpenAI 自报，报道没有复跑。</dd><dt>Who<small>谁</small></dt><dd>OpenAI；Abridge、Ambience、Cigna Healthcare、CVS Health 在开发、试点或部署这些 Agent。</dd><dt>When<small>何时</small></dt><dd>11-16 发布，ChatGPT for Healthcare、ChatGPT for Clinicians 和 API 都能用。OpenAI 原文页拒绝抓取，以上依据 FourWeekMBA 的转述，它引了两篇原文。</dd><dt>Action<small>行动建议</small></dt><dd>列出科室里没有 API、靠人在几个系统间搬数据的行政流程，挑一个用 Luna 档试跑，按任务统计成本和人工复核率。Agent 能点的按钮先限定在只读和草稿范围内。</dd></dl>
+    <p class="src">原文：<a href="https://openai.com/index/advancing-computer-use-for-healthcare-teams/" lang="en">Advancing computer-use agents for healthcare teams</a>（OpenAI），11-16；<a href="https://fourweekmba.com/ai-openais-health-agent-costs-8-5-cents-a-task-scores-91-8/" lang="en">OpenAI’s Health Agent Costs 8.5 Cents a Task, Scores 91.8%</a>（FourWeekMBA），11-16</p>
+  </article>
+  <article class="must prod" id="i-ai-overviews">
+    <div class="item-meta"><span class="must-no">产品 2</span><span class="chip dj">懂劲</span><span class="name">AI 摘要与搜索流量</span></div>
+    <h3>Google｜AI 摘要让网站点击少了四成</h3>
+    <p class="so">医疗和金融搜索出摘要的比例最高，接近七成</p>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>RevScope 汇总了 AI 摘要（AI Overviews）对搜索流量影响的几组数据，核心是一项随机对照实验：给美国桌面版 Chrome 用户装插件，随机让一半人看不到 AI 摘要，观察两周真实搜索。</dd><dt>Why<small>为什么重要</small></dt><dd>医院、药企、银行、保险的科普和产品页靠搜索带客。答案在搜索页上就给完了，排名再好，点进来的人也少了，能被 AI 摘要引用，变得和排名一样重要。</dd><dt>How<small>怎么做的</small></dt><dd>实验中，会出摘要的搜索，看得到摘要的一组平均每次点击外部网站 0.37 次，看不到的一组 0.62 次，少了 39.8%。没有任何外链点击的搜索从 54% 升到 73%，广告点击没变。算上不出摘要的搜索，网站从 Google 拿到的自然点击约少 18.5%。DataForSEO 的 2,000 万关键词面板里，出摘要的比例从 2024 年 9 月的 5.93% 涨到 2026 年 8 月的 61.43%，其中健康类 69.68%，金融类 68.80%，房产只有 22.27%。3 月 AI 助手带给网站的流量只占 0.3%。所谓生成式引擎优化（GEO），作者认为基本就是 SEO 加两条：出现在 AI 答案常引用的第三方网站上，页面写得便于引用。局限：实验是工作论文，只覆盖桌面端。</dd><dt>Who<small>谁</small></dt><dd>RevScope 整理；实验作者 Saharsh Agarwal、Ananya Sen，另有 Pew 研究中心和 Wang 等人的预注册实验佐证。</dd><dt>When<small>何时</small></dt><dd>11-09 发布，11-18 上 Hacker News，459 分。实验数据采自 2026 年 1 至 2 月。</dd><dt>Action<small>行动建议</small></dt><dd>做医疗或金融内容的团队，按“出不出 AI 摘要”把关键词分开看流量；重要页面开头先给能直接引用的结论和数字，再看 AI 摘要引用了哪些第三方网站，把内容放到那里。</dd></dl>
+    <p class="src">原文：<a href="https://revscope.co/blog/search-seo-geo-2026/" lang="en">Google's AI Overviews cut clicks to websites by 40%</a>（RevScope · Hacker News），11-09</p>
+  </article>
+  </div>
+</section>
+
+<section aria-labelledby="s-tech">
+  <h2 id="s-tech">技术<span class="count">其余 5 条，按重要程度排序，点开看详情</span></h2>
+  <div class="items">
+  <details class="item" id="i-review-bottleneck">
+    <summary><span class="c">哈佛｜AI 写的代码堵在评审上</span><span class="so">代码多了四成，解决的需求只多一成多</span><span class="item-meta"><span class="chip dj">懂劲</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>哈佛两位经济学者用工程分析平台 Jellyfish 的数据，研究 AI 编程助手和 Agent 对软件产出与用工的影响：655 家公司、72 万名员工、4.45 亿条工作事件（GitHub、Jira、日历）。同一天 arXiv 上另一篇研究 GitHub Copilot Reviewer，结论方向一致。</dd><dt>Why<small>为什么重要</small></dt><dd>团队引入编程 Agent 后常看代码量和 PR 数，这篇说明这两个数会骗人：评审跟不上，交付就上不去。评审人手和规则要和 Agent 一起规划。</dd><dt>How<small>怎么做的</small></dt><dd>按各公司采用时间的先后做对比。用上 Agent 后，代码行数多 44.0%，提交多 36.0%，PR 多 35.7%，但新增的 PR 只有约 62.7% 被合并，基线是 86.1%。解决的 Jira 问题多 13.7%（勉强显著），用工没有可测的变化。评审是瓶颈：从提交评审到批准的时间长了 56.1%，每个改动的评论多 38.6%。79.1% 的公司已用 AI 评审工具，但评审和评论绝大多数仍由人写。Copilot Reviewer 那篇发现，用上 AI 评审后提交量先猛涨，人的贡献逐渐减少，机器人提的 PR 一直偏多，而且评审和合并更慢。局限：观察性研究，不是随机实验。</dd><dt>Who<small>谁</small></dt><dd>哈佛的 Fiona Chen、James Stratton；Copilot Reviewer 一篇作者为 Xu、Medappa、Tunc。</dd><dt>When<small>何时</small></dt><dd>论文现行版 11-14，11-17 上 Hacker News，207 分。Copilot Reviewer 一篇 11-18 上 arXiv。</dd><dt>Action<small>行动建议</small></dt><dd>引入编程 Agent 后，看板上加两项：PR 合并率和从提交评审到批准的时长。给 Agent 提的 PR 设大小上限，评审排班按 PR 数调整。</dd></dl>
+    <p class="src">原文：<a href="https://fion.ac/jellyfish.pdf" lang="en">Artificial Intelligence in the Firm: Bottlenecks in Software Production</a>（Harvard · Hacker News），11-14；<a href="https://arxiv.org/abs/2611.22793" lang="en">Does the AI Reviewer Alleviate or Aggravate the Maintenance Burden? Evidence from GitHub Copilot Reviewer</a>（arXiv），11-18</p>
+  </details>
+  <details class="item" id="i-gpt62">
+    <summary><span class="c">OpenAI｜发布 GPT-6.2 Astra 和 Sol</span><span class="so">旗舰降价两成，缓存输入降六成，长任务更省</span><span class="item-meta"><span class="chip zs">招熟</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>GPT-6.2 Astra 是 OpenAI 新的旗舰模型，GPT-6.2 Sol 是日常用的高效档，都已上 ChatGPT Work、Codex 和 API。</dd><dt>Why<small>为什么重要</small></dt><dd>Agent 任务跑得越久，缓存输入在账单里占得越多。这次缓存价降得最多，长时间运行的 Agent 最受益。</dd><dt>How<small>怎么做的</small></dt><dd>Astra 每百万 token 输入 8 美元、输出 40 美元，是 6 Astra 的 80%，与 Claude Fable 5.2 同价，缓存输入从 1 美元降到 0.4 美元。Sol 维持 2 美元、10 美元。OpenAI 称专业产出、编程、计算机操作都有提升。Simon Willison 说，各项基准上 Astra 6.2 略低于 Fable 5.2，也有人抱怨它沟通方式让人困惑：Theo Browne 让它做一个游戏关卡，两小时后它停下来问一个用户根本无从回答的内部实现细节。局限：OpenAI 原文拒绝抓取，能力提升为厂商自报。</dd><dt>Who<small>谁</small></dt><dd>OpenAI；测评来自 Simon Willison。</dd><dt>When<small>何时</small></dt><dd>11-17 发布，Hacker News 1,291 分，本期最热。</dd><dt>Action<small>行动建议</small></dt><dd>在用 6 Astra 的长任务 Agent，切到 6.2 前后各跑一批同样的任务，比总成本和中途卡住提问的次数，不只看基准分。</dd></dl>
+    <p class="src">原文：<a href="https://openai.com/index/introducing-gpt-6-2-astra-sol/" lang="en">Introducing GPT-6.2 Astra and Sol</a>（OpenAI），11-17；<a href="https://simonwillison.net/2026/Nov/17/gpt62-astra-and-sol/" lang="en">GPT‑6.2 Astra and GPT‑6.2 Sol</a>（Simon Willison），11-17</p>
+  </details>
+  <details class="item" id="i-external-sandbox">
+    <summary><span class="c">Simon Willison｜把 Agent 执行的代码放进外置沙箱</span><span class="so">Agent 在外面，代码在沙箱里跑，出网要过白名单</span><span class="item-meta"><span class="chip zs">招熟</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>外置沙箱（External Sandbox）模式：Agent 本身留在沙箱外，它要执行的代码通过本地 API 发进一个专用沙箱里运行。</dd><dt>Why<small>为什么重要</small></dt><dd>试本地模型或处理不可信输入时，最怕模型犯错或中了提示注入，在本机上做出破坏性操作。这个模式把“想”和“做”隔开，沙箱坏了重建就行，凭据也不用交给 Agent。</dd><dt>How<small>怎么做的</small></dt><dd>发布了三个实现，API 相同：v86 在 WebAssembly 里跑 Alpine Linux；用 Apple Containers；用微软的 Quicksand 库（把 QEMU 和 Alpine 打包成 Python 包）。Pi、Claude Code、Codex 都能配置成把执行请求发给它。沙箱带一个可选的 HTTP/HTTPS 白名单代理，运行中也能改，还能替换凭据：Agent 发出的请求由代理填入真实密钥，Agent 自己拿不到。</dd><dt>Who<small>谁</small></dt><dd>Simon Willison 与 Prime Radiant 合作。</dd><dt>When<small>何时</small></dt><dd>11-17，代码已开源。</dd><dt>Action<small>行动建议</small></dt><dd>让 Agent 碰病历或交易数据前，先把代码执行挪进外置沙箱，出网只放行必需的域名，API 密钥由代理注入。</dd></dl>
+    <p class="src">原文：<a href="https://simonwillison.net/2026/Nov/17/external-sandboxes-for-coding-agents/" lang="en">External sandboxes for coding agents</a>（Simon Willison），11-17</p>
+  </details>
+  <details class="item" id="i-readmission-leak">
+    <summary><span class="c">再入院预测｜一个特征偷看了未来</span><span class="so">删掉后 AUROC 从 0.774 掉到 0.706，文档审计没查出来</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="ind">医疗</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>研究在 MIMIC-IV 的 236,906 次 Medicare 住院上建 30 天再入院模型，同时追查一个未来信息泄漏（Future-information Leakage）把结果抬高了多少。</dd><dt>Why<small>为什么重要</small></dt><dd>团队按文档逐项核对了“出院时能不能拿到”，又按患者分组做交叉验证，仍然漏掉了泄漏。临床和风控模型的特征审计，光看文档不够。</dd><dt>How<small>怎么做的</small></dt><dd>一个号称“既往 180 天住院时长趋势”的特征，实际用了患者整份记录，包括之后的住院。去掉它和两个派生项，测试集 AUROC 从 0.774 降到 0.706。纠正后的模型校准斜率 0.99，仍好于 LACE 和 HOSPITAL 评分。出院第 1 天的区分度峰值，主要来自 2,368 次出院后 1 小时内的行政续接，并进前一次住院后 AUROC 为 0.698。泄漏还造出了假的亚组和时间段差异；作者用简单的经验检查就找到了它。局限：单中心数据，用于临床前要外部验证。</dd><dt>Who<small>谁</small></dt><dd>Bandeira、Gonzalez、Poellabauer、Mondal 4 位作者，数据使用由佛罗里达国际大学负责。</dd><dt>When<small>何时</small></dt><dd>11-15，预印本。</dd><dt>Action<small>行动建议</small></dt><dd>特征审计除了核对文档，再加一道经验检查：按预测时点截断数据后重算每个历史特征，和原值对不上的就是可疑项。</dd></dl>
+    <p class="src">原文：<a href="https://www.medrxiv.org/content/10.64898/2026.11.13.26368026v1" lang="en">Future-Information Leakage in 30-Day Readmission Prediction: An Empirical Audit and a Calibrated Electronic Health Record Model</a>（medRxiv），11-15</p>
+  </details>
+  <details class="item" id="i-shopping-effort">
+    <summary><span class="c">购物 Agent｜多想一会儿不会选得更好</span><span class="so">推理强度只抬高了自信，没提高正确率</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="ind">金融</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>研究测了 10 个前沿模型当购物 Agent：读图文商品列表，替用户挑商品，并报出自己有多大把握。</dd><dt>Why<small>为什么重要</small></dt><dd>上期写过 ChatGPT Wallet 让 Agent 替人付钱。人们容易以为调高推理强度就能买得更对，这篇说不能，而且模型报的把握也靠不住，不能直接拿来当“该不该让人确认”的阈值。</dd><dt>How<small>怎么做的</small></dt><dd>三个基准分别来自 WebShop、亚马逊 SQID 和 Wayfair WANDS。三个基准上，提高推理强度都没有在统计上显著提高选择质量，自报置信度却显著上升。多数模型的置信度校准不好。局限：只看了选商品这一步，没有涉及付款。</dd><dt>Who<small>谁</small></dt><dd>Krishnamoorthy、Han。</dd><dt>When<small>何时</small></dt><dd>11-18，预印本。</dd><dt>Action<small>行动建议</small></dt><dd>代付或推荐类 Agent 的人工确认规则，按金额和类目定，不按模型自报的置信度定；要用置信度，先在自己的样本上做一次校准。</dd></dl>
+    <p class="src">原文：<a href="https://arxiv.org/abs/2611.22033" lang="en">Thinking Harder Doesn't Lead to Better Choices: Reasoning Effort Increases the Confidence but Not the Correctness of LLM Shopping Agents</a>（arXiv），11-18</p>
+  </details>
+  </div>
+</section>
+
+<section aria-labelledby="s-prod">
+  <h2 id="s-prod">产品<span class="count">其余 1 条，点开看详情</span></h2>
+  <div class="items">
+  <details class="item" id="i-apple-health-study">
+    <summary><span class="c">Apple｜招 20 万人研究 AI 健康问答</span><span class="so">看普通人怎样理解、信任和使用 AI 给的健康答案</span><span class="item-meta"><span class="chip zs">招熟</span><span class="ind">医疗</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>Apple Health AI Usage Study 是一项研究型 App，由 OpenEvidence 提供回答：用户问健康问题，得到通俗的回答和所依据的临床文献，还能整理就诊要问的事。</dd><dt>Why<small>为什么重要</small></dt><dd>医疗问答产品多在测“答得对不对”，这项研究测的是另一半：普通人读完答案会不会信、会做什么。这正是上期 Lotus AI 那种真实用户数据缺的部分。</dd><dt>How<small>怎么做的</small></dt><dd>面向美国 21 岁以上、iPhone 15 Pro 及更新机型的用户，最多 20 万人。某些问题会被标出，建议用户去找医生或其他资源。参与者可选择共享 HealthKit 里的心率、活动、睡眠和化验数据，Apple 说这些数据不用来训练模型。Apple 自己也承认，大模型驱动的健康产品有时回答不完整或不清楚。</dd><dt>Who<small>谁</small></dt><dd>Apple 与 OpenEvidence；Apple 健康副总裁 Sumbul Desai。</dd><dt>When<small>何时</small></dt><dd>STAT 11-15 报道（STAT+ 付费），以上依据 MobiHealthNews。研究时长没有公布。</dd><dt>Action<small>行动建议</small></dt><dd>做面向患者的问答产品，参考它的两条设计：每个答案附出处，高风险问题主动建议就医。评测时加一项“用户读完后打算做什么”。</dd></dl>
+    <p class="src">原文：<a href="https://www.statnews.com/2026/11/15/apple-openevidence-launch-health-chat-app-experiment-ai/" lang="en">Apple and OpenEvidence launch experimental health chat app</a>（STAT），11-15；<a href="https://www.mobihealthnews.com/news/apple-launches-research-study-openevidence" lang="en">Apple launches research study with OpenEvidence</a>（MobiHealthNews），11-16</p>
+  </details>
+  </div>
+</section>
+
+<section aria-labelledby="s-act">
+  <h2 id="s-act">本期行动</h2>
+  <ol class="acts">
+    <li><a href="#i-som-routing">决策模型医学评测</a>有固定选项的环节先给决策模型答，用标注样本定置信度阈值，阈值以下转大模型。</li>
+    <li><a href="#i-frontierharness">FrontierHarness</a>换模型时用私有任务重比两三个框架，按“每次通过的成本”选，先看平均步数。</li>
+    <li><a href="#i-health-agents">ChatGPT for Healthcare</a>挑一个没有 API 的行政流程，用便宜档 Agent 试跑，按任务记成本和人工复核率。</li>
+    <li><a href="#i-ai-overviews">AI 摘要</a>按“出不出 AI 摘要”拆开看流量，关键页面开头先给能直接引用的结论。</li>
+    <li><a href="#i-review-bottleneck">评审瓶颈</a>引入编程 Agent 后盯 PR 合并率和评审时长，给 Agent 的 PR 设大小上限。</li>
+    <li><a href="#i-external-sandbox">外置沙箱</a>Agent 执行代码挪进沙箱，出网走白名单，密钥由代理注入。</li>
+    <li><a href="#i-readmission-leak">再入院泄漏</a>特征审计加一道截断重算的经验检查，不只核对文档。</li>
+    <li><a href="#i-shopping-effort">购物 Agent</a>人工确认按金额和类目定，不直接用模型自报的置信度。</li>
+  </ol>
+</section>
+
+<section aria-labelledby="s-appx">
+  <h2 id="s-appx">附录</h2>
+  <details><summary>本期条目总表（10 条）</summary><div class="tbl"><table>
+    <thead><tr><th>日期</th><th>行业</th><th>轨道</th><th>阶段</th><th>条目</th><th>标签</th><th>总分</th><th>来源</th><th>去向</th></tr></thead>
+    <tbody>
+      <tr><td class="num">11-16</td><td>医疗</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-health-agents">ChatGPT for Healthcare</a></td><td>计算机操作、成本</td><td class="num">78</td><td>OpenAI、FourWeekMBA</td><td>建议入书</td></tr>
+      <tr><td class="num">11-09</td><td>通用</td><td>产品</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-ai-overviews">AI 摘要与搜索流量</a></td><td>搜索、用户行为</td><td class="num">71</td><td>RevScope、Hacker News</td><td>待定</td></tr>
+      <tr><td class="num">11-15</td><td>医疗</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-apple-health-study">Apple 健康问答研究</a></td><td>用户研究、信任</td><td class="num">69</td><td>STAT、MobiHealthNews</td><td>待定</td></tr>
+      <tr><td class="num">11-17</td><td>通用</td><td>技术</td><td><span class="chip zs">招熟</span></td><td><a href="#i-frontierharness">FrontierHarness v1.1</a></td><td>Agent 框架、评测、成本</td><td class="num">69</td><td>Runta、Hacker News</td><td>建议入书</td></tr>
+      <tr><td class="num">11-17</td><td>医疗</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-som-routing">决策模型医学评测</a></td><td>模型路由、评测、成本</td><td class="num">68</td><td>medRxiv</td><td>建议入书</td></tr>
+      <tr><td class="num">11-14</td><td>通用</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-review-bottleneck">评审瓶颈</a></td><td>编程 Agent、人机协作</td><td class="num">66</td><td>Harvard、arXiv、Hacker News</td><td>建议入书</td></tr>
+      <tr><td class="num">11-17</td><td>通用</td><td>技术</td><td><span class="chip zs">招熟</span></td><td><a href="#i-gpt62">GPT-6.2 Astra 和 Sol</a></td><td>模型发布、价格</td><td class="num">65</td><td>OpenAI、Simon Willison</td><td>不入书</td></tr>
+      <tr><td class="num">11-17</td><td>通用</td><td>技术</td><td><span class="chip zs">招熟</span></td><td><a href="#i-external-sandbox">外置沙箱</a></td><td>安全、Agent 框架</td><td class="num">64</td><td>Simon Willison</td><td>建议试用</td></tr>
+      <tr><td class="num">11-15</td><td>医疗</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-readmission-leak">再入院预测泄漏</a></td><td>评测、数据泄漏</td><td class="num">60</td><td>medRxiv</td><td>建议入书</td></tr>
+      <tr><td class="num">11-18</td><td>金融</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-shopping-effort">购物 Agent 推理强度</a></td><td>推理、校准</td><td class="num">59</td><td>arXiv</td><td>待定</td></tr>
+    </tbody>
+  </table></div></details>
+</section>
+
+</div>
+<script>
+(function(){function o(){var e=location.hash&&document.getElementById(location.hash.slice(1));if(e&&e.tagName==='DETAILS')e.open=true}
+window.addEventListener('hashchange',o);o()})();
+</script>
