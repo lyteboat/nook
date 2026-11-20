@@ -1,0 +1,145 @@
+<title>AI 应用架构师与 CAIO：合格的人需要哪些能力</title>
+<style>
+:root{--bg:#F6F3EC;--surface:#FCFAF5;--ink:#1B1814;--ink2:#3A342D;--muted:#6E665C;--line:#DDD5C8;--rule:#1B1814;--wash:#EFE9DE;--accent:#A12F2B;
+--zs:#2f7d5b;--dj:#3d55a3;--sm:#a1701c;
+--f-display:"Noto Serif SC","Songti SC","STSong",serif;--f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+--f-data:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#15120F;--surface:#1C1814;--ink:#EDE6DA;--ink2:#CFC6B8;--muted:#A0968A;--line:#342D25;--rule:#EDE6DA;--wash:#211C17;--accent:#E27D6E;
+--zs:#6cc59a;--dj:#9aaef0;--sm:#e0b45e;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#15120F;--surface:#1C1814;--ink:#EDE6DA;--ink2:#CFC6B8;--muted:#A0968A;--line:#342D25;--rule:#EDE6DA;--wash:#211C17;--accent:#E27D6E;
+--zs:#6cc59a;--dj:#9aaef0;--sm:#e0b45e;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15.5px/1.85 var(--f-body)}
+a{color:inherit}h1,h2,h3,h4,p,ol,ul,figure{margin:0;padding:0}ol,ul{list-style:none}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.4}
+.num{font-family:var(--f-data);font-variant-numeric:tabular-nums}
+.zs{--c:var(--zs)}.dj{--c:var(--dj)}.sm{--c:var(--sm)}
+.tag{display:inline-block;font:500 11.5px/1 var(--f-body);color:var(--muted);border:1px solid var(--line);border-radius:3px;padding:4px 6px 3px;white-space:nowrap}
+.map{margin:0;overflow-x:auto}.map svg{display:block;width:100%;min-width:640px;height:auto}
+.map .box{fill:var(--wash);stroke:var(--line)}.map .box.hi{fill:var(--surface);stroke:var(--accent);stroke-width:1.5}
+.map text{fill:var(--ink);font:14px var(--f-body)}.map text.s{fill:var(--muted);font-size:12px}
+.map .ln{stroke:var(--muted);stroke-width:1.4;fill:none}.map .ah{fill:var(--muted)}
+.map figcaption{font-size:13px;line-height:1.8;color:var(--muted);margin-top:12px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font:600 12px/1.4 var(--f-body);color:var(--muted);padding:8px 12px 8px 0;border-bottom:1px solid var(--rule);white-space:nowrap}
+td{padding:10px 12px 10px 0;border-bottom:1px dotted var(--line);vertical-align:top}
+.tbl{overflow-x:auto}
+h2 .sub{font:400 13.5px var(--f-body);color:var(--muted);margin-left:12px}
+
+.wrap{max-width:1160px;margin:0 auto;padding:40px 16px 0;display:grid;grid-template-columns:200px minmax(0,1fr);column-gap:56px}
+.wrap>*{grid-column:2;min-width:0}
+.cover{grid-column:1/-1;padding-bottom:32px;border-bottom:3px solid var(--rule);margin-bottom:8px}
+.eyebrow{font:600 12px/1.6 var(--f-data);letter-spacing:.06em;color:var(--muted)}.eyebrow a{color:var(--accent);text-decoration:none}
+.cover h1{font-size:clamp(28px,1.4vw + 20px,44px);font-weight:900;margin:14px 0 16px;max-width:24em}
+.thesis{font:500 clamp(16px,.3vw + 14px,19px)/1.85 var(--f-display);color:var(--ink2);max-width:46em}
+.meta{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin-top:18px;font-size:13px;color:var(--muted)}
+.toc{grid-column:1;grid-row:2/span 20;position:sticky;top:24px;align-self:start;padding-top:32px;font-size:13.5px}
+.toc b{display:block;font:600 11px/1 var(--f-data);letter-spacing:.14em;color:var(--muted);margin-bottom:12px}
+.toc a{display:grid;grid-template-columns:2em 1fr;padding:5px 0;text-decoration:none;color:var(--ink2);border-bottom:1px dotted var(--line)}
+.toc a span{font:500 12px/1.9 var(--f-data);color:var(--muted)}.toc a:hover{color:var(--accent)}
+section{padding-top:40px}
+h2{display:flex;align-items:baseline;gap:12px;font-size:24px;font-weight:900;padding-bottom:12px;border-bottom:1px solid var(--rule);margin-bottom:20px}
+h2 .no{font:600 13px var(--f-data);color:var(--muted)}h2 small{font:400 13.5px var(--f-body);color:var(--muted)}
+.keys{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 40px;counter-reset:k}
+.keys li{padding:16px 0;border-bottom:1px dotted var(--line);counter-increment:k}
+.keys b{display:block;font:700 17px/1.5 var(--f-display)}.keys b::before{content:counter(k,decimal-leading-zero);font:600 12px var(--f-data);color:var(--accent);margin-right:10px}
+.keys span{display:block;margin-top:4px;font-size:14.5px;color:var(--ink2)}
+.stage h2{border-bottom:3px solid var(--c)}.stage h2 .st{font:700 13px var(--f-body);color:var(--c)}
+.xf{font:600 19px/1.8 var(--f-display);padding:4px 0 4px 18px;border-left:3px solid var(--c);margin-bottom:12px}
+.xf::before{content:"心法";display:block;font:600 11px/1.6 var(--f-data);letter-spacing:.14em;color:var(--c)}
+.moves{counter-reset:m}
+.moves li{display:grid;grid-template-columns:2.2em minmax(0,1fr);column-gap:8px;padding:16px 0;border-bottom:1px dotted var(--line);counter-increment:m}
+.moves li::before{content:counter(m);font:700 20px/1.3 var(--f-display);color:var(--c)}
+.moves h3{font-size:17px;font-weight:700}.moves p{grid-column:2;margin-top:4px;font-size:14.5px;color:var(--ink2)}
+.moves .eg{font-size:13.5px;color:var(--muted)}.moves .eg::before{content:"例";font-weight:700;color:var(--c);margin-right:8px}
+.timeline li{display:grid;grid-template-columns:5.5em 3.5em minmax(0,1fr);gap:12px;padding:10px 0;border-bottom:1px dotted var(--line);font-size:14.5px}
+.timeline time{font:500 13px/1.85 var(--f-data);color:var(--muted)}.timeline i{font-style:normal;font-size:12px;color:var(--accent)}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 40px}
+.acts{counter-reset:a}.acts li,.open li{padding:10px 0;border-bottom:1px dotted var(--line);font-size:14.5px}
+.acts li{counter-increment:a}.acts li::before{content:counter(a) ".";font:700 14px var(--f-data);color:var(--accent);margin-right:10px}
+.open li::before{content:"？";color:var(--accent);font-weight:700;margin-right:8px}
+.refs li{font-size:13.5px;color:var(--muted);padding:6px 0}
+@media (max-width:900px){.wrap{display:block}.toc{display:none}.keys,.two{grid-template-columns:1fr}
+.timeline li{grid-template-columns:5em minmax(0,1fr)}.timeline i{grid-column:1;grid-row:2}.timeline b,.timeline span{grid-column:2;grid-row:1/3}}
+</style>
+<div class="wrap">
+<header class="cover a" data-after="2026-11-18" data-tags="产业、评测、监管"><div class="eyebrow">专题 03 · 方法专题 · 2026-11-20 · 延伸自 <a href="../../radar/2026/2026-11-18.html">11-18 期雷达</a></div><h1>AI 应用架构师与 CAIO：合格的人需要哪些能力</h1><p class="thesis">两个岗位管的是同一件事：把概率性的模型换成可度量、可停掉的业务结果。76% 的组织已设 CAIO，只有 18% 的 CAIO 握有投资决策权。</p><div class="meta"><span>阅读约 15 分钟</span><span class="tag">产业</span><span class="tag">评测</span><span class="tag">监管</span></div></header><nav class="toc" aria-label="专题目录"><b>目录</b><a href="#t-keys"><span>00</span>要点</a><a href="#t-map"><span>01</span>全景图</a><a href="#t-zs"><span>02</span>招熟 · 上手即用</a><a href="#t-dj"><span>03</span>懂劲 · 原理机制</a><a href="#t-sm"><span>04</span>神明 · 长期方向</a><a href="#t-time"><span>05</span>时间线</a><a href="#t-who"><span>06</span>版图</a><a href="#t-act"><span>07</span>行动建议</a><a href="#t-open"><span>08</span>待解问题</a><a href="#t-src"><span>09</span>来源</a></nav><section aria-labelledby="t-keys"><h2 id="t-keys"><span class="no">00</span>要点</h2><ol class="keys"><li><b>CAIO 成了标配，权力还没跟上</b><span>IBM 的 CEO 研究显示，设 CAIO 的组织从 2025 年的 26% 升到 2026 年的 76%；同期调查的 1,667 位 CAIO 里，只有 18% 完全掌握 AI 投资决策。</span></li>
+<li><b>好 CAIO 敢停项目</b><span>IBM 划出的高影响 CAIO 里，96% 削减或停掉过表现不佳的项目，其他人是 46%。数字是自报的，只说明相关。</span></li>
+<li><b>架构师的核心产物是评测集和决策记录</b><span>Hamel Husain 总结，失败的 AI 产品几乎都缺一套像样的评测体系。架构师路线图要求每个选型写成架构决策记录（ADR）。</span></li>
+<li><b>先做最简单的方案</b><span>Anthropic 建议先直接调模型 API，效果证明变好才加复杂度。Gartner 预测 2027 年底前四成以上的 Agent 项目会被取消。</span></li>
+<li><b>治理占了岗位的一半</b><span>美国 OMB 的 M-25-21 要求 CAIO 维护用例清单，高影响用例上线前独立评审。Heidrick 统计，带治理授权的 CAIO 从 7% 升到 19%。</span></li>
+</ol></section><section aria-labelledby="t-map"><h2 id="t-map"><span class="no">01</span>全景图</h2><figure class="map"><svg viewBox="0 0 820 330" role="img" aria-label="两个岗位的分工：上排是 CAIO 管的用例组合、决策权、治理与合规、人才与采纳；下排是架构师管的上下文与工具、工作流与 Agent、评测与观测、选型与成本；两排都指向中间的可度量价值">
+      <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0,0L10,5L0,10z"/></marker></defs>
+      <text class="s" x="10" y="20">CAIO · 决定做什么、谁来拍板、何时停</text>
+      <rect class="box" x="10" y="30" width="185" height="60" rx="6"/><text x="102" y="58" text-anchor="middle">用例组合</text><text class="s" x="102" y="78" text-anchor="middle">清单、打分、季度复盘</text>
+      <rect class="box" x="215" y="30" width="185" height="60" rx="6"/><text x="307" y="58" text-anchor="middle">决策权</text><text class="s" x="307" y="78" text-anchor="middle">AI 做、AI 建议、人做</text>
+      <rect class="box" x="420" y="30" width="185" height="60" rx="6"/><text x="512" y="58" text-anchor="middle">治理与合规</text><text class="s" x="512" y="78" text-anchor="middle">高影响用例独立评审</text>
+      <rect class="box" x="625" y="30" width="185" height="60" rx="6"/><text x="717" y="58" text-anchor="middle">人才与采纳</text><text class="s" x="717" y="78" text-anchor="middle">培训、改流程、找业务方</text>
+      <rect class="box hi" x="10" y="130" width="800" height="60" rx="6"/><text x="410" y="158" text-anchor="middle">可度量的价值</text><text class="s" x="410" y="178" text-anchor="middle">评测集通过率 + 业务指标 + 写明停掉的条件</text>
+      <rect class="box" x="10" y="230" width="185" height="60" rx="6"/><text x="102" y="258" text-anchor="middle">上下文与工具</text><text class="s" x="102" y="278" text-anchor="middle">少而准的 token 和工具</text>
+      <rect class="box" x="215" y="230" width="185" height="60" rx="6"/><text x="307" y="258" text-anchor="middle">工作流与 Agent</text><text class="s" x="307" y="278" text-anchor="middle">能用工作流就不用 Agent</text>
+      <rect class="box" x="420" y="230" width="185" height="60" rx="6"/><text x="512" y="258" text-anchor="middle">评测与观测</text><text class="s" x="512" y="278" text-anchor="middle">断言、评审、A/B</text>
+      <rect class="box" x="625" y="230" width="185" height="60" rx="6"/><text x="717" y="258" text-anchor="middle">选型与成本</text><text class="s" x="717" y="278" text-anchor="middle">买还是建，写成 ADR</text>
+      <path class="ln" d="M102,90V128" marker-end="url(#ah)"/><path class="ln" d="M307,90V128" marker-end="url(#ah)"/><path class="ln" d="M512,90V128" marker-end="url(#ah)"/><path class="ln" d="M717,90V128" marker-end="url(#ah)"/><path class="ln" d="M102,230V192" marker-end="url(#ah)"/><path class="ln" d="M307,230V192" marker-end="url(#ah)"/><path class="ln" d="M512,230V192" marker-end="url(#ah)"/><path class="ln" d="M717,230V192" marker-end="url(#ah)"/>
+      <text class="s" x="10" y="318">AI 应用架构师 · 决定怎么做、怎么量、花多少钱</text>
+    </svg>
+<figcaption>上排决定做什么和何时停，下排决定怎么做和怎么量，两排在中间的度量上对账。</figcaption></figure></section><section class="stage zs" aria-labelledby="t-zs"><h2 id="t-zs"><span class="no">02</span>招熟 · 上手即用</h2><p class="xf">先把一个用例做成可度量、可停掉的产品，再谈平台。</p><ol class="moves"><li><h3>先写评测集，再写提示词</h3><p>Hamel Husain 把评测分三级：断言式单元测试、人工加模型评审、A/B 测试，成本依次升高。从好坏二分类标签起步，每次改动都跑第一级，并且始终去看原始数据。</p><p class="eg">病历摘要功能先请临床医生标 100 份好坏，改提示词或换模型前先过这套评测。</p></li>
+<li><h3>能用工作流就不用 Agent</h3><p>Anthropic 区分两类系统：工作流按预先写好的代码路径编排模型，Agent 由模型自己决定下一步。它列了提示链、路由、并行、编排者加工人、评估者加优化者五种工作流，建议只在效果证明变好时才加复杂度。</p><p class="eg">理赔审核先用路由分类型、提示链逐项核对，不上自主 Agent。</p></li>
+<li><h3>把上下文当预算管</h3><p>Anthropic 把上下文工程定义为在推理时维护一组最优的 token。上下文有注意力预算，越塞越钝，目标是用最少的高信号 token 换最大的成功率。工具要少，功能不重叠；资料按需加载。</p><p class="eg">投顾助手只存客户号，需要时再调接口取持仓，不把全量资料塞进提示词。</p></li>
+<li><h3>每个选型写一页 ADR</h3><p>开源还是闭源、外购还是自建、要不要语义缓存和降级路由，都写成架构决策记录，列出备选、取舍和换掉的成本。MIT NANDA 的报告称，外购和合作的成功率约 67%，自建约为其三分之一。</p><p class="eg">医院选病历结构化方案时，ADR 写清数据出不出院、换模型要重做哪些评测。</p></li>
+<li><h3>画一张决策权表</h3><p>流程里每个决定标成三档：AI 直接做、AI 建议人确认、只能人做。IBM 2026 年的调查里，只有 61% 的 CAIO 说本组织的 AI 决策权定义清楚并且一贯执行。</p><p class="eg">授信流程里额度建议由模型给出，审批签字留给人，表里写明谁签。</p></li>
+<li><h3>用例登记成清单，每条带停掉的条件</h3><p>OMB 要求联邦机构的 CAIO 维护 AI 用例清单。清单上每条写业务指标、风险等级和停掉的条件，按季度复盘。Truist 的说法是“We stop when the value isn't there”。</p><p class="eg">银行把客服、授信、反洗钱的用例列成表，三个月达不到指标的停掉，预算挪给已验证的。</p></li>
+<li><h3>高影响用例先过独立评审</h3><p>M-25-21 要求 CAIO 建立流程，高影响用例在接受风险之前先经独立评审。影响客户权益、诊疗决定的用例，上线前要有测试、影响评估和人工复核的出口。</p><p class="eg">辅助诊断功能上线前，由不参与开发的医生和合规各审一遍，记录评审结论。</p></li>
+</ol></section><section class="stage dj" aria-labelledby="t-dj"><h2 id="t-dj"><span class="no">03</span>懂劲 · 原理机制</h2><p class="xf">模型是概率性的，两个岗位都在把这份不确定性换成可以对账的数字。</p><ol class="moves"><li><h3>试点卡住，多半卡在流程</h3><p>MIT NANDA 的报告基于 150 次访谈、350 人问卷和 300 个公开部署，称 95% 的企业没从生成式 AI 拿到快速的营收增长。一半以上的预算投在销售和营销工具上，回报最大的却是后台自动化。报告口径较窄，媒体转述时常把它说大。</p></li>
+<li><h3>复杂度要用评测来换</h3><p>Anthropic 提醒，Agent 成本更高，错误会层层累积。它在 SWE-bench 上花在打磨工具上的时间比提示词还多，例如强制工具只收绝对路径。这和设计强类型 API 一个道理：让调用方没法用错。</p></li>
+<li><h3>评审模型本身也要被评测</h3><p>用模型做评审（LLM-as-a-Judge）时，要选能负担的最强模型，并跟踪它和人工标注的一致率。类别不平衡时，总体一致率会骗人，要分开看精确率和召回率。这和监控告警的误报率、漏报率是一回事。</p></li>
+<li><h3>运营模式从集中走向混合</h3><p>Heidrick 分析了 2023 到 2026 年 456 次 CAIO 任命：集中式从 44% 降到 37%，混合式从 19% 升到 45%，完全嵌入业务的从 38% 降到 18%。IBM 2025 年的调查称，集中或中心辐射式的组织 AI 回报高 36%，这也是自报数据。</p></li>
+<li><h3>CAIO 的权力多半来自证据</h3><p>只有 18% 的 CAIO 完全掌握 AI 投资决策，15% 完全掌握 AI 人力策略。BCG 的调查里 72% 的 CEO 说自己是 AI 的主要决策者。没有预算的 CAIO 只能靠评测数字和业务指标说服 CEO 和业务线。</p></li>
+<li><h3>治理按管理体系来做</h3><p>ISO/IEC 42001 把 AI 管理写成可认证的体系，思路接近信息安全的 ISO 27001。OMB 的治理委员会由副部长级官员任主席、CAIO 任副主席，IT、网安、数据、预算、法务、隐私和民权部门都要派人。</p></li>
+<li><h3>背景多半是数据，工作多半是教育</h3><p>IBM 2025 年调查的 600 多位 CAIO 里，73% 出身数据，38% 出身运营。波音的 Abhi Seth 说，这份工作比外人想的更像教育工作。IBM 2026 年的 CEO 研究里，83% 的 CEO 认为 AI 成败更看人的采纳。</p></li>
+</ol></section><section class="stage sm" aria-labelledby="t-sm"><h2 id="t-sm"><span class="no">04</span>神明 · 长期方向</h2><p class="xf">岗位名称会变，把不确定性换成可度量价值的本事不会变。</p><ol class="moves"><li><h3>工程师、架构师、CAIO 是一条线</h3><p>swyx 在 2023 年提出 AI 工程师会成为这十年需求最高的工程岗位，并主张产品的数据和评测归工程师管。从评测集到用例组合，度量的对象在变大，方法没变。</p></li>
+<li><h3>CAIO 可能是过渡岗位</h3><p>85% 的 CEO 说每个职能负责人都要成为本领域的技术专家，BCG 也看到 CEO 在收回 AI 决策权。这是推断：AI 能力最后可能并进每个业务负责人的岗位。</p></li>
+<li><h3>Agent 把决策权问题推到台前</h3><p>48% 的 CAIO 说 Agent 已在跨流程发起和执行动作。CEO 们预计，无人介入的运营决策会从现在的 25% 升到 2030 年的 48%。</p></li>
+<li><h3>懂行业的架构师更稀缺</h3><p>金融和医疗的流程、监管和数据规矩写不进通用模型，懂这些的人决定用例能不能上线。这是判断，没有统计支撑。</p></li>
+<li><h3>两组数字可以回头检验</h3><p>Gartner 的四成 Agent 项目取消预测在 2027 年底见分晓；CAIO 握有投资决策权的比例，明年的调查会给出变化。</p></li>
+</ol></section><section aria-labelledby="t-time"><h2 id="t-time"><span class="no">05</span>时间线</h2><ol class="timeline"><li><time>2023-06</time><i>研究</i><span>swyx 发表《The Rise of the AI Engineer》，提出 AI 工程师岗位</span></li>
+<li><time>2023-12</time><i>监管</i><span>ISO/IEC 42001 发布，AI 管理体系有了可认证的标准</span></li>
+<li><time>2024-03</time><i>研究</i><span>Hamel Husain 发表《Your AI Product Needs Evals》，提出三级评测</span></li>
+<li><time>2024-12</time><i>研究</i><span>Anthropic 发表《Building effective agents》，区分工作流和 Agent</span></li>
+<li><time>2025-02</time><i>监管</i><span>欧盟 AI 法案第 4 条的 AI 素养义务开始适用</span></li>
+<li><time>2025-04</time><i>监管</i><span>OMB 发布 M-25-21，要求联邦机构 60 天内任命 CAIO</span></li>
+<li><time>2025-06</time><i>研究</i><span>Gartner 预测四成以上 Agent 项目将在 2027 年底前取消</span></li>
+<li><time>2025-07</time><i>研究</i><span>IBM 与迪拜未来基金会调查 600 多位 CAIO，26% 的组织设了这个岗位</span></li>
+<li><time>2025-08</time><i>研究</i><span>MIT NANDA 发布《The GenAI Divide》，95% 的企业没拿到快速回报</span></li>
+<li><time>2025-09</time><i>研究</i><span>Anthropic 发表上下文工程一文，把上下文当有限资源管</span></li>
+<li><time>2026-05</time><i>研究</i><span>IBM CEO 研究：76% 的组织已设 CAIO</span></li>
+<li><time>2026-11</time><i>研究</i><span>Heidrick 分析 456 次 CAIO 任命；IBM 调查 1,667 位 CAIO，18% 掌握投资决策</span></li>
+</ol></section><section aria-labelledby="t-who"><h2 id="t-who"><span class="no">06</span>版图<small>按做法分组</small></h2><div class="tbl"><table><thead><tr><th>做法</th><th>主体</th><th>做了什么</th><th>成熟度</th><th>证据</th></tr></thead><tbody><tr><td>组合管理</td><td>IBM 划出的高影响 CAIO</td><td>96% 削减或停掉表现不佳的项目，63% 的项目出了可度量结果，其他人是 43%</td><td>已在生产</td><td>公司披露</td></tr><tr><td>组合管理</td><td>Truist（银行）</td><td>价值不在就停</td><td>已在生产</td><td>媒体报道</td></tr><tr><td>运营模式</td><td>Heidrick 统计的 456 次任命</td><td>混合式从 19% 升到 45%</td><td>已在生产</td><td>公司披露</td></tr><tr><td>运营模式</td><td>IBM 与迪拜未来基金会</td><td>集中或中心辐射式的 AI 回报高 36%</td><td>已在生产</td><td>公司披露</td></tr><tr><td>组织归属</td><td>OMERS、PSP、BCI（加拿大机构投资者）</td><td>不设 CAIO，AI 归 CTO 管</td><td>已在生产</td><td>媒体报道</td></tr><tr><td>评测</td><td>Rechat（Hamel Husain 的案例）</td><td>几百条断言式单元测试，每次改动都跑</td><td>已在生产</td><td>公司披露</td></tr><tr><td>评测</td><td>LLM 评审</td><td>跟踪评审模型和人工的一致率，分开看精确率和召回率</td><td>已在生产</td><td>公司披露</td></tr><tr><td>系统设计</td><td>Anthropic</td><td>五种工作流模式，先工作流后 Agent</td><td>已在生产</td><td>公司披露</td></tr><tr><td>系统设计</td><td>Anthropic</td><td>上下文工程：压缩、结构化笔记、子代理</td><td>已在生产</td><td>公司披露</td></tr><tr><td>采购</td><td>MIT NANDA</td><td>外购和合作成功率约 67%，自建约为其三分之一</td><td>已有实验证据</td><td>媒体报道</td></tr><tr><td>人才</td><td>波音</td><td>CAIO 的工作更像教育工作</td><td>已在生产</td><td>媒体报道</td></tr></tbody></table></div></section><section aria-labelledby="t-act"><div class="two"><div><h2 id="t-act"><span class="no">07</span>行动建议</h2><ol class="acts"><li>给手上的一个 AI 功能建评测集：50 到 100 条带好坏标签的真实样本，每次改提示词或换模型都跑，记下通过率。</li>
+<li>为最近一次模型或框架选型补一页 ADR，写清备选、取舍和换掉的成本。</li>
+<li>列一张用例清单，每条写业务指标、风险等级和停掉的条件，季度复盘一次。</li>
+<li>画一张决策权表，把流程里每个决定标成 AI 直接做、AI 建议人确认、只能人做三档。</li>
+<li>对照 M-25-21 的 CAIO 职责，改写成金融或医疗场景的检查表，标出自己还没做的项。</li>
+</ol></div><div><h2 id="t-open"><span class="no">08</span>待解问题</h2><ul class="open"><li>只有 18% 的 CAIO 握有投资决策权，没有预算的岗位能否推动跨部门改造，还没有定论。</li>
+<li>高影响 CAIO 的回报数字都是自报，说明相关，说明不了因果。</li>
+<li>Agent 自己执行动作出错时，责任归业务方、平台还是模型供应商，组织里还没有定法。</li>
+<li>CAIO 会长期独立存在，还是并回 CIO、CTO 或业务线，现有调查给不出答案。</li>
+</ul></div></div></section>
+<!-- nook:related -->
+<section aria-labelledby="t-src"><h2 id="t-src"><span class="no">09</span>来源</h2><ol class="refs"><li><a href="https://www.hcamag.com/ca/specialization/transformation/chief-ai-officers-lack-control-over-ai-spending-study/597723" lang="en">Chief AI officers lack control over AI spending: study</a>（HRD Canada），2026-11</li>
+<li><a href="https://heidrick.com/en/insights/technology-officers/ai-focus_framing-the-ai-leaders-role-to-fit-your-organization" lang="en">AI focus: Framing the AI leader's role to fit your organization</a>（Heidrick &amp; Struggles），2026-11</li>
+<li><a href="https://sea.peoplemattersglobal.com/news/ai-and-emerging-tech/76percent-of-firms-now-have-a-chief-ai-officer-up-from-26percent-in-a-year-ibm-49550" lang="en">76% of firms now have a Chief AI Officer, up from 26% in a year: IBM</a>（People Matters），2026-05</li>
+<li><a href="https://bcg.com/publications/2026/as-ai-investments-surge-ceos-take-the-lead" lang="en">As AI Investments Surge, CEOs Take the Lead</a>（BCG），2026-01</li>
+<li><a href="https://mea.newsroom.ibm.com/IBM-DFF-CAIO-study" lang="en">CAIOs Key to AI Success: Up to 36% Higher ROI on AI spend, Finds IBM-Dubai Future Foundation Study</a>（IBM Newsroom），2025-07</li>
+<li><a href="https://www.ibm.com/thought-leadership/institute-business-value/en-us/report/chief-ai-officer" lang="en">Chief AI Officers cut through complexity to create new paths to value</a>（IBM Institute for Business Value），2025-07</li>
+<li><a href="https://www.whitehouse.gov/wp-content/uploads/2025/02/M-25-21-Accelerating-Federal-Use-of-AI-through-Innovation-Governance-and-Public-Trust.pdf" lang="en">Accelerating Federal Use of AI through Innovation, Governance, and Public Trust (M-25-21)</a>（OMB），2025-04</li>
+<li><a href="https://fortune.com/2025/08/18/mit-report-95-percent-generative-ai-pilots-at-companies-failing-cfo/" lang="en">MIT report: 95% of generative AI pilots at companies are failing</a>（Fortune），2025-08</li>
+<li><a href="https://www.gartner.com/en/newsroom/press-releases/2025-06-25-gartner-predicts-over-40-percent-of-agentic-ai-projects-will-be-canceled-by-end-of-2027" lang="en">Gartner Predicts Over 40% of Agentic AI Projects Will Be Canceled by End of 2027</a>（Gartner），2025-06</li>
+<li><a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" lang="en">Effective context engineering for AI agents</a>（Anthropic），2025-09</li>
+<li><a href="https://www.anthropic.com/engineering/building-effective-agents" lang="en">Building effective agents</a>（Anthropic），2024-12</li>
+<li><a href="https://hamel.dev/blog/posts/evals/" lang="en">Your AI Product Needs Evals</a>（Hamel Husain），2024-03</li>
+<li><a href="https://www.latent.space/p/ai-engineer" lang="en">The Rise of the AI Engineer</a>（Latent Space），2023-06</li>
+<li><a href="https://www.kdnuggets.com/the-roadmap-to-becoming-an-ai-architect-in-2026" lang="en">The Roadmap to Becoming an AI Architect in 2026</a>（KDnuggets），2026-06</li>
+<li><a href="https://www.iso.org/standard/42001" lang="en">ISO/IEC 42001:2023 Information technology — Artificial intelligence — Management system</a>（ISO），2023-12</li>
+<li><a href="https://artificialintelligenceact.eu/article/4/" lang="en">Article 4: AI literacy</a>（EU Artificial Intelligence Act），2024-07</li>
+</ol></section>
+</div>
