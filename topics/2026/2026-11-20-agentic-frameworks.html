@@ -1,0 +1,149 @@
+<title>Agent 框架：能力趋同之后，垂直行业还卡在哪里</title>
+<style>
+:root{--bg:#F6F3EC;--surface:#FCFAF5;--ink:#1B1814;--ink2:#3A342D;--muted:#6E665C;--line:#DDD5C8;--rule:#1B1814;--wash:#EFE9DE;--accent:#A12F2B;
+--zs:#2f7d5b;--dj:#3d55a3;--sm:#a1701c;
+--f-display:"Noto Serif SC","Songti SC","STSong",serif;--f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+--f-data:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#15120F;--surface:#1C1814;--ink:#EDE6DA;--ink2:#CFC6B8;--muted:#A0968A;--line:#342D25;--rule:#EDE6DA;--wash:#211C17;--accent:#E27D6E;
+--zs:#6cc59a;--dj:#9aaef0;--sm:#e0b45e;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#15120F;--surface:#1C1814;--ink:#EDE6DA;--ink2:#CFC6B8;--muted:#A0968A;--line:#342D25;--rule:#EDE6DA;--wash:#211C17;--accent:#E27D6E;
+--zs:#6cc59a;--dj:#9aaef0;--sm:#e0b45e;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15.5px/1.85 var(--f-body)}
+a{color:inherit}h1,h2,h3,h4,p,ol,ul,figure{margin:0;padding:0}ol,ul{list-style:none}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.4}
+.num{font-family:var(--f-data);font-variant-numeric:tabular-nums}
+.zs{--c:var(--zs)}.dj{--c:var(--dj)}.sm{--c:var(--sm)}
+.tag{display:inline-block;font:500 11.5px/1 var(--f-body);color:var(--muted);border:1px solid var(--line);border-radius:3px;padding:4px 6px 3px;white-space:nowrap}
+.map{margin:0;overflow-x:auto}.map svg{display:block;width:100%;min-width:640px;height:auto}
+.map .box{fill:var(--wash);stroke:var(--line)}.map .box.hi{fill:var(--surface);stroke:var(--accent);stroke-width:1.5}
+.map text{fill:var(--ink);font:14px var(--f-body)}.map text.s{fill:var(--muted);font-size:12px}
+.map .ln{stroke:var(--muted);stroke-width:1.4;fill:none}.map .ah{fill:var(--muted)}
+.map figcaption{font-size:13px;line-height:1.8;color:var(--muted);margin-top:12px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font:600 12px/1.4 var(--f-body);color:var(--muted);padding:8px 12px 8px 0;border-bottom:1px solid var(--rule);white-space:nowrap}
+td{padding:10px 12px 10px 0;border-bottom:1px dotted var(--line);vertical-align:top}
+.tbl{overflow-x:auto}
+h2 .sub{font:400 13.5px var(--f-body);color:var(--muted);margin-left:12px}
+
+.wrap{max-width:1160px;margin:0 auto;padding:40px 16px 0;display:grid;grid-template-columns:200px minmax(0,1fr);column-gap:56px}
+.wrap>*{grid-column:2;min-width:0}
+.cover{grid-column:1/-1;padding-bottom:32px;border-bottom:3px solid var(--rule);margin-bottom:8px}
+.eyebrow{font:600 12px/1.6 var(--f-data);letter-spacing:.06em;color:var(--muted)}.eyebrow a{color:var(--accent);text-decoration:none}
+.cover h1{font-size:clamp(28px,1.4vw + 20px,44px);font-weight:900;margin:14px 0 16px;max-width:24em}
+.thesis{font:500 clamp(16px,.3vw + 14px,19px)/1.85 var(--f-display);color:var(--ink2);max-width:46em}
+.meta{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin-top:18px;font-size:13px;color:var(--muted)}
+.toc{grid-column:1;grid-row:2/span 20;position:sticky;top:24px;align-self:start;padding-top:32px;font-size:13.5px}
+.toc b{display:block;font:600 11px/1 var(--f-data);letter-spacing:.14em;color:var(--muted);margin-bottom:12px}
+.toc a{display:grid;grid-template-columns:2em 1fr;padding:5px 0;text-decoration:none;color:var(--ink2);border-bottom:1px dotted var(--line)}
+.toc a span{font:500 12px/1.9 var(--f-data);color:var(--muted)}.toc a:hover{color:var(--accent)}
+section{padding-top:40px}
+h2{display:flex;align-items:baseline;gap:12px;font-size:24px;font-weight:900;padding-bottom:12px;border-bottom:1px solid var(--rule);margin-bottom:20px}
+h2 .no{font:600 13px var(--f-data);color:var(--muted)}h2 small{font:400 13.5px var(--f-body);color:var(--muted)}
+.keys{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 40px;counter-reset:k}
+.keys li{padding:16px 0;border-bottom:1px dotted var(--line);counter-increment:k}
+.keys b{display:block;font:700 17px/1.5 var(--f-display)}.keys b::before{content:counter(k,decimal-leading-zero);font:600 12px var(--f-data);color:var(--accent);margin-right:10px}
+.keys span{display:block;margin-top:4px;font-size:14.5px;color:var(--ink2)}
+.stage h2{border-bottom:3px solid var(--c)}.stage h2 .st{font:700 13px var(--f-body);color:var(--c)}
+.xf{font:600 19px/1.8 var(--f-display);padding:4px 0 4px 18px;border-left:3px solid var(--c);margin-bottom:12px}
+.xf::before{content:"心法";display:block;font:600 11px/1.6 var(--f-data);letter-spacing:.14em;color:var(--c)}
+.moves{counter-reset:m}
+.moves li{display:grid;grid-template-columns:2.2em minmax(0,1fr);column-gap:8px;padding:16px 0;border-bottom:1px dotted var(--line);counter-increment:m}
+.moves li::before{content:counter(m);font:700 20px/1.3 var(--f-display);color:var(--c)}
+.moves h3{font-size:17px;font-weight:700}.moves p{grid-column:2;margin-top:4px;font-size:14.5px;color:var(--ink2)}
+.moves .eg{font-size:13.5px;color:var(--muted)}.moves .eg::before{content:"例";font-weight:700;color:var(--c);margin-right:8px}
+.timeline li{display:grid;grid-template-columns:5.5em 3.5em minmax(0,1fr);gap:12px;padding:10px 0;border-bottom:1px dotted var(--line);font-size:14.5px}
+.timeline time{font:500 13px/1.85 var(--f-data);color:var(--muted)}.timeline i{font-style:normal;font-size:12px;color:var(--accent)}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 40px}
+.acts{counter-reset:a}.acts li,.open li{padding:10px 0;border-bottom:1px dotted var(--line);font-size:14.5px}
+.acts li{counter-increment:a}.acts li::before{content:counter(a) ".";font:700 14px var(--f-data);color:var(--accent);margin-right:10px}
+.open li::before{content:"？";color:var(--accent);font-weight:700;margin-right:8px}
+.refs li{font-size:13.5px;color:var(--muted);padding:6px 0}
+@media (max-width:900px){.wrap{display:block}.toc{display:none}.keys,.two{grid-template-columns:1fr}
+.timeline li{grid-template-columns:5em minmax(0,1fr)}.timeline i{grid-column:1;grid-row:2}.timeline b,.timeline span{grid-column:2;grid-row:1/3}}
+</style>
+<div class="wrap">
+<header class="cover a" data-after="2026-11-18" data-tags="Agent、多智能体、评测"><div class="eyebrow">专题 04 · 技术专题 · 2026-11-20 · 延伸自 <a href="../../radar/2026/2026-11-18.html">11-18 期雷达</a></div><h1>Agent 框架：能力趋同之后，垂直行业还卡在哪里</h1><p class="thesis">主流框架都在收敛成同一套运行时，接口协议也归到了一个基金会。垂直行业卡在可靠性和问责上，金融、医疗的做法是收窄 Agent 自己能决定的范围。</p><div class="meta"><span>阅读约 17 分钟</span><span class="tag">Agent</span><span class="tag">多智能体</span><span class="tag">评测</span></div></header><nav class="toc" aria-label="专题目录"><b>目录</b><a href="#t-keys"><span>00</span>要点</a><a href="#t-map"><span>01</span>全景图</a><a href="#t-zs"><span>02</span>招熟 · 上手即用</a><a href="#t-dj"><span>03</span>懂劲 · 原理机制</a><a href="#t-sm"><span>04</span>神明 · 长期方向</a><a href="#t-time"><span>05</span>时间线</a><a href="#t-who"><span>06</span>版图</a><a href="#t-act"><span>07</span>行动建议</a><a href="#t-open"><span>08</span>待解问题</a><a href="#t-src"><span>09</span>来源</a></nav><section aria-labelledby="t-keys"><h2 id="t-keys"><span class="no">00</span>要点</h2><ol class="keys"><li><b>框架在收敛成同一套运行时</b><span>微软 Agent Framework 4 月发布 1.0，8 月运行时正式可用，上下文压缩、工具审批默认打开。</span></li>
+<li><b>接口协议归到了一处</b><span>AAIF 成立不到一年，托管的项目从 3 个增至 10 个，MCP、A2A、AGENTS.md、Agent Skills 都在其中。</span></li>
+<li><b>准确率在涨，稳定性没跟上</b><span>PhysicianBench 上最好的 GPT-5.5 单次通过率 46.3%，同一题连做三次都对只有 28.0%。</span></li>
+<li><b>框架要和模型成对评</b><span>FrontierHarness 测 22 种框架配置，成本差异 92.8% 来自模型，框架本身只占 2.3%。</span></li>
+<li><b>金融、医疗在收窄自主权</b><span>BCG 调查的 26 家系统重要性银行里，73% 允许 Agent 在选定场景上线，只有 8% 有统一的 Agent 监控。</span></li>
+</ol></section><section aria-labelledby="t-map"><h2 id="t-map"><span class="no">01</span>全景图</h2><figure class="map"><svg viewBox="0 0 820 330" role="img" aria-label="Agent 技术栈五层：垂域流程、编排、运行时、协议、模型；右侧四类痛点各自落在哪一层解决">
+      <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0,0L10,5L0,10z"/></marker></defs>
+      <rect class="box" x="10" y="10" width="420" height="52" rx="6"/><text x="220" y="33" text-anchor="middle">垂域流程</text><text class="s" x="220" y="52" text-anchor="middle">授信、理赔、给药、药物警戒</text>
+      <rect class="box" x="10" y="74" width="420" height="52" rx="6"/><text x="220" y="97" text-anchor="middle">编排</text><text class="s" x="220" y="116" text-anchor="middle">流程图、交接、多 Agent</text>
+      <rect class="box hi" x="10" y="138" width="420" height="52" rx="6"/><text x="220" y="161" text-anchor="middle">运行时（Harness）</text><text class="s" x="220" y="180" text-anchor="middle">断点续跑、上下文压缩、工具审批、追踪</text>
+      <rect class="box" x="10" y="202" width="420" height="52" rx="6"/><text x="220" y="225" text-anchor="middle">协议</text><text class="s" x="220" y="244" text-anchor="middle">MCP 接工具、A2A 连 Agent、Skills 装流程</text>
+      <rect class="box" x="10" y="266" width="420" height="52" rx="6"/><text x="220" y="289" text-anchor="middle">模型</text><text class="s" x="220" y="308" text-anchor="middle">成本差异九成来自这一层</text>
+      <rect class="box" x="560" y="10" width="250" height="52" rx="6"/><text x="685" y="33" text-anchor="middle">问责</text><text class="s" x="685" y="52" text-anchor="middle">谁批准、出错算谁的</text>
+      <rect class="box" x="560" y="74" width="250" height="52" rx="6"/><text x="685" y="97" text-anchor="middle">可靠性</text><text class="s" x="685" y="116" text-anchor="middle">同一题多跑几次结果不同</text>
+      <rect class="box" x="560" y="138" width="250" height="52" rx="6"/><text x="685" y="161" text-anchor="middle">安全</text><text class="s" x="685" y="180" text-anchor="middle">提示注入、越权操作</text>
+      <rect class="box" x="560" y="202" width="250" height="52" rx="6"/><text x="685" y="225" text-anchor="middle">成本</text><text class="s" x="685" y="244" text-anchor="middle">步数越多，重发的上下文越多</text>
+      <path class="ln" d="M558,36H432" marker-end="url(#ah)"/><path class="ln" d="M558,100C495,100 495,164 432,164" marker-end="url(#ah)"/><path class="ln" d="M558,164H432" marker-end="url(#ah)"/><path class="ln" d="M558,228C495,228 495,292 432,292" marker-end="url(#ah)"/>
+    </svg>
+<figcaption>左边是技术栈，右边是垂直行业的四类痛点，箭头指向主要在哪一层解决：可靠性和安全都落在描红的运行时层。</figcaption></figure></section><section class="stage zs" aria-labelledby="t-zs"><h2 id="t-zs"><span class="no">02</span>招熟 · 上手即用</h2><p class="xf">先选运行时，再谈编排；能用单 Agent 就不上多 Agent。</p><ol class="moves"><li><h3>按运行时能力选框架</h3><p>编排图各家都有，差别在运行时：状态能否持久化、中断后能否续跑、工具调用能否设审批、有没有内置追踪。LangGraph 1.0 和微软 Agent Framework 都把这几项做成了内置功能。</p><p class="eg">授信审核跑到一半要等审批人签字，状态要能存下来，第二天接着跑。</p></li>
+<li><h3>换模型就重测框架</h3><p>FrontierHarness 的数据里，Codex CLI 配 GLM-5.3 时每任务成本排第 1，配 Kimi-K3 时排第 16。只看一个模型的排名选框架，换了模型就可能选错。</p><p class="eg">把线上模型换成国产模型前，先用同一套任务集重跑两三个候选框架。</p></li>
+<li><h3>工具走 MCP，流程写成 Skills</h3><p>工具接口按 MCP 包装，固定流程写成带 SKILL.md 的技能文件夹。两者都由 AAIF 托管，换框架时不用重写。</p><p class="eg">把病历取数接口包成 MCP 服务，把临床试验入组筛查写成一份技能。</p></li>
+<li><h3>先用单 Agent 加固定流程</h3><p>伯克利分析了 7 个多 Agent 框架的 1642 条运行记录，任务失败率在 41% 到 86.7% 之间。排在前面的是重复步骤和不知道何时该停，都出在系统设计上。</p><p class="eg">理赔初审先用一个 Agent 按固定步骤走，跑稳了再拆角色。</p></li>
+<li><h3>读写分开授权</h3><p>摩根大通只允许外部 Agent 读余额，不能转账。FSB 的咨询稿也建议列出禁止的动作和需要人批的动作，超过金额阈值的交易要双人复核。</p><p class="eg">财富管理 Agent 只出调仓建议，下单交回客户在银行渠道确认。</p></li>
+<li><h3>代码执行放进外置沙箱</h3><p>Agent 留在沙箱外，要执行的代码发进专用沙箱，出网走白名单，API 密钥由代理注入。中了提示注入，坏的也只是沙箱。</p><p class="eg">让 Agent 分析交易流水前，先把它的代码执行挪进沙箱，只放行行内数据接口。</p></li>
+<li><h3>上线前静默运行，实测几档自主程度</h3><p>斯坦福的万古霉素给药 Agent 静默运行两个月，高自主版误差 21.8%，限制更多的低自主版反而是 37.8%。收紧权限不一定更安全，要实测。</p><p class="eg">给药建议先和药师处方逐条对比，以第二位药师的一致率作为达标线。</p></li>
+<li><h3>验收看连续成功率</h3><p>单次通过率会高估稳定性。同一任务跑三到五次，看是否每次都对（pass^k），再决定能否放到无人值守的环节。</p><p class="eg">病历摘要 Agent 每条样本跑五次，五次都对的比例低于九成就保留人工复核。</p></li>
+</ol></section><section class="stage dj" aria-labelledby="t-dj"><h2 id="t-dj"><span class="no">03</span>懂劲 · 原理机制</h2><p class="xf">框架的分量在模型之外的那层运行时，可靠性和安全都要在这一层兜住。</p><ol class="moves"><li><h3>运行时是框架的主体</h3><p>MBZUAI 按行数给泄露出的 Claude Code 分类，估计约 98.4% 是运行时基础设施，决策逻辑只占约 1.6%。作者说明这是粗略的行数统计。微软 8 月正式发布的运行时，把上下文压缩、待办清单、文件记忆、工具审批和追踪都默认打开。</p></li>
+<li><h3>持久执行：把 Agent 当成长事务</h3><p>每一步之后写检查点，进程重启或等人审批时从检查点恢复。LangGraph 1.0 把它叫作持久状态（Durable State），人工介入就是在某个检查点上暂停。</p></li>
+<li><h3>成本由步数决定</h3><p>每一步都要把上下文重发一遍。FrontierHarness 测得一次运行平均消耗 200 万到 480 万输入 token，决定成本的是步数，不是提示长度、工具数量或缓存命中率。上下文压缩和尽早停止，都是在省步数。</p></li>
+<li><h3>多 Agent 的失败可以分类</h3><p>伯克利的 MAST 把失败分成 14 种、3 大类：系统设计、Agent 之间失配、任务验证。最常见的是重复步骤（15.7%）、推理和行动不一致（13.2%）、不知道终止条件（12.4%）。</p></li>
+<li><h3>可靠性有四个维度</h3><p>普林斯顿用 12 个指标测 15 个模型，分一致性、稳健性、可预测性和安全四类。两年里准确率涨了不少，同一任务多次运行的一致性却改善很少，提示换个说法结果就变。</p></li>
+<li><h3>提示注入靠架构防</h3><p>CaMeL 先让一个模型只看可信指令、写出执行计划，不可信数据只能当值传递，不能改动计划。在 AgentDojo 上它以可证明的安全完成 77% 的任务，不设防的系统是 84%。同组研究者还总结了六种设计模式，比如先定计划再执行、双模型隔离。</p></li>
+<li><h3>收窄 Agent 能自己决定的环节</h3><p>药物警戒系统 MedCheckpoint 执行前锁定研究设计参数，患者层面的统计交给人写的确定性工具，分析不可行就中止。碰到测不了的结局时，编程 Agent 基线在 21 次运行里最多出 2 次误导性结果，它一次也没有。数据是模拟的。</p></li>
+<li><h3>监管按后果和放权程度分级</h3><p>美联储等三家机构 4 月发布的 SR 26-2 在脚注里把生成式和 Agent 类模型排除在模型风险管理之外，交回银行自己的风险管理。OCC 的检查框架按出错后果、放给 AI 多少行动权和人工监督程度决定审查力度。</p></li>
+</ol></section><section class="stage sm" aria-labelledby="t-sm"><h2 id="t-sm"><span class="no">04</span>神明 · 长期方向</h2><p class="xf">框架之争会变成运行平台之争，胜负看谁能让 Agent 可审计、可问责。</p><ol class="moves"><li><h3>框架变成托管平台</h3><p>InfoQ 的判断是，Agent 框架正从构建 Agent 的开发包，变成运行 Agent 的受治理平台。微软的托管 Agent 按用量计费，本地、容器和托管环境跑同一个程序。</p></li>
+<li><h3>协议统一了接口，信任还要自己建</h3><p>MCP 和 A2A 解决了怎么连，没有回答这个 Agent 该不该信。Agent 身份、授权范围和审计记录，目前仍由各家自己实现。</p></li>
+<li><h3>人盯不过来，转向自动监控</h3><p>FSB 指出，Agent 为一个目标可能走几百个中间步骤，人工实时监督不现实。监督会转向自动监控加完整的审计记录。</p></li>
+<li><h3>训练环境开始共享</h3><p>Hugging Face 把强化学习环境框架 OpenEnv 捐给 AAIF。垂直行业以后可以把自己的流程做成训练环境，用来训练和评测 Agent。</p></li>
+<li><h3>稳定性指标进入验收</h3><p>单次准确率掩盖了不稳定。我们判断，连续成功率和多次运行的一致性会写进采购和上线验收的标准。</p></li>
+</ol></section><section aria-labelledby="t-time"><h2 id="t-time"><span class="no">05</span>时间线</h2><ol class="timeline"><li><time>2025-03</time><i>研究</i><span>伯克利发布多 Agent 失败分类 MAST；Google、ETH 发布 CaMeL</span></li>
+<li><time>2025-06</time><i>研究</i><span>Gartner 预测到 2027 年底，四成以上的 Agent 项目会被取消</span></li>
+<li><time>2025-10</time><i>发布</i><span>LangChain 和 LangGraph 同时发布 1.0</span></li>
+<li><time>2025-12</time><i>发布</i><span>Linux 基金会成立 AAIF，首批托管 MCP、goose、AGENTS.md</span></li>
+<li><time>2026-02</time><i>研究</i><span>普林斯顿发表 Agent 可靠性研究，提出四个维度、12 个指标</span></li>
+<li><time>2026-04</time><i>发布</i><span>微软 Agent Framework 1.0 发布，合并 AutoGen 和 Semantic Kernel</span></li>
+<li><time>2026-04</time><i>监管</i><span>美联储、OCC、FDIC 发布 SR 26-2，取代 SR 11-7，不管 Agent 类模型</span></li>
+<li><time>2026-05</time><i>研究</i><span>斯坦福发布 PhysicianBench，在电子病历沙箱里测医生任务</span></li>
+<li><time>2026-06</time><i>监管</i><span>FSB 就 AI 稳健做法征求意见，专门讨论 Agent 的人工监督</span></li>
+<li><time>2026-08</time><i>发布</i><span>A2A 进入 AAIF；微软 Agent Framework 运行时和托管 Agent 正式可用</span></li>
+<li><time>2026-10</time><i>发布</i><span>AAIF 新增 Agent Skills、Open Responses、OpenEnv、OpenSandbox，共 10 个项目</span></li>
+<li><time>2026-11</time><i>研究</i><span>FrontierHarness v1.1 测 22 种框架配置；BCG 发布银行 AI 治理调查</span></li>
+</ol></section><section aria-labelledby="t-who"><h2 id="t-who"><span class="no">06</span>版图<small>按技术路线分组</small></h2><div class="tbl"><table><thead><tr><th>技术路线</th><th>主体</th><th>做了什么</th><th>成熟度</th><th>证据</th></tr></thead><tbody><tr><td>运行时</td><td>微软</td><td>Agent Framework 1.0 合并 AutoGen 和 Semantic Kernel，8 月运行时和托管 Agent 正式可用</td><td>已在生产</td><td>公司披露</td></tr><tr><td>运行时</td><td>LangChain</td><td>LangGraph 1.0 持久状态、中断恢复，LangChain 1.0 加中间件</td><td>已在生产</td><td>公司披露</td></tr><tr><td>运行时</td><td>OpenAI、Google、Anthropic、AWS</td><td>各自的 Agents SDK、ADK、Claude Agent SDK、Strands，模型厂商自带框架</td><td>已在生产</td><td>公司披露</td></tr><tr><td>协议</td><td>AAIF（Linux 基金会）</td><td>托管 MCP、A2A、AGENTS.md、Agent Skills 等 10 个项目</td><td>已在生产</td><td>公司披露</td></tr><tr><td>协议</td><td>Hugging Face、阿里巴巴</td><td>把强化学习环境 OpenEnv 和沙箱平台 OpenSandbox 捐给 AAIF</td><td>已有实验证据</td><td>公司披露</td></tr><tr><td>评测</td><td>Runta</td><td>FrontierHarness：22 种框架配置配 5 个模型，跑 27,280 次</td><td>已有实验证据</td><td>公司披露</td></tr><tr><td>评测</td><td>普林斯顿</td><td>用四个维度、12 个指标量 Agent 可靠性</td><td>已有实验证据</td><td>同行评审</td></tr><tr><td>评测</td><td>UC Berkeley</td><td>MAST：14 种多 Agent 失败模式</td><td>已有实验证据</td><td>预印本</td></tr><tr><td>评测</td><td>斯坦福</td><td>PhysicianBench：21 个专科的 100 个医生任务</td><td>已有实验证据</td><td>预印本</td></tr><tr><td>安全</td><td>Google、ETH</td><td>CaMeL 把指令和数据分开，可证明地防提示注入</td><td>已有实验证据</td><td>预印本</td></tr><tr><td>垂域·金融</td><td>26 家系统重要性银行</td><td>73% 允许 Agent 在选定场景上线，8% 有统一监控</td><td>已在生产</td><td>公司披露</td></tr><tr><td>垂域·金融</td><td>摩根大通、加拿大五大行</td><td>外部 Agent 只能读，或者不许进网银</td><td>已在生产</td><td>媒体报道</td></tr><tr><td>垂域·医疗</td><td>斯坦福医疗</td><td>万古霉素给药 Agent 静默运行，对比两档自主程度</td><td>已有实验证据</td><td>预印本</td></tr><tr><td>垂域·医疗</td><td>Zhang、Luo 等</td><td>MedCheckpoint 锁定研究设计，不可行就中止</td><td>已有实验证据</td><td>预印本</td></tr><tr><td>监管</td><td>美联储、OCC、FDIC</td><td>SR 26-2 不管 Agent 类模型；OCC 按后果和放权程度定审查力度</td><td>已在生产</td><td>媒体报道</td></tr><tr><td>监管</td><td>FSB</td><td>征求意见稿提 12 条稳健做法，建议给每个 Agent 编号、列出须人批的动作</td><td>仍是设想</td><td>媒体报道</td></tr></tbody></table></div></section><section aria-labelledby="t-act"><div class="two"><div><h2 id="t-act"><span class="no">07</span>行动建议</h2><ol class="acts"><li>列一张运行时能力清单（续跑、压缩、审批、追踪），拿手上的两三个候选框架逐项打勾，缺两项以上的不进生产。</li>
+<li>建一套 50 到 100 题的业务任务集，换模型或换框架时重跑，每题跑五次，记单次通过率、连续成功率和每任务成本。</li>
+<li>给每个 Agent 写一页权限表：读哪些数据、能做哪些动作、哪些动作要人批，表外的动作由运行时拦截。</li>
+<li>把一个高频流程的工具包成 MCP 服务、流程写成 Skills，在两个不同框架里各跑一遍，验证换框架不用重写。</li>
+<li>新的医疗或金融 Agent 先静默运行一个月，与人工决策逐条对比，一致率达到第二位专家的水平再放权。</li>
+</ol></div><div><h2 id="t-open"><span class="no">08</span>待解问题</h2><ul class="open"><li>美国银行监管把 Agent 类模型排除在模型风险管理之外，谁来验证 Agent，目前只有原则，没有方法。</li>
+<li>连续成功率怎么算达标没有行业标准，医疗和金融各自的阈值都要从头定。</li>
+<li>协议统一了接口，跨机构 Agent 的身份认证和责任划分还没有公认做法。</li>
+<li>多 Agent 在哪些任务上确实胜过单 Agent，缺少同一任务、同一模型下的对照数据。</li>
+</ul></div></div></section>
+<!-- nook:related -->
+<section aria-labelledby="t-src"><h2 id="t-src"><span class="no">09</span>来源</h2><ol class="refs"><li><a href="https://arxiv.org/abs/2503.13657" lang="en">Why Do Multi-Agent LLM Systems Fail?</a>（arXiv），2025-03</li>
+<li><a href="https://arxiv.org/abs/2503.18813" lang="en">Defeating Prompt Injections by Design</a>（arXiv），2025-03</li>
+<li><a href="https://arxiv.org/abs/2506.08837" lang="en">Design Patterns for Securing LLM Agents against Prompt Injections</a>（arXiv），2025-06</li>
+<li><a href="https://www.gartner.com/en/newsroom/press-releases/2025-06-25-gartner-predicts-over-40-percent-of-agentic-ai-projects-will-be-canceled-by-end-of-2027" lang="en">Gartner Predicts Over 40% of Agentic AI Projects Will Be Canceled by End of 2027</a>（Gartner），2025-06</li>
+<li><a href="https://www.langchain.com/blog/langchain-langgraph-1dot0" lang="en">LangChain and LangGraph Agent Frameworks Reach v1.0 Milestones</a>（LangChain），2025-10</li>
+<li><a href="https://arxiv.org/abs/2602.16666" lang="en">Towards a Science of AI Agent Reliability</a>（arXiv · ICML 2026），2026-02</li>
+<li><a href="https://visualstudiomagazine.com/articles/2026/04/06/microsoft-ships-production-ready-agent-framework-1-0-for-net-and-python.aspx" lang="en">Microsoft Ships Production-Ready Agent Framework 1.0 for .NET and Python</a>（Visual Studio Magazine），2026-04</li>
+<li><a href="https://arxiv.org/abs/2605.02240" lang="en">PhysicianBench: Evaluating LLM Agents in Real-World EHR Environments</a>（arXiv），2026-05</li>
+<li><a href="https://techinformed.com/fsb-calls-for-tighter-controls-on-agentic-ai-in-finance/" lang="en">FSB calls for tighter controls on agentic AI in finance</a>（TechInformed），2026-06</li>
+<li><a href="https://www.infoq.com/news/2026/08/agent-framework-harness-ga/" lang="en">Microsoft Agent Framework Harness and Hosted Agents Reach General Availability</a>（InfoQ），2026-08</li>
+<li><a href="https://ai-solutions.wiki/news/a2a-joins-agentic-ai-foundation/" lang="en">A2A Moves Again: Google's Agent Protocol Joins MCP at the Agentic AI Foundation</a>（AI Solutions Wiki），2026-08</li>
+<li><a href="https://www.alpacax.com/blog/bank-regulators-wrote-ai-agents-out-of-model-risk-review/" lang="en">Bank regulators wrote AI agents out of model-risk review</a>（AlpacaX），2026-09</li>
+<li><a href="https://www.prnewswire.com/news-releases/agentic-ai-foundation-announces-four-new-projects-agent-skills-open-responses-openenv-and-opensandbox-302916689.html" lang="en">Agentic AI Foundation Announces Four New Projects: Agent Skills, Open Responses, OpenEnv, and OpenSandbox</a>（PR Newswire），2026-10</li>
+<li><a href="https://www.finextra.com/newsarticle/48634/banks-move-to-limit-agents-access-to-customer-accounts" lang="en">Banks move to limit agents' access to customer accounts</a>（Finextra），2026-10</li>
+<li><a href="https://www.medrxiv.org/content/10.64898/2026.10.23.26365968v1" lang="en">PharmaAgent: a real-world evaluation of high- and low-autonomy agentic systems for inpatient vancomycin dosing</a>（medRxiv），2026-10</li>
+<li><a href="https://www.medrxiv.org/content/10.64898/2026.11.10.26367711v1" lang="en">Automating postmarketing pharmacovigilance with large language model agents</a>（medRxiv），2026-11</li>
+<li><a href="https://fintechbusinessweekly.substack.com/p/occ-issues-super-intelligence-framework" lang="en">OCC Issues “Super Intelligence” Framework for Bank Examiners</a>（Fintech Business Weekly），2026-11</li>
+<li><a href="https://www.beri.net/article/bcg-ai-governance-banking-benchmark-2026-26-systemically-important-banks-agents-production-8-percent-agent-monitoring-preapproved-patterns" lang="en">Banks Permit AI Agents, but Few Have Standard Monitoring, BCG Finds</a>（The Daily Brief），2026-11</li>
+<li><a href="https://simonwillison.net/2026/Nov/17/external-sandboxes-for-coding-agents/" lang="en">External sandboxes for coding agents</a>（Simon Willison），2026-11</li>
+<li><a href="https://runta.com/blog/introducing-frontierharness-eval-v1-1/" lang="en">Introducing FrontierHarness Eval v1.1</a>（Runta），2026-11</li>
+</ol></section>
+</div>
