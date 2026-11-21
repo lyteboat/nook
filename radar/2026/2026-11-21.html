@@ -1,0 +1,197 @@
+<title>Nook 雷达 2026-11-21</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* 版式：一列简报，宽 880px。每个条目是标题、副标题（意义）加六栏：What、Why、How、Who、When、Action。 */
+:root{
+  --bg:#f6f7f5; --surface:#ffffff; --ink:#1b2321; --muted:#5d6966; --line:#dde2df; --wash:#eef1ef;
+  --accent:#1f5f58; --prod:#8a4b9c;
+  --zs:#2f7d5b; --zs-bg:#e3f1ea; --dj:#3d55a3; --dj-bg:#e6eaf7; --sm:#a1701c; --sm-bg:#f6ecd8;
+  --f-display:"Noto Serif SC","Songti SC","SimSun",serif;
+  --f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121715; --surface:#1a201e; --ink:#e3e9e6; --muted:#9aa6a2; --line:#2c3532; --wash:#202825;
+  --accent:#6fc1b5; --prod:#d3a0e3; --zs:#6cc59a; --zs-bg:#1c3328; --dj:#9aaef0; --dj-bg:#232b45; --sm:#e0b45e; --sm-bg:#3a2f1a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121715; --surface:#1a201e; --ink:#e3e9e6; --muted:#9aa6a2; --line:#2c3532; --wash:#202825;
+  --accent:#6fc1b5; --prod:#d3a0e3; --zs:#6cc59a; --zs-bg:#1c3328; --dj:#9aaef0; --dj-bg:#232b45; --sm:#e0b45e; --sm-bg:#3a2f1a; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:880px;margin:0 auto;padding-block:40px 64px;display:grid;gap:44px}
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.35}
+h1{font-size:34px;font-weight:900;margin:8px 0 16px}
+h2{font-size:22px;font-weight:900;margin-bottom:16px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+h2 .count{font:400 13px var(--f-body);color:var(--muted)}
+a{color:var(--accent)}
+.eyebrow{font:600 12px/1.5 var(--f-data);letter-spacing:.06em;color:var(--muted)}
+.thesis{margin:0;font-family:var(--f-display);font-size:18px;font-weight:600;line-height:1.75;padding-left:16px;border-left:4px solid var(--accent)}
+.chip{display:inline-flex;font-size:12px;font-weight:700;padding:0 8px;border-radius:999px;white-space:nowrap}
+.zs{color:var(--zs);background:var(--zs-bg)}.dj{color:var(--dj);background:var(--dj-bg)}.sm{color:var(--sm);background:var(--sm-bg)}
+.item-meta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;font-size:13px;color:var(--muted)}
+.new{font-size:11px;color:var(--accent)}
+.ind{font-size:12px;color:var(--accent);background:var(--wash);border-radius:4px;padding:0 6px}
+.must-no{font:700 13px var(--f-data);color:var(--accent)}
+.musts{display:grid;gap:16px}
+.must{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:8px;padding:18px 22px;display:grid;gap:10px;scroll-margin-top:72px}
+.must.prod{border-top-color:var(--prod)}.must.prod .must-no{color:var(--prod)}
+.must h3{font-size:20px;font-weight:900}
+.w6{margin:0;display:grid;grid-template-columns:7.5em 1fr;gap:8px 14px}
+.w6 dt{font:700 13px/1.6 var(--f-data);color:var(--accent);padding-top:2px}
+.must.prod .w6 dt{color:var(--prod)}
+.w6 dt small{display:block;font:400 12px var(--f-body);color:var(--muted)}
+.w6 dd{margin:0;font-size:14.5px}
+.src{margin:0;font-size:13px;color:var(--muted);padding-top:8px;border-top:1px dashed var(--line)}
+.items{display:grid;gap:8px}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:8px;scroll-margin-top:72px}
+.item summary{cursor:pointer;list-style:none;padding:12px 18px;display:grid;gap:4px}
+.item summary::-webkit-details-marker{display:none}
+.item summary .c{font-weight:700;font-size:15.5px}
+.item summary .c::before{content:"▸";color:var(--muted);margin-right:8px;display:inline-block;transition:transform .15s}
+.item[open] summary .c::before{transform:rotate(90deg)}
+.item summary .item-meta{padding-left:20px}
+.so{margin:0;color:var(--muted);font-size:15px}
+.must .so{margin-top:-6px}
+.item summary .so{padding-left:20px;font-size:14px}
+.item[open] summary{border-bottom:1px solid var(--line)}
+.item .w6,.item .src{margin:12px 18px}
+.item .src{margin-top:0}
+.acts{margin:0;padding-left:22px;display:grid;gap:8px}
+.acts li{font-size:14.5px}.acts a{font-weight:700;margin-right:8px;text-decoration:none}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface);margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:12px;color:var(--muted);background:var(--wash);padding:8px 10px;white-space:nowrap}
+td{padding:8px 10px;border-top:1px solid var(--line);vertical-align:top}
+.num{font-family:var(--f-data)}
+details>summary{cursor:pointer}
+@media (max-width:640px){h1{font-size:26px}.w6{grid-template-columns:1fr;gap:0}.w6 dd{margin-bottom:8px}}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">2026-11-21 周六 · 11-18 至 11-21 · 11 条</div>
+  <h1>按人的速度定的规矩，遇上 AI 都得重订</h1>
+  <p class="thesis">Anthropic 把高危漏洞的披露期从 90 天缩到 30 天，因为模型让修补变快，同一个漏洞别人也更容易找到。Alpöge 和 Claude 拿出约 1,740 万行 Lean 代码，称证明了广义黎曼猜想，没人读得完，只能交给机器核对。ChatPRD 的免费试用被成批盗刷，创始人干脆停掉了试用。</p>
+</header>
+
+<section aria-labelledby="s-must">
+  <h2 id="s-must">本期必看</h2>
+  <div class="musts">
+  <article class="must" id="i-cvd-window">
+    <div class="item-meta"><span class="must-no">技术 1</span><span class="chip zs">招熟</span><span class="name">漏洞披露新时限</span></div>
+    <h3>Anthropic｜漏洞披露期从 90 天缩到 30 天</h3>
+    <p class="so">模型修得快，别人也更容易再次找到同一个漏洞</p>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>Anthropic 修订协调漏洞披露（Coordinated Vulnerability Disclosure，CVD）政策：它报给厂商和维护者的高危、严重漏洞，公开期限从 90 天缩到 30 天，其余漏洞缩到 45 天。</dd><dt>Why<small>为什么重要</small></dt><dd>原来的规矩假设修补按人的速度走，别人也不大可能独立找到同一个漏洞。Anthropic 说这两条都不成立了，它看到的重复发现越来越多。银行和医院依赖的开源组件，从报告到公开的时间会短很多，留给自己打补丁的时间也跟着变短。</dd><dt>How<small>怎么做的</small></dt><dd>新时限适用于 2027 年 1 月 1 日起提交的报告，之前的报告按原期限。维护者不回复时，转交外部协调机构的时间从 30 天提前到 15 天，补丁发布后公开完整技术细节的等待期从 45 天缩到 30 天。已超过 90 天还没公开的高危报告，再给维护者 30 天，之后在 Anthropic 的看板上公开。正被利用的漏洞仍是 7 天。关键基础设施、需要改规范或 RFC 的漏洞，另和厂商商定时间表。没经过人工复核的 AI 发现（如 OSS Scanner 扫出的）不适用新政策。</dd><dt>Who<small>谁</small></dt><dd>Anthropic Frontier Red Team。配套有免费的 OSS Scanner、给开源维护者的 Claude for Open Source，以及面向安全人员的 Cyber Verification Program。</dd><dt>When<small>何时</small></dt><dd>11-16 发布（周三那期漏抓，本期补上），2027 年 1 月 1 日生效。</dd><dt>Action<small>行动建议</small></dt><dd>把第三方和开源依赖的高危补丁时限压到 30 天以内，并按这个时限演练一次；关键开源依赖的维护者可以申请 OSS Scanner。</dd></dl>
+    <p class="src">原文：<a href="https://www.anthropic.com/research/coordinated-vulnerability-disclosure-timelines" lang="en">Updating our coordinated vulnerability disclosure policy timelines</a>（Anthropic），11-16</p>
+  </article>
+  <article class="must" id="i-grh-lean">
+    <div class="item-meta"><span class="must-no">技术 2</span><span class="chip dj">懂劲</span><span class="name">广义黎曼猜想证明</span></div>
+    <h3>Alpöge｜用 Claude 和 Lean 给出黎曼猜想证明</h3>
+    <p class="so">证明没人读得完，成立与否先看 Lean 能否编译通过</p>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>Anthropic 的数学家 Levent Alpöge 宣布，他和 Claude 证明了黎曼猜想，并推广到广义黎曼猜想（GRH）。他只发了一页说明和 Lean 形式化代码，没有论文。</dd><dt>Why<small>为什么重要</small></dt><dd>这是最有名的数学难题，结果要是成立，就是 AI 在人读不懂的规模上给出了正确答案，靠的是机器核对。这个模式也会出现在代码和金融模型里：产出越来越多，人只能审规约，核对交给工具。</dd><dt>How<small>怎么做的</small></dt><dd>据 Scott Aaronson，Lean 代码约 1,740 万行，Latent Space 说压缩包约 1.3GB。Alpöge 说自己把方向引到一个类比的玩具模型上，后面关键的自守形式部分主要是 Claude 完成的，形式化“没有额外假设”。Elliot Glazer 确认形式化的命题就是 GRH，认为 Lean 出错的概率远低于 1%。Aaronson 提醒，Lean 内核出过 bug，但至今有 Lean 证书的 AI 结果还没有撤回过。同一天，Alessandro Masullo 放出一份 940 页、完全由人写的 GRH 证明草稿，Brian Conrad 已审读数月。局限：编译和验证还没完成，数学家消化需要数年。9 月 OpenAI 的 Navier-Stokes 结果就被指 Lean 命题和文字结论不一致。</dd><dt>Who<small>谁</small></dt><dd>Levent Alpöge（Anthropic）与 Claude；Masullo 一份由 Ravi Vakil 代为发布。同周 Anthropic 还发了 Claude Fable 5.2 解决两个黑洞物理开放问题的预印本。</dd><dt>When<small>何时</small></dt><dd>11-20，HN 2,707 分，本期最热。公告紧接在 Anthropic 上市之后，Alpöge 在附注里否认与上市时点有关。</dd><dt>Action<small>行动建议</small></dt><dd>不必跟数学细节。给 Agent 交关键任务时学这个分工：人写清楚要证明什么（规约），机器检查证明，验收时先核对规约和人想要的结论是否一致。</dd></dl>
+    <p class="src">原文：<a href="https://alpo.ge/remark.pdf" lang="en">Remark</a>（Levent Alpöge · Hacker News），11-20；<a href="https://scottaaronson.blog/?p=10344" lang="en">The stochastic parrots have apparently proved the Riemann Hypothesis</a>（Shtetl-Optimized），11-20；<a href="https://latent.space/p/ainews-riemann-hypothesis-proved-twice-independently/" lang="en">[AINews] Riemann Hypothesis proved...twice independently</a>（Latent Space），11-21</p>
+  </article>
+  <article class="must prod" id="i-token-fraud">
+    <div class="item-meta"><span class="must-no">产品 1</span><span class="chip zs">招熟</span><span class="ind">金融</span><span class="name">AI 产品的 token 欺诈</span></div>
+    <h3>ChatPRD｜免费试用被盗刷，干脆停掉</h3>
+    <p class="so">卖 AI 就是卖算力，每次被滥用的调用都要真金白银</p>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>ChatPRD 是给产品经理写需求文档的 AI 产品。创始人 Claire Vo 讲了一年来遭遇的 token 欺诈（Token Fraud）：有人批量薅免费试用、倒卖促销码，再把产品包一层转卖算力。</dd><dt>Why<small>为什么重要</small></dt><dd>传统 SaaS 遭滥用只是多占点服务器，AI 产品每次调用都按 token 付钱。ChatPRD 通过了 SOC 2，定期做渗透测试，仍损失了数万美元，还耗掉了她大部分工程精力。银行做 AI 客服、医院开放 AI 问诊，同样会遇到这类刷量。</dd><dt>How<small>怎么做的</small></dt><dd>她归纳了六种手法，包括批量刷试用、倒卖促销码、盗卡测试、套壳转发，以及把产品的自定义 MCP 当成 24 小时运行的算力节点。约一半促销码流到了倒卖者手里，于是她不再发放促销码。信用卡验证和付费试用都没挡住，最后停掉了免费试用。会话超过滥用阈值后，用不留存数据的 Jev 决策模型实时分类，确认是欺诈的封号，或悄悄降到便宜模型。AI 客服也设了硬规则，不能替封禁的账号解封或发码。按国家屏蔽流量效果明显。她发现同一批人用轮换代理在几家大 AI 产品上做同样的事，已向 FBI 报案。</dd><dt>Who<small>谁</small></dt><dd>Claire Vo（ChatPRD 创始人）；Simon Willison 转引并评论。</dd><dt>When<small>何时</small></dt><dd>Lenny's Newsletter 11-16 播出，Simon Willison 11-20 转引。</dd><dt>Action<small>行动建议</small></dt><dd>对外开放的 AI 功能，按会话设算力上限和滥用阈值，超限的流量降级到便宜模型。促销码和 MCP 接入只给验证过的主体；AI 客服不能有解封和发码的权限。</dd></dl>
+    <p class="src">原文：<a href="https://www.lennysnewsletter.com/p/how-i-fight-token-fraud-as-a-solo" lang="en">How I fight token fraud as a solo founder</a>（Lenny's Newsletter），11-16；<a href="https://simonwillison.net/2026/Nov/20/token-fraud-is-here-and-its-bad/" lang="en">Token fraud is here and it’s BAD (YouTube)</a>（Simon Willison），11-20</p>
+  </article>
+  <article class="must prod" id="i-ai-disclosure">
+    <div class="item-meta"><span class="must-no">产品 2</span><span class="chip dj">懂劲</span><span class="ind">医疗</span><span class="name">医生披露 AI 与患者信任</span></div>
+    <h3>npj｜医生说用了 AI，患者怎么看</h3>
+    <p class="so">行政用途最被接受，病情越重越排斥用 AI 治疗</p>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>一项随机实验：1,574 名中国内地成年人看到不同的医生简介，简介里写明医生把 AI 用在哪类工作上，病情轻重也不同（5 × 2 析因设计），再评价医生并表态愿不愿意挂号。</dd><dt>Why<small>为什么重要</small></dt><dd>医院和医生要不要告诉患者用了 AI、怎么说，一直靠猜。这项实验说明，披露要分用途、看病情，一句笼统的“我们使用 AI”效果不好。</dd><dt>How<small>怎么做的</small></dt><dd>用于行政事务的 AI 评价最好，用于诊断和治疗的较差。病情重时，对用 AI 治疗的负面反应更强，而明确写“不使用 AI”的医生，挂号意愿更高。中介分析显示，能力、信任和共情三条路径各自解释了不同的反应。澳门线下 128 人的补充样本，主效应方向一致。局限：测的是意愿，不是实际就诊行为，作者呼吁做预注册的重复研究。只读到了摘要。</dd><dt>Who<small>谁</small></dt><dd>Yang、Bao 等，澳门科学技术发展基金资助。</dd><dt>When<small>何时</small></dt><dd>11-19，npj Digital Medicine 正式发表。</dd><dt>Action<small>行动建议</small></dt><dd>写 AI 使用告知时按用途分开：排班、记录、编码这类行政用途可以明说；诊断和治疗中的 AI，讲清楚医生如何把关，重症场景尤其要讲。</dd></dl>
+    <p class="src">原文：<a href="https://www.nature.com/articles/s41746-026-03484-7" lang="en">Physician AI disclosure, condition severity, and public trust in digital medicine</a>（npj Digital Medicine），11-19</p>
+  </article>
+  </div>
+</section>
+
+<section aria-labelledby="s-tech">
+  <h2 id="s-tech">技术<span class="count">其余 5 条，按重要程度排序，点开看详情</span></h2>
+  <div class="items">
+  <details class="item" id="i-harness-adapters">
+    <summary><span class="c">Hugging Face｜给模型训练适配框架的 LoRA</span><span class="so">同一个 27B 模型，通过率从 39% 升到 55%，token 少一半</span><span class="item-meta"><span class="chip zs">招熟</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>框架适配器（Harness Adapter）：冻结模型权重，在自己的 Agent 框架里、用自己的任务做强化学习，训练一个 LoRA，让模型更适应这个框架。</dd><dt>Why<small>为什么重要</small></dt><dd>周三那期的 FrontierHarness 说框架要跟着模型挑，这篇给出反方向的做法：框架定了，就让模型去适应它。开源模型配自家框架的团队可以直接照着做。</dd><dt>How<small>怎么做的</small></dt><dd>Qwen3.8-27B 在 Pi 框架下，Terminal-Bench 2.1 通过率 39%，每个任务平均 2.9K token，加上适配器后 55%，1.5K token。提升主要来自推理更少、工具调用更少、一次做对。在 Pi、OpenCode、Hermes Agent 三个框架各训一个，在自己的框架里都赢过基座模型，三个还能合并成一个“超级适配器”。训练中 safeagents 检查了 130 万次工具调用，拦下 647 次。作者发现，模型在非思考模式下学会了先写一小段像推理的文字再调工具，相当于从侧门用回了思考；他们认为在同样 token 预算下结果仍然成立。局限：作者自测，不同框架的分数不能横比。</dd><dt>Who<small>谁</small></dt><dd>Hugging Face 的 Belkada、Burtenshaw、Tunstall 等。</dd><dt>When<small>何时</small></dt><dd>11-20，配方、数据和评测轨迹都已公开。</dd><dt>Action<small>行动建议</small></dt><dd>已经固定用某个框架跑开源模型的团队，从自己的任务里抽几百个能自动判分的题，按这份配方训一个适配器，比通过率和每任务 token。</dd></dl>
+    <p class="src">原文：<a href="https://huggingface.co/blog/harness-adapters-at-scale" lang="en">Introducing harness adapters: adapt your favorite model to your harness to improve performance and cost</a>（Hugging Face Blog），11-20</p>
+  </details>
+  <details class="item" id="i-portal-triage">
+    <summary><span class="c">MGB｜用大模型筛患者门户里的急症消息</span><span class="so">云端和本地模型都能排除急症，误报还偏多</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="ind">医疗</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>研究比较 6 个大模型（GPT-4o、GPT-5、GPT-5 Mini、Llama 4 Scout、GPT-OSS 20B、Gemma 3 27B），从患者门户消息里找出需要紧急处理的那些，以医生判断为参照。</dd><dt>Why<small>为什么重要</small></dt><dd>门户消息越来越多，夹在里面的急症拖慢了回复。数据不能出院的医院关心本地模型行不行，这篇给了答案：能用来排除急症，但不能替代分诊。</dd><dt>How<small>怎么做的</small></dt><dd>三组数据：初级保健 500 条（加大了急症比例）、同一医疗系统的癫痫门诊 503 条、系统外公开平台上患者写的 300 条。初级保健组按多数医生意见判定，GPT-5 没有漏掉一条急症。6 个模型里有 4 个（含一个可本地部署的）灵敏度达到 0.97 以上，阴性预测值 0.98 以上。三组数据上模型排名一致。局限：特异度有限，误报多；只读到了摘要。</dd><dt>Who<small>谁</small></dt><dd>Mass General Brigham 的 Moura Junior、Murphy 等，与哈佛商学院合作。</dd><dt>When<small>何时</small></dt><dd>11-20，npj Digital Medicine 正式发表。</dd><dt>Action<small>行动建议</small></dt><dd>先拿模型做“排除急症”的第一道筛，判为非急症的照常排队，判为可能急症的交护士复核；用本院一批历史消息测灵敏度和误报率再上线。</dd></dl>
+    <p class="src">原文：<a href="https://www.nature.com/articles/s41746-026-03477-6" lang="en">Cloud vs. on-premise large language models for urgent patient-portal message screening: a comparative evaluation</a>（npj Digital Medicine），11-20</p>
+  </details>
+  <details class="item" id="i-clindatabench">
+    <summary><span class="c">ClinDataBench｜测 Agent 能否做申报用的试验数据集</span><span class="so">校验器报错少了，推导错误一个没少</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="ind">医疗</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>新药上市申请要附 CDISC ADaM 格式的分析数据集，现在由程序员根据原始数据、统计分析计划（SAP）和规格书手工推导。ClinDataBench 测编程 Agent 能不能交出一整套合规、可复现的数据包。</dd><dt>Why<small>为什么重要</small></dt><dd>药企想用 Agent 接这份活，但标准校验器只查结构，不查每个值推得对不对。这篇说明“过了校验”不等于“算对了”，和本期黎曼一条是同一个问题：核对工具要查到真正关心的结论。</dd><dt>How<small>怎么做的</small></dt><dd>Agent 拿到公开 CDISC 试点研究的 22 个 SDTM 域、SAP 和规格书，要交出 13 个 ADaM 数据集、Define-XML 元数据和一个能离线重建它们的程序。容器只能访问模型 API，查不到公开的参考答案。比了三种做法：直接交、自己修改、拿 P21 校验报告修改。6 个模型里，3 个闭源模型和 DeepSeek 每次都交齐了 13 个数据集，另两个开源模型一次都没交齐。拿校验报告修改的，报错数都下降了，推导错误一个也没减少。报错最少的那份，234 条疗效汇总记录没有一条符合规格。局限：探索性试点，只有一个研究。</dd><dt>Who<small>谁</small></dt><dd>Li、Luo、Feng 等。</dd><dt>When<small>何时</small></dt><dd>11-19，预印本。</dd><dt>Action<small>行动建议</small></dt><dd>让 Agent 做统计编程，验收时除了跑校验器，再抽查关键终点的推导值；把“校验通过”和“数值正确”分成两项报告。</dd></dl>
+    <p class="src">原文：<a href="https://www.medrxiv.org/content/10.64898/2026.11.17.26368316v1" lang="en">ClinDataBench: Benchmarking Large Language Model Agents in Clinical Trial Analysis Dataset Construction</a>（medRxiv），11-19</p>
+  </details>
+  <details class="item" id="i-gemini-neon">
+    <summary><span class="c">Google｜发布 Gemini 4 Neon</span><span class="so">新的前沿档，缓存输入只要原价的 5%</span><span class="item-meta"><span class="chip zs">招熟</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>Gemini 4 Neon 是 Google 新的前沿档模型，主打软件工程、知识工作和科学任务里端到端完成得快。</dd><dt>Why<small>为什么重要</small></dt><dd>周三写过 GPT-6.2 降价，这周 Google 跟进。前沿档模型的价格还在往下走，选型时价格和缓存折扣要和能力一起比。</dd><dt>How<small>怎么做的</small></dt><dd>每百万 token 输入 3 美元、输出 15 美元，缓存输入 0.15 美元（原价的 5%），上下文 100 万。Artificial Analysis 智能指数 61 分（xhigh 档），总排名第 3，编程 Agent 指数 58.6 排第一，Terminal-Bench 4.1 得 65.2%。Google 称在内部 Antigravity 测试中编造率最低，Terminal-Bench 4.0 上只拒绝 1.98% 的任务。局限：均为厂商自报。</dd><dt>Who<small>谁</small></dt><dd>Google DeepMind。</dd><dt>When<small>何时</small></dt><dd>11-18 发布，已上 Gemini API、AI Studio 和 Gemini 企业版。</dd><dt>Action<small>行动建议</small></dt><dd>长上下文、高缓存命中的 Agent 任务，把 Neon 加进候选，按缓存后的实际成本和 GPT-6.2 Sol、Claude Sonnet 5.5 比一轮。</dd></dl>
+    <p class="src">原文：<a href="https://deepmind.google/blog/introducing-gemini-4-neon/" lang="en">Introducing Gemini 4 Neon</a>（Google DeepMind），11-18</p>
+  </details>
+  <details class="item" id="i-trialoutlook">
+    <summary><span class="c">TrialOutlook｜用公开证据预测临床试验成败</span><span class="so">29 个失败的试验认出 27 个，AUROC 0.819</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="ind">医疗</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>TrialDossier 把一个试验的公开证据整理成标准档案，TrialOutlook 用 GPT-5 读档案，估计试验达到主要终点的概率。</dd><dt>Why<small>为什么重要</small></dt><dd>试验成败决定药企股价和研发投入。这篇先记录预测、等结果出来再判分，避免了回测时偷看答案的问题。它还给 5,809 个美股上市公司相关的进行中试验记录了预测，可以持续检验。</dd><dt>How<small>怎么做的</small></dt><dd>证据来自 ClinicalTrials.gov、PubMed、Open Targets、openFDA、SEC EDGAR 和公司新闻稿。694 个半年内出结果的进行中试验里，到 10-20 已有 69 个结果揭晓并判定。AUROC 0.819（95% 置信区间 0.708 到 0.914），平均精度 0.860。29 个失败的试验认出 27 个（93.1%），但 40 个成功的试验里有 17 个被误判为失败，判断偏悲观。局限：揭晓的样本只有 69 个，置信区间宽。</dd><dt>Who<small>谁</small></dt><dd>Xu、Zhang、Yuan 等。</dd><dt>When<small>何时</small></dt><dd>11-19，预印本。</dd><dt>Action<small>行动建议</small></dt><dd>做医药行业研究的，可以跟踪它公开的预测基准，等更多结果揭晓再看能否用作信号。它报“失败”的可信度比报“成功”高。</dd></dl>
+    <p class="src">原文：<a href="https://www.medrxiv.org/content/10.64898/2026.11.17.26368242v1" lang="en">Prospective prediction of clinical trial outcomes from public evidence</a>（medRxiv），11-19</p>
+  </details>
+  </div>
+</section>
+
+<section aria-labelledby="s-prod">
+  <h2 id="s-prod">产品<span class="count">其余 2 条，按重要程度排序，点开看详情</span></h2>
+  <div class="items">
+  <details class="item" id="i-anthropic-ipo">
+    <summary><span class="c">Anthropic｜完成上市，募资 935 亿美元</span><span class="so">史上最大 IPO，创始人保留过半投票权</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="ind">金融</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>Anthropic 在纳斯达克上市，代码 ANT，发行价 83 美元，共发行 11.27 亿股 A 类股（含承销商全额行使的超额配售），募资总额约 935 亿美元。</dd><dt>Why<small>为什么重要</small></dt><dd>Claude 的供应商成了上市公司，会按季度披露财务，企业评估供应商风险多了公开数据。Latent Space 提醒，未来一年约万亿美元的股份解禁，股价会有压力。</dd><dt>How<small>怎么做的</small></dt><dd>同时向 AMD、博通、Google、美光、微软、英伟达和台积电定向增发约 260 亿美元的 N 类股，两者合计约 1,195 亿美元。11-19 开始交易，据 Latent Space，开盘 111.50 美元，比发行价高 34%，收于 97.17 美元。创始人持有的 F 类股在多数股东事项上有 50.1% 的投票权。Dario Amodei 在上市致辞中说，会按能否保证系统安全、受人控制来决定训练和部署的节奏，不向商业或政治压力低头。第二天纳斯达克回吐全年涨幅，Anthropic 股价受拖累。</dd><dt>Who<small>谁</small></dt><dd>Anthropic；高盛、摩根士丹利牵头承销。</dd><dt>When<small>何时</small></dt><dd>11-18 定价，11-19 上市，11-20 完成交割。</dd><dt>Action<small>行动建议</small></dt><dd>用 Claude 的团队，供应商评估里把 Anthropic 的季度财报和招股书里的风险因素纳入跟踪。</dd></dl>
+    <p class="src">原文：<a href="https://www.anthropic.com/news/ipo-close" lang="en">Anthropic announces closing of initial public offering</a>（Anthropic），11-20；<a href="https://latent.space/p/ainews-anthropic-successfully-completes-largest-ipo-in-history-valued-at-1-5t/" lang="en">[AINews] Anthropic successfully completes largest IPO in history, valued at $1.5T</a>（Latent Space），11-20</p>
+  </details>
+  <details class="item" id="i-hebbia">
+    <summary><span class="c">Hebbia｜用 GPT-6 Astra 做投行尽调</span><span class="so">引用来源更全，99.5% 的引文切题</span><span class="item-meta"><span class="chip zs">招熟</span><span class="ind">金融</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>Hebbia 的 Matrix 帮投行人员读数据室里的几千份文件，把每个答案链接到原文，再按客户模板生成 PowerPoint。它用 GPT-6 Astra 改进两步：找齐回答所需的来源，按要求做演示稿。</dd><dt>Why<small>为什么重要</small></dt><dd>Hebbia 的人说，用户要凭这些结果做上百万美元的决策，所以可追溯最重要。它把“引用找得全不全、准不准”单独拿出来测，金融场景的评测可以照这个思路拆。</dd><dt>How<small>怎么做的</small></dt><dd>8 到 9 月用预发布版测试，每个模型用同一批金融研究案例和评分标准，标准由领域专家编写或对照原文审核。引用规定类型来源的得分比次优模型高 13.6 个百分点，引文 99.5% 与问题相关。演示稿满足 97.9% 的格式要求，比次优高 14.4 个百分点。局限：OpenAI 发的客户案例，数字为 Hebbia 自测，没写对比了哪些模型。</dd><dt>Who<small>谁</small></dt><dd>Hebbia，Kavita Anand 介绍。</dd><dt>When<small>何时</small></dt><dd>11-20 发布。</dd><dt>Action<small>行动建议</small></dt><dd>评测金融文档问答时，把“该引的来源类型有没有引到”和“引文是否切题”分成两项打分，别只看答案对不对。</dd></dl>
+    <p class="src">原文：<a href="https://openai.com/business/customer-stories/hebbia" lang="en">Hebbia sees improvements in financial research with GPT-6 Astra</a>（OpenAI），11-20</p>
+  </details>
+  </div>
+</section>
+
+<section aria-labelledby="s-act">
+  <h2 id="s-act">本期行动</h2>
+  <ol class="acts">
+    <li><a href="#i-cvd-window">漏洞披露新时限</a>第三方和开源依赖的高危补丁时限压到 30 天以内，按新时限演练一次。</li>
+    <li><a href="#i-token-fraud">token 欺诈</a>对外开放的 AI 功能按会话设算力上限，超限降级到便宜模型；AI 客服不给解封和发码权限。</li>
+    <li><a href="#i-ai-disclosure">AI 使用告知</a>行政用途明说；诊断和治疗中的 AI 讲清楚医生怎么把关。</li>
+    <li><a href="#i-grh-lean">黎曼猜想证明</a>关键任务交给 Agent 时，人写规约、机器查证明，验收先核对规约。</li>
+    <li><a href="#i-clindatabench">ClinDataBench</a>统计编程的验收把“校验通过”和“数值正确”分成两项。</li>
+    <li><a href="#i-portal-triage">门户消息筛查</a>模型只做“排除急症”的第一道筛，可能急症交护士复核。</li>
+    <li><a href="#i-harness-adapters">框架适配器</a>固定框架跑开源模型的，用几百个自家任务训一个 LoRA 试试。</li>
+  </ol>
+</section>
+
+<section aria-labelledby="s-appx">
+  <h2 id="s-appx">附录</h2>
+  <details><summary>本期条目总表（11 条）</summary><div class="tbl"><table>
+    <thead><tr><th>日期</th><th>行业</th><th>轨道</th><th>阶段</th><th>条目</th><th>标签</th><th>总分</th><th>来源</th><th>去向</th></tr></thead>
+    <tbody>
+      <tr><td class="num">11-16</td><td>金融</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-token-fraud">AI 产品的 token 欺诈</a></td><td>安全、成本、产品化</td><td class="num">80</td><td>Lenny's Newsletter、Simon Willison</td><td>建议入书</td></tr>
+      <tr><td class="num">11-19</td><td>医疗</td><td>产品</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-ai-disclosure">医生披露 AI 与患者信任</a></td><td>用户研究、人机协作</td><td class="num">76</td><td>npj Digital Medicine</td><td>建议入书</td></tr>
+      <tr><td class="num">11-20</td><td>金融</td><td>产品</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-anthropic-ipo">Anthropic 上市</a></td><td>产业</td><td class="num">60</td><td>Anthropic、Latent Space</td><td>不入书</td></tr>
+      <tr><td class="num">11-20</td><td>金融</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-hebbia">Hebbia 投行尽调</a></td><td>RAG、评测</td><td class="num">59</td><td>OpenAI</td><td>待定</td></tr>
+      <tr><td class="num">11-16</td><td>通用</td><td>技术</td><td><span class="chip zs">招熟</span></td><td><a href="#i-cvd-window">漏洞披露新时限</a></td><td>安全、标准</td><td class="num">71</td><td>Anthropic</td><td>建议入书</td></tr>
+      <tr><td class="num">11-20</td><td>通用</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-grh-lean">广义黎曼猜想证明</a></td><td>形式化验证、AI for Science</td><td class="num">68</td><td>Levent Alpöge、Shtetl-Optimized、Latent Space</td><td>建议入书</td></tr>
+      <tr><td class="num">11-20</td><td>通用</td><td>技术</td><td><span class="chip zs">招熟</span></td><td><a href="#i-harness-adapters">框架适配器</a></td><td>Agent、后训练</td><td class="num">65</td><td>Hugging Face Blog</td><td>建议试用</td></tr>
+      <tr><td class="num">11-20</td><td>医疗</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-portal-triage">门户消息急症筛查</a></td><td>评测、人机协作</td><td class="num">63</td><td>npj Digital Medicine</td><td>建议入书</td></tr>
+      <tr><td class="num">11-19</td><td>医疗</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-clindatabench">ClinDataBench</a></td><td>AI 编程、评测</td><td class="num">61</td><td>medRxiv</td><td>建议入书</td></tr>
+      <tr><td class="num">11-18</td><td>通用</td><td>技术</td><td><span class="chip zs">招熟</span></td><td><a href="#i-gemini-neon">Gemini 4 Neon</a></td><td>模型发布、成本</td><td class="num">57</td><td>Google DeepMind</td><td>不入书</td></tr>
+      <tr><td class="num">11-19</td><td>医疗</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-trialoutlook">TrialOutlook 试验预测</a></td><td>评测</td><td class="num">54</td><td>medRxiv</td><td>待定</td></tr>
+    </tbody>
+  </table></div></details>
+</section>
+
+</div>
+<script>
+(function(){function o(){var e=location.hash&&document.getElementById(location.hash.slice(1));if(e&&e.tagName==='DETAILS')e.open=true}
+window.addEventListener('hashchange',o);o()})();
+</script>
