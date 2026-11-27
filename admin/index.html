@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Nook 随笔编辑</title>
+<style>
+/* 正文编辑框默认只有几行高，写长文不方便；类名取自下面固定版本的 Sveltia CMS，升级后要核对 */
+.text-editor .lexical-root{min-height:65vh!important}
+</style>
 </head>
 <body>
 <script src="https://unpkg.com/@sveltia/cms@0.265.0/dist/sveltia-cms.js"></script>
