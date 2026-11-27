@@ -730,6 +730,33 @@ def redirect(target):
             f'<title>Nook</title>\n</head>\n<body><a href="{target}">这一期已移到这里</a></body>\n</html>\n')
 
 
+def book_pages():
+    """按 src/SUMMARY.md 的顺序列出书稿页面：(显示名, src 下的路径)。篇首页用上一行的「# 第一篇 ……」作名字。"""
+    pages, part = [], ""
+    for line in (ROOT / "src" / "SUMMARY.md").read_text(encoding="utf-8").splitlines():
+        if m := re.match(r"#\s+(第.+)", line):
+            part = m.group(1).strip()
+        elif m := re.match(r"\s*(?:-\s+)?\[([^\]]+)\]\(([^)]+\.md)\)", line):
+            label, path = m.groups()
+            pages.append((part if path.endswith("/README.md") and part else label, path))
+    return pages
+
+
+def admin_config():
+    """编辑页配置：admin/config.yml 加上按目录生成的「用于哪一章」选项和「书稿」栏，新增章节不用手改配置。"""
+    source = (ROOT / "admin" / "config.yml").read_text(encoding="utf-8")
+    pages = book_pages()
+    chapters = [label for label, _ in pages if re.match(r"第\s*\d+\s*章", label)]
+    source = source.replace("options: []}  # 构建时填入", "options: " + json.dumps(chapters, ensure_ascii=False) + "}")
+    book = ["  - name: book", "    label: 书稿", "    label_singular: 页面",
+            "    description: 书稿正文，顺序和 src/SUMMARY.md 一致。新增章节、调整顺序请交给 Claude 改目录。",
+            "    format: raw", "    extension: md", "    create: false", "    delete: false", "    files:"]
+    for n, (label, path) in enumerate(pages):
+        book.append(f'      - {{name: p{n:02d}, label: {json.dumps(label, ensure_ascii=False)}, file: "src/{path}", '
+                    'fields: [{name: body, label: 正文, widget: markdown}]}')
+    return source.replace("  # 书稿栏：构建时追加在这里\n", "\n".join(book) + "\n")
+
+
 def write(path, text):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
@@ -748,6 +775,7 @@ def main():
     write(OUT / "topics.html", render_topics(topics))
     write(OUT / "notes.html", render_notes(notes))
     shutil.copytree(ROOT / "admin", OUT / "admin", dirs_exist_ok=True)
+    write(OUT / "admin" / "config.yml", admin_config())
     if (NOTES / "images").is_dir():
         shutil.copytree(NOTES / "images", OUT / "notes" / "images", dirs_exist_ok=True)
     for n, i in enumerate(issues):
