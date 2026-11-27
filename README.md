@@ -32,6 +32,7 @@ nook/
 │   ├── roles.md         讨论角色与报告流程
 │   ├── style-guide.md   写作规范
 │   └── workflow.md      从输入到成书的流程、草稿清理规则
+├── admin/               随笔的在线编辑页（Sveltia CMS，GitHub 令牌登录）
 ├── scripts/
 │   └── build_site.py    生成 GitHub Pages 站点（雷达首页与各期雷达）
 ├── book.toml            mdBook 配置
