@@ -9,6 +9,7 @@
 - 全部条目（items.html）：汇总每期附录 A 的条目总表，可搜索，可按轨道、行业、阶段、标签筛选。
 - 往期（archive.html）：每期的日期、标题、一句话结论和专题，点进每期页面。
 - 随笔（notes.html、notes/…）：Yue 自己写的札记、长文、复盘、过招，按日期倒序。
+  文件头写「状态: 草稿」的不发布；在线编辑页 admin/ 和随笔图片 notes/images/ 原样复制进站点。
 旧的往期简报地址 brief/YYYY-MM-DD.html 改成跳转到每期页面。
 源文件不改。用法：python3 scripts/build_site.py [输出目录，默认 _site]
 """
@@ -18,6 +19,7 @@ import json
 from urllib.parse import quote
 import pathlib
 import re
+import shutil
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -253,7 +255,7 @@ def collect_topics():
 
 
 def collect_notes():
-    """随笔优先写成 Markdown（notes/YYYY/YYYY-MM-DD-slug.md），开头可写「写法」「引用」两行；
+    """随笔优先写成 Markdown（notes/YYYY/YYYY-MM-DD-slug.md），开头可写「写法」「引用」「状态」「标题」；
     也收 HTML 片段：<title>，加一个 <article class="note" data-kind="札记"> 包着 h1 和正文，data-ref 写引用的那一期日期。"""
     notes = []
     for path in sorted(NOTES.glob("*/*.md")) + sorted(NOTES.glob("*/*.html")):
@@ -269,31 +271,37 @@ def collect_notes():
                 continue
             attrs = dict(re.findall(r'data-(\w+)="([^"]*)"', art.group(1)))
             inner = art.group(2)
+        if attrs.get("status") == "草稿":
+            continue
         kind = attrs.get("kind", "")
+        title = attrs.get("title") or first(r"<h1[^>]*>(.*?)</h1>", inner)
+        if not attrs.get("title"):
+            inner = re.sub(r"<h1[^>]*>.*?</h1>", "", inner, count=1, flags=re.S)
         notes.append({
             "date": datetime.date(*map(int, m.groups()[:3])),
             "rel": path.with_suffix(".html").relative_to(NOTES).as_posix(),
-            "title": first(r"<h1[^>]*>(.*?)</h1>", inner) or path.stem,
+            "title": title or path.stem,
             "kind": kind if kind in NOTE_KINDS else "札记",
             "ref": attrs.get("ref", ""),
-            "body": re.sub(r"<h1[^>]*>.*?</h1>", "", inner, count=1, flags=re.S).strip(),
+            "body": inner.strip(),
         })
     notes.sort(key=lambda n: n["date"], reverse=True)
     return notes
 
 
-NOTE_META_KEYS = {"写法": "kind", "引用": "ref"}
+NOTE_META_KEYS = {"写法": "kind", "引用": "ref", "状态": "status", "标题": "title"}
 
 
 def parse_note_md(source):
-    """拆出开头 --- 之间的「写法：」「引用：」，其余按 Markdown 转成 HTML。"""
+    """拆出开头 --- 之间的「写法」「引用」「状态」「标题」，其余按 Markdown 转成 HTML。
+    在线编辑页（admin/）写的文件头是 YAML，值可能带引号。"""
     attrs = {}
     fm = re.match(r"\ufeff?---\s*\n(.*?)\n---\s*\n", source, re.S)
     if fm:
         for line in fm.group(1).splitlines():
             key, _, value = re.sub(r"\s*：\s*|\s*:\s*", ":", line.strip(), count=1).partition(":")
             if key in NOTE_META_KEYS:
-                attrs[NOTE_META_KEYS[key]] = value
+                attrs[NOTE_META_KEYS[key]] = value.strip().strip("'\"")
         source = source[fm.end():]
     return attrs, md_to_html(re.sub(r"<!--.*?-->", "", source, flags=re.S))
 
@@ -739,6 +747,9 @@ def main():
     write(OUT / "archive.html", render_archive(issues))
     write(OUT / "topics.html", render_topics(topics))
     write(OUT / "notes.html", render_notes(notes))
+    shutil.copytree(ROOT / "admin", OUT / "admin", dirs_exist_ok=True)
+    if (NOTES / "images").is_dir():
+        shutil.copytree(NOTES / "images", OUT / "notes" / "images", dirs_exist_ok=True)
     for n, i in enumerate(issues):
         write(OUT / "radar" / i["rel"], wrap_issue(issues, n))
         write(OUT / cover_href(i), render_cover(issues, n, prefix="../"))

@@ -1,0 +1,38 @@
+# 随笔的在线编辑页（Sveltia CMS），用 GitHub 令牌登录，保存即提交到 main。
+# 字段名就是随笔文件头里的键，和 scripts/build_site.py 的 NOTE_META_KEYS 一一对应，改名要两边一起改。
+backend:
+  name: github
+  repo: lyteboat/nook
+  branch: main
+  commit_messages:
+    create: "随笔：新建 {{slug}}"
+    update: "随笔：修改 {{slug}}"
+    delete: "随笔：删除 {{slug}}"
+    uploadMedia: "随笔：上传图片 {{path}}"
+    deleteMedia: "随笔：删除图片 {{path}}"
+
+site_url: https://lyteboat.github.io/nook/
+display_url: https://lyteboat.github.io/nook/notes.html
+media_folder: notes/images
+public_folder: /nook/notes/images
+
+collections:
+  - name: notes
+    label: 随笔
+    label_singular: 随笔
+    folder: notes
+    extension: md
+    format: frontmatter
+    create: true
+    delete: true
+    path: "{{year}}/{{slug}}"
+    slug: "{{year}}-{{month}}-{{day}}-{{短名}}"
+    identifier_field: 标题
+    summary: "{{状态}} · {{标题}}"
+    fields:
+      - {name: 标题, label: 标题, widget: string, hint: "8 到 24 个字，直接写观点或对象"}
+      - {name: 写法, label: 写法, widget: select, options: [札记, 长文, 复盘, 过招], default: 札记}
+      - {name: 状态, label: 状态, widget: select, options: [草稿, 已发布], default: 草稿, hint: "草稿不上站点；改成已发布并保存，1 到 2 分钟后所有人可见"}
+      - {name: 引用, label: 引用的雷达, widget: string, required: false, pattern: ['^(\d{4}-\d{2}-\d{2})?$', "写那一期的日期，比如 2026-10-28"], hint: "可空，页尾会链到那一期"}
+      - {name: 短名, label: 英文短名, widget: string, pattern: ['^[a-z0-9-]+$', "只用小写字母、数字和连字符"], hint: "用作文件名，建好后不再改"}
+      - {name: body, label: 正文, widget: markdown}
