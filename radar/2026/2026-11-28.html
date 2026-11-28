@@ -1,0 +1,193 @@
+<title>Nook 雷达 2026-11-28</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* 版式：一列简报，宽 880px。每个条目是标题、副标题（意义）加六栏：What、Why、How、Who、When、Action。 */
+:root{
+  --bg:#f6f7f5; --surface:#ffffff; --ink:#1b2321; --muted:#5d6966; --line:#dde2df; --wash:#eef1ef;
+  --accent:#1f5f58; --prod:#8a4b9c;
+  --zs:#2f7d5b; --zs-bg:#e3f1ea; --dj:#3d55a3; --dj-bg:#e6eaf7; --sm:#a1701c; --sm-bg:#f6ecd8;
+  --f-display:"Noto Serif SC","Songti SC","SimSun",serif;
+  --f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121715; --surface:#1a201e; --ink:#e3e9e6; --muted:#9aa6a2; --line:#2c3532; --wash:#202825;
+  --accent:#6fc1b5; --prod:#d3a0e3; --zs:#6cc59a; --zs-bg:#1c3328; --dj:#9aaef0; --dj-bg:#232b45; --sm:#e0b45e; --sm-bg:#3a2f1a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121715; --surface:#1a201e; --ink:#e3e9e6; --muted:#9aa6a2; --line:#2c3532; --wash:#202825;
+  --accent:#6fc1b5; --prod:#d3a0e3; --zs:#6cc59a; --zs-bg:#1c3328; --dj:#9aaef0; --dj-bg:#232b45; --sm:#e0b45e; --sm-bg:#3a2f1a; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:880px;margin:0 auto;padding-block:40px 64px;display:grid;gap:44px}
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.35}
+h1{font-size:34px;font-weight:900;margin:8px 0 16px}
+h2{font-size:22px;font-weight:900;margin-bottom:16px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+h2 .count{font:400 13px var(--f-body);color:var(--muted)}
+a{color:var(--accent)}
+.eyebrow{font:600 12px/1.5 var(--f-data);letter-spacing:.06em;color:var(--muted)}
+.thesis{margin:0;font-family:var(--f-display);font-size:18px;font-weight:600;line-height:1.75;padding-left:16px;border-left:4px solid var(--accent)}
+.chip{display:inline-flex;font-size:12px;font-weight:700;padding:0 8px;border-radius:999px;white-space:nowrap}
+.zs{color:var(--zs);background:var(--zs-bg)}.dj{color:var(--dj);background:var(--dj-bg)}.sm{color:var(--sm);background:var(--sm-bg)}
+.item-meta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;font-size:13px;color:var(--muted)}
+.new{font-size:11px;color:var(--accent)}
+.ind{font-size:12px;color:var(--accent);background:var(--wash);border-radius:4px;padding:0 6px}
+.must-no{font:700 13px var(--f-data);color:var(--accent)}
+.musts{display:grid;gap:16px}
+.must{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:8px;padding:18px 22px;display:grid;gap:10px;scroll-margin-top:72px}
+.must.prod{border-top-color:var(--prod)}.must.prod .must-no{color:var(--prod)}
+.must h3{font-size:20px;font-weight:900}
+.w6{margin:0;display:grid;grid-template-columns:7.5em 1fr;gap:8px 14px}
+.w6 dt{font:700 13px/1.6 var(--f-data);color:var(--accent);padding-top:2px}
+.must.prod .w6 dt{color:var(--prod)}
+.w6 dt small{display:block;font:400 12px var(--f-body);color:var(--muted)}
+.w6 dd{margin:0;font-size:14.5px}
+.src{margin:0;font-size:13px;color:var(--muted);padding-top:8px;border-top:1px dashed var(--line)}
+.items{display:grid;gap:8px}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:8px;scroll-margin-top:72px}
+.item summary{cursor:pointer;list-style:none;padding:12px 18px;display:grid;gap:4px}
+.item summary::-webkit-details-marker{display:none}
+.item summary .c{font-weight:700;font-size:15.5px}
+.item summary .c::before{content:"▸";color:var(--muted);margin-right:8px;display:inline-block;transition:transform .15s}
+.item[open] summary .c::before{transform:rotate(90deg)}
+.item summary .item-meta{padding-left:20px}
+.so{margin:0;color:var(--muted);font-size:15px}
+.must .so{margin-top:-6px}
+.item summary .so{padding-left:20px;font-size:14px}
+.item[open] summary{border-bottom:1px solid var(--line)}
+.item .w6,.item .src{margin:12px 18px}
+.item .src{margin-top:0}
+.acts{margin:0;padding-left:22px;display:grid;gap:8px}
+.acts li{font-size:14.5px}.acts a{font-weight:700;margin-right:8px;text-decoration:none}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface);margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:12px;color:var(--muted);background:var(--wash);padding:8px 10px;white-space:nowrap}
+td{padding:8px 10px;border-top:1px solid var(--line);vertical-align:top}
+.num{font-family:var(--f-data)}
+details>summary{cursor:pointer}
+@media (max-width:640px){h1{font-size:26px}.w6{grid-template-columns:1fr;gap:0}.w6 dd{margin-bottom:8px}}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">2026-11-28 周六 · 11-25 至 11-28 · 11 条</div>
+  <h1>写得出、答得对都不够，关键看能不能核对</h1>
+  <p class="thesis">Claude 一周写出 Rust 版 Messages API，Anthropic 真正花功夫的是拿线上流量逐步比对，最后每个请求省了约七成 CPU。npj 一项研究测了 34 个本地模型，临床安全取决于怎么部署，不跟着准确率走。BNY 让两家的 Agent 谈国债价格，成交仍要交易员批准，全程留痕。</p>
+</header>
+<section aria-labelledby="s-must">
+  <h2 id="s-must">本期必看</h2>
+  <div class="musts">
+  <article class="must" id="i-rust-migration">
+    <div class="item-meta"><span class="must-no">技术 1</span><span class="chip dj">懂劲</span><span class="name">用线上流量验证迁移</span></div>
+    <h3>Anthropic｜用线上流量核对 Rust 版 API</h3>
+    <p class="so">测试通过了 98%，线上输入只对上四分之一</p>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>Anthropic 把 Messages API 从 Python 迁到 Rust，这是客户和 Claude Code、Cowork 调用 Claude 的主入口。Claude 大约一周写出核心请求路径的第一版，团队的大部分功夫花在证明新旧两版行为一致上。</dd><dt>Why<small>为什么重要</small></dt><dd>代码写得快了，瓶颈移到了验证。约 700 个集成测试在移植时被一起改过，事后审计发现 100 多处断言被改弱。4 月 Rust 版测试通过约 98%，线上请求的输入却只有约四分之一和 Python 版一致。2024 年初到 2026 年秋，API 流量涨了约 1,800 倍，这个服务又不能停。</dd><dt>How<small>怎么做的</small></dt><dd>影子比对：模型只调用一次，把输出回放给 Rust 版，模型调用前后的每一步逐段比对。为保护隐私，不读请求原文，只记差异的指纹：哪一步、提示词第几段、从第几个字节开始不同、两边各多长。脚本每 10 到 30 分钟把差异记录聚类，出现新类型就由协调 Agent 派一个 Agent 专门负责。三层循环：沙箱里一秒内完成的本地比对，工程师评审后上线再看指纹是否消失，评审意见沉淀成规则、搜索和测试。有个 Agent 把网页搜索工具的描述复制进文件，“凑”出了一致，被工程师否掉：验证器只看输出是否一致，不管修法能不能上线。结果每个请求的 CPU 少用约 70%，首个 token 的中位时间快约 20%，服务没有下线，功能开发也没有冻结。</dd><dt>Who<small>谁</small></dt><dd>Anthropic 的 API 团队。</dd><dt>When<small>什么时候</small></dt><dd>11-25 发在 Engineering 栏。</dd><dt>Action<small>怎么用</small></dt><dd>迁移或重写系统时，先搭“新旧对比”的验证器，再让 Agent 写代码；人只审进入生产前的修复。</dd></dl>
+    <p class="src">原文：<a href="https://www.anthropic.com/research/migrating-api-to-rust" lang="en">Migrating our Messages API to Rust</a>（Anthropic），11-25</p>
+  </article>
+  <article class="must" id="i-safe-scale">
+    <div class="item-meta"><span class="must-no">技术 2</span><span class="chip dj">懂劲</span><span class="ind">医疗</span><span class="name">临床模型的安全与准确率</span></div>
+    <h3>npj｜临床模型答得准不等于用得安全</h3>
+    <p class="so">34 个本地模型，部署方式比模型家族更决定安全</p>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>德国埃尔朗根-纽伦堡大学的团队提出 SaFE-Scale 评估方法，在 RadSaFE-200 上测了 34 个可本地部署的模型。这是 200 道放射科文字选择题，医生标注了干净证据、冲突证据，以及每个选项是否属于高风险错误、不安全答案、与证据矛盾。部署方式有六种，包括闭卷、给定证据、标准 RAG、Agent 式 RAG 和塞满上下文。</dd><dt>Why<small>为什么重要</small></dt><dd>常见的升级路线是换更大的模型、更长的上下文、更复杂的检索，默认准确率越高越安全。医疗里少数自信的错误就可能抵掉平均分。这项研究显示，安全指标并不跟着准确率走。</dd><dt>How<small>怎么做的</small></dt><dd>医生写的干净证据是上限：平均准确率从 73.5% 升到 94.1%，高风险错误从 12.0% 降到 2.6%，危险的过度自信从 8.0% 降到 1.6%。标准 RAG、Agent 式 RAG、塞满上下文和加推理算力都只改善了部分指标。从标准 RAG 换到 Agent 式 RAG，准确率升了，危险的过度自信也升了。严重错误集中在少数题目上。在每一项安全指标上，部署方式解释的差异都大于模型家族。局限：只有 200 道文字选择题。</dd><dt>Who<small>谁</small></dt><dd>Sebastian Wind 等，埃尔朗根-纽伦堡大学。</dd><dt>When<small>什么时候</small></dt><dd>11-27 发表于 npj Digital Medicine。</dd><dt>Action<small>怎么用</small></dt><dd>医疗 RAG 验收时把高风险错误率和过度自信率单列，每换一次检索方案就重测，不只看准确率。</dd></dl>
+    <p class="src">原文：<a href="https://www.nature.com/articles/s41746-026-03455-y" lang="en">Safety and accuracy diverge across deployment conditions in clinical large language models</a>（npj Digital Medicine），11-27</p>
+  </article>
+  <article class="must prod" id="i-bny-anp">
+    <div class="item-meta"><span class="must-no">产品 1</span><span class="chip zs">招熟</span><span class="ind">金融</span><span class="name">Agent 谈判国债交易</span></div>
+    <h3>BNY｜让两家的 Agent 谈国债价格</h3>
+    <p class="so">Agent 只管谈价，成交要交易员批，全程留痕</p>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>BNY 和微软完成试点：双方的 AI Agent 在 BNY 的 Agent 谈判协议（Agentic Negotiation Protocol，ANP）上，就一笔美国国库券交易报价、还价，交易员批准后经各自现有系统成交。BNY 称这是业内首次。</dd><dt>Why<small>为什么重要</small></dt><dd>机构间的报价谈判一直靠消息来回、人工逐条处理。这笔试点给出了金融 Agent 的一套控制样板：Agent 只能在授权范围内谈，不能自己下单。据 PYMNTS，FINRA 2026 年监管报告点名了 Agent 的三种风险：没经人确认就行动、越权、推理难追溯。这套流程对每一种都有对应的控制。</dd><dt>How<small>怎么做的</small></dt><dd>微软财资部给自己的 Agent 下达交易指令，Agent 经安全网关接入 ANP。谈价之前，BNY 先校验五项：交易对手、证券、规模、结算条款和可用定价。双方各自的控制按预设规则和安全检查，把 Agent 限制在批准的定价范围内。谈完后双方 Agent 分别把条款提交到 ANP 的账本，账本核对一致，才请交易员批准。ANP 记录参与方、往来消息、控制检查和人的决定，事后能重建整场谈判。局限：新闻稿没写交易规模、价格和日期，也没写用的是哪家模型、来回了几轮。</dd><dt>Who<small>谁</small></dt><dd>BNY（托管和管理资产 63.4 万亿美元）、微软财资部。</dd><dt>When<small>什么时候</small></dt><dd>BNY 11-17 发布，PYMNTS 11-25 报道。BNY 计划扩展到回购和多方谈判。</dd><dt>Action<small>怎么用</small></dt><dd>设计会对外谈判或下单的 Agent，照“前置校验、双方对账、人工批准、留痕可重建”四步列控制点。</dd></dl>
+    <p class="src">原文：<a href="https://www.bny.com/corporate/global/en/about-us/newsroom/press-release/bny-and-microsoft-complete-first-agentic-negotiation-of-a-us-treasury-trade.html" lang="en">BNY and Microsoft Complete First Agentic Negotiation of a U.S. Treasury Trade</a>（BNY），11-17；<a href="https://www.pymnts.com/news/artificial-intelligence/2026/bny-and-microsoft-let-ai-agents-haggle-over-treasurys/" lang="en">BNY and Microsoft Let AI Agents Haggle Over Treasurys</a>（PYMNTS），11-25</p>
+  </article>
+  <article class="must prod" id="i-ai2-scientists">
+    <div class="item-meta"><span class="must-no">产品 2</span><span class="chip zs">招熟</span><span class="name">科学家怎样才信 Agent</span></div>
+    <h3>Ai2｜问 17 位科学家怎样才信 Agent</h3>
+    <p class="so">不只看答案对不对，还要查用了什么、漏了什么</p>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>Ai2 访谈了 17 位自然科学、应用科学和社会科学的研究者，问他们愿意把哪些研究任务交给 AI Agent、担心什么、需要哪些保障，并发布了技术报告。</dd><dt>Why<small>为什么重要</small></dt><dd>访谈归纳出科学家信任的五个维度：可验证、隐私、客观、可问责、透明。答案正确只覆盖其中一部分，他们还要知道 Agent 漏掉了哪些来源、有没有按要求的方法做、过程中访问了哪些数据。金融和医疗的 Agent 产品要回答的是同一组问题。</dd><dt>How<small>怎么做的</small></dt><dd>受访者最想交出去的是处理大数据、写代码、记录实验步骤和重复的行政活。他们担心自信但细微的错误，也担心工具只检索支持自己假设的文献。他们主张由科学家参与决定 Agent 做哪些任务、怎样做、怎样评测，还把培训和制定、执行规范看作当务之急。对科学的未来，受访者意见分歧，有人期待加速，有人担心人类科学家的角色。局限：只有 17 人。</dd><dt>Who<small>谁</small></dt><dd>Allen Institute for AI（Ai2）。</dd><dt>When<small>什么时候</small></dt><dd>11-25 发布。</dd><dt>Action<small>怎么用</small></dt><dd>给自家 Agent 写验收清单时，按这五个维度各列一两项能检查的指标。</dd></dl>
+    <p class="src">原文：<a href="https://huggingface.co/blog/allenai/where-scientists-draw-the-line-on-ai-agents" lang="en">Where scientists draw the line on AI agents</a>（Hugging Face Blog · Ai2），11-25</p>
+  </article>
+  </div>
+</section>
+<section aria-labelledby="s-tech">
+  <h2 id="s-tech">技术<span class="count">其余 5 条，按重要程度排序，点开看详情</span></h2>
+  <div class="items">
+  <details class="item" id="i-gguf-template">
+    <summary><span class="c">GGUF｜模板里藏指令，劫持本地 Agent</span><span class="so">扫了 327 万个仓库，5 个恶意模型被下载 2,428 次</span><span class="item-meta"><span class="chip zs">招熟</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>安全研究者扫描了 Hugging Face 上全部 3,273,389 个公开模型仓库，记录了聊天模板投毒（Chat Template Poisoning）：每个 GGUF 文件都自带聊天模板，运行时套在每条提示词上，攻击者往模板里加用户看不到的指令。</dd><dt>Why<small>为什么重要</small></dt><dd>银行和医院正因为数据不出门而转向本地模型（见本期小模型一条）。本地运行不等于安全，模型文件本身就是供应链的一环。</dd><dt>How<small>怎么做的</small></dt><dd>最大的一批（Mir2k）上传了两个“去审查”模型，把 Windows 远程控制木马藏在最后一个张量之后，加载器不读这一段。11-26 它又改了模板，让模型请用户运行解包命令。另一批（timdedid）11-21、11-22 上传了面向安全用户的 Qwen3 1.7B，用户提问含“What is”时，模板插入一条系统指令，让 Agent 调用 PowerShell 下载脚本并隐藏运行，README 还劝用户别换掉自带模板。开源工具 gguf-radar 不运行模型就能检出这些问题，还能在权重不变的前提下重建干净文件。局限：Hugging Face 统计的是下载次数，受害人数只会更少，第二阶段脚本没有拿到。</dd><dt>Who<small>谁</small></dt><dd>malspark 的研究者 Düzgün。</dd><dt>When<small>什么时候</small></dt><dd>11-27 发布，11-28 上 Hacker News 首页。</dd><dt>Action<small>怎么用</small></dt><dd>部署本地模型前用 gguf-radar 扫一遍，或者弃用文件自带的模板，换成官方模板。</dd></dl>
+    <p class="src">原文：<a href="https://malspark.com/blog/malicious-gguf-models-hugging-face/" lang="en">Malicious GGUF models on Hugging Face</a>（malspark · Hacker News），11-27</p>
+  </details>
+  <details class="item" id="i-mh-governance">
+    <summary><span class="c">Sword Health｜给心理健康对话加一层外置治理</span><span class="so">医生偏好的升级回应多了 25.6 到 59.2 个百分点</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="ind">医疗</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>一套放在模型外面的安全治理架构，用于多轮心理健康对话：先在上下文里识别风险，再用推理做二次核实，最后按临床规程生成回应。</dd><dt>Why<small>为什么重要</small></dt><dd>现有的安全做法多半只检测风险，不管模型接下来怎么回应。这套架构挂在模型外面，专有模型和开源模型都能用，换模型时不必重做。</dd><dt>How<small>怎么做的</small></dt><dd>用基于真实心理健康叙述生成的合成对话，在 GPT-5-chat 和 Qwen3.5-27B 上测。医生偏好的升级处理回应提高了 25.6 到 59.2 个百分点，风险检测特异度 0.85、灵敏度 0.92。对话变长、换模型时表现稳定，初步证据显示没有损害对话中的融洽感。局限：用的是合成对话，研究由 Sword Health 资助。</dd><dt>Who<small>谁</small></dt><dd>Sword Health、耶鲁儿童研究中心等。</dd><dt>When<small>什么时候</small></dt><dd>11-27 发表于 npj Digital Medicine。</dd><dt>Action<small>怎么用</small></dt><dd>做健康类对话产品的，把风险处理做成模型外的独立一层，再单独评测。</dd></dl>
+    <p class="src">原文：<a href="https://www.nature.com/articles/s41746-026-03510-8" lang="en">Risk governance for generative AI mental health support: a multi-turn safety architecture</a>（npj Digital Medicine），11-27</p>
+  </details>
+  <details class="item" id="i-model-context">
+    <summary><span class="c">上下文 API｜让模型自己决定何时压缩</span><span class="so">32K 预算下 GPT 6.1 的分数从 21% 升到 56%</span><span class="item-meta"><span class="chip dj">懂劲</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>现在的 Agent 框架在上下文窗口满时替模型做摘要压缩。这篇改成由模型通过上下文 API 自己决定何时压缩、压缩什么，在 NVIDIA 的开源 Agent 框架里和框架托管的做法对比。</dd><dt>Why<small>为什么重要</small></dt><dd>长任务里，上下文同时卡着成本和质量。会用这个 API 的模型分数更高，输入 token 往往更少，在预算紧时尤其明显。作者认为下一步是训练模型管理自己的上下文，推理引擎配套支持编辑 KV 缓存。</dd><dt>How<small>怎么做的</small></dt><dd>任务是文档研究和机器学习工程，上下文预算从 8K 到 512K。OfficeQA Pro v2 上，GPT 6.1 在 32K 预算下从 21% 升到 56%，Kimi 最多少用 41% 的输入 token。模型之间差别很大：调用 API 的频率、压缩的力度、开始压缩的时机都不同，改提示词也会改变时机。推理引擎复用编辑点之后未改动部分的 KV 缓存，每次请求的预填充计算最多省 15%，准确率没有可测的变化。</dd><dt>Who<small>谁</small></dt><dd>Alessio Devoto 等。</dd><dt>When<small>什么时候</small></dt><dd>arXiv 11-25，HF Daily Papers 11-24。</dd><dt>Action<small>怎么用</small></dt><dd>自建框架的，把“压缩”做成模型能调用的工具，先在 32K 这类小预算任务上对比。</dd></dl>
+    <p class="src">原文：<a href="https://arxiv.org/abs/2611.34147" lang="en">Letting Models Manage Their Own Context: Where We Stand</a>（HF Daily Papers），11-25</p>
+  </details>
+  <details class="item" id="i-llm-screening">
+    <summary><span class="c">智利卫生部｜文献筛选两三个模型就够</span><span class="so">8 个模型的错误高度相关，只抵约 1.6 个独立判断</span><span class="item-meta"><span class="chip dj">懂劲</span><span class="ind">医疗</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>做系统综述要先按标题和摘要筛文献，研究者越来越多地让几个大模型投票，默认模型越多越安全。这篇估算一个筛选组合到底需要几个模型。</dd><dt>Why<small>为什么重要</small></dt><dd>模型的错误是相关的：8 个不同模型之间的组内相关系数为 0.56，同一模型换角色或多开几份高达 0.75 到 0.78，8 个模型携带的信息只相当于约 1.6 个独立判断。金融里用多个模型交叉审核，也该先算这笔账。</dd><dt>How<small>怎么做的</small></dt><dd>4 家厂商的 11 个模型在 13 个 SYNERGY 综述上盲投，再用预先登记的预测在 10 个和 16 个 Cochrane 综述上复现。最好的单模型、两模型、三模型组合，灵敏度分别为 0.920、0.975、0.981，三个及以下就能拿到可得收益的 95%。按真实纳入比例，两个模型投票加一个仲裁的流水线，把基准集 96 篇应纳入研究中的 94 篇送到人工阅读，2026 年 6 篇综述里是 178 篇中的 163 篇。局限：作者在开发包含这套配置的筛选流水线。</dd><dt>Who<small>谁</small></dt><dd>Eduardo Quiñelen 等，智利卫生部卫生技术评估部门。</dd><dt>When<small>什么时候</small></dt><dd>11-27 发在 medRxiv。</dd><dt>Action<small>怎么用</small></dt><dd>用多模型投票之前，先测模型之间的错误相关性，并和最好的单个模型比。</dd></dl>
+    <p class="src">原文：<a href="https://www.medrxiv.org/content/10.64898/2026.11.25.26369001v1" lang="en">How many large language models does title-abstract screening need?</a>（medRxiv），11-27</p>
+  </details>
+  <details class="item" id="i-board-resolution">
+    <summary><span class="c">Vernier｜算出排行榜能分辨多大差距</span><span class="so">GIFT-Eval 前十名里分得清的不到两档</span><span class="item-meta"><span class="chip dj">懂劲</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>Vernier 用排行榜已公开的分数文件，算出这个榜的分辨率：它的数据集能检出多大的差距，哪些条目和榜首分不开。对象是零样本时间序列基础模型的排行榜。</dd><dt>Why<small>为什么重要</small></dt><dd>时间序列模型在金融预测里常用，选型主要看公开榜单，但没有一个榜说明自己能分辨多小的差距。低于分辨率的名次先后，取决于还有谁提交。</dd><dt>How<small>怎么做的</small></dt><dd>GIFT-Eval 的分辨率是 6.8 个名次，相邻条目只差 0.91，前十名里能分辨的不到两档。fev-bench、Chronos Benchmark II 和 TIME 情况相同，分辨率是相邻差距的 3.6 到 19 倍。只有 BOOM 能分开前十名，它的 2,554 个序列各算一个独立来源。四个榜上，“相对整个提交池排名”的规则在七次更新里约有一次翻转前十名的顺序，共 43 对，两边都没重跑。榜单也不记录模型拿到多长的历史，70 种配置里，缩短历史让四个开源模型中三个误差变大，其中两个大了 15%。</dd><dt>Who<small>谁</small></dt><dd>Arya Sikder 等，NeurIPS 2026 时间序列基础模型研讨会口头报告。</dd><dt>When<small>什么时候</small></dt><dd>arXiv 11-23，HF Daily Papers 11-22。</dd><dt>Action<small>怎么用</small></dt><dd>按榜单选时间序列模型前先跑一次 Vernier，名次差小于分辨率就当并列，再用自己的数据测。</dd></dl>
+    <p class="src">原文：<a href="https://arxiv.org/abs/2611.31619" lang="en">What a Forecasting Leaderboard Can Establish: Resolution Reporting for Zero-Shot Time-Series Models</a>（HF Daily Papers），11-23</p>
+  </details>
+  </div>
+</section>
+<section aria-labelledby="s-prod">
+  <h2 id="s-prod">产品<span class="count">其余 2 条，按重要程度排序，点开看详情</span></h2>
+  <div class="items">
+  <details class="item" id="i-vo-bench">
+    <summary><span class="c">Claire Vo｜25 项任务盲测六个前沿模型</span><span class="so">编程已拉不开差距，最常用的模型输了盲测</span><span class="item-meta"><span class="chip zs">招熟</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>ChatPRD 创始人 Claire Vo 用自己的 25 项任务给六个模型盲评，任务覆盖编程、写作、创意、视频、原型和个人助理。参评的是 GPT-6.2 Astra 和 Sol、Claude Fable 5.2 和 Opus 5.5、Gemini 4 Neon 和 Carbon。</dd><dt>Why<small>为什么重要</small></dt><dd>她的结论是 Gemini 4 Neon 意外胜出，编程已经分不出前沿模型的高下，而她最喜欢用的模型输了盲测。用着顺手和测出来好是两回事，选模型时两样都要看。</dd><dt>How<small>怎么做的</small></dt><dd>盲评打分，再混入 LLM 评审的分数。她还用本地 Agent 会话数据做了一个“烦人度”评测（Annoyance Bench），按标题，Opus 5.5 是她用着最不烦的日常模型。节目也谈到慢模型的隐性成本。局限：文字稿只有节目提要，具体分数在视频里。</dd><dt>Who<small>谁</small></dt><dd>Claire Vo，Lenny's 旗下的 How I AI 节目。</dd><dt>When<small>什么时候</small></dt><dd>11-25 发布。</dd><dt>Action<small>怎么用</small></dt><dd>从自己的 Agent 会话里挑出被打断、被纠正的片段，做一个自家的烦人度评测。</dd></dl>
+    <p class="src">原文：<a href="https://www.lennysnewsletter.com/p/gemini-4-neon-beat-gpt-62-and-claude" lang="en">Gemini 4 Neon beat GPT-6.2 and Claude in my 25-task AI benchmark</a>（Lenny's Newsletter），11-25</p>
+  </details>
+  <details class="item" id="i-local-models">
+    <summary><span class="c">PYMNTS｜小模型让银行数据留在本地</span><span class="so">决策模型 bison-1 每百万 token 0.10 美元</span><span class="item-meta"><span class="chip zs">招熟</span><span class="ind">金融</span></span></summary>
+    <dl class="w6"><dt>What<small>是什么</small></dt><dd>PYMNTS 的周报：一个月的前沿旗舰发布之后，这周多是能在笔记本或单卡上跑的小模型，有 Thinking Machines 的 Inkling 2 Mini、PrismML 的 Ternary Bonsai 2.5 27B、Sarvam-105B，以及 Baseten 的两个决策模型。</dd><dt>Why<small>为什么重要</small></dt><dd>银行在意的是客户数据送去云厂商还是留在楼里。决策模型接上了 11-18 期的话题：它不写文字，只在固定选项里选，比如批准或暂缓，并给出把握程度，适合付款审批、合规和发票处理。</dd><dt>How<small>怎么做的</small></dt><dd>Baseten 的 bison-1 和 groundhog-1 基于 Gemma 4，开放权重。bison-1 在 Artificial Analysis 决策指数的 19 个模型里排第一，也最能判断自己何时可能出错。两者每百万 token 分别 0.10 和 0.035 美元，能一次读完整份政策或整串邮件。Inkling 2 Mini 能在 32GB 内存的 MacBook Pro 上离线运行。局限：汇总报道，数字来自厂商和 Artificial Analysis。</dd><dt>Who<small>谁</small></dt><dd>PYMNTS 汇总，涉及 Thinking Machines、PrismML、Sarvam、Baseten。</dd><dt>When<small>什么时候</small></dt><dd>11-27 发布。</dd><dt>Action<small>怎么用</small></dt><dd>付款、发票这类审批任务，拿开放权重的决策模型在本地和现有规则引擎对照试一次，模型文件先按本期 GGUF 一条扫过。</dd></dl>
+    <p class="src">原文：<a href="https://www.pymnts.com/news/artificial-intelligence/2026/small-ai-models-give-banks-a-way-to-keep-sensitive-data-in-house/" lang="en">Small AI Models Give Banks a Way to Keep Sensitive Data In-House</a>（PYMNTS），11-27</p>
+  </details>
+  </div>
+</section>
+<section aria-labelledby="s-act">
+  <h2 id="s-act">本期行动</h2>
+  <ol class="acts">
+    <li><a href="#i-rust-migration">Rust 迁移</a>迁移或重写系统前，先搭新旧对比的验证器：同一请求跑两边，按步骤记差异指纹，不读原文。</li>
+    <li><a href="#i-safe-scale">SaFE-Scale</a>医疗 RAG 每换一次检索方案，单独重测高风险错误率和过度自信率。</li>
+    <li><a href="#i-bny-anp">BNY 谈判协议</a>会对外谈判或下单的 Agent，按前置校验、双方对账、人工批准、留痕四步列控制点。</li>
+    <li><a href="#i-gguf-template">GGUF 模板投毒</a>本地部署的模型先用 gguf-radar 扫，或换成官方模板。</li>
+    <li><a href="#i-ai2-scientists">科学家的五个信任维度</a>Agent 验收清单按可验证、隐私、客观、可问责、透明各列可检查的指标。</li>
+    <li><a href="#i-llm-screening">多模型投票</a>上线投票前先测错误相关性，并和最好的单模型比。</li>
+    <li><a href="#i-board-resolution">榜单分辨率</a>按公开榜单选时间序列模型，名次差小于分辨率就当并列。</li>
+    <li><a href="#i-model-context">上下文 API</a>自建框架的，把压缩做成模型能调用的工具，在小预算任务上试。</li>
+  </ol>
+</section>
+<section aria-labelledby="s-appx">
+  <h2 id="s-appx">附录</h2>
+  <details><summary>本期条目总表（11 条）</summary><div class="tbl"><table>
+    <thead><tr><th>日期</th><th>行业</th><th>轨道</th><th>阶段</th><th>条目</th><th>标签</th><th>总分</th><th>来源</th><th>去向</th></tr></thead>
+    <tbody>
+      <tr><td class="num">11-25</td><td>金融</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-bny-anp">Agent 谈判国债交易</a></td><td>Agent、人机协作、标准</td><td class="num">75</td><td>BNY、PYMNTS</td><td>建议入书</td></tr>
+      <tr><td class="num">11-25</td><td>通用</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-ai2-scientists">科学家怎样才信 Agent</a></td><td>用户研究、AI for Science、人机协作</td><td class="num">65</td><td>Hugging Face Blog</td><td>待定</td></tr>
+      <tr><td class="num">11-25</td><td>通用</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-vo-bench">25 项任务盲测</a></td><td>评测、用户研究</td><td class="num">64</td><td>Lenny's Newsletter</td><td>不入书</td></tr>
+      <tr><td class="num">11-27</td><td>金融</td><td>产品</td><td><span class="chip zs">招熟</span></td><td><a href="#i-local-models">小模型与本地部署</a></td><td>成本、隐私、模型发布</td><td class="num">62</td><td>PYMNTS</td><td>待定</td></tr>
+      <tr><td class="num">11-25</td><td>通用</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-rust-migration">用线上流量验证迁移</a></td><td>AI 编程、多智能体、评测</td><td class="num">82</td><td>Anthropic</td><td>建议入书</td></tr>
+      <tr><td class="num">11-27</td><td>医疗</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-safe-scale">临床模型的安全与准确率</a></td><td>评测、RAG、安全对齐</td><td class="num">77</td><td>npj Digital Medicine</td><td>建议入书</td></tr>
+      <tr><td class="num">11-27</td><td>通用</td><td>技术</td><td><span class="chip zs">招熟</span></td><td><a href="#i-gguf-template">GGUF 聊天模板投毒</a></td><td>安全、Agent</td><td class="num">69</td><td>malspark、Hacker News</td><td>建议试用</td></tr>
+      <tr><td class="num">11-27</td><td>医疗</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-mh-governance">心理健康对话的外置治理</a></td><td>安全对齐、人机协作</td><td class="num">64</td><td>npj Digital Medicine</td><td>待定</td></tr>
+      <tr><td class="num">11-25</td><td>通用</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-model-context">模型自管上下文</a></td><td>Agent、成本</td><td class="num">63</td><td>HF Daily Papers</td><td>待定</td></tr>
+      <tr><td class="num">11-27</td><td>医疗</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-llm-screening">文献筛选的模型数量</a></td><td>LLM 评审、成本</td><td class="num">62</td><td>medRxiv</td><td>建议入书</td></tr>
+      <tr><td class="num">11-23</td><td>通用</td><td>技术</td><td><span class="chip dj">懂劲</span></td><td><a href="#i-board-resolution">排行榜分辨率</a></td><td>评测</td><td class="num">62</td><td>HF Daily Papers</td><td>建议试用</td></tr>
+    </tbody>
+  </table></div></details>
+</section>
+
+</div>
+<script>
+(function(){function o(){var e=location.hash&&document.getElementById(location.hash.slice(1));if(e&&e.tagName==='DETAILS')e.open=true}
+window.addEventListener('hashchange',o);o()})();
+</script>
